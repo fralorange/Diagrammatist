@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Maui.LifecycleEvents;
 
 namespace DiagramApp.Client
 {
@@ -15,31 +14,6 @@ namespace DiagramApp.Client
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-#if WINDOWS
-            builder.ConfigureLifecycleEvents(events =>
-            {
-                events.AddWindows(windowsLifecycleBuilder =>
-                {
-                    windowsLifecycleBuilder.OnWindowCreated(window =>
-                    {
-                        window.ExtendsContentIntoTitleBar = false;
-                        var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
-                        var id = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
-                        var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
-                        switch (appWindow.Presenter)
-                        {
-                            case Microsoft.UI.Windowing.OverlappedPresenter overlappedPresenter:
-                                overlappedPresenter.SetBorderAndTitleBar(false, false);
-                                overlappedPresenter.IsMaximizable = false;
-                                overlappedPresenter.IsResizable = false;
-                                overlappedPresenter.IsMinimizable = false;
-                                break;
-                        }
-                    });
-                });
-            });
-#endif
 
 #if DEBUG
             builder.Logging.AddDebug();
