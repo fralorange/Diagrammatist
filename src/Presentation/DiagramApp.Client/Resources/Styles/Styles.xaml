@@ -49,6 +49,14 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Button" x:Key="Tab">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource White}}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+
     <Style TargetType="CheckBox">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
@@ -134,8 +142,8 @@
 
     <Style TargetType="Frame">
         <Setter Property="HasShadow" Value="False" />
-        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+        <Setter Property="CornerRadius" Value="0" />
     </Style>
 
     <Style TargetType="ImageButton">
