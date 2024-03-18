@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{6B5F9AAE-7AC8-4A53-9A9C-6D899D3112E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Client", "src\Presentation\DiagramApp.Client\DiagramApp.Client.csproj", "{6FFD73AC-E446-44B7-9154-916CC14601E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Client", "src\Presentation\DiagramApp.Client\DiagramApp.Client.csproj", "{6FFD73AC-E446-44B7-9154-916CC14601E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Domain", "src\Domain\DiagramApp.Domain\DiagramApp.Domain.csproj", "{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{6FFD73AC-E446-44B7-9154-916CC14601E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FFD73AC-E446-44B7-9154-916CC14601E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FFD73AC-E446-44B7-9154-916CC14601E8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -31,6 +37,7 @@ Global
 		{DB478693-0571-4D79-8290-C5E87B44C895} = {19A7644F-412D-44FD-A3DF-485E90D48D71}
 		{6B5F9AAE-7AC8-4A53-9A9C-6D899D3112E2} = {19A7644F-412D-44FD-A3DF-485E90D48D71}
 		{6FFD73AC-E446-44B7-9154-916CC14601E8} = {DB478693-0571-4D79-8290-C5E87B44C895}
+		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399} = {6B5F9AAE-7AC8-4A53-9A9C-6D899D3112E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F0DF37D-74DA-4F7B-831E-E3C2B2B50437}

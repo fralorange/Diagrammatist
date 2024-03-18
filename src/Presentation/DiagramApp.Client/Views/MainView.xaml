@@ -1,16 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DiagramApp.Client.MainPage"
+             x:Class="DiagramApp.Client.MainView"
              Title="">
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Файл">
-            <MenuFlyoutItem Text="Новый файл" Clicked="OnNewFileClicked"/>
-            <MenuFlyoutItem Text="Открыть файл"/>
+            <MenuFlyoutItem Text="Создать" Clicked="New_Clicked"/>
+            <MenuFlyoutItem Text="Открыть"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Сохранить"/>
-            <MenuFlyoutItem Text="Сохранить как"/>
+            <MenuFlyoutItem Text="Закрыть"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Закрыть все"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Сохранить"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Сохранить как"
+                            IsEnabled="False"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Выход"/>
         </MenuBarItem>
@@ -25,18 +31,67 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
-    <StackLayout>
-        <ScrollView Orientation="Horizontal"
-                    Margin="30, 0, 30, 0">
-            <StackLayout x:Name="TabHeaders" Orientation="Horizontal">
+    <Grid ColumnDefinitions="15*,70*,15*"
+          RowDefinitions="15*,50*,35*"
+          Padding="5, 0, 5, 15"
+          RowSpacing="5"
+          ColumnSpacing="5">
+        
+        <Frame Grid.ColumnSpan="3"
+               Grid.Row="0">
+            
+            <StackLayout>
+                <Entry IsReadOnly="True"
+                       Text="Controls"/>
             </StackLayout>
-        </ScrollView>
-
-        <Frame Margin="30,1,30,30" 
-               BackgroundColor="{StaticResource Gray900}"
-               VerticalOptions="FillAndExpand"
-               HorizontalOptions="FillAndExpand">
-            <ContentView x:Name="MainContent"/>
+            
         </Frame>
-    </StackLayout> 
+
+        <Frame Grid.Row="1"
+               Grid.RowSpan="3"
+               Grid.Column="0">
+            
+            <StackLayout>
+                <Entry IsReadOnly="True" 
+                       Text="ToolBox"/>
+            </StackLayout>
+            
+        </Frame>
+
+        <StackLayout Grid.Row="1" 
+                     Grid.RowSpan="2" 
+                     Grid.Column="1" 
+                     Spacing="1"
+                     Orientation="Vertical">
+            
+            <Frame VerticalOptions="FillAndExpand">
+                
+            </Frame>
+
+            <HorizontalStackLayout>
+
+            </HorizontalStackLayout>
+        </StackLayout>
+
+        <Frame Grid.Row="1"
+               Grid.Column="2">
+            
+            <StackLayout>
+                <Entry IsReadOnly="True" 
+                       Text="Explorer"/>
+            </StackLayout>
+            
+        </Frame>
+
+        <Frame Grid.Row="2"
+               Grid.RowSpan="2"
+               Grid.Column="2">
+
+            <StackLayout>
+                <Entry IsReadOnly="True" 
+                       Text="Properties"/>
+            </StackLayout>
+
+        </Frame>
+    </Grid>
 </ContentPage>

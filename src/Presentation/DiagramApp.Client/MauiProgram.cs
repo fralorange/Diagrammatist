@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Maui.LifecycleEvents;
-using Microsoft.Maui.Platform;
+﻿using CommunityToolkit.Maui;
+using DiagramApp.Client.ViewModels;
+using DiagramApp.Client.Views;
+using Microsoft.Extensions.Logging;
 
 namespace DiagramApp.Client
 {
@@ -11,6 +12,7 @@ namespace DiagramApp.Client
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,7 +22,8 @@ namespace DiagramApp.Client
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
+            builder.Services.AddSingleton<MainView>();
+            builder.Services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewmodel>();
             return builder.Build();
         }
     }
