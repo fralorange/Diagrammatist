@@ -23,7 +23,8 @@ namespace DiagramApp.Client
             builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<MainView>();
-            builder.Services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewmodel>();
+            builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewModel>();
             return builder.Build();
         }
     }

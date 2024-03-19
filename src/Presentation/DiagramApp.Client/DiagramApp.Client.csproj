@@ -78,9 +78,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Resources\Converters\Converters.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\NewDiagramPopupView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Converters\" />
 	</ItemGroup>
 
 </Project>

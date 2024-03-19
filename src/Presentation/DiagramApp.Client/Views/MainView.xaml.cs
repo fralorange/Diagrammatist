@@ -1,22 +1,31 @@
-﻿using CommunityToolkit.Maui.Core;
-using DiagramApp.Client.ViewModels;
+﻿using DiagramApp.Client.ViewModels;
 
 namespace DiagramApp.Client
 {
     public partial class MainView : ContentPage
     {
-        private readonly IPopupService _popupService;
+        private Point? mousePos = null;
 
-        public MainView(IPopupService popupService)
+        public MainView(MainViewModel viewmodel)
         {
             InitializeComponent();
 
-            _popupService = popupService;
+            BindingContext = viewmodel;
         }
 
-        private async void New_Clicked(object sender, EventArgs e)
+        private void Exit_Clicked(object sender, EventArgs e)
         {
-            var result = await _popupService.ShowPopupAsync<NewDiagramPopupViewmodel>(CancellationToken.None);
+            App.Current!.Quit();
+        }
+
+        private void OnPointerMoved(object sender, PointerEventArgs e)
+        {
+            mousePos = e.GetPosition(null);
+        }
+
+        private void OnPointerExited(object sender, PointerEventArgs e)
+        {
+            mousePos = null;
         }
     }
 }

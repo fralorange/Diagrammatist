@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
+             xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
              x:Class="DiagramApp.Client.MainView"
+             x:DataType="viewmodel:MainViewModel"
              Title="">
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Файл">
-            <MenuFlyoutItem Text="Создать" Clicked="New_Clicked"/>
+            <MenuFlyoutItem Text="Создать"
+                            Command="{Binding CreateCanvasCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="N"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutItem Text="Открыть"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Закрыть"
@@ -18,7 +27,8 @@
             <MenuFlyoutItem Text="Сохранить как"
                             IsEnabled="False"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Выход"/>
+            <MenuFlyoutItem Text="Выход"
+                            Clicked="Exit_Clicked"/>
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
 
@@ -40,9 +50,11 @@
         <Frame Grid.ColumnSpan="3"
                Grid.Row="0">
             
-            <StackLayout>
-                <Entry IsReadOnly="True"
-                       Text="Controls"/>
+            <StackLayout Spacing="5">
+                <Button Text="+"
+                        Command="{Binding ZoomInCommand}"/>
+                <Button Text="-"
+                        Command="{Binding ZoomOutCommand}"/>
             </StackLayout>
             
         </Frame>
@@ -63,14 +75,43 @@
                      Grid.Column="1" 
                      Spacing="1"
                      Orientation="Vertical">
-            
-            <Frame VerticalOptions="FillAndExpand">
-                
+
+            <Frame VerticalOptions="FillAndExpand"
+                   x:Name="CanvasWindow">
+                <AbsoluteLayout IsClippedToBounds="True">
+                    <BoxView x:Name="CanvasBoxView"
+                             AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                             AbsoluteLayout.LayoutFlags="All"
+                             WidthRequest="{Binding CurrentCanvas.Settings.Width}"
+                             HeightRequest="{Binding CurrentCanvas.Settings.Height}"
+                             BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
+                             Scale="{Binding CurrentCanvas.Zoom}"/>
+                    <AbsoluteLayout.GestureRecognizers>
+                        <PointerGestureRecognizer PointerMoved="OnPointerMoved"
+                                                  PointerExited="OnPointerExited"/>
+                    </AbsoluteLayout.GestureRecognizers>
+                </AbsoluteLayout>
             </Frame>
-
-            <HorizontalStackLayout>
-
-            </HorizontalStackLayout>
+            
+            <CollectionView ItemsLayout="HorizontalList"
+                            ItemsSource="{Binding Canvases}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Canvas">
+                        <Button Text="{Binding Settings.FileName}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectCanvasCommand}"
+                                CommandParameter="{Binding .}"
+                                Style="{StaticResource Tab}">
+                            <FlyoutBase.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Закрыть"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CloseCanvasCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                        </Button>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
 
         <Frame Grid.Row="1"
