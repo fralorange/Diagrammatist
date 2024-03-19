@@ -5,4 +5,19 @@
     xmlns:maui="using:Microsoft.Maui"
     xmlns:local="using:DiagramApp.Client.WinUI">
 
+    <maui:MauiWinUIApplication.Resources>
+
+        <DataTemplate x:Key="MauiAppTitleBarTemplate">
+
+            <Grid>
+                <Border
+                  Canvas.ZIndex="1"
+                  VerticalAlignment="Stretch"
+                  Background="#1f1f1f"
+                  Margin="0,0,0,0"/>
+            </Grid>
+        </DataTemplate>
+    </maui:MauiWinUIApplication.Resources>
+
+
 </maui:MauiWinUIApplication>

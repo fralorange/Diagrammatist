@@ -7,7 +7,7 @@ namespace DiagramApp.Client.Views;
 
 public partial class NewDiagramPopupView : Popup
 {
-    public NewDiagramPopupView(NewDiagramPopupViewmodel viewmodel)
+    public NewDiagramPopupView(NewDiagramPopupViewModel viewmodel)
     {
         InitializeComponent();
 
@@ -15,6 +15,21 @@ public partial class NewDiagramPopupView : Popup
 
         WeakReferenceMessenger.Default.Register<DiagramSettings>(this, async (r, settings) =>
         {
+            string errorMsg = "";
+            if (widthValidator.IsNotValid)
+            {
+                errorMsg += "\nШирина";
+            }
+            if (heightValidator.IsNotValid)
+            {
+                errorMsg += "\nВысота";
+            }
+            if (!string.IsNullOrEmpty(errorMsg))
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Требуется заполнить следующие поля:{errorMsg}.", "OK");
+                return;
+            }    
+
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             await CloseAsync(settings, cts.Token);
         });

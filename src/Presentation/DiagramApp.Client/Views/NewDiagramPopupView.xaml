@@ -6,11 +6,11 @@
                xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
                xmlns:local="clr-namespace:DiagramApp.Domain.DiagramSettings;assembly=DiagramApp.Domain"
                CanBeDismissedByTappingOutsideOfPopup="False"
-               x:DataType="viewmodel:NewDiagramPopupViewmodel"
+               x:DataType="viewmodel:NewDiagramPopupViewModel"
                Size="400, 300">
     <Frame>
         <StackLayout>
-            <Label Text="Новый холст"/>
+            <Label Text="Новая диаграмма"/>
             <Grid ColumnDefinitions="Auto, *"
                   RowDefinitions="Auto, Auto, Auto, Auto, Auto"
                   RowSpacing="5"
@@ -34,7 +34,14 @@
                        Grid.Column="1"
                        Grid.Row="1"
                        Text="{Binding Settings.Width, Mode=TwoWay}"
-                       Style="{StaticResource EntryNew}"/>
+                       Style="{StaticResource EntryNew}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="widthValidator"
+                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                            MinimumLength="1"/>
+                    </Entry.Behaviors>
+                </Entry>
 
                 <Label Text="Высота : "
                        Grid.Column="0"
@@ -44,7 +51,14 @@
                        Grid.Column="1"
                        Grid.Row="2"
                        Text="{Binding Settings.Height, Mode=TwoWay}"
-                       Style="{StaticResource EntryNew}"/>
+                       Style="{StaticResource EntryNew}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="heightValidator"
+                            Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                            MinimumLength="1"/>
+                    </Entry.Behaviors>
+                </Entry>
 
                 <Label Text="Фон : "
                        Grid.Column="0"

@@ -5,7 +5,7 @@ using DiagramApp.Domain.DiagramSettings;
 
 namespace DiagramApp.Client.ViewModels
 {
-    public partial class NewDiagramPopupViewmodel : ObservableObject
+    public partial class NewDiagramPopupViewModel : ObservableObject
     {
         [ObservableProperty]
         private DiagramSettings _settings = new();
