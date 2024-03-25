@@ -65,8 +65,12 @@
                 <StackLayout Spacing="5">
                     <Entry IsReadOnly="True" 
                            Text="Controls"/>
-                    <Button Text="Select"/>
-                    <Button Text="Drag"/>
+                    <Button Text="Select"
+                            Command="{Binding ChangeControlsCommand}"
+                            CommandParameter="Select"/>
+                    <Button Text="Drag"
+                            Command="{Binding ChangeControlsCommand}"
+                            CommandParameter="Drag"/>
                 </StackLayout>
             </ScrollView>
             
@@ -110,6 +114,9 @@
                                  HeightRequest="{Binding CurrentCanvas.Settings.Height}"
                                  BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
                                  Scale="{Binding CurrentCanvas.Zoom}"/>
+                        <AbsoluteLayout.GestureRecognizers>
+                            <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
+                        </AbsoluteLayout.GestureRecognizers>
                     </AbsoluteLayout>
                 </controls:BindableScrollView>
 

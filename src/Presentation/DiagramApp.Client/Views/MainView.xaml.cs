@@ -1,9 +1,14 @@
 ﻿using DiagramApp.Client.ViewModels;
+using DiagramApp.Domain.Canvas;
 
 namespace DiagramApp.Client
 {
     public partial class MainView : ContentPage
     {
+        private Point _deltaPosition;
+        private double _horizontalScrollPosition;
+        private double _verticalScrollPosition;
+
         public MainView(MainViewModel viewmodel)
         {
             InitializeComponent();
@@ -29,22 +34,28 @@ namespace DiagramApp.Client
         }
 
         private void OnExitClicked(object sender, EventArgs e)
-         {
+        {
             Application.Current!.Quit();
         }
 
-        private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
+        private async void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            switch (e.StatusType)
+            if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull && viewModel.CurrentCanvas!.Controls == ControlsType.Drag)
             {
-                case GestureStatus.Running:
-                    Point? currentLocation = new Point(e.TotalX, e.TotalY);
-
-                    if (currentLocation.HasValue)
-                    {
-                        (BindingContext as MainViewModel)!.MoveCanvasCommand.Execute((Convert.ToInt32(currentLocation.Value.X), Convert.ToInt32(currentLocation.Value.Y)));
-                    }
-                    break;
+                if (e.StatusType == GestureStatus.Started)
+                {
+                    _horizontalScrollPosition = CanvasScrollWindow.ScrollX;
+                    _verticalScrollPosition = CanvasScrollWindow.ScrollY;
+                }
+                else if (e.StatusType == GestureStatus.Running)
+                {
+                    _deltaPosition = new Point(e.TotalX, e.TotalY);
+                    await CanvasScrollWindow.ScrollToAsync(_horizontalScrollPosition - _deltaPosition.X, _verticalScrollPosition - _deltaPosition.Y, true);
+                }
+                else if (e.StatusType == GestureStatus.Completed || e.StatusType == GestureStatus.Canceled)
+                {
+                    _deltaPosition = Point.Zero;
+                }
             }
         }
     }

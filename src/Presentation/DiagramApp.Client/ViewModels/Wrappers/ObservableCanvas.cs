@@ -67,6 +67,12 @@ namespace DiagramApp.Client.ViewModels.Wrappers
             OnPropertyChanged(nameof(Offset));
         }
 
+        public void ChangeControls(string controlName)
+        {
+            _canvas.ChangeControls(controlName);
+            OnPropertyChanged(nameof(Controls));
+        }
+
         private void ZoomChanged()
         {
             OnPropertyChanged(nameof(Zoom));

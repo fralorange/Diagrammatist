@@ -63,6 +63,11 @@ namespace DiagramApp.Domain.Canvas
             EnsureCanvasWithinBorders();
         }
 
+        public void ChangeControls(string controlName)
+        {
+            Controls = (ControlsType)Enum.Parse(typeof(ControlsType), controlName, true);
+        }
+
         private void UpdateImaginaryBorders()
         {
             //int borderWidth = (int)(Settings.Width * 4 * Zoom);

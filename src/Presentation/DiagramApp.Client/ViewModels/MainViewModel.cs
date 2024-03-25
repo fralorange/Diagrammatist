@@ -54,7 +54,7 @@ namespace DiagramApp.Client.ViewModels
             else
             {
                 CurrentCanvas = null;
-                await Task.Delay(20); // KLUDGE!!!!!
+                await Task.Delay(20); // KLUDGE!!!!! // UI Updates in milliseconds
                 CurrentCanvas = selectedCanvas;
                 IsCanvasNull = false;
             }
@@ -102,6 +102,15 @@ namespace DiagramApp.Client.ViewModels
                 return;
 
             CurrentCanvas.MoveCanvas(e.ScrollX, e.ScrollY);
+        }
+
+        [RelayCommand]
+        private void ChangeControls(string controlName)
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            CurrentCanvas.ChangeControls(controlName);
         }
     }
 }
