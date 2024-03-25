@@ -1,11 +1,10 @@
 ﻿using DiagramApp.Client.ViewModels.Wrappers;
-using DiagramApp.Domain.Canvas;
 
 namespace DiagramApp.Client.Controls
 {
     public class BindableScrollView : ScrollView
     {
-        public bool IsInitializedScroll { private get; set; } = false;
+        public bool IsInitializedScroll { private get; set; }
 
         public static readonly BindableProperty ScrollProperty =
             BindableProperty.Create(
@@ -26,7 +25,13 @@ namespace DiagramApp.Client.Controls
             base.OnChildAdded(child);
 
             if (child is Layout layout)
-                layout.SizeChanged += OnContentSizeChanged; // size shouldn't be deciding factor
+            {
+                var boxView = layout.Children.OfType<BoxView>().FirstOrDefault();
+                if (boxView is not null)
+                {
+                    boxView.SizeChanged += OnContentSizeChanged;
+                }
+            }
         }
 
         private async void OnContentSizeChanged(object? sender, EventArgs e)
@@ -44,7 +49,6 @@ namespace DiagramApp.Client.Controls
 
             if (newValue is ObservableOffset offset && offset is not null)
             {
-                // await Task.Delay(10); await ScrollToAsync(...)
                 scrollView.IsInitializedScroll = true;
             }
         }

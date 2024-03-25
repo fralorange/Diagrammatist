@@ -94,8 +94,8 @@
             <Frame x:Name="CanvasWindow" 
                    VerticalOptions="FillAndExpand">
                 <controls:BindableScrollView x:Name="CanvasScrollWindow"
-                                             HorizontalScrollBarVisibility="{Binding CurrentCanvas, Converter={StaticResource NullToScrollBarVisibilityConverter}}" 
-                                             VerticalScrollBarVisibility="{Binding CurrentCanvas, Converter={StaticResource NullToScrollBarVisibilityConverter}}"  
+                                             HorizontalScrollBarVisibility="Always" 
+                                             VerticalScrollBarVisibility="Always"  
                                              Orientation="Both"
                                              ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
                                              ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"

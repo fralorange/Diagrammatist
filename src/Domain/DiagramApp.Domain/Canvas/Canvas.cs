@@ -67,8 +67,8 @@ namespace DiagramApp.Domain.Canvas
         {
             //int borderWidth = (int)(Settings.Width * 4 * Zoom);
             //int borderHeight = (int)(Settings.Height * 4 * Zoom);
-            int borderWidth = Settings.Width * 4;
-            int borderHeight = Settings.Height * 4;
+            int borderWidth = Settings.Width * 3;
+            int borderHeight = Settings.Height * 3;
 
             int borderCenterX = _center.X;
             int borderCenterY = _center.Y;

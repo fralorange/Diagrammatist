@@ -39,12 +39,12 @@ namespace DiagramApp.Client.ViewModels
                 ObservableCanvas observableCanvas = new(canvas);
 
                 Canvases.Add(observableCanvas);
-                SelectCanvas(observableCanvas);
+                _ = SelectCanvasAsync(observableCanvas);
             }
         }
 
         [RelayCommand]
-        private void SelectCanvas(ObservableCanvas selectedCanvas)
+        private async Task SelectCanvasAsync(ObservableCanvas selectedCanvas)
         {
             if (CurrentCanvas == selectedCanvas)
             {
@@ -53,6 +53,8 @@ namespace DiagramApp.Client.ViewModels
             }
             else
             {
+                CurrentCanvas = null;
+                await Task.Delay(20); // KLUDGE!!!!!
                 CurrentCanvas = selectedCanvas;
                 IsCanvasNull = false;
             }
