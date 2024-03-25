@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:model="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
+             xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
              x:Class="DiagramApp.Client.MainView"
              x:DataType="viewmodel:MainViewModel"
@@ -28,13 +30,22 @@
                             IsEnabled="False"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Выход"
-                            Clicked="Exit_Clicked"/>
+                            Clicked="OnExitClicked"/>
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
 
         </MenuBarItem>
         <MenuBarItem Text="Вид">
-
+            <MenuFlyoutItem Text="Приблизить"
+                            Command="{Binding ZoomInCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutItem Text="Отдалить"
+                            Command="{Binding ZoomOutCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Сбросить вид"
+                            Clicked="OnResetViewClicked"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
         </MenuBarItem>
         <MenuBarItem Text="Справка">
 
@@ -49,13 +60,15 @@
         
         <Frame Grid.ColumnSpan="3"
                Grid.Row="0">
-            
-            <StackLayout Spacing="5">
-                <Button Text="+"
-                        Command="{Binding ZoomInCommand}"/>
-                <Button Text="-"
-                        Command="{Binding ZoomOutCommand}"/>
-            </StackLayout>
+
+            <ScrollView>
+                <StackLayout Spacing="5">
+                    <Entry IsReadOnly="True" 
+                           Text="Controls"/>
+                    <Button Text="Select"/>
+                    <Button Text="Drag"/>
+                </StackLayout>
+            </ScrollView>
             
         </Frame>
 
@@ -66,6 +79,8 @@
             <StackLayout>
                 <Entry IsReadOnly="True" 
                        Text="ToolBox"/>
+                <Label Text="{Binding CurrentCanvas.Offset.X}"/>
+                <Label Text="{Binding CurrentCanvas.Offset.Y}"/>
             </StackLayout>
             
         </Frame>
@@ -76,27 +91,34 @@
                      Spacing="1"
                      Orientation="Vertical">
 
-            <Frame VerticalOptions="FillAndExpand"
-                   x:Name="CanvasWindow">
-                <AbsoluteLayout IsClippedToBounds="True">
-                    <BoxView x:Name="CanvasBoxView"
-                             AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                             AbsoluteLayout.LayoutFlags="All"
-                             WidthRequest="{Binding CurrentCanvas.Settings.Width}"
-                             HeightRequest="{Binding CurrentCanvas.Settings.Height}"
-                             BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
-                             Scale="{Binding CurrentCanvas.Zoom}"/>
-                    <AbsoluteLayout.GestureRecognizers>
-                        <PointerGestureRecognizer PointerMoved="OnPointerMoved"
-                                                  PointerExited="OnPointerExited"/>
-                    </AbsoluteLayout.GestureRecognizers>
-                </AbsoluteLayout>
+            <Frame x:Name="CanvasWindow" 
+                   VerticalOptions="FillAndExpand">
+                <controls:BindableScrollView x:Name="CanvasScrollWindow"
+                                             HorizontalScrollBarVisibility="{Binding CurrentCanvas, Converter={StaticResource NullToScrollBarVisibilityConverter}}" 
+                                             VerticalScrollBarVisibility="{Binding CurrentCanvas, Converter={StaticResource NullToScrollBarVisibilityConverter}}"  
+                                             Orientation="Both"
+                                             ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
+                                             ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"
+                                             Scroll="{Binding CurrentCanvas.Offset, Mode=OneWay}">
+                    <AbsoluteLayout x:Name="FrameCanvasContainer" 
+                                    WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
+                                    HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
+                        <BoxView x:Name="CanvasView"
+                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                                 AbsoluteLayout.LayoutFlags="All"
+                                 WidthRequest="{Binding CurrentCanvas.Settings.Width}"
+                                 HeightRequest="{Binding CurrentCanvas.Settings.Height}"
+                                 BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
+                                 Scale="{Binding CurrentCanvas.Zoom}"/>
+                    </AbsoluteLayout>
+                </controls:BindableScrollView>
+
             </Frame>
             
             <CollectionView ItemsLayout="HorizontalList"
                             ItemsSource="{Binding Canvases}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Canvas">
+                    <DataTemplate x:DataType="wrappers:ObservableCanvas">
                         <Button Text="{Binding Settings.FileName}"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectCanvasCommand}"
                                 CommandParameter="{Binding .}"

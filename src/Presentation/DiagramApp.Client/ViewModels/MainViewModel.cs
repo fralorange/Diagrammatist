@@ -12,10 +12,17 @@ namespace DiagramApp.Client.ViewModels
     {
         private readonly IPopupService _popupService;
 
+        private int _canvasCounter = 1;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = new();
 
         [ObservableProperty]
         private ObservableCanvas? _currentCanvas;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsCanvasNotNull))]
+        private bool _isCanvasNull = true;
+
+        public bool IsCanvasNotNull => !IsCanvasNull;
 
         public MainViewModel(IPopupService popupService)
             => _popupService = popupService;
@@ -27,19 +34,28 @@ namespace DiagramApp.Client.ViewModels
             if (result is DiagramSettings settings)
             {
                 if (string.IsNullOrEmpty(settings.FileName))
-                    settings.FileName = $"Без имени {Canvases.Count + 1}";
+                    settings.FileName = $"Безымянный{_canvasCounter++}";
                 Canvas canvas = new(settings);
                 ObservableCanvas observableCanvas = new(canvas);
 
                 Canvases.Add(observableCanvas);
-                CurrentCanvas = observableCanvas;
+                SelectCanvas(observableCanvas);
             }
         }
 
         [RelayCommand]
         private void SelectCanvas(ObservableCanvas selectedCanvas)
         {
-            CurrentCanvas = selectedCanvas;
+            if (CurrentCanvas == selectedCanvas)
+            {
+                CurrentCanvas = null;
+                IsCanvasNull = true;
+            }
+            else
+            {
+                CurrentCanvas = selectedCanvas;
+                IsCanvasNull = false;
+            }
         }
 
         [RelayCommand]
@@ -47,12 +63,13 @@ namespace DiagramApp.Client.ViewModels
         {
             Canvases.Remove(targetCanvas);
             CurrentCanvas = null;
+            IsCanvasNull = true;
         }
 
         [RelayCommand]
         private void ZoomIn()
         {
-            if (CurrentCanvas == null)
+            if (CurrentCanvas is null)
                 return;
 
             CurrentCanvas.ZoomIn(0.1);
@@ -61,10 +78,28 @@ namespace DiagramApp.Client.ViewModels
         [RelayCommand]
         private void ZoomOut()
         {
-            if (CurrentCanvas == null)
+            if (CurrentCanvas is null)
                 return;
 
             CurrentCanvas.ZoomOut(0.1);
+        }
+
+        [RelayCommand]
+        private void ZoomReset()
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            CurrentCanvas.ZoomReset();
+        }
+
+        [RelayCommand]
+        private void MoveCanvas(ScrolledEventArgs e)
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            CurrentCanvas.MoveCanvas(e.ScrollX, e.ScrollY);
         }
     }
 }

@@ -4,8 +4,6 @@ namespace DiagramApp.Client
 {
     public partial class MainView : ContentPage
     {
-        private Point? mousePos = null;
-
         public MainView(MainViewModel viewmodel)
         {
             InitializeComponent();
@@ -13,19 +11,41 @@ namespace DiagramApp.Client
             BindingContext = viewmodel;
         }
 
-        private void Exit_Clicked(object sender, EventArgs e)
+        private async void OnScrollToPosition(double? scrollX = null, double? scrollY = null)
         {
-            App.Current!.Quit();
+            // Scrolls to center by default
+            scrollX ??= (CanvasScrollWindow.ContentSize.Width - CanvasScrollWindow.Width) / 2.0;
+            scrollY ??= (CanvasScrollWindow.ContentSize.Height - CanvasScrollWindow.Height) / 2.0;
+            await CanvasScrollWindow.ScrollToAsync(scrollX.Value, scrollY.Value, false);
         }
 
-        private void OnPointerMoved(object sender, PointerEventArgs e)
+        private void OnResetViewClicked(object sender, EventArgs e)
         {
-            mousePos = e.GetPosition(null);
+            if (BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas != null)
+            {
+                viewModel.ZoomResetCommand.Execute(null);
+                OnScrollToPosition();
+            }
         }
 
-        private void OnPointerExited(object sender, PointerEventArgs e)
+        private void OnExitClicked(object sender, EventArgs e)
+         {
+            Application.Current!.Quit();
+        }
+
+        private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            mousePos = null;
+            switch (e.StatusType)
+            {
+                case GestureStatus.Running:
+                    Point? currentLocation = new Point(e.TotalX, e.TotalY);
+
+                    if (currentLocation.HasValue)
+                    {
+                        (BindingContext as MainViewModel)!.MoveCanvasCommand.Execute((Convert.ToInt32(currentLocation.Value.X), Convert.ToInt32(currentLocation.Value.Y)));
+                    }
+                    break;
+            }
         }
     }
 }

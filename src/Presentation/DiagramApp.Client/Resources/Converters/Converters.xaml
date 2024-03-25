@@ -5,6 +5,7 @@
                     xmlns:local="clr-namespace:DiagramApp.Client.Converters">
 
     <local:BackgroundTypeToColorConverter x:Key="BackgroundTypeToColorConverter"/>
-    
+    <local:NullToScrollBarVisibilityConverter x:Key="NullToScrollBarVisibilityConverter"/>
+
 </ResourceDictionary>
 
