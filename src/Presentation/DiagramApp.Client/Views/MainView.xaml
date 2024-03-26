@@ -1,9 +1,194 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DiagramApp.Client.MainPage"
-             Shell.NavBarIsVisible="False">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
+             xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
+             xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+             x:Class="DiagramApp.Client.MainView"
+             x:DataType="viewmodel:MainViewModel"
+             Title="">
 
-    
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Файл">
+            <MenuFlyoutItem Text="Создать"
+                            Command="{Binding CreateCanvasCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="N"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Открыть"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Закрыть"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Закрыть все"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Сохранить"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Сохранить как"
+                            IsEnabled="False"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Выход"
+                            Clicked="OnExitClicked"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Редактирование">
 
+        </MenuBarItem>
+        <MenuBarItem Text="Вид">
+            <MenuFlyoutItem Text="Приблизить"
+                            Command="{Binding ZoomInCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutItem Text="Отдалить"
+                            Command="{Binding ZoomOutCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Сбросить вид"
+                            Clicked="OnResetViewClicked"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Справка">
+
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+
+    <Grid ColumnDefinitions="15*,70*,15*"
+          RowDefinitions="15*,50*,35*"
+          Padding="5, 0, 5, 15"
+          RowSpacing="5"
+          ColumnSpacing="5">
+        
+        <Frame Grid.ColumnSpan="3"
+               Grid.Row="0"
+               Padding="0">
+            <StackLayout Orientation="Horizontal"
+                         Spacing="5">
+                <Grid RowDefinitions="*, Auto"
+                      ColumnDefinitions="*"
+                      RowSpacing="10"
+                      Margin="10">
+                    <HorizontalStackLayout Spacing="5">
+                        <VerticalStackLayout Spacing="5"
+                                             Padding="0">
+                            <ImageButton Source="{AppThemeBinding Light=select.png, Dark=select_dark.png}"
+                                         Command="{Binding ChangeControlsCommand}"
+                                         CommandParameter="Select"
+                                         Aspect="AspectFit"
+                                         Style="{StaticResource Tool}"/>
+                            <Label Text="Выбрать"
+                                   Style="{StaticResource LabelControlName}"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5"
+                                             Padding="0">
+                            <ImageButton Source="{AppThemeBinding Light=drag.png, Dark=drag_dark.png}"
+                                         Command="{Binding ChangeControlsCommand}"
+                                         CommandParameter="Drag"
+                                         Aspect="AspectFit"
+                                         Style="{StaticResource Tool}"/>
+                            <Label Text="Двигать"
+                                   Style="{StaticResource LabelControlName}"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                    <Label Text="Инструменты"
+                           Style="{StaticResource LabelControl}"
+                           Grid.Row="1" 
+                           Grid.ColumnSpan="2"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center" />
+                </Grid>
+                <BoxView Style="{StaticResource VerticalSeparator}"/>
+            </StackLayout>
+        </Frame>
+
+        <Frame Grid.Row="1"
+               Grid.RowSpan="3"
+               Grid.Column="0">
+            
+            <StackLayout>
+                <Entry IsReadOnly="True" 
+                       Text="ToolBox"/>
+                <Label Text="{Binding CurrentCanvas.Offset.X}"/>
+                <Label Text="{Binding CurrentCanvas.Offset.Y}"/>
+            </StackLayout>
+            
+        </Frame>
+
+        <StackLayout Grid.Row="1" 
+                     Grid.RowSpan="2" 
+                     Grid.Column="1" 
+                     Spacing="1"
+                     Orientation="Vertical">
+
+            <Frame x:Name="CanvasWindow" 
+                   VerticalOptions="FillAndExpand">
+                <controls:BindableScrollView x:Name="CanvasScrollWindow"
+                                             HorizontalScrollBarVisibility="Always" 
+                                             VerticalScrollBarVisibility="Always"  
+                                             Orientation="Both"
+                                             ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
+                                             ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"
+                                             Scroll="{Binding CurrentCanvas.Offset, Mode=OneWay}">
+                    <AbsoluteLayout x:Name="FrameCanvasContainer" 
+                                    WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
+                                    HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
+                        <BoxView x:Name="CanvasView"
+                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                                 AbsoluteLayout.LayoutFlags="All"
+                                 WidthRequest="{Binding CurrentCanvas.Settings.Width}"
+                                 HeightRequest="{Binding CurrentCanvas.Settings.Height}"
+                                 BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
+                                 Scale="{Binding CurrentCanvas.Zoom}"/>
+                        <AbsoluteLayout.GestureRecognizers>
+                            <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
+                        </AbsoluteLayout.GestureRecognizers>
+                    </AbsoluteLayout>
+                </controls:BindableScrollView>
+
+            </Frame>
+            
+            <CollectionView ItemsLayout="HorizontalList"
+                            ItemsSource="{Binding Canvases}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="wrappers:ObservableCanvas">
+                        <Button Text="{Binding Settings.FileName}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectCanvasCommand}"
+                                CommandParameter="{Binding .}"
+                                Style="{StaticResource Tab}">
+                            <FlyoutBase.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Закрыть"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CloseCanvasCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                        </Button>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <Frame Grid.Row="1"
+               Grid.Column="2">
+            
+            <StackLayout>
+                <Entry IsReadOnly="True" 
+                       Text="Explorer"/>
+            </StackLayout>
+            
+        </Frame>
+
+        <Frame Grid.Row="2"
+               Grid.RowSpan="2"
+               Grid.Column="2">
+
+            <StackLayout>
+                <Entry IsReadOnly="True" 
+                       Text="Properties"/>
+            </StackLayout>
+
+        </Frame>
+    </Grid>
 </ContentPage>
