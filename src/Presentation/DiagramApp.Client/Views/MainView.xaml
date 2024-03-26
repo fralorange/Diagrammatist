@@ -59,21 +59,47 @@
           ColumnSpacing="5">
         
         <Frame Grid.ColumnSpan="3"
-               Grid.Row="0">
-
-            <ScrollView>
-                <StackLayout Spacing="5">
-                    <Entry IsReadOnly="True" 
-                           Text="Controls"/>
-                    <Button Text="Select"
-                            Command="{Binding ChangeControlsCommand}"
-                            CommandParameter="Select"/>
-                    <Button Text="Drag"
-                            Command="{Binding ChangeControlsCommand}"
-                            CommandParameter="Drag"/>
-                </StackLayout>
-            </ScrollView>
-            
+               Grid.Row="0"
+               Padding="0">
+            <StackLayout Orientation="Horizontal"
+                         Spacing="5">
+                <Grid RowDefinitions="*, Auto"
+                      ColumnDefinitions="*"
+                      RowSpacing="10"
+                      Margin="10">
+                    <HorizontalStackLayout Spacing="5">
+                        <VerticalStackLayout Spacing="5"
+                                             Padding="0">
+                            <ImageButton Source="{AppThemeBinding Light=select.png, Dark=select_dark.png}"
+                                         Command="{Binding ChangeControlsCommand}"
+                                         CommandParameter="Select"
+                                         Aspect="AspectFit"
+                                         Style="{StaticResource Tool}"/>
+                            <Label Text="Выбрать"
+                                   Style="{StaticResource LabelControlName}"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="5"
+                                             Padding="0">
+                            <ImageButton Source="{AppThemeBinding Light=drag.png, Dark=drag_dark.png}"
+                                         Command="{Binding ChangeControlsCommand}"
+                                         CommandParameter="Drag"
+                                         Aspect="AspectFit"
+                                         Style="{StaticResource Tool}"/>
+                            <Label Text="Двигать"
+                                   Style="{StaticResource LabelControlName}"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                    <Label Text="Инструменты"
+                           Style="{StaticResource LabelControl}"
+                           Grid.Row="1" 
+                           Grid.ColumnSpan="2"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center" />
+                </Grid>
+                <BoxView Style="{StaticResource VerticalSeparator}"/>
+            </StackLayout>
         </Frame>
 
         <Frame Grid.Row="1"
@@ -116,6 +142,7 @@
                                  Scale="{Binding CurrentCanvas.Zoom}"/>
                         <AbsoluteLayout.GestureRecognizers>
                             <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
+                            <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
                         </AbsoluteLayout.GestureRecognizers>
                     </AbsoluteLayout>
                 </controls:BindableScrollView>

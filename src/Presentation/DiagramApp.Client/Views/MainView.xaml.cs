@@ -1,5 +1,8 @@
 ﻿using DiagramApp.Client.ViewModels;
 using DiagramApp.Domain.Canvas;
+using DiagramApp.Client.Extensions.UIElement;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Input;
 
 namespace DiagramApp.Client
 {
@@ -35,7 +38,7 @@ namespace DiagramApp.Client
 
         private void OnExitClicked(object sender, EventArgs e)
         {
-            Application.Current!.Quit();
+            App.Current!.Quit();
         }
 
         private async void OnPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -55,6 +58,25 @@ namespace DiagramApp.Client
                 else if (e.StatusType == GestureStatus.Completed || e.StatusType == GestureStatus.Canceled)
                 {
                     _deltaPosition = Point.Zero;
+                }
+            }
+        }
+
+        private void OnPointerEntered(object sender, Microsoft.Maui.Controls.PointerEventArgs e)
+        {
+            if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+            {
+                if (sender is AbsoluteLayout layout)
+                {
+#if WINDOWS
+                    if (layout.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Panel panel)
+                    {
+                        if (viewModel.CurrentCanvas!.Controls == ControlsType.Drag)
+                            panel.ChangeCursor(InputSystemCursor.Create(InputSystemCursorShape.Hand));
+                        else
+                            panel.ChangeCursor(InputSystemCursor.Create(InputSystemCursorShape.Arrow));
+                    }
+#endif
                 }
             }
         }
