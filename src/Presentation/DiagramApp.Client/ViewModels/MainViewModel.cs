@@ -22,6 +22,9 @@ namespace DiagramApp.Client.ViewModels
         [NotifyPropertyChangedFor(nameof(IsCanvasNotNull))]
         private bool _isCanvasNull = true;
 
+        [ObservableProperty]
+        private ToolboxViewModel _toolboxViewModel = new();
+
         public bool IsCanvasNotNull => !IsCanvasNull;
 
         public MainViewModel(IPopupService popupService)

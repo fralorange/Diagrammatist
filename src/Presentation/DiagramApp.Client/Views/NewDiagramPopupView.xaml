@@ -103,7 +103,7 @@
                 <Button Text="OK"
                         Command="{Binding OkCommand}"/>
                 <Button Text="Отмена"
-                        Clicked="Cancel_Clicked"/>
+                        Clicked="OnCancelClicked"/>
             </StackLayout>
         </StackLayout>
     </Frame>
