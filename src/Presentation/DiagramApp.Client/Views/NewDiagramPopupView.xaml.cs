@@ -35,8 +35,5 @@ public partial class NewDiagramPopupView : Popup
         });
     }
 
-    private async void Cancel_Clicked(object sender, EventArgs e)
-    {
-        await CloseAsync();
-    }
+    private async void OnCancelClicked(object sender, EventArgs e) => await CloseAsync();
 }

@@ -6,6 +6,6 @@
 
     <local:BackgroundTypeToColorConverter x:Key="BackgroundTypeToColorConverter"/>
     <local:NullToScrollBarVisibilityConverter x:Key="NullToScrollBarVisibilityConverter"/>
-
+    <local:PathDataToGeometryConverter x:Key="PathDataToGeometryConverter"/>
 </ResourceDictionary>
 
