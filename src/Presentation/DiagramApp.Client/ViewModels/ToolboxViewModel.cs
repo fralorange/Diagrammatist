@@ -1,31 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Domain.Toolbox;
-using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.ViewModels
 {
-    public class ToolboxViewModel : ObservableObject
+    public partial class ToolboxViewModel : ObservableObject
     {
-        // mock data
-        public ObservableCollection<ToolboxItem> ToolboxItems { get; } = new()
+        private readonly IToolboxService _toolboxService;
+
+        public List<ToolboxItem>? ToolboxItems { get; private set; }
+        public ToolboxCategory[] Categories => Enum.GetValues<ToolboxCategory>();
+
+        [ObservableProperty]
+        private List<ToolboxItem>? _filteredToolboxItems;
+
+        [ObservableProperty]
+        private ToolboxCategory _selectedCategory;
+
+        public ToolboxViewModel(IToolboxService toolboxService) => _toolboxService = toolboxService;
+
+        [RelayCommand]
+        private async Task LoadToolboxAsync()
         {
-            new() {
-                Name = "Прямоугольник",
-                Category = "Фигуры",
-                PathData = "M0,0 L100,0 L100,100 L0,100 Z"
-            },
-            new()
-            {
-                Name = "Круг",
-                Category = "Фигуры",
-                PathData = "M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
-            },
-            new()
-            {
-                Name = "Ромб",
-                Category = "Фигуры",
-                PathData = "M50,50 L100,0 L150,50 L100,100 Z"
-            }
-        };
+            ToolboxItems = await _toolboxService.GetToolboxItemsAsync("toolboxData.json");
+            CategoryChanged();
+        }
+
+        [RelayCommand]
+        private void CategoryChanged()
+        {
+            FilteredToolboxItems = ToolboxItems!
+                .Where(item => item.Category == SelectedCategory)
+                .ToList();
+        }
     }
 }

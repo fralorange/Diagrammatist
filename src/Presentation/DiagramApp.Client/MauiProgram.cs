@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.Views;
 using Microsoft.Extensions.Logging;
@@ -24,6 +25,7 @@ namespace DiagramApp.Client
 #endif
             builder.Services.AddSingleton<MainView>();
             builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddTransient<IToolboxService, ToolboxService>();
             builder.Services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewModel>();
             return builder.Build();
         }
