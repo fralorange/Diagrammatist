@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
@@ -11,6 +12,7 @@ namespace DiagramApp.Client.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         private readonly IPopupService _popupService;
+        private readonly IToolboxService _toolboxService;
 
         private int _canvasCounter = 1;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = new();
@@ -23,12 +25,17 @@ namespace DiagramApp.Client.ViewModels
         private bool _isCanvasNull = true;
 
         [ObservableProperty]
-        private ToolboxViewModel _toolboxViewModel = new();
+        private ToolboxViewModel _toolboxViewModel;
 
         public bool IsCanvasNotNull => !IsCanvasNull;
 
-        public MainViewModel(IPopupService popupService)
-            => _popupService = popupService;
+        public MainViewModel(IPopupService popupService, IToolboxService toolboxService)
+        {
+            _popupService = popupService;
+            _toolboxService = toolboxService;
+
+            _toolboxViewModel = new(_toolboxService);
+        }
 
         [RelayCommand]
         private async Task CreateCanvasAsync()

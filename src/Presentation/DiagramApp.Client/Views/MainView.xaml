@@ -92,7 +92,7 @@
                                    HorizontalOptions="Center"/>
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
-                    <Label Text="Инструменты"
+                    <Label Text="Управление"
                            Style="{StaticResource LabelControl}"
                            Grid.Row="1" 
                            Grid.ColumnSpan="2"
@@ -113,16 +113,20 @@
                        Text="Инструментарий"
                        HorizontalTextAlignment="Center"/>
                 <Picker Grid.Row="1"
-                        SelectedIndex="0">
-                    <Picker.Items>
-                        <x:String>Фигуры</x:String>
-                        <x:String>Блок-схемы</x:String>
-                        <x:String>Прочее</x:String>
-                    </Picker.Items>
+                        ItemsSource="{Binding ToolboxViewModel.Categories}"
+                        SelectedItem="{Binding ToolboxViewModel.SelectedCategory}">
+                    <Picker.Behaviors>
+                        <toolkit:EventToCommandBehavior 
+                            EventName="Loaded"
+                            Command="{Binding ToolboxViewModel.LoadToolboxCommand}"/>
+                        <toolkit:EventToCommandBehavior
+                            EventName="SelectedIndexChanged"
+                            Command="{Binding ToolboxViewModel.CategoryChangeCommand}"/>
+                    </Picker.Behaviors>
                 </Picker>
                 <CollectionView Grid.Row="2"
-                                SelectionMode="Single"
-                                ItemsSource="{Binding ToolboxViewModel.ToolboxItems}">
+                                SelectionMode="None"
+                                ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="3"/>
                     </CollectionView.ItemsLayout>
@@ -138,9 +142,9 @@
                                       WidthRequest="50"
                                       HeightRequest="50"
                                       Aspect="Uniform"/>
-                                <Label Grid.Row="1"
+                                <!--<Label Grid.Row="1"
                                        Text="{Binding Name}"
-                                       HorizontalTextAlignment="Center"/>
+                                       HorizontalTextAlignment="Center"/>-->
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
