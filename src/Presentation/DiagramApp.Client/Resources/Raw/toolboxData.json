@@ -1,17 +1,42 @@
 [
   {
-    "Name": "Прямоугольник",
+    "Name": "Square",
     "Category": "Shapes",
     "PathData": "M0,0 L100,0 L100,100 L0,100 Z"
   },
   {
-    "Name": "Круг",
+    "Name": "Circle",
     "Category": "Shapes",
     "PathData": "M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
   },
   {
-    "Name": "Ромб",
+    "Name": "Diamond",
     "Category": "Shapes",
     "PathData": "M50,50 L100,0 L150,50 L100,100 Z"
+  },
+  {
+    "Name": "Triangle",
+    "Category": "Shapes",
+    "PathData": "M58,0 L0,102 L116,102 Z"
+  },
+  {
+    "Name": "Trapezium",
+    "Category": "Shapes",
+    "PathData": "M50,0 L30,50 L120,50 L100,0 Z"
+  },
+  {
+    "Name": "Parallelogram",
+    "Category": "Shapes",
+    "PathData": "M50,0 L30,50 L100,50 L120,0 Z"
+  },
+  {
+    "Name": "Pentagon",
+    "Category": "Shapes",
+    "PathData": "M50,50 L45,32 L59,20 L74,32 L69,50 Z"
+  },
+  {
+    "Name": "Hexagon",
+    "Category": "Shapes",
+    "PathData": "M58,61 L33,48 L33,23 L58,11 L83,23 L83,48 Z"
   }
 ]

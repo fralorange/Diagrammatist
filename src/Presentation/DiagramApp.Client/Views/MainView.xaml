@@ -121,11 +121,11 @@
                             Command="{Binding ToolboxViewModel.LoadToolboxCommand}"/>
                         <toolkit:EventToCommandBehavior
                             EventName="SelectedIndexChanged"
-                            Command="{Binding ToolboxViewModel.CategoryChangedCommand}"/>
+                            Command="{Binding ToolboxViewModel.CategoryChangeCommand}"/>
                     </Picker.Behaviors>
                 </Picker>
                 <CollectionView Grid.Row="2"
-                                SelectionMode="Single"
+                                SelectionMode="None"
                                 ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="3"/>
@@ -142,9 +142,9 @@
                                       WidthRequest="50"
                                       HeightRequest="50"
                                       Aspect="Uniform"/>
-                                <Label Grid.Row="1"
+                                <!--<Label Grid.Row="1"
                                        Text="{Binding Name}"
-                                       HorizontalTextAlignment="Center"/>
+                                       HorizontalTextAlignment="Center"/>-->
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

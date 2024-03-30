@@ -1,7 +1,6 @@
-﻿using DiagramApp.Client.ViewModels;
+﻿using DiagramApp.Client.Extensions.UIElement;
+using DiagramApp.Client.ViewModels;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Client.Extensions.UIElement;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Input;
 
 namespace DiagramApp.Client

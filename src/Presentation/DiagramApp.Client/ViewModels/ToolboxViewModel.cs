@@ -24,13 +24,13 @@ namespace DiagramApp.Client.ViewModels
         private async Task LoadToolboxAsync()
         {
             ToolboxItems = await _toolboxService.GetToolboxItemsAsync("toolboxData.json");
-            CategoryChanged();
+            CategoryChange();
         }
 
         [RelayCommand]
-        private void CategoryChanged()
+        private void CategoryChange()
         {
-            FilteredToolboxItems = ToolboxItems!
+            FilteredToolboxItems = ToolboxItems! // maybe contain all filteredtoolboxitems in array or smth (optimize idea) so there will be no need in filtering it again
                 .Where(item => item.Category == SelectedCategory)
                 .ToList();
         }
