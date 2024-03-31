@@ -26,7 +26,7 @@ namespace DiagramApp.Client.Controls
 
             if (child is Layout layout)
             {
-                var boxView = layout.Children.OfType<BoxView>().FirstOrDefault();
+                var boxView = layout.Children.OfType<Border>().FirstOrDefault();
                 if (boxView is not null)
                 {
                     boxView.SizeChanged += OnContentSizeChanged;

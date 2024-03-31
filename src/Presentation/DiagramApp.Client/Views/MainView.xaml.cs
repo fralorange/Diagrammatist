@@ -1,7 +1,8 @@
 ﻿using DiagramApp.Client.Extensions.UIElement;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Domain.Canvas;
-using Microsoft.UI.Input;
+using DiagramApp.Domain.Canvas.Figures;
+using DiagramApp.Domain.Toolbox;
 
 namespace DiagramApp.Client
 {
@@ -61,7 +62,7 @@ namespace DiagramApp.Client
             }
         }
 
-        private void OnPointerEntered(object sender, Microsoft.Maui.Controls.PointerEventArgs e)
+        private void OnPointerEntered(object sender, PointerEventArgs e)
         {
             if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
             {
@@ -71,12 +72,35 @@ namespace DiagramApp.Client
                     if (layout.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Panel panel)
                     {
                         if (viewModel.CurrentCanvas!.Controls == ControlsType.Drag)
-                            panel.ChangeCursor(InputSystemCursor.Create(InputSystemCursorShape.Hand));
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Hand));
                         else
-                            panel.ChangeCursor(InputSystemCursor.Create(InputSystemCursorShape.Arrow));
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Arrow));
                     }
 #endif
                 }
+            }
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is CollectionView collectionView && collectionView.SelectedItem is not null)
+            {
+                if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+                {
+                    var current = e.CurrentSelection[0] as ToolboxItem;
+                    var figure = new Figure
+                    {
+                        Name = current!.Name,
+                        PathData = current!.PathData,
+                    };
+
+                    viewModel.CurrentCanvas!.Figures.Add(figure);
+                }
+
+                Dispatcher.Dispatch(() =>
+                {
+                    collectionView.SelectedItem = null;
+                });
             }
         }
     }

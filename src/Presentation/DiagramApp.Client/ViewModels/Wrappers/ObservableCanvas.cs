@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DiagramApp.Domain.Canvas;
+using DiagramApp.Domain.Canvas.Figures;
 using DiagramApp.Domain.DiagramSettings;
+using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.ViewModels.Wrappers
 {
@@ -14,6 +16,8 @@ namespace DiagramApp.Client.ViewModels.Wrappers
             Zoom = _canvas.Zoom;
             Offset= new ObservableOffset(_canvas.Offset);
         }
+
+        public ObservableCollection<Figure> Figures { get; } = new();
 
         public int ImaginaryWidth
         {

@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:tbmodels="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
+             xmlns:toolbox="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
+             xmlns:figures="clr-namespace:DiagramApp.Domain.Canvas.Figures;assembly=DiagramApp.Domain"
              xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
              xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
@@ -125,13 +126,14 @@
                     </Picker.Behaviors>
                 </Picker>
                 <CollectionView Grid.Row="2"
-                                SelectionMode="None"
+                                SelectionMode="Single"
+                                SelectionChanged="OnSelectionChanged"
                                 ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="3"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="tbmodels:ToolboxItem">
+                        <DataTemplate x:DataType="toolbox:ToolboxItem">
                             <Grid Padding="10"
                                   RowDefinitions="Auto, Auto">
                                 <Path Grid.Row="0"
@@ -171,13 +173,34 @@
                     <AbsoluteLayout x:Name="FrameCanvasContainer" 
                                     WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
                                     HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
-                        <BoxView x:Name="CanvasView"
-                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                                 AbsoluteLayout.LayoutFlags="All"
-                                 WidthRequest="{Binding CurrentCanvas.Settings.Width}"
-                                 HeightRequest="{Binding CurrentCanvas.Settings.Height}"
-                                 BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
-                                 Scale="{Binding CurrentCanvas.Zoom}"/>
+                        <Border Style="{StaticResource CanvasBorder}"
+                                BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
+                                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                                AbsoluteLayout.LayoutFlags="All"
+                                WidthRequest="{Binding CurrentCanvas.Settings.Width}"
+                                HeightRequest="{Binding CurrentCanvas.Settings.Height}"
+                                Scale="{Binding CurrentCanvas.Zoom}">
+                            <Border.Triggers>
+                                <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
+                                    <Setter Property="Opacity" Value="0" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="True">
+                                    <Setter Property="Opacity" Value="1" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <AbsoluteLayout x:Name="CanvasContent"
+                                            BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="figures:Figure">
+                                        <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
+                                              Stroke="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"
+                                              StrokeThickness="2"
+                                              Fill="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"
+                                              Aspect="Uniform"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Border>
                         <AbsoluteLayout.GestureRecognizers>
                             <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
                             <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
@@ -210,12 +233,24 @@
 
         <Frame Grid.Row="1"
                Grid.Column="2">
-            
-            <StackLayout>
-                <Entry IsReadOnly="True" 
-                       Text="Explorer"/>
-            </StackLayout>
-            
+
+            <Grid RowDefinitions="Auto, *"
+                  RowSpacing="10">
+                <Label Grid.Row="0"
+                       Text="Обозреватель объектов"
+                       HorizontalTextAlignment="Center"/>
+                <CollectionView Grid.Row="1"
+                                ItemsSource="{Binding CurrentCanvas.Figures}"
+                                ItemsLayout="VerticalList"
+                                SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="figures:Figure">
+                            <Label Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+
         </Frame>
 
         <Frame Grid.Row="2"
