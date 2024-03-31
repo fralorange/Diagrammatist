@@ -4,6 +4,22 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Style TargetType="Path" x:Key="Shape">
+        <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
+        <Setter Property="WidthRequest" Value="50"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="Aspect" Value="Uniform"/>
+    </Style>
+
+    <Style TargetType="Path" x:Key="CanvasShape" BasedOn="{StaticResource Shape}">
+        <Setter Property="MinimumWidthRequest" Value="70"/>
+        <Setter Property="MinimumHeightRequest" Value="70"/>
+        <Setter Property="MaximumWidthRequest" Value="240"/>
+        <Setter Property="MaximumHeightRequest" Value="240"/>
+    </Style>
+    
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
     </Style>

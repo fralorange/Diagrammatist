@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
+using DiagramApp.Domain.Canvas.Figures;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
 
@@ -76,6 +77,12 @@ namespace DiagramApp.Client.ViewModels
             Canvases.Remove(targetCanvas);
             CurrentCanvas = null;
             IsCanvasNull = true;
+        }
+
+        [RelayCommand]
+        private void DeleteItemFromCanvas(Figure figure)
+        {
+            CurrentCanvas!.Figures.Remove(figure);
         }
 
         [RelayCommand]

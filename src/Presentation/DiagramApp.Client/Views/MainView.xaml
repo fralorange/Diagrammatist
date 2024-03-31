@@ -138,12 +138,7 @@
                                   RowDefinitions="Auto, Auto">
                                 <Path Grid.Row="0"
                                       Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                      Stroke="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"
-                                      StrokeThickness="2"
-                                      Fill="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"
-                                      WidthRequest="50"
-                                      HeightRequest="50"
-                                      Aspect="Uniform"/>
+                                      Style="{StaticResource Shape}"/>
                                 <!--<Label Grid.Row="1"
                                        Text="{Binding Name}"
                                        HorizontalTextAlignment="Center"/>-->
@@ -173,6 +168,7 @@
                     <AbsoluteLayout x:Name="FrameCanvasContainer" 
                                     WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
                                     HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
+                        
                         <Border Style="{StaticResource CanvasBorder}"
                                 BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
@@ -188,21 +184,30 @@
                                     <Setter Property="Opacity" Value="1" />
                                 </DataTrigger>
                             </Border.Triggers>
+                            
                             <AbsoluteLayout x:Name="CanvasContent"
                                             BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="figures:Figure">
-                                        <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                              Stroke="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"
-                                              StrokeThickness="2"
-                                              Fill="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"
-                                              Aspect="Uniform"/>
+                                        <!--Border will be used as selection grid for item l8r-->
+                                        <Border StrokeThickness="0">
+                                            <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
+                                                  Style="{StaticResource CanvasShape}"/>
+                                            <Border.GestureRecognizers>
+                                                <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                                            </Border.GestureRecognizers>
+                                        </Border>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
+                                <AbsoluteLayout.GestureRecognizers>
+                                    <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
+                                                              PointerExited="OnPointerExitedFromCanvas"/>
+                                </AbsoluteLayout.GestureRecognizers>
                             </AbsoluteLayout>
                         </Border>
+                        
                         <AbsoluteLayout.GestureRecognizers>
-                            <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
+                            <PanGestureRecognizer PanUpdated="OnPanCanvasUpdated"/>
                             <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
                         </AbsoluteLayout.GestureRecognizers>
                     </AbsoluteLayout>
@@ -245,7 +250,16 @@
                                 SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="figures:Figure">
-                            <Label Text="{Binding Name}"/>
+                            <Label Text="{Binding Name}">
+                                <FlyoutBase.ContextFlyout>
+                                    <!--Maybe put in different viewModel?-->
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Удалить"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                                        CommandParameter="{Binding .}"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.ContextFlyout>
+                            </Label>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

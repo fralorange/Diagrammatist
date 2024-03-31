@@ -8,6 +8,9 @@ namespace DiagramApp.Client
 {
     public partial class MainView : ContentPage
     {
+        private Point? pointerPos;
+
+        // refactor later to contain this in dynamic resources maybe (clean code)
         private Point _deltaPosition;
         private double _horizontalScrollPosition;
         private double _verticalScrollPosition;
@@ -41,7 +44,7 @@ namespace DiagramApp.Client
             App.Current!.Quit();
         }
 
-        private async void OnPanUpdated(object sender, PanUpdatedEventArgs e)
+        private async void OnPanCanvasUpdated(object sender, PanUpdatedEventArgs e)
         {
             if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull && viewModel.CurrentCanvas!.Controls == ControlsType.Drag)
             {
@@ -103,5 +106,30 @@ namespace DiagramApp.Client
                 });
             }
         }
+
+        private void OnPanElementUpdated(object sender, PanUpdatedEventArgs e)
+        {
+            if (sender is Border border && border.Parent is AbsoluteLayout layout && BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas!.Controls == ControlsType.Select)
+            {
+                if (e.StatusType == GestureStatus.Started)
+                { 
+                    // change selection mode in both explorer and canvas (maybe create variable to contain selected item in observablecanvas)
+                }
+                else if (e.StatusType == GestureStatus.Running && pointerPos is not null)
+                {
+                    var newX = pointerPos.Value.X - border.Width / 2;
+                    var newY = pointerPos.Value.Y - border.Height / 2;
+
+                    double clampedX = Math.Max(0, Math.Min(newX, layout.Width - border.Width));
+                    double clampedY = Math.Max(0, Math.Min(newY, layout.Height - border.Height));
+
+                    AbsoluteLayout.SetLayoutBounds(border, new Rect(clampedX, clampedY, border.Width, border.Height));
+                }
+            }
+        }
+
+        private void OnPointerMovedInsideCanvas(object sender, PointerEventArgs e) => pointerPos = e.GetPosition((AbsoluteLayout)sender);
+
+        private void OnPointerExitedFromCanvas(object sender, PointerEventArgs e) => pointerPos = null;
     }
 }
