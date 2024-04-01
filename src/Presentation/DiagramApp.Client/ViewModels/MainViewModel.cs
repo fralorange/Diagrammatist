@@ -58,14 +58,21 @@ namespace DiagramApp.Client.ViewModels
         {
             if (CurrentCanvas == selectedCanvas)
             {
+                CurrentCanvas.IsSelected = false;
                 CurrentCanvas = null;
                 IsCanvasNull = true;
             }
             else
             {
+                if (CurrentCanvas is not null)
+                {
+                    CurrentCanvas.IsSelected = false;
+                }
+
                 CurrentCanvas = null;
                 await Task.Delay(20); // KLUDGE!!!!! // UI Updates in milliseconds
                 CurrentCanvas = selectedCanvas;
+                CurrentCanvas.IsSelected = true;
                 IsCanvasNull = false;
             }
         }
@@ -76,6 +83,24 @@ namespace DiagramApp.Client.ViewModels
             Canvases.Remove(targetCanvas);
             CurrentCanvas = null;
             IsCanvasNull = true;
+        }
+
+        [RelayCommand]
+        private void DeleteItemFromCanvas(ObservableFigure figure)
+        {
+            CurrentCanvas!.Figures.Remove(figure);
+        }
+
+        [RelayCommand]
+        private void SelectItemInCanvas(ObservableFigure figure)
+        {
+            CurrentCanvas!.SelectFigure(figure);
+        }
+
+        [RelayCommand]
+        private void ResetItemInCanvas()
+        {
+            CurrentCanvas!.DeselectFigure();
         }
 
         [RelayCommand]

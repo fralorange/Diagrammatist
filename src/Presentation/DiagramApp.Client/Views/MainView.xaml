@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:tbmodels="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
+             xmlns:toolbox="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
+             xmlns:models="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
              xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
              xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
@@ -22,13 +23,19 @@
             <MenuFlyoutItem Text="Открыть"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Закрыть"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding IsCanvasNotNull}"
+                            Command="{Binding CloseCanvasCommand}"
+                            CommandParameter="{Binding CurrentCanvas}"/>
             <MenuFlyoutItem Text="Закрыть все"
                             IsEnabled="False"/>
             <MenuFlyoutItem Text="Сохранить"
                             IsEnabled="False"/>
             <MenuFlyoutItem Text="Сохранить как"
                             IsEnabled="False"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Экспорт в PNG"
+                            IsEnabled="{Binding IsCanvasNotNull}"
+                            Clicked="ExportButtonClicked"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Выход"
                             Clicked="OnExitClicked"/>
@@ -75,7 +82,15 @@
                                          Command="{Binding ChangeControlsCommand}"
                                          CommandParameter="Select"
                                          Aspect="AspectFit"
-                                         Style="{StaticResource Tool}"/>
+                                         Style="{StaticResource Tool}">
+                                <ImageButton.Triggers>
+                                    <DataTrigger TargetType="ImageButton"
+                                                 Binding="{Binding CurrentCanvas.Controls}"
+                                                 Value="{x:Static models:ControlsType.Select}">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
+                                    </DataTrigger>
+                                </ImageButton.Triggers>
+                            </ImageButton>
                             <Label Text="Выбрать"
                                    Style="{StaticResource LabelControlName}"
                                    HorizontalOptions="Center"/>
@@ -86,7 +101,15 @@
                                          Command="{Binding ChangeControlsCommand}"
                                          CommandParameter="Drag"
                                          Aspect="AspectFit"
-                                         Style="{StaticResource Tool}"/>
+                                         Style="{StaticResource Tool}">
+                                <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding CurrentCanvas.Controls}"
+                                             Value="{x:Static models:ControlsType.Drag}">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
+                                </DataTrigger>
+                                </ImageButton.Triggers>
+                            </ImageButton>
                             <Label Text="Двигать"
                                    Style="{StaticResource LabelControlName}"
                                    HorizontalOptions="Center"/>
@@ -125,26 +148,19 @@
                     </Picker.Behaviors>
                 </Picker>
                 <CollectionView Grid.Row="2"
-                                SelectionMode="None"
+                                SelectionMode="Single"
+                                SelectionChanged="OnSelectionChanged"
                                 ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="3"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="tbmodels:ToolboxItem">
+                        <DataTemplate x:DataType="toolbox:ToolboxItem">
                             <Grid Padding="10"
                                   RowDefinitions="Auto, Auto">
                                 <Path Grid.Row="0"
                                       Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                      Stroke="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"
-                                      StrokeThickness="2"
-                                      Fill="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"
-                                      WidthRequest="50"
-                                      HeightRequest="50"
-                                      Aspect="Uniform"/>
-                                <!--<Label Grid.Row="1"
-                                       Text="{Binding Name}"
-                                       HorizontalTextAlignment="Center"/>-->
+                                      Style="{StaticResource Shape}"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -171,15 +187,58 @@
                     <AbsoluteLayout x:Name="FrameCanvasContainer" 
                                     WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
                                     HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
-                        <BoxView x:Name="CanvasView"
-                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                                 AbsoluteLayout.LayoutFlags="All"
-                                 WidthRequest="{Binding CurrentCanvas.Settings.Width}"
-                                 HeightRequest="{Binding CurrentCanvas.Settings.Height}"
-                                 BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
-                                 Scale="{Binding CurrentCanvas.Zoom}"/>
+                        
+                        <Border x:Name="CanvasView"
+                                Style="{StaticResource CanvasBorder}"
+                                BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
+                                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                                AbsoluteLayout.LayoutFlags="All"
+                                WidthRequest="{Binding CurrentCanvas.Settings.Width}"
+                                HeightRequest="{Binding CurrentCanvas.Settings.Height}"
+                                Scale="{Binding CurrentCanvas.Zoom}">
+                            <Border.Triggers>
+                                <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
+                                    <Setter Property="Opacity" Value="0" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="True">
+                                    <Setter Property="Opacity" Value="1" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            
+                            <AbsoluteLayout x:Name="CanvasContent"
+                                            BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="wrappers:ObservableFigure">
+                                        <Border Style="{StaticResource SelectionBorder}"
+                                                TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                                                TranslationY="{Binding TranslationY, Mode=TwoWay}">
+                                            <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
+                                                  Style="{StaticResource Shape}">
+                                            </Path>
+                                            <Border.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" TargetType="Border" Value="False">
+                                                    <Setter Property="StrokeThickness" Value="0" />
+                                                </DataTrigger>
+                                            </Border.Triggers>
+                                            <Border.GestureRecognizers>
+                                                <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                                <PointerGestureRecognizer PointerEntered="OnPointerBorderEntered"/>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                                <AbsoluteLayout.GestureRecognizers>
+                                    <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
+                                                              PointerExited="OnPointerExitedFromCanvas"/>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"/>
+                                </AbsoluteLayout.GestureRecognizers>
+                            </AbsoluteLayout>
+                        </Border>
+                        
                         <AbsoluteLayout.GestureRecognizers>
-                            <PanGestureRecognizer PanUpdated="OnPanUpdated"/>
+                            <PanGestureRecognizer PanUpdated="OnPanCanvasUpdated"/>
                             <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
                         </AbsoluteLayout.GestureRecognizers>
                     </AbsoluteLayout>
@@ -202,6 +261,13 @@
                                                     CommandParameter="{Binding .}"/>
                                 </MenuFlyout>
                             </FlyoutBase.ContextFlyout>
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsSelected}"
+                                             Value="True">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </DataTrigger>
+                            </Button.Triggers>
                         </Button>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -210,22 +276,46 @@
 
         <Frame Grid.Row="1"
                Grid.Column="2">
-            
-            <StackLayout>
-                <Entry IsReadOnly="True" 
-                       Text="Explorer"/>
-            </StackLayout>
-            
+
+            <Grid RowDefinitions="Auto, *"
+                  RowSpacing="10">
+                <Label Grid.Row="0"
+                       Text="Обозреватель объектов"
+                       HorizontalTextAlignment="Center"/>
+                <CollectionView Grid.Row="1"
+                                ItemsSource="{Binding CurrentCanvas.Figures}"
+                                ItemsLayout="VerticalList"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding CurrentCanvas.SelectedFigure, Mode=TwoWay}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="wrappers:ObservableFigure">
+                            <Label Text="{Binding Name}">
+                                <FlyoutBase.ContextFlyout>
+                                    <!--Maybe put it in different viewModel?-->
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Удалить"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                                        CommandParameter="{Binding .}"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.ContextFlyout>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+
         </Frame>
 
         <Frame Grid.Row="2"
                Grid.RowSpan="2"
                Grid.Column="2">
 
-            <StackLayout>
-                <Entry IsReadOnly="True" 
-                       Text="Properties"/>
-            </StackLayout>
+            <Grid RowDefinitions="Auto, *"
+                  RowSpacing="10">
+                <Label Grid.Row="0"
+                       HorizontalTextAlignment="Center"
+                       Text="Свойства"/>
+            </Grid>
 
         </Frame>
     </Grid>
