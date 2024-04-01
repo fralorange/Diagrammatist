@@ -8,16 +8,9 @@
         <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
         <Setter Property="StrokeThickness" Value="2"/>
         <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
-        <Setter Property="WidthRequest" Value="50"/>
-        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="MinimumWidthRequest" Value="50"/>
+        <Setter Property="MinimumHeightRequest" Value="50"/>
         <Setter Property="Aspect" Value="Uniform"/>
-    </Style>
-
-    <Style TargetType="Path" x:Key="CanvasShape" BasedOn="{StaticResource Shape}">
-        <Setter Property="MinimumWidthRequest" Value="70"/>
-        <Setter Property="MinimumHeightRequest" Value="70"/>
-        <Setter Property="MaximumWidthRequest" Value="240"/>
-        <Setter Property="MaximumHeightRequest" Value="240"/>
     </Style>
     
     <Style TargetType="ActivityIndicator">
@@ -35,6 +28,16 @@
         <Setter Property="StrokeThickness" Value="1"/>
     </Style>
 
+    <Style TargetType="Border" x:Key="CanvasBorder">
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+        <Setter Property="StrokeThickness" Value="1"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="SelectionBorder" BasedOn="{StaticResource CanvasBorder}">
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="StrokeDashArray" Value="2, 2"/>
+    </Style>
+    
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
@@ -181,12 +184,7 @@
     <Style TargetType="Entry" x:Key="EntryFileNew" BasedOn="{StaticResource EntryNew}">
         <Setter Property="WidthRequest" Value="250"/>
     </Style>
-
-    <Style TargetType="Border" x:Key="CanvasBorder">
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
-        <Setter Property="StrokeThickness" Value="1"/>
-    </Style>
-
+    
     <Style TargetType="Frame">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}"/>
         <Setter Property="HasShadow" Value="False" />

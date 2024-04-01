@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Domain.Canvas.Figures;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.ViewModels.Wrappers
 {
-    public class ObservableCanvas : ObservableObject
+    public partial class ObservableCanvas : ObservableObject
     {
         private readonly Canvas _canvas;
 
@@ -14,10 +13,16 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             _canvas = canvas;
             Zoom = _canvas.Zoom;
-            Offset= new ObservableOffset(_canvas.Offset);
+            Offset = new ObservableOffset(_canvas.Offset);
         }
 
-        public ObservableCollection<Figure> Figures { get; } = new();
+        [ObservableProperty]
+        private bool _isSelected;
+
+        public ObservableCollection<ObservableFigure> Figures { get; } = new();
+        //change to collection l8r if multiple selection needed
+        [ObservableProperty]
+        private ObservableFigure? _selectedFigure;
 
         public int ImaginaryWidth
         {
@@ -75,6 +80,23 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             _canvas.ChangeControls(controlName);
             OnPropertyChanged(nameof(Controls));
+        }
+
+        public void SelectFigure(ObservableFigure figure)
+        {
+            if (SelectedFigure is not null)
+            {
+                SelectedFigure.IsSelected = false;
+            }
+
+            SelectedFigure = figure;
+            SelectedFigure.IsSelected = true;
+        }
+
+        public void DeselectFigure()
+        {
+            SelectedFigure!.IsSelected = false;
+            SelectedFigure = null;
         }
 
         private void ZoomChanged()

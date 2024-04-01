@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Domain.Canvas.Figures;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
 
@@ -59,14 +58,21 @@ namespace DiagramApp.Client.ViewModels
         {
             if (CurrentCanvas == selectedCanvas)
             {
+                CurrentCanvas.IsSelected = false;
                 CurrentCanvas = null;
                 IsCanvasNull = true;
             }
             else
             {
+                if (CurrentCanvas is not null)
+                {
+                    CurrentCanvas.IsSelected = false;
+                }
+
                 CurrentCanvas = null;
                 await Task.Delay(20); // KLUDGE!!!!! // UI Updates in milliseconds
                 CurrentCanvas = selectedCanvas;
+                CurrentCanvas.IsSelected = true;
                 IsCanvasNull = false;
             }
         }
@@ -80,9 +86,21 @@ namespace DiagramApp.Client.ViewModels
         }
 
         [RelayCommand]
-        private void DeleteItemFromCanvas(Figure figure)
+        private void DeleteItemFromCanvas(ObservableFigure figure)
         {
             CurrentCanvas!.Figures.Remove(figure);
+        }
+
+        [RelayCommand]
+        private void SelectItemInCanvas(ObservableFigure figure)
+        {
+            CurrentCanvas!.SelectFigure(figure);
+        }
+
+        [RelayCommand]
+        private void ResetItemInCanvas()
+        {
+            CurrentCanvas!.DeselectFigure();
         }
 
         [RelayCommand]

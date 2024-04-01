@@ -1,8 +1,16 @@
 ﻿using DiagramApp.Client.Extensions.UIElement;
 using DiagramApp.Client.ViewModels;
+using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.Canvas.Figures;
 using DiagramApp.Domain.Toolbox;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using Windows.Storage;
+using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Maui.Alerts;
 
 namespace DiagramApp.Client
 {
@@ -22,14 +30,6 @@ namespace DiagramApp.Client
             BindingContext = viewmodel;
         }
 
-        private async void OnScrollToPosition(double? scrollX = null, double? scrollY = null)
-        {
-            // Scrolls to center by default
-            scrollX ??= (CanvasScrollWindow.ContentSize.Width - CanvasScrollWindow.Width) / 2.0;
-            scrollY ??= (CanvasScrollWindow.ContentSize.Height - CanvasScrollWindow.Height) / 2.0;
-            await CanvasScrollWindow.ScrollToAsync(scrollX.Value, scrollY.Value, false);
-        }
-
         private void OnResetViewClicked(object sender, EventArgs e)
         {
             if (BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas != null)
@@ -42,6 +42,41 @@ namespace DiagramApp.Client
         private void OnExitClicked(object sender, EventArgs e)
         {
             App.Current!.Quit();
+        }
+
+        private async void ExportButtonClicked(object sender, EventArgs e)
+        {
+#if WINDOWS
+            if (CanvasView.Handler?.PlatformView is Microsoft.UI.Xaml.UIElement elem && BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+            {
+                RenderTargetBitmap renderTargetBitmap = new();
+                await renderTargetBitmap.RenderAsync(elem);
+
+                var width = renderTargetBitmap.PixelWidth;
+                var height = renderTargetBitmap.PixelHeight;
+
+                var pixels = await renderTargetBitmap.GetPixelsAsync();
+
+                using var stream = new MemoryStream();
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream.AsRandomAccessStream());
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore, (uint)width, (uint)height, 96, 96, pixels.ToArray());
+                await encoder.FlushAsync();
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var fileSaverResult = await FileSaver.Default.SaveAsync($"{viewModel.CurrentCanvas!.Settings.FileName}.png", stream);
+#if DEBUG
+                if (fileSaverResult.IsSuccessful)
+                {
+                    await Toast.Make($"Файл сохранён в: {fileSaverResult.FilePath}").Show();
+                }
+                else
+                {
+                    await Toast.Make($"Сохранение файла вызвало ошибку: {fileSaverResult.Exception.Message}").Show();
+                }
+#endif
+            }
+#endif
         }
 
         private async void OnPanCanvasUpdated(object sender, PanUpdatedEventArgs e)
@@ -75,9 +110,25 @@ namespace DiagramApp.Client
                     if (layout.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Panel panel)
                     {
                         if (viewModel.CurrentCanvas!.Controls == ControlsType.Drag)
-                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Hand));
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
                         else
                             panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Arrow));
+                    }
+#endif
+                }
+            }
+        }
+        private void OnPointerBorderEntered(object sender, PointerEventArgs e)
+        {
+            if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+            {
+                if (sender is Border border)
+                {
+#if WINDOWS
+                    if (border.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Panel panel)
+                    {
+                        if (viewModel.CurrentCanvas!.Controls == ControlsType.Select)
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
                     }
 #endif
                 }
@@ -97,7 +148,7 @@ namespace DiagramApp.Client
                         PathData = current!.PathData,
                     };
 
-                    viewModel.CurrentCanvas!.Figures.Add(figure);
+                    viewModel.CurrentCanvas!.Figures.Add(new ObservableFigure(figure));
                 }
 
                 Dispatcher.Dispatch(() =>
@@ -112,8 +163,10 @@ namespace DiagramApp.Client
             if (sender is Border border && border.Parent is AbsoluteLayout layout && BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas!.Controls == ControlsType.Select)
             {
                 if (e.StatusType == GestureStatus.Started)
-                { 
-                    // change selection mode in both explorer and canvas (maybe create variable to contain selected item in observablecanvas)
+                {
+                    var figure = (ObservableFigure)border.BindingContext;
+
+                    viewModel.SelectItemInCanvasCommand.Execute(figure);
                 }
                 else if (e.StatusType == GestureStatus.Running && pointerPos is not null)
                 {
@@ -123,7 +176,8 @@ namespace DiagramApp.Client
                     double clampedX = Math.Max(0, Math.Min(newX, layout.Width - border.Width));
                     double clampedY = Math.Max(0, Math.Min(newY, layout.Height - border.Height));
 
-                    AbsoluteLayout.SetLayoutBounds(border, new Rect(clampedX, clampedY, border.Width, border.Height));
+                    border.TranslationX = clampedX;
+                    border.TranslationY = clampedY;
                 }
             }
         }
@@ -131,5 +185,13 @@ namespace DiagramApp.Client
         private void OnPointerMovedInsideCanvas(object sender, PointerEventArgs e) => pointerPos = e.GetPosition((AbsoluteLayout)sender);
 
         private void OnPointerExitedFromCanvas(object sender, PointerEventArgs e) => pointerPos = null;
+
+        private async void OnScrollToPosition(double? scrollX = null, double? scrollY = null)
+        {
+            // Scrolls to center by default
+            scrollX ??= (CanvasScrollWindow.ContentSize.Width - CanvasScrollWindow.Width) / 2.0;
+            scrollY ??= (CanvasScrollWindow.ContentSize.Height - CanvasScrollWindow.Height) / 2.0;
+            await CanvasScrollWindow.ScrollToAsync(scrollX.Value, scrollY.Value, false);
+        }
     }
 }

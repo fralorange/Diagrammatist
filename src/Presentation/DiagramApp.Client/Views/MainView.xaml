@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:toolbox="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
-             xmlns:figures="clr-namespace:DiagramApp.Domain.Canvas.Figures;assembly=DiagramApp.Domain"
+             xmlns:models="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
              xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
              xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
@@ -23,13 +23,19 @@
             <MenuFlyoutItem Text="Открыть"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Закрыть"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding IsCanvasNotNull}"
+                            Command="{Binding CloseCanvasCommand}"
+                            CommandParameter="{Binding CurrentCanvas}"/>
             <MenuFlyoutItem Text="Закрыть все"
                             IsEnabled="False"/>
             <MenuFlyoutItem Text="Сохранить"
                             IsEnabled="False"/>
             <MenuFlyoutItem Text="Сохранить как"
                             IsEnabled="False"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Экспорт в PNG"
+                            IsEnabled="{Binding IsCanvasNotNull}"
+                            Clicked="ExportButtonClicked"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Выход"
                             Clicked="OnExitClicked"/>
@@ -76,7 +82,15 @@
                                          Command="{Binding ChangeControlsCommand}"
                                          CommandParameter="Select"
                                          Aspect="AspectFit"
-                                         Style="{StaticResource Tool}"/>
+                                         Style="{StaticResource Tool}">
+                                <ImageButton.Triggers>
+                                    <DataTrigger TargetType="ImageButton"
+                                                 Binding="{Binding CurrentCanvas.Controls}"
+                                                 Value="{x:Static models:ControlsType.Select}">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
+                                    </DataTrigger>
+                                </ImageButton.Triggers>
+                            </ImageButton>
                             <Label Text="Выбрать"
                                    Style="{StaticResource LabelControlName}"
                                    HorizontalOptions="Center"/>
@@ -87,7 +101,15 @@
                                          Command="{Binding ChangeControlsCommand}"
                                          CommandParameter="Drag"
                                          Aspect="AspectFit"
-                                         Style="{StaticResource Tool}"/>
+                                         Style="{StaticResource Tool}">
+                                <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding CurrentCanvas.Controls}"
+                                             Value="{x:Static models:ControlsType.Drag}">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
+                                </DataTrigger>
+                                </ImageButton.Triggers>
+                            </ImageButton>
                             <Label Text="Двигать"
                                    Style="{StaticResource LabelControlName}"
                                    HorizontalOptions="Center"/>
@@ -139,9 +161,6 @@
                                 <Path Grid.Row="0"
                                       Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
                                       Style="{StaticResource Shape}"/>
-                                <!--<Label Grid.Row="1"
-                                       Text="{Binding Name}"
-                                       HorizontalTextAlignment="Center"/>-->
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -169,7 +188,8 @@
                                     WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
                                     HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
                         
-                        <Border Style="{StaticResource CanvasBorder}"
+                        <Border x:Name="CanvasView"
+                                Style="{StaticResource CanvasBorder}"
                                 BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
                                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
                                 AbsoluteLayout.LayoutFlags="All"
@@ -188,13 +208,23 @@
                             <AbsoluteLayout x:Name="CanvasContent"
                                             BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
                                 <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="figures:Figure">
-                                        <!--Border will be used as selection grid for item l8r-->
-                                        <Border StrokeThickness="0">
+                                    <DataTemplate x:DataType="wrappers:ObservableFigure">
+                                        <Border Style="{StaticResource SelectionBorder}"
+                                                TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                                                TranslationY="{Binding TranslationY, Mode=TwoWay}">
                                             <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                                  Style="{StaticResource CanvasShape}"/>
+                                                  Style="{StaticResource Shape}">
+                                            </Path>
+                                            <Border.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" TargetType="Border" Value="False">
+                                                    <Setter Property="StrokeThickness" Value="0" />
+                                                </DataTrigger>
+                                            </Border.Triggers>
                                             <Border.GestureRecognizers>
                                                 <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                                <PointerGestureRecognizer PointerEntered="OnPointerBorderEntered"/>
                                             </Border.GestureRecognizers>
                                         </Border>
                                     </DataTemplate>
@@ -202,6 +232,7 @@
                                 <AbsoluteLayout.GestureRecognizers>
                                     <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
                                                               PointerExited="OnPointerExitedFromCanvas"/>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"/>
                                 </AbsoluteLayout.GestureRecognizers>
                             </AbsoluteLayout>
                         </Border>
@@ -230,6 +261,13 @@
                                                     CommandParameter="{Binding .}"/>
                                 </MenuFlyout>
                             </FlyoutBase.ContextFlyout>
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsSelected}"
+                                             Value="True">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </DataTrigger>
+                            </Button.Triggers>
                         </Button>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -247,12 +285,13 @@
                 <CollectionView Grid.Row="1"
                                 ItemsSource="{Binding CurrentCanvas.Figures}"
                                 ItemsLayout="VerticalList"
-                                SelectionMode="Single">
+                                SelectionMode="Single"
+                                SelectedItem="{Binding CurrentCanvas.SelectedFigure, Mode=TwoWay}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="figures:Figure">
+                        <DataTemplate x:DataType="wrappers:ObservableFigure">
                             <Label Text="{Binding Name}">
                                 <FlyoutBase.ContextFlyout>
-                                    <!--Maybe put in different viewModel?-->
+                                    <!--Maybe put it in different viewModel?-->
                                     <MenuFlyout>
                                         <MenuFlyoutItem Text="Удалить"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
@@ -271,10 +310,12 @@
                Grid.RowSpan="2"
                Grid.Column="2">
 
-            <StackLayout>
-                <Entry IsReadOnly="True" 
-                       Text="Properties"/>
-            </StackLayout>
+            <Grid RowDefinitions="Auto, *"
+                  RowSpacing="10">
+                <Label Grid.Row="0"
+                       HorizontalTextAlignment="Center"
+                       Text="Свойства"/>
+            </Grid>
 
         </Frame>
     </Grid>
