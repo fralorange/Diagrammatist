@@ -22,7 +22,7 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         public ObservableCollection<ObservableFigure> Figures { get; } = new();
         //change to collection l8r if multiple selection needed
         [ObservableProperty]
-        private ObservableFigure? _selectedFigure;
+        private ObservableFigure? _selectedFigure = null;
 
         public int ImaginaryWidth
         {
@@ -95,8 +95,11 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         public void DeselectFigure()
         {
-            SelectedFigure!.IsSelected = false;
-            SelectedFigure = null;
+            if (SelectedFigure is not null)
+            {
+                SelectedFigure!.IsSelected = false;
+                SelectedFigure = null;
+            }
         }
 
         private void ZoomChanged()
