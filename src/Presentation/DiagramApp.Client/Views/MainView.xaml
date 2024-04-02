@@ -209,24 +209,20 @@
                                             BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="wrappers:ObservableFigure">
-                                        <Border Style="{StaticResource SelectionBorder}"
-                                                TranslationX="{Binding TranslationX, Mode=TwoWay}"
-                                                TranslationY="{Binding TranslationY, Mode=TwoWay}">
-                                            <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                                  Style="{StaticResource Shape}">
-                                            </Path>
-                                            <Border.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelected}" TargetType="Border" Value="False">
-                                                    <Setter Property="StrokeThickness" Value="0" />
-                                                </DataTrigger>
-                                            </Border.Triggers>
-                                            <Border.GestureRecognizers>
+                                        <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
+                                              Style="{StaticResource Shape}"
+                                              TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                                              TranslationY="{Binding TranslationY, Mode=TwoWay}"
+                                              WidthRequest="{Binding Width, Mode=TwoWay}"
+                                              HeightRequest="{Binding Height, Mode=TwoWay}"
+                                              Rotation="{Binding Rotation, Mode=TwoWay}">
+                                            <Path.GestureRecognizers>
                                                 <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
                                                                       CommandParameter="{Binding .}"/>
-                                                <PointerGestureRecognizer PointerEntered="OnPointerBorderEntered"/>
-                                            </Border.GestureRecognizers>
-                                        </Border>
+                                                <PointerGestureRecognizer PointerEntered="OnPointerPathEntered"/>
+                                            </Path.GestureRecognizers>
+                                        </Path>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                                 <AbsoluteLayout.GestureRecognizers>
@@ -309,14 +305,30 @@
         <Frame Grid.Row="2"
                Grid.RowSpan="2"
                Grid.Column="2">
-
+            <!--Add validation l8r-->
             <Grid RowDefinitions="Auto, *"
                   RowSpacing="10">
                 <Label Grid.Row="0"
                        HorizontalTextAlignment="Center"
                        Text="Свойства"/>
-            </Grid>
+                <Grid Grid.Row="1"
+                      ColumnDefinitions="Auto, *"
+                      RowDefinitions="Auto, Auto, Auto, Auto"
+                      IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={toolkit:IsNotNullConverter}, FallbackValue={x:Boolean False}}"
+                      ColumnSpacing="10"
+                      RowSpacing="5">
 
+                    <Label Text="Название: " Grid.Row="0" Grid.Column="0"/>
+                    <Label Text="Ширина: " Grid.Row="1" Grid.Column="0"/>
+                    <Label Text="Высота: " Grid.Row="2" Grid.Column="0"/>
+                    <Label Text="Поворот: " Grid.Row="3" Grid.Column="0"/>
+
+                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
+                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Width, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Height, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
+                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
+                </Grid>
+            </Grid>
         </Frame>
     </Grid>
 </ContentPage>

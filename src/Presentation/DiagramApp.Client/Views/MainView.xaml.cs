@@ -1,4 +1,6 @@
-﻿using DiagramApp.Client.Extensions.UIElement;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Storage;
+using DiagramApp.Client.Extensions.UIElement;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
@@ -7,10 +9,7 @@ using DiagramApp.Domain.Toolbox;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics.Imaging;
-using Windows.Storage.Streams;
-using Windows.Storage;
-using CommunityToolkit.Maui.Storage;
-using CommunityToolkit.Maui.Alerts;
+using Path = Microsoft.Maui.Controls.Shapes.Path;
 
 namespace DiagramApp.Client
 {
@@ -68,11 +67,11 @@ namespace DiagramApp.Client
 #if DEBUG
                 if (fileSaverResult.IsSuccessful)
                 {
-                    await Toast.Make($"Файл сохранён в: {fileSaverResult.FilePath}").Show();
+                    await Toast.Make($"File saved in: {fileSaverResult.FilePath}").Show();
                 }
                 else
                 {
-                    await Toast.Make($"Сохранение файла вызвало ошибку: {fileSaverResult.Exception.Message}").Show();
+                    await Toast.Make($"File saving occurred an error: {fileSaverResult.Exception.Message}").Show();
                 }
 #endif
             }
@@ -118,14 +117,14 @@ namespace DiagramApp.Client
                 }
             }
         }
-        private void OnPointerBorderEntered(object sender, PointerEventArgs e)
+        private void OnPointerPathEntered(object sender, PointerEventArgs e)
         {
             if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
             {
-                if (sender is Border border)
+                if (sender is Path path)
                 {
 #if WINDOWS
-                    if (border.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Panel panel)
+                    if (path.Handler?.PlatformView is Microsoft.Maui.Graphics.Win2D.W2DGraphicsView panel)
                     {
                         if (viewModel.CurrentCanvas!.Controls == ControlsType.Select)
                             panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
@@ -160,24 +159,24 @@ namespace DiagramApp.Client
 
         private void OnPanElementUpdated(object sender, PanUpdatedEventArgs e)
         {
-            if (sender is Border border && border.Parent is AbsoluteLayout layout && BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas!.Controls == ControlsType.Select)
+            if (sender is Path path && path.Parent is AbsoluteLayout layout && BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas!.Controls == ControlsType.Select)
             {
                 if (e.StatusType == GestureStatus.Started)
                 {
-                    var figure = (ObservableFigure)border.BindingContext;
+                    var figure = (ObservableFigure)path.BindingContext;
 
                     viewModel.SelectItemInCanvasCommand.Execute(figure);
                 }
                 else if (e.StatusType == GestureStatus.Running && pointerPos is not null)
                 {
-                    var newX = pointerPos.Value.X - border.Width / 2;
-                    var newY = pointerPos.Value.Y - border.Height / 2;
+                    var newX = pointerPos.Value.X - path.Width / 2;
+                    var newY = pointerPos.Value.Y - path.Height / 2;
 
-                    double clampedX = Math.Max(0, Math.Min(newX, layout.Width - border.Width));
-                    double clampedY = Math.Max(0, Math.Min(newY, layout.Height - border.Height));
+                    double clampedX = Math.Max(0, Math.Min(newX, layout.Width - path.Width));
+                    double clampedY = Math.Max(0, Math.Min(newY, layout.Height - path.Height));
 
-                    border.TranslationX = clampedX;
-                    border.TranslationY = clampedY;
+                    path.TranslationX = clampedX;
+                    path.TranslationY = clampedY;
                 }
             }
         }

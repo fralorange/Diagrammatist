@@ -12,12 +12,21 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         [ObservableProperty]
         private bool _isSelected;
-
+        //Maybe put everything in external class ObservableProperties to group it.
         [ObservableProperty]
         private double _translationX;
         
         [ObservableProperty]
         private double _translationY;
+
+        [ObservableProperty]
+        private double _width;
+
+        [ObservableProperty]
+        private double _height;
+
+        [ObservableProperty]
+        private double _rotation;
 
         public string Name
         {

@@ -184,7 +184,7 @@
     <Style TargetType="Entry" x:Key="EntryFileNew" BasedOn="{StaticResource EntryNew}">
         <Setter Property="WidthRequest" Value="250"/>
     </Style>
-    
+
     <Style TargetType="Frame">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}"/>
         <Setter Property="HasShadow" Value="False" />
