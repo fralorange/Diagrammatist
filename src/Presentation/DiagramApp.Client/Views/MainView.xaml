@@ -10,7 +10,7 @@
              x:Class="DiagramApp.Client.MainView"
              x:DataType="viewmodel:MainViewModel"
              Title="">
-
+<!--Menu-->
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Файл">
             <MenuFlyoutItem Text="Создать"
@@ -41,7 +41,22 @@
                             Clicked="OnExitClicked"/>
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
-
+            <MenuFlyoutItem Text="Отменить"
+                            IsEnabled="False"/>
+            <MenuFlyoutItem Text="Повторить"
+                            IsEnabled="False"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Холст"
+                     IsEnabled="{Binding IsCanvasNotNull}">
+            <MenuFlyoutItem Text="Изменить размер холста"
+                            Command="{Binding EditCanvasCommand}"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Повернуть на 10 градусов ПЧС"
+                            Command="{Binding RotateCommand}"
+                            CommandParameter="{x:Double 10}"/>
+            <MenuFlyoutItem Text="Повернуть на 10 градусов ПРЧС"
+                            Command="{Binding RotateCommand}"
+                            CommandParameter="{x:Double -10}"/>
         </MenuBarItem>
         <MenuBarItem Text="Вид">
             <MenuFlyoutItem Text="Приблизить"
@@ -59,13 +74,13 @@
 
         </MenuBarItem>
     </ContentPage.MenuBarItems>
-
+<!--App-->
     <Grid ColumnDefinitions="15*,70*,15*"
           RowDefinitions="15*,50*,35*"
           Padding="5, 0, 5, 15"
           RowSpacing="5"
           ColumnSpacing="5">
-        
+ <!--Controls-->       
         <Frame Grid.ColumnSpan="3"
                Grid.Row="0"
                Padding="0">
@@ -125,7 +140,7 @@
                 <BoxView Style="{StaticResource VerticalSeparator}"/>
             </StackLayout>
         </Frame>
-
+<!--Tools-->
         <Frame Grid.Row="1"
                Grid.RowSpan="3"
                Grid.Column="0">
@@ -168,13 +183,13 @@
             </Grid>
             
         </Frame>
-
+<!--Editor and Tabs-->
         <StackLayout Grid.Row="1" 
                      Grid.RowSpan="2" 
                      Grid.Column="1" 
                      Spacing="1"
                      Orientation="Vertical">
-
+<!--Editor-->
             <Frame x:Name="CanvasWindow" 
                    VerticalOptions="FillAndExpand">
                 <controls:BindableScrollView x:Name="CanvasScrollWindow"
@@ -195,7 +210,8 @@
                                 AbsoluteLayout.LayoutFlags="All"
                                 WidthRequest="{Binding CurrentCanvas.Settings.Width}"
                                 HeightRequest="{Binding CurrentCanvas.Settings.Height}"
-                                Scale="{Binding CurrentCanvas.Zoom}">
+                                Scale="{Binding CurrentCanvas.Zoom}"
+                                Rotation="{Binding CurrentCanvas.Rotation}">
                             <Border.Triggers>
                                 <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
                                     <Setter Property="Opacity" Value="0" />
@@ -241,7 +257,7 @@
                 </controls:BindableScrollView>
 
             </Frame>
-            
+ <!--Tabs-->          
             <CollectionView ItemsLayout="HorizontalList"
                             ItemsSource="{Binding Canvases}">
                 <CollectionView.ItemTemplate>
@@ -269,7 +285,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
-
+<!--Explorer-->
         <Frame Grid.Row="1"
                Grid.Column="2">
 
@@ -301,7 +317,7 @@
             </Grid>
 
         </Frame>
-
+<!--Properties-->
         <Frame Grid.Row="2"
                Grid.RowSpan="2"
                Grid.Column="2">
@@ -319,8 +335,8 @@
                       RowSpacing="5">
 
                     <Label Text="Название: " Grid.Row="0" Grid.Column="0"/>
-                    <Label Text="Ширина: " Grid.Row="1" Grid.Column="0"/>
-                    <Label Text="Высота: " Grid.Row="2" Grid.Column="0"/>
+                    <Label Text="Измеить ширину на: " Grid.Row="1" Grid.Column="0"/>
+                    <Label Text="Изменить высоту на: " Grid.Row="2" Grid.Column="0"/>
                     <Label Text="Поворот: " Grid.Row="3" Grid.Column="0"/>
 
                     <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>

@@ -23,11 +23,10 @@ namespace DiagramApp.Client.ViewModels
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsCanvasNotNull))]
         private bool _isCanvasNull = true;
+        public bool IsCanvasNotNull => !IsCanvasNull;
 
         [ObservableProperty]
         private ToolboxViewModel _toolboxViewModel;
-
-        public bool IsCanvasNotNull => !IsCanvasNull;
 
         public MainViewModel(IPopupService popupService, IToolboxService toolboxService)
         {
@@ -50,6 +49,19 @@ namespace DiagramApp.Client.ViewModels
 
                 Canvases.Add(observableCanvas);
                 _ = SelectCanvasAsync(observableCanvas);
+            }
+        }
+
+        [RelayCommand]
+        private async Task EditCanvasAsync()
+        {
+            if (CurrentCanvas is not null)
+            {
+                var result = await _popupService.ShowPopupAsync<ChangeDiagramSizePopupViewModel>(viewModel => viewModel.Settings = CurrentCanvas.Settings, CancellationToken.None);
+                if (result is DiagramSettings settings)
+                {
+                    CurrentCanvas.UpdateSettings(settings);
+                }
             }
         }
 
@@ -146,6 +158,15 @@ namespace DiagramApp.Client.ViewModels
                 return;
 
             CurrentCanvas.ChangeControls(controlName);
+        }
+
+        [RelayCommand]
+        private void Rotate(double degrees)
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            CurrentCanvas.Rotation += degrees;
         }
     }
 }

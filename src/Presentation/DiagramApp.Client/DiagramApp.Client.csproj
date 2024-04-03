@@ -70,6 +70,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\ChangeDiagramSizePopupView.xaml.cs">
+	    <DependentUpon>ChangeDiagramSizePopupView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\NewDiagramPopupView.xaml.cs">
 	    <DependentUpon>NewDiagramPopupView.xaml</DependentUpon>
 	  </Compile>
@@ -85,6 +88,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Resources\Converters\Converters.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChangeDiagramSizePopupView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\NewDiagramPopupView.xaml">
