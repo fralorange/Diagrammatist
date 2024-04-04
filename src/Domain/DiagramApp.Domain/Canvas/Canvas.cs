@@ -7,7 +7,7 @@ namespace DiagramApp.Domain.Canvas
         private readonly (int X, int Y) _center = (0, 0);
         public int ImaginaryWidth { get; set; }
         public int ImaginaryHeight { get; set; }
-        public DiagramSettingsEntity Settings { get; private set; }
+        public DiagramSettingsEntity Settings { get; set; }
         public double Zoom { get; set; } = 1;
         public Offset Offset { get; set; } = new();
         public ControlsType Controls { get; set; } = ControlsType.Select;
@@ -66,6 +66,12 @@ namespace DiagramApp.Domain.Canvas
         public void ChangeControls(string controlName)
         {
             Controls = (ControlsType)Enum.Parse(typeof(ControlsType), controlName, true);
+        }
+
+        public void UpdateSettings(DiagramSettingsEntity settings)
+        {
+            Settings = settings;
+            UpdateImaginaryBorders();
         }
 
         private void UpdateImaginaryBorders()

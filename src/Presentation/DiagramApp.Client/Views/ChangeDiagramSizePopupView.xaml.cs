@@ -5,13 +5,13 @@ using DiagramApp.Domain.DiagramSettings;
 
 namespace DiagramApp.Client.Views;
 
-public partial class NewDiagramPopupView : Popup
+public partial class ChangeDiagramSizePopupView : Popup
 {
-    public NewDiagramPopupView(NewDiagramPopupViewModel viewmodel)
-    {
-        InitializeComponent();
+	public ChangeDiagramSizePopupView(ChangeDiagramSizePopupViewModel viewModel)
+	{
+		InitializeComponent();
 
-        BindingContext = viewmodel;
+		BindingContext = viewModel;
 
         WeakReferenceMessenger.Default.Register<DiagramSettings>(this, async (r, settings) =>
         {
@@ -28,7 +28,7 @@ public partial class NewDiagramPopupView : Popup
             {
                 await Shell.Current.DisplayAlert("Ошибка", $"Требуется заполнить следующие поля корректно:{errorMsg}.", "OK");
                 return;
-            }    
+            }
 
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             await CloseAsync(settings, cts.Token);

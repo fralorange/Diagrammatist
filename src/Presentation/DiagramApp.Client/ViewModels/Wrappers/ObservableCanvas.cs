@@ -19,6 +19,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [ObservableProperty]
         private bool _isSelected;
 
+        [ObservableProperty]
+        private double _rotation = 0;
+
         public ObservableCollection<ObservableFigure> Figures { get; } = new();
         //change to collection l8r if multiple selection needed
         [ObservableProperty]
@@ -50,7 +53,11 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         public ObservableOffset Offset { get; }
 
-        public DiagramSettings Settings => _canvas.Settings;
+        public DiagramSettings Settings
+        {
+            get => _canvas.Settings;
+            set => SetProperty(_canvas.Settings, value, _canvas, (c, sett) => c.Settings = sett);
+        }
 
         public void ZoomIn(double zoomFactor, int? mouseX = null, int? mouseY = null)
         {
@@ -80,6 +87,13 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             _canvas.ChangeControls(controlName);
             OnPropertyChanged(nameof(Controls));
+        }
+
+        public void UpdateSettings(DiagramSettings settings)
+        {
+            _canvas.UpdateSettings(settings);
+            OnPropertyChanged(nameof(Settings));
+            ZoomChanged();
         }
 
         public void SelectFigure(ObservableFigure figure)

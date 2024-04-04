@@ -36,10 +36,10 @@
                        Text="{Binding Settings.Width, Mode=TwoWay}"
                        Style="{StaticResource EntryNew}">
                     <Entry.Behaviors>
-                        <toolkit:TextValidationBehavior
+                        <toolkit:NumericValidationBehavior
                             x:Name="widthValidator"
-                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                            MinimumLength="1"/>
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="1"/>
                     </Entry.Behaviors>
                 </Entry>
 
@@ -53,10 +53,10 @@
                        Text="{Binding Settings.Height, Mode=TwoWay}"
                        Style="{StaticResource EntryNew}">
                     <Entry.Behaviors>
-                        <toolkit:TextValidationBehavior
+                        <toolkit:NumericValidationBehavior
                             x:Name="heightValidator"
-                            Flags="ValidateOnAttaching,ValidateOnValueChanged"
-                            MinimumLength="1"/>
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="1"/>
                     </Entry.Behaviors>
                 </Entry>
 

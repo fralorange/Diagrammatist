@@ -47,6 +47,10 @@
         <Setter Property="WidthRequest" Value="1"/>
     </Style>
 
+    <Style TargetType="BoxView" x:Key="HorizontalSeparator">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+        <Setter Property="HeightRequest" Value="1"/>
+    </Style>
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource PrimaryDarkText}}" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />

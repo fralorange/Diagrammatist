@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
+using DiagramApp.Client.Views;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
@@ -23,11 +24,10 @@ namespace DiagramApp.Client.ViewModels
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsCanvasNotNull))]
         private bool _isCanvasNull = true;
+        public bool IsCanvasNotNull => !IsCanvasNull;
 
         [ObservableProperty]
         private ToolboxViewModel _toolboxViewModel;
-
-        public bool IsCanvasNotNull => !IsCanvasNull;
 
         public MainViewModel(IPopupService popupService, IToolboxService toolboxService)
         {
@@ -36,6 +36,9 @@ namespace DiagramApp.Client.ViewModels
 
             _toolboxViewModel = new(_toolboxService);
         }
+
+        [RelayCommand]
+        private async Task ViewProgramAboutAsync() => await _popupService.ShowPopupAsync<AboutPopupViewModel>(CancellationToken.None);
 
         [RelayCommand]
         private async Task CreateCanvasAsync()
@@ -50,6 +53,19 @@ namespace DiagramApp.Client.ViewModels
 
                 Canvases.Add(observableCanvas);
                 _ = SelectCanvasAsync(observableCanvas);
+            }
+        }
+
+        [RelayCommand]
+        private async Task EditCanvasAsync()
+        {
+            if (CurrentCanvas is not null)
+            {
+                var result = await _popupService.ShowPopupAsync<ChangeDiagramSizePopupViewModel>(viewModel => viewModel.Settings = CurrentCanvas.Settings, CancellationToken.None);
+                if (result is DiagramSettings settings)
+                {
+                    CurrentCanvas.UpdateSettings(settings);
+                }
             }
         }
 
@@ -146,6 +162,15 @@ namespace DiagramApp.Client.ViewModels
                 return;
 
             CurrentCanvas.ChangeControls(controlName);
+        }
+
+        [RelayCommand]
+        private void Rotate(double degrees)
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            CurrentCanvas.Rotation += degrees;
         }
     }
 }
