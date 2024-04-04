@@ -116,7 +116,8 @@ namespace DiagramApp.Client.ViewModels
         [RelayCommand]
         private void ResetItemInCanvas()
         {
-            CurrentCanvas!.DeselectFigure();
+            if (CurrentCanvas is not null && CurrentCanvas.SelectedFigure is not null)
+                CurrentCanvas!.DeselectFigure();
         }
 
         [RelayCommand]
