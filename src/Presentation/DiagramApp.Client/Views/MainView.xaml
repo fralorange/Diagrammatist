@@ -71,7 +71,11 @@
                             IsEnabled="{Binding IsCanvasNotNull}"/>
         </MenuBarItem>
         <MenuBarItem Text="Справка">
-
+            <MenuFlyoutItem Text="Справка о DiagramApp"
+                            IsEnabled="False"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="О программе"
+                            Command="{Binding ViewProgramAboutCommand}"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 <!--App-->

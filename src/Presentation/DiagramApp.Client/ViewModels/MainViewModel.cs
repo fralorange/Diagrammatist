@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
+using DiagramApp.Client.Views;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
@@ -35,6 +36,9 @@ namespace DiagramApp.Client.ViewModels
 
             _toolboxViewModel = new(_toolboxService);
         }
+
+        [RelayCommand]
+        private async Task ViewProgramAboutAsync() => await _popupService.ShowPopupAsync<AboutPopupViewModel>(CancellationToken.None);
 
         [RelayCommand]
         private async Task CreateCanvasAsync()
