@@ -10,7 +10,21 @@
              x:Class="DiagramApp.Client.MainView"
              x:DataType="viewmodel:MainViewModel"
              Title="">
-<!--Menu-->
+<!--Resources-->
+    <ContentPage.Resources>
+        <Style x:Key="ThemeAwarePathStyle" TargetType="Path" BasedOn="{StaticResource Shape}">
+            <Style.Triggers>
+                <DataTrigger TargetType="Path"
+                         Binding="{Binding Source={x:Reference ThemeCheckBox}, Path=IsChecked}"
+                         Value="true">
+                    <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
+                    <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+
+    <!--Menu-->
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Файл">
             <MenuFlyoutItem Text="Создать"
@@ -150,11 +164,14 @@
                Grid.Column="0">
             
             <Grid RowDefinitions="Auto, Auto, *"
+                  ColumnDefinitions="*, Auto"
                   RowSpacing="10">
                 <Label Grid.Row="0"
+                       Grid.ColumnSpan="2"
                        Text="Инструментарий"
                        HorizontalTextAlignment="Center"/>
                 <Picker Grid.Row="1"
+                        Grid.Column="0"
                         ItemsSource="{Binding ToolboxViewModel.Categories}"
                         SelectedItem="{Binding ToolboxViewModel.SelectedCategory}">
                     <Picker.Behaviors>
@@ -166,7 +183,12 @@
                             Command="{Binding ToolboxViewModel.CategoryChangeCommand}"/>
                     </Picker.Behaviors>
                 </Picker>
+                <CheckBox x:Name="ThemeCheckBox"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          ToolTipProperties.Text="Изменить тему объектов на альтернативную"/>
                 <CollectionView Grid.Row="2"
+                                Grid.ColumnSpan="2"
                                 SelectionMode="Single"
                                 SelectionChanged="OnSelectionChanged"
                                 ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
@@ -179,7 +201,9 @@
                                   RowDefinitions="Auto, Auto">
                                 <Path Grid.Row="0"
                                       Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                      Style="{StaticResource Shape}"/>
+                                      Style="{StaticResource ThemeAwarePathStyle}"
+                                      ToolTipProperties.Text="{Binding Name}">
+                                </Path>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -230,7 +254,7 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="wrappers:ObservableFigure">
                                         <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                              Style="{StaticResource Shape}"
+                                              Style="{StaticResource ThemeAwarePathStyle}"
                                               TranslationX="{Binding TranslationX, Mode=TwoWay}"
                                               TranslationY="{Binding TranslationY, Mode=TwoWay}"
                                               WidthRequest="{Binding Width, Mode=TwoWay}"
