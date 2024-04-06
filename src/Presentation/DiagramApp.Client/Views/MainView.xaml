@@ -150,11 +150,14 @@
                Grid.Column="0">
             
             <Grid RowDefinitions="Auto, Auto, *"
+                  ColumnDefinitions="*, Auto"
                   RowSpacing="10">
                 <Label Grid.Row="0"
+                       Grid.ColumnSpan="2"
                        Text="Инструментарий"
                        HorizontalTextAlignment="Center"/>
                 <Picker Grid.Row="1"
+                        Grid.Column="0"
                         ItemsSource="{Binding ToolboxViewModel.Categories}"
                         SelectedItem="{Binding ToolboxViewModel.SelectedCategory}">
                     <Picker.Behaviors>
@@ -166,7 +169,12 @@
                             Command="{Binding ToolboxViewModel.CategoryChangeCommand}"/>
                     </Picker.Behaviors>
                 </Picker>
+                <CheckBox x:Name="ThemeCheckBox"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          ToolTipProperties.Text="Изменить тему объектов на альтернативную"/>
                 <CollectionView Grid.Row="2"
+                                Grid.ColumnSpan="2"
                                 SelectionMode="Single"
                                 SelectionChanged="OnSelectionChanged"
                                 ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
@@ -179,7 +187,17 @@
                                   RowDefinitions="Auto, Auto">
                                 <Path Grid.Row="0"
                                       Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                      Style="{StaticResource Shape}"/>
+                                      Style="{StaticResource Shape}"
+                                      ToolTipProperties.Text="{Binding Name}">
+                                    <Path.Triggers>
+                                        <DataTrigger TargetType="Path"
+                                                     Binding="{Binding Source={x:Reference ThemeCheckBox}, Path=IsChecked}"
+                                                     Value="true">
+                                            <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
+                                            <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
+                                        </DataTrigger>
+                                    </Path.Triggers>
+                                </Path>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -242,6 +260,14 @@
                                                                       CommandParameter="{Binding .}"/>
                                                 <PointerGestureRecognizer PointerEntered="OnPointerPathEntered"/>
                                             </Path.GestureRecognizers>
+                                            <Path.Triggers>
+                                                <DataTrigger TargetType="Path"
+                                                             Binding="{Binding Source={x:Reference ThemeCheckBox}, Path=IsChecked}"
+                                                             Value="true">
+                                                    <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
+                                                    <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
+                                                </DataTrigger>
+                                            </Path.Triggers>
                                         </Path>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>

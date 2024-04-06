@@ -24,7 +24,7 @@
                        Grid.Column="1"
                        Grid.Row="0"
                        Text="{Binding Settings.FileName, Mode=TwoWay}"
-                       Style="{StaticResource MyEntryStyle}"/>
+                       Style="{StaticResource EntryFileNew}"/>
 
                 <Label Text="Ширина : "
                        Grid.Column="0"
@@ -71,6 +71,7 @@
                         Style="{StaticResource PickerNew}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type local:BackgroundType}">
+                            <local:BackgroundType>Default</local:BackgroundType>
                             <local:BackgroundType>White</local:BackgroundType>
                             <local:BackgroundType>Black</local:BackgroundType>
                             <local:BackgroundType>Transparent</local:BackgroundType>
