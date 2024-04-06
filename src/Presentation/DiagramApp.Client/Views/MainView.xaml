@@ -10,7 +10,21 @@
              x:Class="DiagramApp.Client.MainView"
              x:DataType="viewmodel:MainViewModel"
              Title="">
-<!--Menu-->
+<!--Resources-->
+    <ContentPage.Resources>
+        <Style x:Key="ThemeAwarePathStyle" TargetType="Path" BasedOn="{StaticResource Shape}">
+            <Style.Triggers>
+                <DataTrigger TargetType="Path"
+                         Binding="{Binding Source={x:Reference ThemeCheckBox}, Path=IsChecked}"
+                         Value="true">
+                    <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
+                    <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+
+    <!--Menu-->
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Файл">
             <MenuFlyoutItem Text="Создать"
@@ -187,16 +201,8 @@
                                   RowDefinitions="Auto, Auto">
                                 <Path Grid.Row="0"
                                       Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                      Style="{StaticResource Shape}"
+                                      Style="{StaticResource ThemeAwarePathStyle}"
                                       ToolTipProperties.Text="{Binding Name}">
-                                    <Path.Triggers>
-                                        <DataTrigger TargetType="Path"
-                                                     Binding="{Binding Source={x:Reference ThemeCheckBox}, Path=IsChecked}"
-                                                     Value="true">
-                                            <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
-                                            <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
-                                        </DataTrigger>
-                                    </Path.Triggers>
                                 </Path>
                             </Grid>
                         </DataTemplate>
@@ -248,7 +254,7 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="wrappers:ObservableFigure">
                                         <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                              Style="{StaticResource Shape}"
+                                              Style="{StaticResource ThemeAwarePathStyle}"
                                               TranslationX="{Binding TranslationX, Mode=TwoWay}"
                                               TranslationY="{Binding TranslationY, Mode=TwoWay}"
                                               WidthRequest="{Binding Width, Mode=TwoWay}"
@@ -260,14 +266,6 @@
                                                                       CommandParameter="{Binding .}"/>
                                                 <PointerGestureRecognizer PointerEntered="OnPointerPathEntered"/>
                                             </Path.GestureRecognizers>
-                                            <Path.Triggers>
-                                                <DataTrigger TargetType="Path"
-                                                             Binding="{Binding Source={x:Reference ThemeCheckBox}, Path=IsChecked}"
-                                                             Value="true">
-                                                    <Setter Property="Stroke" Value="{AppThemeBinding Dark={StaticResource OffBlack}, Light={StaticResource White}}"/>
-                                                    <Setter Property="Fill" Value="{AppThemeBinding Dark={StaticResource White}, Light={StaticResource OffBlack}}"/>
-                                                </DataTrigger>
-                                            </Path.Triggers>
                                         </Path>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
