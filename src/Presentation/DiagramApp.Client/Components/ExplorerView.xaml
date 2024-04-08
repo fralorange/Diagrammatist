@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
+             xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+             x:Class="DiagramApp.Client.Components.ExplorerView"
+             x:DataType="viewmodel:MainViewModel">
+    <Grid RowDefinitions="Auto, *"
+          RowSpacing="10">
+        <Label Grid.Row="0"
+           Text="Обозреватель объектов"
+           HorizontalTextAlignment="Center"/>
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding CurrentCanvas.Figures}"
+                        ItemsLayout="VerticalList"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding CurrentCanvas.SelectedFigure, Mode=TwoWay}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="wrappers:ObservableFigure">
+                    <Label Text="{Binding Name}">
+                        <FlyoutBase.ContextFlyout>
+                            <!--Maybe put it in different viewModel?-->
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Удалить"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </Label>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</Frame>

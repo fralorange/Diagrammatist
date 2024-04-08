@@ -38,5 +38,10 @@
     "Name": "Hexagon",
     "Category": "Shapes",
     "PathData": "M58,61 L33,48 L33,23 L58,11 L83,23 L83,48 Z"
+  },
+  {
+    "Name": "Data flow",
+    "Category": "Advanced",
+    "PathData": "M0,0 L50,50"
   }
 ]

@@ -70,6 +70,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Components\EditorView.xaml.cs">
+	    <DependentUpon>EditorView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\ChangeDiagramSizePopupView.xaml.cs">
 	    <DependentUpon>ChangeDiagramSizePopupView.xaml</DependentUpon>
 	  </Compile>
@@ -87,6 +90,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\AdvancedToolboxView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\ControlsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\EditorTabsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\EditorView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\ExplorerView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\PropertiesView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\ToolboxView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Converters\Converters.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

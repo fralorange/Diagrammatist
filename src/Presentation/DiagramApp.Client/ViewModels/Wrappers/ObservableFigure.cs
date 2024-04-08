@@ -20,10 +20,7 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         private double _translationY;
 
         [ObservableProperty]
-        private double _width;
-
-        [ObservableProperty]
-        private double _height;
+        private double _size;
 
         [ObservableProperty]
         private double _rotation;
