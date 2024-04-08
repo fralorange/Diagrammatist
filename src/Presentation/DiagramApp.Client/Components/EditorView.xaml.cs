@@ -23,7 +23,7 @@ public partial class EditorView : Frame
 
     private async void OnPanCanvasUpdated(object sender, PanUpdatedEventArgs e)
     {
-        if (BindingContext is MainViewModel { IsCanvasNotNull: true, CurrentCanvas.Controls: ControlsType.Drag })
+        if (BindingContext is MainViewModel { CurrentCanvas.Controls: ControlsType.Drag })
         {
             if (e.StatusType == GestureStatus.Started)
             {
@@ -44,7 +44,7 @@ public partial class EditorView : Frame
 
     private void OnPanElementUpdated(object sender, PanUpdatedEventArgs e)
     {
-        if (sender is Path path && path.Parent is AbsoluteLayout layout && BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas!.Controls == ControlsType.Select)
+        if (sender is Path { Parent: AbsoluteLayout layout } path && BindingContext is MainViewModel { CurrentCanvas.Controls: ControlsType.Select } viewModel)
         {
             if (e.StatusType == GestureStatus.Started)
             {
@@ -68,7 +68,7 @@ public partial class EditorView : Frame
 
     private void OnPointerEntered(object sender, PointerEventArgs e)
     {
-        if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+        if (BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
         {
             if (sender is AbsoluteLayout layout)
             {
@@ -87,7 +87,7 @@ public partial class EditorView : Frame
 
     private void OnPointerPathEntered(object sender, PointerEventArgs e)
     {
-        if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+        if (BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
         {
             if (sender is Path path)
             {

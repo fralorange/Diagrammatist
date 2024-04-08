@@ -22,7 +22,7 @@ namespace DiagramApp.Client
 
         private void OnResetViewClicked(object sender, EventArgs e)
         {
-            if (BindingContext is MainViewModel viewModel && viewModel.CurrentCanvas != null)
+            if (BindingContext is MainViewModel {CurrentCanvas: { } } viewModel)
             {
                 viewModel.ZoomResetCommand.Execute(null);
                 OnScrollToPosition();
@@ -38,7 +38,7 @@ namespace DiagramApp.Client
         {
 #if WINDOWS
             var canvasView = CanvasWindow.GetVisualTreeDescendants().OfType<Border>().FirstOrDefault(b => b.StyleId == "CanvasView");
-            if (canvasView?.Handler?.PlatformView is Microsoft.UI.Xaml.UIElement elem && BindingContext is MainViewModel { IsCanvasNotNull: true } viewModel)
+            if (canvasView?.Handler?.PlatformView is Microsoft.UI.Xaml.UIElement elem && BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
             {
                 RenderTargetBitmap renderTargetBitmap = new();
                 await renderTargetBitmap.RenderAsync(elem);

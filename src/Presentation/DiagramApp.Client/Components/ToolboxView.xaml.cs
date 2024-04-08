@@ -14,9 +14,9 @@ public partial class ToolboxView : Frame
 
     private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is CollectionView collectionView && collectionView.SelectedItem is not null)
+        if (sender is CollectionView { SelectedItem: { } } collectionView)
         {
-            if (BindingContext is MainViewModel viewModel && viewModel.IsCanvasNotNull)
+            if (BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
             {
                 var current = e.CurrentSelection[0] as ToolboxItem;
                 var figure = new Figure
