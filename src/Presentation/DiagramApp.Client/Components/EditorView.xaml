@@ -4,9 +4,81 @@
        xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
        xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
        xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
+       xmlns:components="clr-namespace:DiagramApp.Client.Components"
        x:Class="DiagramApp.Client.Components.EditorView"
        x:DataType="viewmodel:MainViewModel"
        VerticalOptions="FillAndExpand">
+    <Frame.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="PathFigureTemplate"
+                          x:DataType="wrappers:ObservablePathFigure">
+                <Path Data="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
+                      Style="{StaticResource Shape}"
+                      TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                      TranslationY="{Binding TranslationY, Mode=TwoWay}"
+                      WidthRequest="{Binding Size, Mode=TwoWay}"
+                      HeightRequest="{Binding Size, Mode=OneWay}"
+                      Rotation="{Binding Rotation, Mode=TwoWay}">
+                    <Path.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
+                                              CommandParameter="{Binding .}"/>
+                        <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
+                    </Path.GestureRecognizers>
+                </Path>
+            </DataTemplate>
+            <DataTemplate x:Key="PolylineFigureTemplate"
+                          x:DataType="wrappers:ObservablePolylineFigure">
+                <Polyline Points="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
+                          Style="{StaticResource Flow}"
+                          TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                          TranslationY="{Binding TranslationY, Mode=TwoWay}"
+                          WidthRequest="{Binding Size, Mode=TwoWay}"
+                          HeightRequest="{Binding Size, Mode=OneWay}"
+                          Rotation="{Binding Rotation, Mode=TwoWay}">
+                    <Polyline.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
+                                              CommandParameter="{Binding .}"/>
+                        <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
+                    </Polyline.GestureRecognizers>
+                </Polyline>
+            </DataTemplate>
+            <DataTemplate x:Key="TextFigureTemplate"
+                          x:DataType="wrappers:ObservableTextFigure">
+                <Border Style="{StaticResource TextBorder}"
+                        TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                        TranslationY="{Binding TranslationY, Mode=TwoWay}"
+                        Rotation="{Binding Rotation, Mode=TwoWay}">
+                    <Label Text="{Binding Text, Mode=TwoWay}"
+                           FontSize="{Binding FontSize, Mode=TwoWay}"/>
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border"
+                                     Binding="{Binding HasOutline}"
+                                     Value="False">
+                            <Setter Property="Stroke" Value="Transparent" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Border"
+                                     Binding="{Binding HasBackground}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor" Value="Transparent"/>
+                        </DataTrigger>
+                    </Border.Triggers>
+                    <Border.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
+                                              CommandParameter="{Binding .}"/>
+                        <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
+                    </Border.GestureRecognizers>
+                </Border>
+                
+            </DataTemplate>
+            <components:FigureDataTemplateSelector x:Key="FigureSelector"
+                                                   PathFigureTemplate="{StaticResource PathFigureTemplate}"
+                                                   PolylineFigureTemplate="{StaticResource PolylineFigureTemplate}"
+                                                   TextFigureTemplate="{StaticResource TextFigureTemplate}"/>
+        </ResourceDictionary>
+    </Frame.Resources>
     <controls:BindableScrollView x:Name="CanvasScrollWindow"
                                  HorizontalScrollBarVisibility="Always" 
                                  VerticalScrollBarVisibility="Always"  
@@ -37,25 +109,8 @@
                 </Border.Triggers>
 
                 <AbsoluteLayout x:Name="CanvasContent"
-                                BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="wrappers:ObservableFigure">
-                            <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                  Style="{StaticResource Shape}"
-                                  TranslationX="{Binding TranslationX, Mode=TwoWay}"
-                                  TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                                  WidthRequest="{Binding Size, Mode=TwoWay}"
-                                  HeightRequest="{Binding Size, Mode=OneWay}"
-                                  Rotation="{Binding Rotation, Mode=TwoWay}">
-                                <Path.GestureRecognizers>
-                                    <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
-                                                          CommandParameter="{Binding .}"/>
-                                    <PointerGestureRecognizer PointerEntered="OnPointerPathEntered"/>
-                                </Path.GestureRecognizers>
-                            </Path>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
+                                BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}"
+                                BindableLayout.ItemTemplateSelector="{StaticResource FigureSelector}">
                     <AbsoluteLayout.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
                                                   PointerExited="OnPointerExitedFromCanvas"/>

@@ -2,7 +2,9 @@ using DiagramApp.Client.Extensions.UIElement;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
-using Path = Microsoft.Maui.Controls.Shapes.Path;
+using Microsoft.Maui.Controls.Shapes;
+using Microsoft.Maui.Platform;
+using Microsoft.UI.Xaml;
 
 namespace DiagramApp.Client.Components;
 
@@ -17,9 +19,9 @@ public partial class EditorView : Frame
     private Point _deltaPosition;
 
     public EditorView()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private async void OnPanCanvasUpdated(object sender, PanUpdatedEventArgs e)
     {
@@ -44,24 +46,24 @@ public partial class EditorView : Frame
 
     private void OnPanElementUpdated(object sender, PanUpdatedEventArgs e)
     {
-        if (sender is Path { Parent: AbsoluteLayout layout } path && BindingContext is MainViewModel { CurrentCanvas.Controls: ControlsType.Select } viewModel)
+        if (sender is View { Parent: AbsoluteLayout layout } view && BindingContext is MainViewModel { CurrentCanvas.Controls: ControlsType.Select } viewModel)
         {
             if (e.StatusType == GestureStatus.Started)
             {
-                var figure = (ObservableFigure)path.BindingContext;
+                var figure = (ObservableFigure)view.BindingContext;
 
                 viewModel.SelectItemInCanvasCommand.Execute(figure);
             }
             else if (e.StatusType == GestureStatus.Running && pointerPos is not null)
             {
-                var newX = pointerPos.Value.X - path.Width / 2;
-                var newY = pointerPos.Value.Y - path.Height / 2;
+                var newX = pointerPos.Value.X - view.Width / 2;
+                var newY = pointerPos.Value.Y - view.Height / 2;
 
-                double clampedX = Math.Max(0, Math.Min(newX, layout.Width - path.Width));
-                double clampedY = Math.Max(0, Math.Min(newY, layout.Height - path.Height));
+                double clampedX = Math.Max(0, Math.Min(newX, layout.Width - view.Width));
+                double clampedY = Math.Max(0, Math.Min(newY, layout.Height - view.Height));
 
-                path.TranslationX = clampedX;
-                path.TranslationY = clampedY;
+                view.TranslationX = clampedX;
+                view.TranslationY = clampedY;
             }
         }
     }
@@ -85,20 +87,19 @@ public partial class EditorView : Frame
         }
     }
 
-    private void OnPointerPathEntered(object sender, PointerEventArgs e)
+    private void OnPointerElementEntered(object sender, PointerEventArgs e)
     {
         if (BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
         {
-            if (sender is Path path)
-            {
+            View? view = sender as Shape;
+            view ??= sender as Border;
 #if WINDOWS
-                if (path.Handler?.PlatformView is Microsoft.Maui.Graphics.Win2D.W2DGraphicsView panel)
-                {
-                    if (viewModel.CurrentCanvas!.Controls == ControlsType.Select)
-                        panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
-                }
-#endif
+            if (view!.Handler?.PlatformView is UIElement panel)
+            {
+                if (viewModel.CurrentCanvas!.Controls == ControlsType.Select)
+                    panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
             }
+#endif
         }
     }
 
