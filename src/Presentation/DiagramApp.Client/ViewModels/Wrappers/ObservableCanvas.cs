@@ -20,9 +20,15 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         private bool _isSelected;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
+        private bool _isBlocked;
+        public bool IsNotBlocked => !IsBlocked;
+        public event EventHandler<object> BlockedResourcesReceived;
+
+        [ObservableProperty]
         private double _rotation = 0;
 
-        public ObservableCollection<ObservableFigure> Figures { get; } = new();
+        public ObservableCollection<ObservableFigure> Figures { get; } = [];
         //change to collection l8r if multiple selection needed
         [ObservableProperty]
         private ObservableFigure? _selectedFigure = null;
@@ -57,6 +63,28 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             get => _canvas.Settings;
             set => SetProperty(_canvas.Settings, value, _canvas, (c, sett) => c.Settings = sett);
+        }
+
+        internal virtual void OnBlockedResourcesReceived(object obj) => BlockedResourcesReceived?.Invoke(this, obj);
+        public async Task<TResult> BlockAsync<TResult>()
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+
+            EventHandler<object>? handler = null;
+            handler = (sender, result) =>
+            {
+                IsBlocked = false;
+                BlockedResourcesReceived -= handler;
+                tcs.SetResult((TResult)result);
+            };
+            BlockedResourcesReceived += handler;
+
+            IsBlocked = true;
+            ChangeControls("Select");
+            DeselectFigure();
+
+            var result = await tcs.Task;
+            return result;
         }
 
         public void ZoomIn(double zoomFactor, int? mouseX = null, int? mouseY = null)
