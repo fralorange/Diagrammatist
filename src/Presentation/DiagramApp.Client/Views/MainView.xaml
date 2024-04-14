@@ -83,11 +83,13 @@
           ColumnSpacing="5">
 <!--Controls-->
         <components:ControlsView Grid.Row="0"
-                                 Grid.ColumnSpan="3"/>
+                                 Grid.ColumnSpan="3"
+                                 IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
 <!--Tools-->
         <components:CommonToolboxView Grid.Row="1"
                                       Grid.RowSpan="2"
-                                      Grid.Column="0"/>
+                                      Grid.Column="0"
+                                      IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
 <!--Editor and Tabs-->
         <StackLayout Grid.Row="1" 
                      Grid.RowSpan="2" 
@@ -99,10 +101,12 @@
         </StackLayout>
 <!--Explorer-->
         <components:ExplorerView Grid.Row="1"
-                                 Grid.Column="2"/>
+                                 Grid.Column="2"
+                                 IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
 <!--Properties-->
         <components:PropertiesView Grid.Row="2"
                                    Grid.RowSpan="2"
-                                   Grid.Column="2"/>
+                                   Grid.Column="2"
+                                   IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
     </Grid>
 </ContentPage>

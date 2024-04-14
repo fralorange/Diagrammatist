@@ -72,7 +72,7 @@ namespace DiagramApp.Client
 
         private async void OnScrollToPosition(double? scrollX = null, double? scrollY = null)
         {
-            if (CanvasWindow.Content is BindableScrollView canvasScrollWindow)
+            if (CanvasWindow.Content.FindByName("CanvasScrollWindow") is BindableScrollView canvasScrollWindow)
             {
                 scrollX ??= (canvasScrollWindow.ContentSize.Width - canvasScrollWindow.Width) / 2.0;
                 scrollY ??= (canvasScrollWindow.ContentSize.Height - canvasScrollWindow.Height) / 2.0;

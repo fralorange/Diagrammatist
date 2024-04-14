@@ -3,28 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+             xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
+             xmlns:properties="clr-namespace:DiagramApp.Client.Components.Specific.Properties"
              x:Class="DiagramApp.Client.Components.PropertiesView"
              x:DataType="viewmodel:MainViewModel">
     <!--Add validation l8r-->
-    <Grid RowDefinitions="Auto, *"
+    <Grid RowDefinitions="Auto, Auto, *"
           RowSpacing="10">
         <Label Grid.Row="0"
                HorizontalTextAlignment="Center"
                Text="Свойства"/>
-        <Grid Grid.Row="1"
-              ColumnDefinitions="Auto, *"
-              RowDefinitions="Auto, Auto, Auto"
-              IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={toolkit:IsNotNullConverter}, FallbackValue={x:Boolean False}}"
-              ColumnSpacing="10"
-              RowSpacing="5">
-
-            <Label Text="Название: " Grid.Row="0" Grid.Column="0"/>
-            <Label Text="Изменить размер на: " Grid.Row="1" Grid.Column="0"/>
-            <Label Text="Поворот: " Grid.Row="2" Grid.Column="0"/>
-
-            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
-            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Size, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
-        </Grid>
+        <toolkit:UniformItemsLayout Grid.Row="1" 
+                                    IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={toolkit:IsNotNullConverter}, FallbackValue={x:Boolean False}}"
+                                    MaxColumns="2"
+                                    Padding="5">
+            <Label Text="Название: "
+                   Margin="0, 0, 0, 15"/>
+            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=TwoWay}"/>
+            
+            <Label Text="Поворот: "
+                   Margin="0, 0, 0, 15"/>
+            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=TwoWay}"/>
+        </toolkit:UniformItemsLayout>
+        <properties:TextBoxPropertiesView Grid.Row="2"
+                                          IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservableTextFigure}, FallbackValue={x:Boolean False}}"/>
+        <properties:ShapePropertiesView Grid.Row="2"
+                                        IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservablePathFigure}, FallbackValue={x:Boolean False}}"/>
     </Grid>
 </Frame>

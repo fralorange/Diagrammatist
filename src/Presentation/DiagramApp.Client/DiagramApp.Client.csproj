@@ -90,7 +90,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Components\AdvancedToolboxView.xaml">
+	  <MauiXaml Update="Components\CommonToolboxView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\ControlsView.xaml">
@@ -108,7 +108,10 @@
 	  <MauiXaml Update="Components\PropertiesView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Components\ToolboxView.xaml">
+	  <MauiXaml Update="Components\Specific\Properties\ShapePropertiesView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Specific\Properties\TextBoxPropertiesView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Converters\Converters.xaml">

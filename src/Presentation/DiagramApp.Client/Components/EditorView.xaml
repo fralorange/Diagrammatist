@@ -18,7 +18,8 @@
                       TranslationY="{Binding TranslationY, Mode=TwoWay}"
                       WidthRequest="{Binding Size, Mode=TwoWay}"
                       HeightRequest="{Binding Size, Mode=OneWay}"
-                      Rotation="{Binding Rotation, Mode=TwoWay}">
+                      Rotation="{Binding Rotation, Mode=TwoWay}"
+                      InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Path.GestureRecognizers>
                         <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
@@ -33,9 +34,8 @@
                           Style="{StaticResource Flow}"
                           TranslationX="{Binding TranslationX, Mode=TwoWay}"
                           TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                          WidthRequest="{Binding Size, Mode=TwoWay}"
-                          HeightRequest="{Binding Size, Mode=OneWay}"
-                          Rotation="{Binding Rotation, Mode=TwoWay}">
+                          Rotation="{Binding Rotation, Mode=TwoWay}"
+                          InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Polyline.GestureRecognizers>
                         <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
@@ -49,7 +49,8 @@
                 <Border Style="{StaticResource TextBorder}"
                         TranslationX="{Binding TranslationX, Mode=TwoWay}"
                         TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                        Rotation="{Binding Rotation, Mode=TwoWay}">
+                        Rotation="{Binding Rotation, Mode=TwoWay}"
+                        InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Label Text="{Binding Text, Mode=TwoWay}"
                            FontSize="{Binding FontSize, Mode=TwoWay}"/>
                     <Border.Triggers>
@@ -79,50 +80,68 @@
                                                    TextFigureTemplate="{StaticResource TextFigureTemplate}"/>
         </ResourceDictionary>
     </Frame.Resources>
-    <controls:BindableScrollView x:Name="CanvasScrollWindow"
-                                 HorizontalScrollBarVisibility="Always" 
-                                 VerticalScrollBarVisibility="Always"  
-                                 Orientation="Both"
-                                 ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
-                                 ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"
-                                 Scroll="{Binding CurrentCanvas.Offset, Mode=OneWay}">
-        <AbsoluteLayout x:Name="FrameCanvasContainer" 
-                        WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
-                        HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
+    <Grid Padding="0">
+        <controls:BindableScrollView x:Name="CanvasScrollWindow"
+                                     HorizontalScrollBarVisibility="Always" 
+                                     VerticalScrollBarVisibility="Always"  
+                                     Orientation="Both"
+                                     ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
+                                     ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"
+                                     Scroll="{Binding CurrentCanvas.Offset, Mode=OneWay}">
+            <AbsoluteLayout x:Name="FrameCanvasContainer" 
+                            WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
+                            HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
 
-            <Border x:Name="CanvasView"
-                    Style="{StaticResource CanvasBorder}"
-                    BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
-                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                    AbsoluteLayout.LayoutFlags="All"
-                    WidthRequest="{Binding CurrentCanvas.Settings.Width}"
-                    HeightRequest="{Binding CurrentCanvas.Settings.Height}"
-                    Scale="{Binding CurrentCanvas.Zoom}"
-                    Rotation="{Binding CurrentCanvas.Rotation}">
-                <Border.Triggers>
-                    <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
-                        <Setter Property="Opacity" Value="0" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="True">
-                        <Setter Property="Opacity" Value="1" />
-                    </DataTrigger>
-                </Border.Triggers>
+                <Border x:Name="CanvasView"
+                        Style="{StaticResource CanvasBorder}"
+                        BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                        AbsoluteLayout.LayoutFlags="All"
+                        WidthRequest="{Binding CurrentCanvas.Settings.Width}"
+                        HeightRequest="{Binding CurrentCanvas.Settings.Height}"
+                        Scale="{Binding CurrentCanvas.Zoom}"
+                        Rotation="{Binding CurrentCanvas.Rotation}">
+                    <Border.Triggers>
+                        <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
+                            <Setter Property="Opacity" Value="0" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                        </DataTrigger>
+                    </Border.Triggers>
 
-                <AbsoluteLayout x:Name="CanvasContent"
-                                BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}"
-                                BindableLayout.ItemTemplateSelector="{StaticResource FigureSelector}">
-                    <AbsoluteLayout.GestureRecognizers>
-                        <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
-                                                  PointerExited="OnPointerExitedFromCanvas"/>
-                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"/>
-                    </AbsoluteLayout.GestureRecognizers>
-                </AbsoluteLayout>
-            </Border>
+                    <AbsoluteLayout x:Name="CanvasContent"
+                                    BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}"
+                                    BindableLayout.ItemTemplateSelector="{StaticResource FigureSelector}">
+                        <AbsoluteLayout.GestureRecognizers>
+                            <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
+                                                      PointerExited="OnPointerExitedFromCanvas"/>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"
+                                                  Tapped="OnTappedInsideCanvas"/>
+                        </AbsoluteLayout.GestureRecognizers>
+                    </AbsoluteLayout>
+                </Border>
 
-            <AbsoluteLayout.GestureRecognizers>
-                <PanGestureRecognizer PanUpdated="OnPanCanvasUpdated"/>
-                <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
-            </AbsoluteLayout.GestureRecognizers>
-        </AbsoluteLayout>
-    </controls:BindableScrollView>
+                <AbsoluteLayout.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnPanCanvasUpdated"/>
+                    <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
+                </AbsoluteLayout.GestureRecognizers>
+            </AbsoluteLayout>
+        </controls:BindableScrollView>
+
+        <Frame x:Name="SlideoutConfirmationView"
+               Padding="20"
+               HorizontalOptions="Start"
+               VerticalOptions="Center"
+               IsVisible="{Binding CurrentCanvas.IsBlocked, FallbackValue={x:Boolean False}}">
+            <VerticalStackLayout Spacing="5">
+                <Button Text="&#x2713;"
+                        ToolTipProperties.Text="Подтвердить"
+                        Clicked="OnConfirmButtonClicked"/>
+                <Button Text="&#x2A09;"
+                        ToolTipProperties.Text="Отмена"
+                        Clicked="OnCancelButtonClicked"/>
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
 </Frame>

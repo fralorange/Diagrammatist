@@ -3,13 +3,16 @@ using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using Microsoft.Maui.Controls.Shapes;
-using Microsoft.Maui.Platform;
 using Microsoft.UI.Xaml;
+using Point = Microsoft.Maui.Graphics.Point;
 
 namespace DiagramApp.Client.Components;
 
 public partial class EditorView : Frame
 {
+    private readonly List<System.Drawing.Point> _tappedPoints = [];
+    private readonly List<View> _clickedObjects = [];
+
     private Point? pointerPos;
 
     private double _horizontalScrollPosition;
@@ -46,7 +49,7 @@ public partial class EditorView : Frame
 
     private void OnPanElementUpdated(object sender, PanUpdatedEventArgs e)
     {
-        if (sender is View { Parent: AbsoluteLayout layout } view && BindingContext is MainViewModel { CurrentCanvas.Controls: ControlsType.Select } viewModel)
+        if (sender is View { Parent: AbsoluteLayout layout } view && BindingContext is MainViewModel { CurrentCanvas.Controls: ControlsType.Select, CurrentCanvas.IsNotBlocked: true } viewModel)
         {
             if (e.StatusType == GestureStatus.Started)
             {
@@ -77,10 +80,18 @@ public partial class EditorView : Frame
 #if WINDOWS
                 if (layout.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.Panel panel)
                 {
-                    if (viewModel.CurrentCanvas!.Controls == ControlsType.Drag)
-                        panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
-                    else
-                        panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Arrow));
+                    switch (viewModel.CurrentCanvas!.Controls)
+                    {
+                        case ControlsType.Drag:
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
+                            break;
+                        case ControlsType.Select when viewModel.CurrentCanvas.IsBlocked:
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Hand));
+                            break;
+                        case ControlsType.Select:
+                            panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Arrow));
+                            break;
+                    }
                 }
 #endif
             }
@@ -96,8 +107,15 @@ public partial class EditorView : Frame
 #if WINDOWS
             if (view!.Handler?.PlatformView is UIElement panel)
             {
-                if (viewModel.CurrentCanvas!.Controls == ControlsType.Select)
-                    panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
+                switch (viewModel.CurrentCanvas!.Controls)
+                {
+                    case ControlsType.Select when viewModel.CurrentCanvas.IsBlocked:
+                        panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Hand));
+                        break;
+                    case ControlsType.Select:
+                        panel.ChangeCursor(Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.SizeAll));
+                        break;
+                }
             }
 #endif
         }
@@ -107,4 +125,61 @@ public partial class EditorView : Frame
 
     private void OnPointerExitedFromCanvas(object sender, PointerEventArgs e) => pointerPos = null;
 
+    private void OnTappedInsideCanvas(object sender, TappedEventArgs e)
+    {
+        if (BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: null, CurrentCanvas.IsBlocked: true } viewModel)
+        {
+            var canvas = (View)sender;
+            var point = e.GetPosition(canvas);
+            (int x, int y) = (Convert.ToInt32(point!.Value.X), Convert.ToInt32(point!.Value.Y));
+
+            _tappedPoints!.Add(new System.Drawing.Point(x, y));
+
+            if (_tappedPoints.Count > 1)
+            {
+                var dashedLine = new Line
+                {
+                    X1 = _tappedPoints[_tappedPoints.Count - 2].X,
+                    Y1 = _tappedPoints[_tappedPoints.Count - 2].Y,
+                    X2 = _tappedPoints[_tappedPoints.Count - 1].X,
+                    Y2 = _tappedPoints[_tappedPoints.Count - 1].Y,
+                    StrokeThickness = 2,
+                    StrokeDashArray = new double[] { 4, 2 }
+                };
+
+                (canvas as AbsoluteLayout)!.Children.Add(dashedLine);
+
+                _clickedObjects.Add(dashedLine);
+            }
+        }
+    }
+
+    private void OnConfirmButtonClicked(object sender, EventArgs e)
+    {
+        if (BindingContext is MainViewModel { CurrentCanvas.IsBlocked: true } viewModel)
+        {
+            viewModel.CurrentCanvas.OnBlockedResourcesReceived(_tappedPoints);
+            ClearTappedObjects();
+        }
+    }
+
+    private void OnCancelButtonClicked(object sender, EventArgs e)
+    {
+        if (BindingContext is MainViewModel { CurrentCanvas.IsBlocked: true } viewModel)
+        {
+            viewModel.CurrentCanvas.OnBlockedResourcesReceived(null);
+            ClearTappedObjects();
+        }
+    }
+
+    private void ClearTappedObjects()
+    {
+        foreach (var item in _clickedObjects)
+        {
+            CanvasContent.Children.Remove(item);
+        }
+
+        _tappedPoints.Clear();
+        _clickedObjects.Clear();
+    }
 }
