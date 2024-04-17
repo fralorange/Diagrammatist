@@ -39,9 +39,11 @@
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
             <MenuFlyoutItem Text="Отменить"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding CanUndo}"
+                            Command="{Binding UndoCommand}"/>
             <MenuFlyoutItem Text="Повторить"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding CanRedo}"
+                            Command="{Binding RedoCommand}"/>
         </MenuBarItem>
         <MenuBarItem Text="Холст"
                      IsEnabled="{Binding IsCanvasNotNull}">

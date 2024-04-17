@@ -6,16 +6,25 @@ using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
-
+// TO-DO: Rethink some methods, combine some similar methods in one, move some methods in ObservableCanvas 
 namespace DiagramApp.Client.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
         private readonly IPopupService _popupService;
         private readonly IToolboxService _toolboxService;
+        
+        private readonly Stack<Action> _undoCommands = [];
+        private readonly Stack<Action> _redoCommands = [];
 
-        private int _canvasCounter = 1;
-        public ObservableCollection<ObservableCanvas> Canvases { get; set; } = new();
+        [ObservableProperty]
+        private bool _canUndo;
+
+        [ObservableProperty]
+        private bool _canRedo;
+
+        private int _canvasCounter = 0;
+        public ObservableCollection<ObservableCanvas> Canvases { get; set; } = [];
 
         [ObservableProperty]
         private ObservableCanvas? _currentCanvas;
@@ -39,6 +48,48 @@ namespace DiagramApp.Client.ViewModels
         [RelayCommand]
         private async Task ViewProgramAboutAsync() => await _popupService.ShowPopupAsync<AboutPopupViewModel>(CancellationToken.None);
 
+        private void UpdateUndoRedoState()
+        {
+            CanUndo = _undoCommands.Count != 0;
+            CanRedo = _redoCommands.Count != 0;
+        }
+
+        public void ClearRedoCommands() => _redoCommands.Clear();
+
+        public void AddUndoCommand(Action command)
+        {
+            _undoCommands.Push(command);
+            UpdateUndoRedoState();
+        }
+
+        public void AddRedoCommand(Action command)
+        {
+            _redoCommands.Push(command);
+            UpdateUndoRedoState();
+        }
+
+        [RelayCommand]
+        private void Undo()
+        {
+            if (_undoCommands.Count > 0)
+            {
+                var command = _undoCommands.Pop();
+                command.Invoke();
+                UpdateUndoRedoState();
+            }
+        }
+
+        [RelayCommand]
+        private void Redo()
+        {
+            if (_redoCommands.Count > 0)
+            {
+                var command = _redoCommands.Pop();
+                command.Invoke();
+                UpdateUndoRedoState();
+            }
+        }
+
         [RelayCommand]
         private async Task CreateCanvasAsync()
         {
@@ -46,7 +97,7 @@ namespace DiagramApp.Client.ViewModels
             if (result is DiagramSettings settings)
             {
                 if (string.IsNullOrEmpty(settings.FileName))
-                    settings.FileName = $"Безымянный{_canvasCounter++}";
+                    settings.FileName = $"Безымянный{++_canvasCounter}";
                 Canvas canvas = new(settings);
                 ObservableCanvas observableCanvas = new(canvas);
 
@@ -103,7 +154,20 @@ namespace DiagramApp.Client.ViewModels
         [RelayCommand]
         private void DeleteItemFromCanvas(ObservableFigure figure)
         {
-            CurrentCanvas!.Figures.Remove(figure);
+            ClearRedoCommands();
+
+            Action action = null!;
+            action = () =>
+            {
+                CurrentCanvas!.Figures.Remove(figure);
+                AddUndoCommand(() =>
+                {
+                    CurrentCanvas!.Figures.Add(figure);
+                    AddRedoCommand(action);
+                });
+            };
+
+            action.Invoke();
         }
 
         [RelayCommand]
@@ -118,7 +182,7 @@ namespace DiagramApp.Client.ViewModels
             if (CurrentCanvas is not null && CurrentCanvas.SelectedFigure is not null)
                 CurrentCanvas!.DeselectFigure();
         }
-
+        // refactor this spot l8r 
         [RelayCommand]
         private void ZoomIn()
         {

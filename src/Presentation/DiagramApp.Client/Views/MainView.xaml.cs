@@ -2,9 +2,6 @@
 using CommunityToolkit.Maui.Storage;
 using DiagramApp.Client.Controls;
 using DiagramApp.Client.ViewModels;
-using DiagramApp.Client.ViewModels.Wrappers;
-using DiagramApp.Domain.Canvas.Figures;
-using DiagramApp.Domain.Toolbox;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics.Imaging;
@@ -22,7 +19,7 @@ namespace DiagramApp.Client
 
         private void OnResetViewClicked(object sender, EventArgs e)
         {
-            if (BindingContext is MainViewModel {CurrentCanvas: { } } viewModel)
+            if (BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
             {
                 viewModel.ZoomResetCommand.Execute(null);
                 OnScrollToPosition();
