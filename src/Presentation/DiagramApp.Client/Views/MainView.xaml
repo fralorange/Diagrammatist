@@ -39,11 +39,21 @@
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
             <MenuFlyoutItem Text="Отменить"
-                            IsEnabled="{Binding CanUndo}"
-                            Command="{Binding UndoCommand}"/>
+                            IsEnabled="{Binding CurrentCanvas.CanUndo}"
+                            Command="{Binding UndoCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Z"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutItem Text="Повторить"
-                            IsEnabled="{Binding CanRedo}"
-                            Command="{Binding RedoCommand}"/>
+                            IsEnabled="{Binding CurrentCanvas.CanRedo}"
+                            Command="{Binding RedoCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Y"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
         </MenuBarItem>
         <MenuBarItem Text="Холст"
                      IsEnabled="{Binding IsCanvasNotNull}">

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
@@ -8,6 +9,15 @@ namespace DiagramApp.Client.ViewModels.Wrappers
     public partial class ObservableCanvas : ObservableObject
     {
         private readonly Canvas _canvas;
+
+        private readonly Stack<Action> _undoCommands = [];
+        private readonly Stack<Action> _redoCommands = [];
+
+        [ObservableProperty]
+        private bool _canUndo;
+
+        [ObservableProperty]
+        private bool _canRedo;
 
         public ObservableCanvas(Canvas canvas)
         {
@@ -85,6 +95,42 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
             var result = await tcs.Task;
             return result;
+        }
+        private void UpdateUndoRedoState()
+        {
+            CanUndo = _undoCommands.Count != 0;
+            CanRedo = _redoCommands.Count != 0;
+        }
+        public void Undo()
+        {
+            if (CanUndo)
+            {
+                _undoCommands.Pop().Invoke();
+                UpdateUndoRedoState();
+            }
+        }
+
+        public void Redo()
+        {
+            if (CanRedo)
+            {
+                _redoCommands.Pop().Invoke();
+                UpdateUndoRedoState();
+            }
+        }
+
+        public void ClearRedoCommands() => _redoCommands.Clear();
+
+        public void AddUndoCommand(Action command)
+        {
+            _undoCommands.Push(command);
+            UpdateUndoRedoState();
+        }
+
+        public void AddRedoCommand(Action command)
+        {
+            _redoCommands.Push(command);
+            UpdateUndoRedoState();
         }
 
         public void ZoomIn(double zoomFactor, int? mouseX = null, int? mouseY = null)
