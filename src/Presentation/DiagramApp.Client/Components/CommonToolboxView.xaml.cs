@@ -1,3 +1,4 @@
+using DiagramApp.Application.AppServices.Helpers;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas.Figures;
@@ -12,7 +13,7 @@ public partial class CommonToolboxView : Grid
         InitializeComponent();
     }
 
-    private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is CollectionView { SelectedItem: { } } collectionView)
         {
@@ -53,19 +54,10 @@ public partial class CommonToolboxView : Grid
                             break;
                     }
 
-                    if (observableFigure is not null)
-                    {
-                        viewModel.CurrentCanvas.Figures.Add(observableFigure);
-                        viewModel.CurrentCanvas.AddUndoCommand(() =>
-                        {
-                            viewModel.CurrentCanvas.Figures.Remove(observableFigure);
-                            viewModel.CurrentCanvas.AddRedoCommand(addAction);
-                        });
-                    }
+                    viewModel.CurrentCanvas.Figures.Add(observableFigure!);
                 };
 
-                addAction.Invoke();
-                viewModel.CurrentCanvas.ClearRedoCommands();
+                UndoableCommandHelper.ExecuteAction(viewModel.CurrentCanvas, addAction, () => viewModel.CurrentCanvas.Figures.Remove(observableFigure!));
             }
 
             Dispatcher.Dispatch(() =>

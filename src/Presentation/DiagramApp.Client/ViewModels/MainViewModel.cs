@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DiagramApp.Application.AppServices.Helpers;
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
@@ -109,20 +110,9 @@ namespace DiagramApp.Client.ViewModels
         [RelayCommand]
         private void DeleteItemFromCanvas(ObservableFigure figure)
         {
-            CurrentCanvas!.ClearRedoCommands();
-
-            Action action = null!;
-            action = () =>
-            {
-                CurrentCanvas!.Figures.Remove(figure); // specific action
-                CurrentCanvas!.AddUndoCommand(() =>
-                {
-                    CurrentCanvas!.Figures.Add(figure); // specific action
-                    CurrentCanvas!.AddRedoCommand(action);
-                });
-            };
-
-            action.Invoke();
+            var currentAction = new Action(() => CurrentCanvas!.Figures.Remove(figure));
+            var undoAction = new Action(() => CurrentCanvas!.Figures.Add(figure));
+            UndoableCommandHelper.ExecuteAction(CurrentCanvas!, currentAction, undoAction);
         }
 
         [RelayCommand]
