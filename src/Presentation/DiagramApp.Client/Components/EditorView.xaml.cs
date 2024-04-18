@@ -1,3 +1,4 @@
+using DiagramApp.Application.AppServices.Helpers;
 using DiagramApp.Client.Extensions.UIElement;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
@@ -62,11 +63,25 @@ public partial class EditorView : Frame
                 var newX = pointerPos.Value.X - view.Width / 2;
                 var newY = pointerPos.Value.Y - view.Height / 2;
 
+                double initialX = view.TranslationX;
+                double initialY = view.TranslationY;
+
                 double clampedX = Math.Max(0, Math.Min(newX, layout.Width - view.Width));
                 double clampedY = Math.Max(0, Math.Min(newY, layout.Height - view.Height));
 
-                view.TranslationX = clampedX;
-                view.TranslationY = clampedY;
+                var action = new Action(() =>
+                {
+                    view.TranslationX = clampedX;
+                    view.TranslationY = clampedY;
+                });
+
+                var undoAction = new Action(() =>
+                {
+                    view.TranslationX = initialX;
+                    view.TranslationY = initialY;
+                });
+
+                UndoableCommandHelper.ExecuteAction(viewModel.CurrentCanvas, action, undoAction);
             }
         }
     }

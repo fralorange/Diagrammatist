@@ -23,8 +23,7 @@ public partial class CommonToolboxView : Grid
                 var figure = current!.Figure;
 
                 ObservableFigure? observableFigure = null;
-                Action addAction = null!;
-                addAction = async () =>
+                Action addAction = async () =>
                 {
                     switch (figure)
                     {
