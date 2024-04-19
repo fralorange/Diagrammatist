@@ -5,12 +5,14 @@ using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.UI.Xaml;
+using System;
 using Point = Microsoft.Maui.Graphics.Point;
 
 namespace DiagramApp.Client.Components;
 
 public partial class EditorView : Frame
 {
+    //refactor those attributes, maybe combine something, maybe replace something
     private readonly List<System.Drawing.Point> _tappedPoints = [];
     private readonly List<View> _clickedObjects = [];
 
@@ -19,8 +21,10 @@ public partial class EditorView : Frame
     private double _horizontalScrollPosition;
     private double _verticalScrollPosition;
 
-    // refactor later to contain this in dynamic resources maybe (clean code)
     private Point _deltaPosition;
+
+    private (double X, double Y) initialElemPos;
+    private (double X, double Y) clampedElemPos;
 
     public EditorView()
     {
@@ -54,8 +58,10 @@ public partial class EditorView : Frame
         {
             if (e.StatusType == GestureStatus.Started)
             {
-                var figure = (ObservableFigure)view.BindingContext;
+                initialElemPos.X = view.TranslationX;
+                initialElemPos.Y = view.TranslationY;
 
+                var figure = (ObservableFigure)view.BindingContext;
                 viewModel.SelectItemInCanvasCommand.Execute(figure);
             }
             else if (e.StatusType == GestureStatus.Running && pointerPos is not null)
@@ -63,17 +69,15 @@ public partial class EditorView : Frame
                 var newX = pointerPos.Value.X - view.Width / 2;
                 var newY = pointerPos.Value.Y - view.Height / 2;
 
-                double initialX = view.TranslationX;
-                double initialY = view.TranslationY;
+                clampedElemPos.X = Math.Max(0, Math.Min(newX, layout.Width - view.Width));
+                clampedElemPos.Y = Math.Max(0, Math.Min(newY, layout.Height - view.Height));
 
-                double clampedX = Math.Max(0, Math.Min(newX, layout.Width - view.Width));
-                double clampedY = Math.Max(0, Math.Min(newY, layout.Height - view.Height));
-
-                var action = new Action(() =>
-                {
-                    view.TranslationX = clampedX;
-                    view.TranslationY = clampedY;
-                });
+                view.TranslationX = clampedElemPos.X;
+                view.TranslationY = clampedElemPos.Y;
+            }
+            else if (e.StatusType == GestureStatus.Completed)
+            {
+                var (initialX, initialY, clampedX, clampedY) = (initialElemPos.X, initialElemPos.Y, clampedElemPos.X, clampedElemPos.Y);
 
                 var undoAction = new Action(() =>
                 {
@@ -81,7 +85,13 @@ public partial class EditorView : Frame
                     view.TranslationY = initialY;
                 });
 
-                UndoableCommandHelper.ExecuteAction(viewModel.CurrentCanvas, action, undoAction);
+                var redoAction = new Action(() =>
+                {
+                    view.TranslationX = clampedX;
+                    view.TranslationY = clampedY;
+                });
+
+                UndoableCommandHelper.ExecuteAction(viewModel.CurrentCanvas, redoAction, undoAction);
             }
         }
     }
