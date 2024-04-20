@@ -67,11 +67,31 @@ namespace DiagramApp.Client.ViewModels
         {
             if (CurrentCanvas is not null)
             {
-                var result = await _popupService.ShowPopupAsync<ChangeDiagramSizePopupViewModel>(viewModel => viewModel.Settings = CurrentCanvas.Settings, CancellationToken.None);
-                if (result is DiagramSettings settings)
+                var canvasSettings = CurrentCanvas.Settings;
+                var currentSettings = new DiagramSettings()
                 {
-                    CurrentCanvas.UpdateSettings(settings);
-                }
+                    FileName = canvasSettings.FileName,
+                    Background = canvasSettings.Background,
+                    Type = canvasSettings.Type,
+                    Width = canvasSettings.Width,
+                    Height = canvasSettings.Height,
+                };
+
+                var result = await _popupService.ShowPopupAsync<ChangeDiagramSizePopupViewModel>(viewModel => viewModel.Settings = canvasSettings, CancellationToken.None);
+                var action = new Action(() =>
+                {
+                    if (result is DiagramSettings settings)
+                    {
+                        CurrentCanvas.UpdateSettings(settings);
+                    }
+                });
+
+                var undoAction = new Action(() =>
+                {
+                    CurrentCanvas.UpdateSettings(currentSettings);
+                });
+
+                UndoableCommandHelper.ExecuteAction(CurrentCanvas, action, undoAction);
             }
         }
 

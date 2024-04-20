@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
 using System.Collections.ObjectModel;
@@ -33,7 +32,7 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
         private bool _isBlocked;
         public bool IsNotBlocked => !IsBlocked;
-        public event EventHandler<object> BlockedResourcesReceived;
+        public event EventHandler<object>? BlockedResourcesReceived;
 
         [ObservableProperty]
         private double _rotation = 0;
