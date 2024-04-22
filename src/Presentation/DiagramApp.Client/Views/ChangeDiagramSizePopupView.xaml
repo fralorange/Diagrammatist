@@ -1,0 +1,67 @@
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               x:Class="DiagramApp.Client.Views.ChangeDiagramSizePopupView"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+               xmlns:local="clr-namespace:DiagramApp.Domain.DiagramSettings;assembly=DiagramApp.Domain"
+               CanBeDismissedByTappingOutsideOfPopup="False"
+               x:DataType="viewmodel:ChangeDiagramSizePopupViewModel"
+               Size="300, 200">
+    <Frame>
+        <StackLayout>
+            <Label Text="Изменить размер холста"
+                   Margin="0, 0, 0, 5"/>
+            <Grid ColumnDefinitions="Auto, *"
+                  RowDefinitions="Auto, Auto"
+                  RowSpacing="5"
+                  ColumnSpacing="5"
+                  Margin="0, 10, 0, 0">
+                <Label Text="Ширина : "
+                       Grid.Column="0"
+                       Grid.Row="0"
+                       Style="{StaticResource LabelNew}"/>
+                <Entry x:Name="WidthEntry"
+                       Grid.Column="1"
+                       Grid.Row="0"
+                       Text="{Binding Settings.Width, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:NumericValidationBehavior
+                            x:Name="widthValidator"
+                            ValidStyle="{StaticResource EntryNew}"
+                            InvalidStyle="{StaticResource InvalidEntryNew}"
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="300"/>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="Высота : "
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Style="{StaticResource LabelNew}"/>
+                <Entry x:Name="HeightEntry"
+                       Grid.Column="1"
+                       Grid.Row="1"
+                       Text="{Binding Settings.Height, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:NumericValidationBehavior
+                            x:Name="heightValidator"
+                            ValidStyle="{StaticResource EntryNew}"
+                            InvalidStyle="{StaticResource InvalidEntryNew}"
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="200"/>
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+
+            <StackLayout Orientation="Horizontal"
+                         Spacing="5"
+                         HorizontalOptions="End"
+                         VerticalOptions="EndAndExpand">
+                <Button Text="OK"
+                        Command="{Binding OkCommand}"/>
+                <Button Text="Отмена"
+                        Clicked="OnCancelClicked"/>
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</toolkit:Popup>

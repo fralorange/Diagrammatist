@@ -5,5 +5,6 @@
         Shapes,
         Blocks,
         Other,
+        Advanced,
     }
 }

@@ -1,16 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:toolbox="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
-             xmlns:models="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
-             xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
-             xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
+             xmlns:components="clr-namespace:DiagramApp.Client.Components"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
              x:Class="DiagramApp.Client.MainView"
              x:DataType="viewmodel:MainViewModel"
              Title="">
-
+    
+<!--Menu-->
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="Файл">
             <MenuFlyoutItem Text="Создать"
@@ -41,7 +38,36 @@
                             Clicked="OnExitClicked"/>
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
-
+            <MenuFlyoutItem Text="Отменить"
+                            IsEnabled="{Binding CurrentCanvas.CanUndo, FallbackValue='False'}"
+                            Command="{Binding UndoCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Z"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Повторить"
+                            IsEnabled="{Binding CurrentCanvas.CanRedo, FallbackValue='False'}"
+                            Command="{Binding RedoCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Y"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+        </MenuBarItem>
+        <MenuBarItem Text="Холст">
+            <MenuFlyoutItem Text="Изменить размер холста"
+                            Command="{Binding EditCanvasCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Повернуть на 10 градусов ПЧС"
+                            Command="{Binding RotateCommand}"
+                            CommandParameter="{x:Double 10}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutItem Text="Повернуть на 10 градусов ПРЧС"
+                            Command="{Binding RotateCommand}"
+                            CommandParameter="{x:Double -10}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
         </MenuBarItem>
         <MenuBarItem Text="Вид">
             <MenuFlyoutItem Text="Приблизить"
@@ -56,279 +82,45 @@
                             IsEnabled="{Binding IsCanvasNotNull}"/>
         </MenuBarItem>
         <MenuBarItem Text="Справка">
-
+            <MenuFlyoutItem Text="Справка о DiagramApp"
+                            IsEnabled="False"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="О программе"
+                            Command="{Binding ViewProgramAboutCommand}"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
-
+<!--App-->
     <Grid ColumnDefinitions="15*,70*,15*"
           RowDefinitions="15*,50*,35*"
           Padding="5, 0, 5, 15"
           RowSpacing="5"
           ColumnSpacing="5">
-        
-        <Frame Grid.ColumnSpan="3"
-               Grid.Row="0"
-               Padding="0">
-            <StackLayout Orientation="Horizontal"
-                         Spacing="5">
-                <Grid RowDefinitions="*, Auto"
-                      ColumnDefinitions="*"
-                      RowSpacing="10"
-                      Margin="10">
-                    <HorizontalStackLayout Spacing="5">
-                        <VerticalStackLayout Spacing="5"
-                                             Padding="0">
-                            <ImageButton Source="{AppThemeBinding Light=select.png, Dark=select_dark.png}"
-                                         Command="{Binding ChangeControlsCommand}"
-                                         CommandParameter="Select"
-                                         Aspect="AspectFit"
-                                         Style="{StaticResource Tool}">
-                                <ImageButton.Triggers>
-                                    <DataTrigger TargetType="ImageButton"
-                                                 Binding="{Binding CurrentCanvas.Controls}"
-                                                 Value="{x:Static models:ControlsType.Select}">
-                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
-                                    </DataTrigger>
-                                </ImageButton.Triggers>
-                            </ImageButton>
-                            <Label Text="Выбрать"
-                                   Style="{StaticResource LabelControlName}"
-                                   HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                        <VerticalStackLayout Spacing="5"
-                                             Padding="0">
-                            <ImageButton Source="{AppThemeBinding Light=drag.png, Dark=drag_dark.png}"
-                                         Command="{Binding ChangeControlsCommand}"
-                                         CommandParameter="Drag"
-                                         Aspect="AspectFit"
-                                         Style="{StaticResource Tool}">
-                                <ImageButton.Triggers>
-                                <DataTrigger TargetType="ImageButton"
-                                             Binding="{Binding CurrentCanvas.Controls}"
-                                             Value="{x:Static models:ControlsType.Drag}">
-                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
-                                </DataTrigger>
-                                </ImageButton.Triggers>
-                            </ImageButton>
-                            <Label Text="Двигать"
-                                   Style="{StaticResource LabelControlName}"
-                                   HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
-                    <Label Text="Управление"
-                           Style="{StaticResource LabelControl}"
-                           Grid.Row="1" 
-                           Grid.ColumnSpan="2"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center" />
-                </Grid>
-                <BoxView Style="{StaticResource VerticalSeparator}"/>
-            </StackLayout>
-        </Frame>
-
-        <Frame Grid.Row="1"
-               Grid.RowSpan="3"
-               Grid.Column="0">
-            
-            <Grid RowDefinitions="Auto, Auto, *"
-                  RowSpacing="10">
-                <Label Grid.Row="0"
-                       Text="Инструментарий"
-                       HorizontalTextAlignment="Center"/>
-                <Picker Grid.Row="1"
-                        ItemsSource="{Binding ToolboxViewModel.Categories}"
-                        SelectedItem="{Binding ToolboxViewModel.SelectedCategory}">
-                    <Picker.Behaviors>
-                        <toolkit:EventToCommandBehavior 
-                            EventName="Loaded"
-                            Command="{Binding ToolboxViewModel.LoadToolboxCommand}"/>
-                        <toolkit:EventToCommandBehavior
-                            EventName="SelectedIndexChanged"
-                            Command="{Binding ToolboxViewModel.CategoryChangeCommand}"/>
-                    </Picker.Behaviors>
-                </Picker>
-                <CollectionView Grid.Row="2"
-                                SelectionMode="Single"
-                                SelectionChanged="OnSelectionChanged"
-                                ItemsSource="{Binding ToolboxViewModel.FilteredToolboxItems}">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="3"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="toolbox:ToolboxItem">
-                            <Grid Padding="10"
-                                  RowDefinitions="Auto, Auto">
-                                <Path Grid.Row="0"
-                                      Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                      Style="{StaticResource Shape}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
-            
-        </Frame>
-
+<!--Controls-->
+        <components:ControlsView Grid.Row="0"
+                                 Grid.ColumnSpan="3"
+                                 IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
+<!--Tools-->
+        <components:CommonToolboxView Grid.Row="1"
+                                      Grid.RowSpan="2"
+                                      Grid.Column="0"
+                                      IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
+<!--Editor and Tabs-->
         <StackLayout Grid.Row="1" 
                      Grid.RowSpan="2" 
                      Grid.Column="1" 
                      Spacing="1"
                      Orientation="Vertical">
-
-            <Frame x:Name="CanvasWindow" 
-                   VerticalOptions="FillAndExpand">
-                <controls:BindableScrollView x:Name="CanvasScrollWindow"
-                                             HorizontalScrollBarVisibility="Always" 
-                                             VerticalScrollBarVisibility="Always"  
-                                             Orientation="Both"
-                                             ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
-                                             ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"
-                                             Scroll="{Binding CurrentCanvas.Offset, Mode=OneWay}">
-                    <AbsoluteLayout x:Name="FrameCanvasContainer" 
-                                    WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
-                                    HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
-                        
-                        <Border x:Name="CanvasView"
-                                Style="{StaticResource CanvasBorder}"
-                                BackgroundColor="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource BackgroundTypeToColorConverter}}"
-                                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-                                AbsoluteLayout.LayoutFlags="All"
-                                WidthRequest="{Binding CurrentCanvas.Settings.Width}"
-                                HeightRequest="{Binding CurrentCanvas.Settings.Height}"
-                                Scale="{Binding CurrentCanvas.Zoom}">
-                            <Border.Triggers>
-                                <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
-                                    <Setter Property="Opacity" Value="0" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="True">
-                                    <Setter Property="Opacity" Value="1" />
-                                </DataTrigger>
-                            </Border.Triggers>
-                            
-                            <AbsoluteLayout x:Name="CanvasContent"
-                                            BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="wrappers:ObservableFigure">
-                                        <Path Data="{Binding PathData, Converter={StaticResource PathDataToGeometryConverter}}"
-                                              Style="{StaticResource Shape}"
-                                              TranslationX="{Binding TranslationX, Mode=TwoWay}"
-                                              TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                                              WidthRequest="{Binding Width, Mode=TwoWay}"
-                                              HeightRequest="{Binding Height, Mode=TwoWay}"
-                                              Rotation="{Binding Rotation, Mode=TwoWay}">
-                                            <Path.GestureRecognizers>
-                                                <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
-                                                                      CommandParameter="{Binding .}"/>
-                                                <PointerGestureRecognizer PointerEntered="OnPointerPathEntered"/>
-                                            </Path.GestureRecognizers>
-                                        </Path>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                                <AbsoluteLayout.GestureRecognizers>
-                                    <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
-                                                              PointerExited="OnPointerExitedFromCanvas"/>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"/>
-                                </AbsoluteLayout.GestureRecognizers>
-                            </AbsoluteLayout>
-                        </Border>
-                        
-                        <AbsoluteLayout.GestureRecognizers>
-                            <PanGestureRecognizer PanUpdated="OnPanCanvasUpdated"/>
-                            <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
-                        </AbsoluteLayout.GestureRecognizers>
-                    </AbsoluteLayout>
-                </controls:BindableScrollView>
-
-            </Frame>
-            
-            <CollectionView ItemsLayout="HorizontalList"
-                            ItemsSource="{Binding Canvases}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="wrappers:ObservableCanvas">
-                        <Button Text="{Binding Settings.FileName}"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectCanvasCommand}"
-                                CommandParameter="{Binding .}"
-                                Style="{StaticResource Tab}">
-                            <FlyoutBase.ContextFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem Text="Закрыть"
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CloseCanvasCommand}"
-                                                    CommandParameter="{Binding .}"/>
-                                </MenuFlyout>
-                            </FlyoutBase.ContextFlyout>
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding IsSelected}"
-                                             Value="True">
-                                    <Setter Property="Opacity" Value="0.5"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <components:EditorView x:Name="CanvasWindow"/>
+            <components:EditorTabsView/>
         </StackLayout>
-
-        <Frame Grid.Row="1"
-               Grid.Column="2">
-
-            <Grid RowDefinitions="Auto, *"
-                  RowSpacing="10">
-                <Label Grid.Row="0"
-                       Text="Обозреватель объектов"
-                       HorizontalTextAlignment="Center"/>
-                <CollectionView Grid.Row="1"
-                                ItemsSource="{Binding CurrentCanvas.Figures}"
-                                ItemsLayout="VerticalList"
-                                SelectionMode="Single"
-                                SelectedItem="{Binding CurrentCanvas.SelectedFigure, Mode=TwoWay}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="wrappers:ObservableFigure">
-                            <Label Text="{Binding Name}">
-                                <FlyoutBase.ContextFlyout>
-                                    <!--Maybe put it in different viewModel?-->
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem Text="Удалить"
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
-                                                        CommandParameter="{Binding .}"/>
-                                    </MenuFlyout>
-                                </FlyoutBase.ContextFlyout>
-                            </Label>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
-
-        </Frame>
-
-        <Frame Grid.Row="2"
-               Grid.RowSpan="2"
-               Grid.Column="2">
-            <!--Add validation l8r-->
-            <Grid RowDefinitions="Auto, *"
-                  RowSpacing="10">
-                <Label Grid.Row="0"
-                       HorizontalTextAlignment="Center"
-                       Text="Свойства"/>
-                <Grid Grid.Row="1"
-                      ColumnDefinitions="Auto, *"
-                      RowDefinitions="Auto, Auto, Auto, Auto"
-                      IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={toolkit:IsNotNullConverter}, FallbackValue={x:Boolean False}}"
-                      ColumnSpacing="10"
-                      RowSpacing="5">
-
-                    <Label Text="Название: " Grid.Row="0" Grid.Column="0"/>
-                    <Label Text="Ширина: " Grid.Row="1" Grid.Column="0"/>
-                    <Label Text="Высота: " Grid.Row="2" Grid.Column="0"/>
-                    <Label Text="Поворот: " Grid.Row="3" Grid.Column="0"/>
-
-                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
-                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Width, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Height, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
-                    <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
-                </Grid>
-            </Grid>
-        </Frame>
+<!--Explorer-->
+        <components:ExplorerView Grid.Row="1"
+                                 Grid.Column="2"
+                                 IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
+<!--Properties-->
+        <components:PropertiesView Grid.Row="2"
+                                   Grid.RowSpan="2"
+                                   Grid.Column="2"
+                                   IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
     </Grid>
 </ContentPage>

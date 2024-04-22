@@ -23,8 +23,17 @@
                 <Entry x:Name="FileNameEntry"
                        Grid.Column="1"
                        Grid.Row="0"
-                       Text="{Binding Settings.FileName, Mode=TwoWay}"
-                       Style="{StaticResource MyEntryStyle}"/>
+                       Text="{Binding Settings.FileName, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="TextValidator"
+                            ValidStyle="{StaticResource EntryFileNew}"
+                            InvalidStyle="{StaticResource InvalidEntryFileNew}"
+                            Flags="ValidateOnValueChanged"
+                            MaximumLength="255"
+                            RegexPattern="^[^&quot;*/:&lt;&gt;?\\|]*$"/>
+                    </Entry.Behaviors>
+                </Entry>
 
                 <Label Text="Ширина : "
                        Grid.Column="0"
@@ -33,13 +42,14 @@
                 <Entry x:Name="WidthEntry"
                        Grid.Column="1"
                        Grid.Row="1"
-                       Text="{Binding Settings.Width, Mode=TwoWay}"
-                       Style="{StaticResource EntryNew}">
+                       Text="{Binding Settings.Width, Mode=TwoWay}">
                     <Entry.Behaviors>
-                        <toolkit:TextValidationBehavior
-                            x:Name="widthValidator"
-                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                            MinimumLength="1"/>
+                        <toolkit:NumericValidationBehavior
+                            x:Name="WidthValidator"
+                            ValidStyle="{StaticResource EntryNew}"
+                            InvalidStyle="{StaticResource InvalidEntryNew}"
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="300"/>
                     </Entry.Behaviors>
                 </Entry>
 
@@ -50,13 +60,14 @@
                 <Entry x:Name="HeightEntry"
                        Grid.Column="1"
                        Grid.Row="2"
-                       Text="{Binding Settings.Height, Mode=TwoWay}"
-                       Style="{StaticResource EntryNew}">
+                       Text="{Binding Settings.Height, Mode=TwoWay}">
                     <Entry.Behaviors>
-                        <toolkit:TextValidationBehavior
-                            x:Name="heightValidator"
-                            Flags="ValidateOnAttaching,ValidateOnValueChanged"
-                            MinimumLength="1"/>
+                        <toolkit:NumericValidationBehavior
+                            x:Name="HeightValidator"
+                            ValidStyle="{StaticResource EntryNew}"
+                            InvalidStyle="{StaticResource InvalidEntryNew}"
+                            Flags="ValidateOnValueChanged"
+                            MinimumValue="200"/>
                     </Entry.Behaviors>
                 </Entry>
 
@@ -71,6 +82,7 @@
                         Style="{StaticResource PickerNew}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type local:BackgroundType}">
+                            <local:BackgroundType>Default</local:BackgroundType>
                             <local:BackgroundType>White</local:BackgroundType>
                             <local:BackgroundType>Black</local:BackgroundType>
                             <local:BackgroundType>Transparent</local:BackgroundType>

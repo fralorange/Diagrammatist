@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+               x:Class="DiagramApp.Client.Views.AboutPopupView"
+               x:DataType="viewmodel:AboutPopupViewModel"
+               CanBeDismissedByTappingOutsideOfPopup="True"
+               Size="400, 400">
+    <Frame>
+        <StackLayout Spacing="10">
+            <Label Text="{Binding AppNameWithBuild}"
+                   Style="{StaticResource Headline}"/>
+            <Label Text="{Binding Version, StringFormat='Сборка: {0}'}"
+                   Style="{StaticResource SubHeadline}"/>
+            <BoxView Style="{StaticResource HorizontalSeparator}"/>
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Label Text="(c) Alexei `fralorange` Rodionov."/>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Нажмите сюда, чтобы перейти на GitHub"
+                          TextDecorations="Underline"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}"
+                                        CommandParameter="https://github.com/fralorange/diagram-app"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</toolkit:Popup>

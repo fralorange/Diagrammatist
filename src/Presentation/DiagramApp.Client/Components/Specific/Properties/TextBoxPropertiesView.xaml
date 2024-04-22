@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:UniformItemsLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                            xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
+                            xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+                            x:Class="DiagramApp.Client.Components.Specific.Properties.TextBoxPropertiesView"
+                            x:DataType="viewmodel:MainViewModel"
+                            MaxColumns="2"
+                            Padding="5">
+    <Label Text="Текст: "
+           Margin="0, 0, 0, 15"/>
+    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Text, Mode=OneWay}"
+           Completed="OnTextEntryCompleted"/>
+
+    <Label Text="Размер текста: "
+           Margin="0, 0, 0, 15"/>
+    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.FontSize, Mode=OneWay, FallbackValue=0}"
+           Completed="OnTextSizeEntryCompleted">
+        <Entry.Behaviors>
+            <toolkit:NumericValidationBehavior x:Name="TextSizeValidator"
+                                               ValidStyle="{StaticResource ValidEntry}"
+                                               InvalidStyle="{StaticResource InvalidEntry}"
+                                               Flags="ValidateOnValueChanged"/>
+        </Entry.Behaviors>
+    </Entry>
+
+    <Label Text="Контур: "
+           Margin="0, 0, 0, 15"/>
+    <CheckBox ToolTipProperties.Text="Наличие контура"
+              IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasOutline, Mode=OneWay}"
+              CheckedChanged="OnOutlineCheckboxChanged"/>
+
+    <Label Text="Фон: "
+           Margin="0, 0, 0, 15"/>
+    <CheckBox ToolTipProperties.Text="Наличие фона"
+              IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasBackground, Mode=OneWay}"
+              CheckedChanged="CheckBox_CheckedChanged"/>
+</toolkit:UniformItemsLayout>

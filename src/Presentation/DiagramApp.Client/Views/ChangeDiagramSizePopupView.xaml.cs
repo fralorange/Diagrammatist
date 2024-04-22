@@ -5,35 +5,30 @@ using DiagramApp.Domain.DiagramSettings;
 
 namespace DiagramApp.Client.Views;
 
-public partial class NewDiagramPopupView : Popup
+public partial class ChangeDiagramSizePopupView : Popup
 {
-    public NewDiagramPopupView(NewDiagramPopupViewModel viewmodel)
-    {
-        InitializeComponent();
+	public ChangeDiagramSizePopupView(ChangeDiagramSizePopupViewModel viewModel)
+	{
+		InitializeComponent();
 
-        BindingContext = viewmodel;
+		BindingContext = viewModel;
 
         WeakReferenceMessenger.Default.Register<DiagramSettings>(this, async (r, settings) =>
         {
             string errorMsg = "";
-            if (WidthValidator.IsNotValid)
+            if (widthValidator.IsNotValid)
             {
                 errorMsg += "\nШирина";
             }
-            if (HeightValidator.IsNotValid)
+            if (heightValidator.IsNotValid)
             {
                 errorMsg += "\nВысота";
             }
-            if (TextValidator.IsNotValid)
-            {
-                errorMsg += "\nИмя файла";
-            }
             if (!string.IsNullOrEmpty(errorMsg))
             {
-                // put it in service maybe?
                 await Shell.Current.DisplayAlert("Ошибка", $"Требуется заполнить следующие поля корректно:{errorMsg}.", "OK");
                 return;
-            }    
+            }
 
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             await CloseAsync(settings, cts.Token);

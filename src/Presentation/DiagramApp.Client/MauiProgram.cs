@@ -26,6 +26,8 @@ namespace DiagramApp.Client
             builder.Services.AddSingleton<MainView>();
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddTransient<IToolboxService, ToolboxService>();
+            builder.Services.AddTransientPopup<AboutPopupView, AboutPopupViewModel>();
+            builder.Services.AddTransientPopup<ChangeDiagramSizePopupView, ChangeDiagramSizePopupViewModel>();
             builder.Services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewModel>();
             return builder.Build();
         }
