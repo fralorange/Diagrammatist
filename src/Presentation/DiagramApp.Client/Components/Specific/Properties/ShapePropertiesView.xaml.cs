@@ -10,5 +10,9 @@ public partial class ShapePropertiesView : UniformItemsLayout
 	}
 
     private void OnShapeEntryCompleted(object sender, EventArgs e)
-		=> PropertiesView.HandleEntryCompleted(BindingContext, sender, "Size", value => Convert.ToDouble(value));
+	{
+		if (ShapeValidator.IsNotValid)
+			return;
+        PropertiesView.HandleEntryCompleted(BindingContext, sender, "Size", value => Convert.ToDouble(value));
+    }
 }

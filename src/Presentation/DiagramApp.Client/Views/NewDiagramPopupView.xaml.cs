@@ -16,16 +16,21 @@ public partial class NewDiagramPopupView : Popup
         WeakReferenceMessenger.Default.Register<DiagramSettings>(this, async (r, settings) =>
         {
             string errorMsg = "";
-            if (widthValidator.IsNotValid)
+            if (WidthValidator.IsNotValid)
             {
                 errorMsg += "\nШирина";
             }
-            if (heightValidator.IsNotValid)
+            if (HeightValidator.IsNotValid)
             {
                 errorMsg += "\nВысота";
             }
+            if (TextValidator.IsNotValid)
+            {
+                errorMsg += "\nИмя файла";
+            }
             if (!string.IsNullOrEmpty(errorMsg))
             {
+                // put it in service maybe?
                 await Shell.Current.DisplayAlert("Ошибка", $"Требуется заполнить следующие поля корректно:{errorMsg}.", "OK");
                 return;
             }    
