@@ -23,13 +23,14 @@
                 <Entry x:Name="WidthEntry"
                        Grid.Column="1"
                        Grid.Row="0"
-                       Text="{Binding Settings.Width, Mode=TwoWay}"
-                       Style="{StaticResource EntryNew}">
+                       Text="{Binding Settings.Width, Mode=TwoWay}">
                     <Entry.Behaviors>
                         <toolkit:NumericValidationBehavior
                             x:Name="widthValidator"
+                            ValidStyle="{StaticResource EntryNew}"
+                            InvalidStyle="{StaticResource InvalidEntryNew}"
                             Flags="ValidateOnValueChanged"
-                            MinimumValue="1"/>
+                            MinimumValue="300"/>
                     </Entry.Behaviors>
                 </Entry>
 
@@ -40,13 +41,14 @@
                 <Entry x:Name="HeightEntry"
                        Grid.Column="1"
                        Grid.Row="1"
-                       Text="{Binding Settings.Height, Mode=TwoWay}"
-                       Style="{StaticResource EntryNew}">
+                       Text="{Binding Settings.Height, Mode=TwoWay}">
                     <Entry.Behaviors>
                         <toolkit:NumericValidationBehavior
                             x:Name="heightValidator"
+                            ValidStyle="{StaticResource EntryNew}"
+                            InvalidStyle="{StaticResource InvalidEntryNew}"
                             Flags="ValidateOnValueChanged"
-                            MinimumValue="1"/>
+                            MinimumValue="200"/>
                     </Entry.Behaviors>
                 </Entry>
             </Grid>

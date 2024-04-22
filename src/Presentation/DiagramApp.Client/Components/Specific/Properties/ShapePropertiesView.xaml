@@ -10,6 +10,13 @@
                             Padding="5">
     <Label Text="Размер: "
        Margin="0, 0, 0, 15"/>
-    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Size, Mode=OneWay}"
-           Completed="OnShapeEntryCompleted"/>
+    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Size, Mode=OneWay, FallbackValue=0}"
+           Completed="OnShapeEntryCompleted">
+        <Entry.Behaviors>
+            <toolkit:NumericValidationBehavior x:Name="ShapeValidator"
+                                               ValidStyle="{StaticResource ValidEntry}"
+                                               InvalidStyle="{StaticResource InvalidEntry}"
+                                               Flags="ValidateOnValueChanged"/>
+        </Entry.Behaviors>
+    </Entry>
 </toolkit:UniformItemsLayout>

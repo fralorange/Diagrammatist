@@ -16,7 +16,9 @@ public partial class PropertiesView : Frame
     }
 
     private void OnRotationEntryCompleted(object sender, EventArgs e)
-    {
+    {   //move display alert to service or smth
+        if (RotationValidator.IsNotValid)
+            return;
         HandleEntryCompleted(BindingContext, sender, "Rotation", value => Convert.ToDouble(value));
     }
 

@@ -15,8 +15,15 @@
 
     <Label Text="Размер текста: "
            Margin="0, 0, 0, 15"/>
-    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.FontSize, Mode=OneWay}"
-           Completed="OnTextSizeEntryCompleted"/>
+    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.FontSize, Mode=OneWay, FallbackValue=0}"
+           Completed="OnTextSizeEntryCompleted">
+        <Entry.Behaviors>
+            <toolkit:NumericValidationBehavior x:Name="TextSizeValidator"
+                                               ValidStyle="{StaticResource ValidEntry}"
+                                               InvalidStyle="{StaticResource InvalidEntry}"
+                                               Flags="ValidateOnValueChanged"/>
+        </Entry.Behaviors>
+    </Entry>
 
     <Label Text="Контур: "
            Margin="0, 0, 0, 15"/>

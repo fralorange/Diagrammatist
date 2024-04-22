@@ -24,8 +24,15 @@
             
             <Label Text="Поворот: "
                    Margin="0, 0, 0, 15"/>
-            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=OneWay}"
-                   Completed="OnRotationEntryCompleted"/>
+            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=OneWay, FallbackValue=0}"
+                   Completed="OnRotationEntryCompleted">
+                <Entry.Behaviors>
+                    <toolkit:NumericValidationBehavior x:Name="RotationValidator"
+                                                       ValidStyle="{StaticResource ValidEntry}"
+                                                       InvalidStyle="{StaticResource InvalidEntry}"
+                                                       Flags="ValidateOnValueChanged"/>
+                </Entry.Behaviors>
+            </Entry>
         </toolkit:UniformItemsLayout>
         <properties:TextBoxPropertiesView Grid.Row="2"
                                           IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservableTextFigure}, FallbackValue={x:Boolean False}}"/>
