@@ -10,19 +10,23 @@
                             Padding="5">
     <Label Text="Текст: "
            Margin="0, 0, 0, 15"/>
-    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Text, Mode=TwoWay}"/>
+    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Text, Mode=OneWay}"
+           Completed="OnTextEntryCompleted"/>
 
     <Label Text="Размер текста: "
            Margin="0, 0, 0, 15"/>
-    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.FontSize, Mode=TwoWay}"/>
+    <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.FontSize, Mode=OneWay}"
+           Completed="OnTextSizeEntryCompleted"/>
 
     <Label Text="Контур: "
            Margin="0, 0, 0, 15"/>
     <CheckBox ToolTipProperties.Text="Наличие контура"
-              IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasOutline, Mode=TwoWay}"/>
+              IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasOutline, Mode=OneWay}"
+              CheckedChanged="OnOutlineCheckboxChanged"/>
 
     <Label Text="Фон: "
            Margin="0, 0, 0, 15"/>
     <CheckBox ToolTipProperties.Text="Наличие фона"
-              IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasBackground, Mode=TwoWay}"/>
+              IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasBackground, Mode=OneWay}"
+              CheckedChanged="CheckBox_CheckedChanged"/>
 </toolkit:UniformItemsLayout>

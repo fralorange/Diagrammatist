@@ -8,4 +8,7 @@ public partial class ShapePropertiesView : UniformItemsLayout
 	{
 		InitializeComponent();
 	}
+
+    private void OnShapeEntryCompleted(object sender, EventArgs e)
+		=> PropertiesView.HandleEntryCompleted(BindingContext, sender, "Size", value => Convert.ToDouble(value));
 }

@@ -9,6 +9,15 @@ namespace DiagramApp.Client.ViewModels.Wrappers
     {
         private readonly Canvas _canvas;
 
+        private readonly Stack<Action> _undoCommands = [];
+        private readonly Stack<Action> _redoCommands = [];
+
+        [ObservableProperty]
+        private bool _canUndo;
+
+        [ObservableProperty]
+        private bool _canRedo;
+
         public ObservableCanvas(Canvas canvas)
         {
             _canvas = canvas;
@@ -23,7 +32,7 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
         private bool _isBlocked;
         public bool IsNotBlocked => !IsBlocked;
-        public event EventHandler<object> BlockedResourcesReceived;
+        public event EventHandler<object>? BlockedResourcesReceived;
 
         [ObservableProperty]
         private double _rotation = 0;
@@ -85,6 +94,42 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
             var result = await tcs.Task;
             return result;
+        }
+        private void UpdateUndoRedoState()
+        {
+            CanUndo = _undoCommands.Count != 0;
+            CanRedo = _redoCommands.Count != 0;
+        }
+        public void Undo()
+        {
+            if (CanUndo)
+            {
+                _undoCommands.Pop().Invoke();
+                UpdateUndoRedoState();
+            }
+        }
+
+        public void Redo()
+        {
+            if (CanRedo)
+            {
+                _redoCommands.Pop().Invoke();
+                UpdateUndoRedoState();
+            }
+        }
+
+        public void ClearRedoCommands() => _redoCommands.Clear();
+
+        public void AddUndoCommand(Action command)
+        {
+            _undoCommands.Push(command);
+            UpdateUndoRedoState();
+        }
+
+        public void AddRedoCommand(Action command)
+        {
+            _redoCommands.Push(command);
+            UpdateUndoRedoState();
         }
 
         public void ZoomIn(double zoomFactor, int? mouseX = null, int? mouseY = null)

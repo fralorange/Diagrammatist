@@ -1,3 +1,4 @@
+using DiagramApp.Application.AppServices.Helpers;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas.Figures;
@@ -21,10 +22,11 @@ public partial class CommonToolboxView : Grid
                 var current = e.CurrentSelection[0] as ToolboxItem;
                 var figure = current!.Figure;
 
+                ObservableFigure? observableFigure = null;
                 switch (figure)
                 {
                     case PathFigure pathFigure:
-                        viewModel.CurrentCanvas.Figures.Add(new ObservablePathFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData }));
+                        observableFigure = new ObservablePathFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData });
                         break;
                     case PolylineFigure polylineFigure:
                         var blockedPoints = await viewModel.CurrentCanvas.BlockAsync<List<System.Drawing.Point>>();
@@ -34,7 +36,7 @@ public partial class CommonToolboxView : Grid
                             ? (points.Min(pt => pt.X), points.Min(pt => pt.Y))
                             : (default(int), default(int));
                         NormalizePoints(points, (translatedX, translatedY));
-                        viewModel.CurrentCanvas!.Figures.Add(new ObservablePolylineFigure(new PolylineFigure
+                        observableFigure = new ObservablePolylineFigure(new PolylineFigure
                         {
                             Name = polylineFigure.Name,
                             Points = points.Count > 1 ? points : polylineFigure.Points
@@ -42,12 +44,17 @@ public partial class CommonToolboxView : Grid
                         {
                             TranslationX = points.Count > 1 ? translatedX : default,
                             TranslationY = points.Count > 1 ? translatedY : default
-                        });
+                        };
                         break;
                     case TextFigure textFigure:
-                        viewModel.CurrentCanvas.Figures.Add(new ObservableTextFigure(new TextFigure { Name = textFigure.Name, Text = textFigure.Text }));
+                        observableFigure = new ObservableTextFigure(new TextFigure { Name = textFigure.Name, Text = textFigure.Text });
                         break;
                 }
+
+                var action = new Action(() => viewModel.CurrentCanvas.Figures.Add(observableFigure!));
+                var undoAction = new Action(() => viewModel.CurrentCanvas.Figures.Remove(observableFigure!));
+
+                UndoableCommandHelper.ExecuteAction(viewModel.CurrentCanvas, action, undoAction);
             }
 
             Dispatcher.Dispatch(() =>

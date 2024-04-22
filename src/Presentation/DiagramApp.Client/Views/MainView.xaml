@@ -39,21 +39,35 @@
         </MenuBarItem>
         <MenuBarItem Text="Редактирование">
             <MenuFlyoutItem Text="Отменить"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding CurrentCanvas.CanUndo, FallbackValue='False'}"
+                            Command="{Binding UndoCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Z"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutItem Text="Повторить"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding CurrentCanvas.CanRedo, FallbackValue='False'}"
+                            Command="{Binding RedoCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Y"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
         </MenuBarItem>
-        <MenuBarItem Text="Холст"
-                     IsEnabled="{Binding IsCanvasNotNull}">
+        <MenuBarItem Text="Холст">
             <MenuFlyoutItem Text="Изменить размер холста"
-                            Command="{Binding EditCanvasCommand}"/>
+                            Command="{Binding EditCanvasCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Повернуть на 10 градусов ПЧС"
                             Command="{Binding RotateCommand}"
-                            CommandParameter="{x:Double 10}"/>
+                            CommandParameter="{x:Double 10}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
             <MenuFlyoutItem Text="Повернуть на 10 градусов ПРЧС"
                             Command="{Binding RotateCommand}"
-                            CommandParameter="{x:Double -10}"/>
+                            CommandParameter="{x:Double -10}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
         </MenuBarItem>
         <MenuBarItem Text="Вид">
             <MenuFlyoutItem Text="Приблизить"

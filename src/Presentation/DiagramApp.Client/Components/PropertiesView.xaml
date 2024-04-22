@@ -19,11 +19,13 @@
                                     Padding="5">
             <Label Text="Название: "
                    Margin="0, 0, 0, 15"/>
-            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=TwoWay}"/>
+            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Name, Mode=OneWay}"
+                   Completed="OnNameEntryCompleted"/>
             
             <Label Text="Поворот: "
                    Margin="0, 0, 0, 15"/>
-            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=TwoWay}"/>
+            <Entry Text="{Binding CurrentCanvas.SelectedFigure.Rotation, Mode=OneWay}"
+                   Completed="OnRotationEntryCompleted"/>
         </toolkit:UniformItemsLayout>
         <properties:TextBoxPropertiesView Grid.Row="2"
                                           IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservableTextFigure}, FallbackValue={x:Boolean False}}"/>
