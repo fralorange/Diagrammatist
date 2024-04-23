@@ -73,4 +73,12 @@ public partial class CommonToolboxView : Grid
             points[i] = new System.Drawing.Point(points[i].X - normalPoint.X, points[i].Y - normalPoint.Y);
         }
     }
+
+    private void OnPickerItemsSourceChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (sender is Picker picker && e.PropertyName == nameof(picker.ItemsSource))
+        {
+            Dispatcher.Dispatch(() => picker.SelectedIndex = 0);
+        }
+    }
 }

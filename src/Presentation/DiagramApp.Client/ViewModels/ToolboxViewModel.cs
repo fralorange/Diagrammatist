@@ -8,9 +8,9 @@ namespace DiagramApp.Client.ViewModels
 {
     public partial class ToolboxViewModel : ObservableObject
     {
-        public ToolboxCategory[] Categories => Enum.GetValues<ToolboxCategory>()
+        public List<ToolboxCategory> Categories => Enum.GetValues<ToolboxCategory>()
             .Where(item => item != ToolboxCategory.Advanced)
-            .ToArray();
+            .ToList();
         
         private readonly IToolboxService _toolboxService;
         private readonly ILocalizationResourceManager _localizationResourceManager;

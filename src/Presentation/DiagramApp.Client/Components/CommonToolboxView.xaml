@@ -62,7 +62,8 @@
             <Picker Grid.Row="1"
                     ItemsSource="{Binding ToolboxViewModel.Categories}"
                     ItemDisplayBinding="{loc:TranslateBinding ., TranslateValue=True}"
-                    SelectedItem="{Binding ToolboxViewModel.SelectedCategory}">
+                    SelectedItem="{Binding ToolboxViewModel.SelectedCategory}"
+                    PropertyChanged="OnPickerItemsSourceChanged">
                 <Picker.Behaviors>
                     <toolkit:EventToCommandBehavior EventName="Loaded"
                                                     Command="{Binding ToolboxViewModel.LoadToolboxCommand}"/>
