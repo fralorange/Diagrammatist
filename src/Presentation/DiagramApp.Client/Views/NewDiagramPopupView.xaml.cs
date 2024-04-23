@@ -2,12 +2,13 @@ using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Messaging;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Domain.DiagramSettings;
+using LocalizationResourceManager.Maui;
 
 namespace DiagramApp.Client.Views;
 
 public partial class NewDiagramPopupView : Popup
 {
-    public NewDiagramPopupView(NewDiagramPopupViewModel viewmodel)
+    public NewDiagramPopupView(NewDiagramPopupViewModel viewmodel, ILocalizationResourceManager localizationResourceManager)
     {
         InitializeComponent();
 
@@ -18,20 +19,22 @@ public partial class NewDiagramPopupView : Popup
             string errorMsg = "";
             if (WidthValidator.IsNotValid)
             {
-                errorMsg += "\nШирина";
+                errorMsg += $"\n{localizationResourceManager["Width"]}";
             }
             if (HeightValidator.IsNotValid)
             {
-                errorMsg += "\nВысота";
+                errorMsg += $"\n{localizationResourceManager["Height"]}";
             }
             if (TextValidator.IsNotValid)
             {
-                errorMsg += "\nИмя файла";
+                errorMsg += $"\n{localizationResourceManager["FileName"]}";
             }
             if (!string.IsNullOrEmpty(errorMsg))
             {
                 // put it in service maybe?
-                await Shell.Current.DisplayAlert("Ошибка", $"Требуется заполнить следующие поля корректно:{errorMsg}.", "OK");
+                await Shell.Current.DisplayAlert($"{localizationResourceManager["Error"]}",
+                                                 $"{string.Format(localizationResourceManager["ErrorAttributesString"], errorMsg)}",
+                                                 $"{localizationResourceManager["OK"]}");
                 return;
             }    
 

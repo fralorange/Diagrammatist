@@ -58,20 +58,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="resources\raw\toolboxData.json" />
+	  <None Remove="Resources\Raw\toolboxData.en.json" />
+	  <None Remove="Resources\Raw\toolboxData.ru.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="LocalizationResourceManager.Maui" Version="1.2.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Components\EditorView.xaml.cs">
 	    <DependentUpon>EditorView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Localization\AppResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AppResources.resx</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ChangeDiagramSizePopupView.xaml.cs">
 	    <DependentUpon>ChangeDiagramSizePopupView.xaml</DependentUpon>
@@ -130,6 +137,19 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Converters\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Localization\AppResources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\toolboxData.ru.json">
+	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+	  </MauiAsset>
 	</ItemGroup>
 
 </Project>

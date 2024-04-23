@@ -6,6 +6,7 @@ using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
+using LocalizationResourceManager.Maui;
 using System.Collections.ObjectModel;
 // TO-DO: Rethink some methods, combine some similar methods in one, move some methods in ObservableCanvas 
 namespace DiagramApp.Client.ViewModels
@@ -14,6 +15,9 @@ namespace DiagramApp.Client.ViewModels
     {
         private readonly IPopupService _popupService;
         private readonly IToolboxService _toolboxService;
+        private readonly ILocalizationResourceManager _localizationResourceManager;
+
+        public string? CurrentLanguage => _localizationResourceManager?.CurrentCulture.TwoLetterISOLanguageName;
 
         private int _canvasCounter = 0;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = [];
@@ -29,12 +33,13 @@ namespace DiagramApp.Client.ViewModels
         [ObservableProperty]
         private ToolboxViewModel _toolboxViewModel;
 
-        public MainViewModel(IPopupService popupService, IToolboxService toolboxService)
+        public MainViewModel(IPopupService popupService, IToolboxService toolboxService, ILocalizationResourceManager localizationResourceManager)
         {
             _popupService = popupService;
             _toolboxService = toolboxService;
+            _localizationResourceManager = localizationResourceManager;
 
-            _toolboxViewModel = new(_toolboxService);
+            _toolboxViewModel = new(_toolboxService, localizationResourceManager);
         }
 
         [RelayCommand]
@@ -53,7 +58,7 @@ namespace DiagramApp.Client.ViewModels
             if (result is DiagramSettings settings)
             {
                 if (string.IsNullOrEmpty(settings.FileName))
-                    settings.FileName = $"Безымянный{++_canvasCounter}";
+                    settings.FileName = $"{_localizationResourceManager["Unnamed"]}{++_canvasCounter}";
                 Canvas canvas = new(settings);
                 ObservableCanvas observableCanvas = new(canvas);
 
@@ -147,6 +152,15 @@ namespace DiagramApp.Client.ViewModels
             if (CurrentCanvas is not null && CurrentCanvas.SelectedFigure is not null)
                 CurrentCanvas!.DeselectFigure();
         }
+
+        [RelayCommand]
+        private async Task ChangeLanguageAsync(string parameter)
+        {
+            _localizationResourceManager.CurrentCulture = new System.Globalization.CultureInfo(parameter);
+            await ToolboxViewModel.LoadToolboxCommand.ExecuteAsync(null);
+            OnPropertyChanged(nameof(CurrentLanguage));
+        }
+
         // refactor this spot l8r 
         [RelayCommand]
         private void ZoomIn()

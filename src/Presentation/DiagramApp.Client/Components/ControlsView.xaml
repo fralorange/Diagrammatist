@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Frame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
-             xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
-             x:Class="DiagramApp.Client.Components.ControlsView"
-             x:DataType="viewmodel:MainViewModel"
-             Padding="0">
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+       xmlns:models="clr-namespace:DiagramApp.Domain.Canvas;assembly=DiagramApp.Domain"
+       xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+       x:Class="DiagramApp.Client.Components.ControlsView"
+       x:DataType="viewmodel:MainViewModel"
+       Padding="0">
     <StackLayout Orientation="Horizontal"
                  Spacing="5">
         <Grid RowDefinitions="*, Auto"
@@ -28,7 +29,7 @@
                             </DataTrigger>
                         </ImageButton.Triggers>
                     </ImageButton>
-                    <Label Text="Выбрать"
+                    <Label Text="{loc:Translate Select}"
                            Style="{StaticResource LabelControlName}"
                            HorizontalOptions="Center"/>
                 </VerticalStackLayout>
@@ -47,12 +48,12 @@
                             </DataTrigger>
                         </ImageButton.Triggers>
                     </ImageButton>
-                    <Label Text="Двигать"
+                    <Label Text="{loc:Translate Move}"
                            Style="{StaticResource LabelControlName}"
                            HorizontalOptions="Center"/>
                 </VerticalStackLayout>
             </HorizontalStackLayout>
-            <Label Text="Управление"
+            <Label Text="{loc:Translate Controls}"
                    Style="{StaticResource LabelControl}"
                    Grid.Row="1" 
                    Grid.ColumnSpan="2"

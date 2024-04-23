@@ -5,7 +5,6 @@ using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.UI.Xaml;
-using System;
 using Point = Microsoft.Maui.Graphics.Point;
 
 namespace DiagramApp.Client.Components;
