@@ -39,6 +39,8 @@ namespace DiagramApp.Client.ViewModels
 
             ToolboxItems = await _toolboxService.GetToolboxItemsAsync($"toolboxData.{twoletterISO}.json");
             InitializeAdvancedToolbox();
+
+            OnPropertyChanged(nameof(Categories));
             
             CategoryChange();
         }
