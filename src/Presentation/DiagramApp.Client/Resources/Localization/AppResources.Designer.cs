@@ -178,7 +178,7 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Create.
+        ///   Ищет локализованную строку, похожую на New.
         /// </summary>
         internal static string Create {
             get {
