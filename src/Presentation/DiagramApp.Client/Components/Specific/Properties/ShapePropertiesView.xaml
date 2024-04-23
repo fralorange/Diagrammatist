@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <toolkit:UniformItemsLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                            xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
                             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                             xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
                             xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
@@ -8,7 +9,7 @@
                             x:DataType="viewmodel:MainViewModel"
                             MaxColumns="2"
                             Padding="5">
-    <Label Text="Размер: "
+    <Label Text="{loc:Translate Size, StringFormat='{0}: '}"
        Margin="0, 0, 0, 15"/>
     <Entry Text="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Size, Mode=OneWay, FallbackValue=0}"
            Completed="OnShapeEntryCompleted">

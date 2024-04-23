@@ -2,12 +2,13 @@ using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Messaging;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Domain.DiagramSettings;
+using LocalizationResourceManager.Maui;
 
 namespace DiagramApp.Client.Views;
 
 public partial class ChangeDiagramSizePopupView : Popup
 {
-	public ChangeDiagramSizePopupView(ChangeDiagramSizePopupViewModel viewModel)
+	public ChangeDiagramSizePopupView(ChangeDiagramSizePopupViewModel viewModel, ILocalizationResourceManager localizationResourceManager)
 	{
 		InitializeComponent();
 
@@ -18,15 +19,17 @@ public partial class ChangeDiagramSizePopupView : Popup
             string errorMsg = "";
             if (widthValidator.IsNotValid)
             {
-                errorMsg += "\nШирина";
+                errorMsg += $"\n{localizationResourceManager["Width"]}";
             }
             if (heightValidator.IsNotValid)
             {
-                errorMsg += "\nВысота";
+                errorMsg += $"\n{localizationResourceManager["Height"]}";
             }
             if (!string.IsNullOrEmpty(errorMsg))
             {
-                await Shell.Current.DisplayAlert("Ошибка", $"Требуется заполнить следующие поля корректно:{errorMsg}.", "OK");
+                await Shell.Current.DisplayAlert($"{localizationResourceManager["Error"]}",
+                                                 $"{string.Format(localizationResourceManager["ErrorAttributesString"], errorMsg)}",
+                                                 $"{localizationResourceManager["OK"]}");
                 return;
             }
 

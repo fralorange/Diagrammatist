@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-                     xmlns:toolbox="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
-                     xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
-                     xmlns:components="clr-namespace:DiagramApp.Client.Components"
-                     x:Class="DiagramApp.Client.Components.CommonToolboxView"
-                     x:DataType="viewmodel:MainViewModel"
-                     RowDefinitions="50*, 35*"
-                     RowSpacing="5">
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+      xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+      xmlns:toolbox="clr-namespace:DiagramApp.Domain.Toolbox;assembly=DiagramApp.Domain"
+      xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+      xmlns:components="clr-namespace:DiagramApp.Client.Components"
+      x:Class="DiagramApp.Client.Components.CommonToolboxView"
+      x:DataType="viewmodel:MainViewModel"
+      RowDefinitions="50*, 35*"
+      RowSpacing="5">
     <Grid.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="PathFigureTemplate"
@@ -56,10 +57,11 @@
               ColumnDefinitions="*"
               RowSpacing="10">
             <Label Grid.Row="0"
-                   Text="Инструментарий"
+                   Text="{loc:Translate Toolbox}"
                    HorizontalTextAlignment="Center"/>
             <Picker Grid.Row="1"
                     ItemsSource="{Binding ToolboxViewModel.Categories}"
+                    ItemDisplayBinding="{loc:TranslateBinding ., TranslateValue=True}"
                     SelectedItem="{Binding ToolboxViewModel.SelectedCategory}">
                 <Picker.Behaviors>
                     <toolkit:EventToCommandBehavior EventName="Loaded"
@@ -84,7 +86,7 @@
         <Grid RowDefinitions="Auto, *"
               RowSpacing="10">
             <Label Grid.Row="0"
-                   Text="Продвинутый инструментарий"
+                   Text="{loc:Translate AdvancedToolbox}"
                    HorizontalTextAlignment="Center"/>
             <CollectionView Grid.Row="1"
                             SelectionMode="Single"

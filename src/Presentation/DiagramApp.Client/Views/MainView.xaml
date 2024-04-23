@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:components="clr-namespace:DiagramApp.Client.Components"
              xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
              x:Class="DiagramApp.Client.MainView"
@@ -9,36 +11,36 @@
     
 <!--Menu-->
     <ContentPage.MenuBarItems>
-        <MenuBarItem Text="Файл">
-            <MenuFlyoutItem Text="Создать"
+        <MenuBarItem Text="{loc:Translate File}">
+            <MenuFlyoutItem Text="{loc:Translate Create}"
                             Command="{Binding CreateCanvasCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Modifiers="Ctrl"
                                          Key="N"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="Открыть"/>
+            <MenuFlyoutItem Text="{loc:Translate Open}"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Закрыть"
+            <MenuFlyoutItem Text="{loc:Translate Close}"
                             IsEnabled="{Binding IsCanvasNotNull}"
                             Command="{Binding CloseCanvasCommand}"
                             CommandParameter="{Binding CurrentCanvas}"/>
-            <MenuFlyoutItem Text="Закрыть все"
+            <MenuFlyoutItem Text="{loc:Translate CloseAll}"
                             IsEnabled="False"/>
-            <MenuFlyoutItem Text="Сохранить"
+            <MenuFlyoutItem Text="{loc:Translate Save}"
                             IsEnabled="False"/>
-            <MenuFlyoutItem Text="Сохранить как"
+            <MenuFlyoutItem Text="{loc:Translate SaveAs}"
                             IsEnabled="False"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Экспорт в PNG"
+            <MenuFlyoutItem Text="{loc:Translate Export}"
                             IsEnabled="{Binding IsCanvasNotNull}"
                             Clicked="ExportButtonClicked"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Выход"
+            <MenuFlyoutItem Text="{loc:Translate Exit}"
                             Clicked="OnExitClicked"/>
         </MenuBarItem>
-        <MenuBarItem Text="Редактирование">
-            <MenuFlyoutItem Text="Отменить"
+        <MenuBarItem Text="{loc:Translate Edit}">
+            <MenuFlyoutItem Text="{loc:Translate Undo}"
                             IsEnabled="{Binding CurrentCanvas.CanUndo, FallbackValue='False'}"
                             Command="{Binding UndoCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
@@ -46,7 +48,7 @@
                                          Key="Z"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="Повторить"
+            <MenuFlyoutItem Text="{loc:Translate Redo}"
                             IsEnabled="{Binding CurrentCanvas.CanRedo, FallbackValue='False'}"
                             Command="{Binding RedoCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
@@ -55,37 +57,48 @@
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
         </MenuBarItem>
-        <MenuBarItem Text="Холст">
-            <MenuFlyoutItem Text="Изменить размер холста"
+        <MenuBarItem Text="{loc:Translate Canvas}">
+            <MenuFlyoutItem Text="{loc:Translate CanvasSize}"
                             Command="{Binding EditCanvasCommand}"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Повернуть на 10 градусов ПЧС"
+            <MenuFlyoutItem Text="{loc:Translate RotateCW}"
                             Command="{Binding RotateCommand}"
                             CommandParameter="{x:Double 10}"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
-            <MenuFlyoutItem Text="Повернуть на 10 градусов ПРЧС"
+            <MenuFlyoutItem Text="{loc:Translate RotateCCW}"
                             Command="{Binding RotateCommand}"
                             CommandParameter="{x:Double -10}"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
         </MenuBarItem>
-        <MenuBarItem Text="Вид">
-            <MenuFlyoutItem Text="Приблизить"
+        <MenuBarItem Text="{loc:Translate View}">
+            <MenuFlyoutItem Text="{loc:Translate ZoomIn}"
                             Command="{Binding ZoomInCommand}"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
-            <MenuFlyoutItem Text="Отдалить"
+            <MenuFlyoutItem Text="{loc:Translate ZoomOut}"
                             Command="{Binding ZoomOutCommand}"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Сбросить вид"
+            <MenuFlyoutItem Text="{loc:Translate ResetView}"
                             Clicked="OnResetViewClicked"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutSubItem Text="{loc:Translate Language}">
+                <MenuFlyoutItem Text="{loc:Translate English}"
+                                Command="{Binding ChangeLanguageCommand}"
+                                CommandParameter="en"
+                                IsEnabled="{Binding CurrentLanguage, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='en', FallbackValue=False}"/>
+                <MenuFlyoutItem Text="{loc:Translate Russian}"
+                                Command="{Binding ChangeLanguageCommand}"
+                                CommandParameter="ru"
+                                IsEnabled="{Binding CurrentLanguage, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='ru', FallbackValue=False}"/>
+            </MenuFlyoutSubItem>
         </MenuBarItem>
-        <MenuBarItem Text="Справка">
-            <MenuFlyoutItem Text="Справка о DiagramApp"
+        <MenuBarItem Text="{loc:Translate Help}">
+            <MenuFlyoutItem Text="{loc:Translate HelpApp}"
                             IsEnabled="False"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="О программе"
+            <MenuFlyoutItem Text="{loc:Translate AboutApp}"
                             Command="{Binding ViewProgramAboutCommand}"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>

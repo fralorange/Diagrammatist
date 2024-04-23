@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Domain.Toolbox;
+using LocalizationResourceManager.Maui;
 
 namespace DiagramApp.Client.ViewModels
 {
@@ -12,6 +13,7 @@ namespace DiagramApp.Client.ViewModels
             .ToArray();
         
         private readonly IToolboxService _toolboxService;
+        private readonly ILocalizationResourceManager _localizationResourceManager;
 
         public List<ToolboxItem>? ToolboxItems { get; private set; }
 
@@ -24,13 +26,20 @@ namespace DiagramApp.Client.ViewModels
         [ObservableProperty]
         private ToolboxCategory _selectedCategory;
 
-        public ToolboxViewModel(IToolboxService toolboxService) => _toolboxService = toolboxService;
+        public ToolboxViewModel(IToolboxService toolboxService, ILocalizationResourceManager localizationResourceManager)
+        {
+            _toolboxService = toolboxService;
+            _localizationResourceManager = localizationResourceManager;
+        }
 
         [RelayCommand]
         private async Task LoadToolboxAsync()
         {
-            ToolboxItems = await _toolboxService.GetToolboxItemsAsync("toolboxData.json");
+            var twoletterISO = _localizationResourceManager.CurrentCulture.TwoLetterISOLanguageName;
+
+            ToolboxItems = await _toolboxService.GetToolboxItemsAsync($"toolboxData.{twoletterISO}.json");
             InitializeAdvancedToolbox();
+            
             CategoryChange();
         }
 

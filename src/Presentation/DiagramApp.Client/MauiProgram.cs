@@ -2,6 +2,7 @@
 using DiagramApp.Application.AppServices.Services;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.Views;
+using LocalizationResourceManager.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace DiagramApp.Client
@@ -14,6 +15,11 @@ namespace DiagramApp.Client
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseLocalizationResourceManager(settings =>
+                {
+                    settings.RestoreLatestCulture(true);
+                    settings.AddResource(Resources.Localization.AppResources.ResourceManager);
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
