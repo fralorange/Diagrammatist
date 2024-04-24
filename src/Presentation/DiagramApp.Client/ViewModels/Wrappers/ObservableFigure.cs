@@ -22,6 +22,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [ObservableProperty]
         private double _rotation;
 
+        [ObservableProperty]
+        private double _zIndex = 1;
+
         public string Name
         {
             get => _figure.Name;

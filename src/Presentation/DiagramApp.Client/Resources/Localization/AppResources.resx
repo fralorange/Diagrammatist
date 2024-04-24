@@ -135,6 +135,9 @@
   <data name="Blocks" xml:space="preserve">
     <value>Blocks</value>
   </data>
+  <data name="BringForward" xml:space="preserve">
+    <value>Bring Forward</value>
+  </data>
   <data name="Build" xml:space="preserve">
     <value>Build: {0}</value>
   </data>
@@ -266,6 +269,9 @@
   </data>
   <data name="Select" xml:space="preserve">
     <value>Select</value>
+  </data>
+  <data name="SendBackward" xml:space="preserve">
+    <value>Send Backward</value>
   </data>
   <data name="Shapes" xml:space="preserve">
     <value>Shapes</value>

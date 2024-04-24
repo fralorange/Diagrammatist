@@ -115,6 +115,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Bring Forward.
+        /// </summary>
+        internal static string BringForward {
+            get {
+                return ResourceManager.GetString("BringForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Build: {0}.
         /// </summary>
         internal static string Build {
@@ -507,6 +516,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Send Backward.
+        /// </summary>
+        internal static string SendBackward {
+            get {
+                return ResourceManager.GetString("SendBackward", resourceCulture);
             }
         }
         

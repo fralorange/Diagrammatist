@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Frame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
        xmlns:controls="clr-namespace:DiagramApp.Client.Controls"
        xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
        xmlns:wrappers="clr-namespace:DiagramApp.Client.ViewModels.Wrappers"
@@ -10,6 +11,7 @@
        VerticalOptions="FillAndExpand">
     <Frame.Resources>
         <ResourceDictionary>
+            
             <DataTemplate x:Key="PathFigureTemplate"
                           x:DataType="wrappers:ObservablePathFigure">
                 <Path Data="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
@@ -19,6 +21,7 @@
                       WidthRequest="{Binding Size, Mode=TwoWay}"
                       HeightRequest="{Binding Size, Mode=OneWay}"
                       Rotation="{Binding Rotation, Mode=TwoWay}"
+                      ZIndex="{Binding ZIndex, Mode=OneWay}"
                       InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Path.GestureRecognizers>
                         <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
@@ -26,6 +29,20 @@
                                               CommandParameter="{Binding .}"/>
                         <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
                     </Path.GestureRecognizers>
+                    <FlyoutBase.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate BringForward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate SendBackward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                                CommandParameter="{Binding .}"/>
+                        </MenuFlyout>
+                    </FlyoutBase.ContextFlyout>
                 </Path>
             </DataTemplate>
             <DataTemplate x:Key="PolylineFigureTemplate"
@@ -35,6 +52,7 @@
                           TranslationX="{Binding TranslationX, Mode=TwoWay}"
                           TranslationY="{Binding TranslationY, Mode=TwoWay}"
                           Rotation="{Binding Rotation, Mode=TwoWay}"
+                          ZIndex="{Binding ZIndex, Mode=OneWay}"
                           InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Polyline.GestureRecognizers>
                         <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
@@ -42,6 +60,20 @@
                                               CommandParameter="{Binding .}"/>
                         <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
                     </Polyline.GestureRecognizers>
+                    <FlyoutBase.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate BringForward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate SendBackward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                                CommandParameter="{Binding .}"/>
+                        </MenuFlyout>
+                    </FlyoutBase.ContextFlyout>
                 </Polyline>
             </DataTemplate>
             <DataTemplate x:Key="TextFigureTemplate"
@@ -50,6 +82,7 @@
                         TranslationX="{Binding TranslationX, Mode=TwoWay}"
                         TranslationY="{Binding TranslationY, Mode=TwoWay}"
                         Rotation="{Binding Rotation, Mode=TwoWay}"
+                        ZIndex="{Binding ZIndex, Mode=OneWay}"
                         InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Label Text="{Binding Text, Mode=TwoWay}"
                            FontSize="{Binding FontSize, Mode=TwoWay}"/>
@@ -71,6 +104,20 @@
                                               CommandParameter="{Binding .}"/>
                         <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
                     </Border.GestureRecognizers>
+                    <FlyoutBase.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate BringForward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate SendBackward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                                CommandParameter="{Binding .}"/>
+                        </MenuFlyout>
+                    </FlyoutBase.ContextFlyout>
                 </Border>
                 
             </DataTemplate>

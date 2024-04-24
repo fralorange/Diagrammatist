@@ -6,6 +6,7 @@
        xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
        x:Class="DiagramApp.Client.Components.ExplorerView"
        x:DataType="viewmodel:MainViewModel">
+    
     <Grid RowDefinitions="Auto, *"
           RowSpacing="10">
         <Label Grid.Row="0"
@@ -20,8 +21,14 @@
                 <DataTemplate x:DataType="wrappers:ObservableFigure">
                     <Label Text="{Binding Name}">
                         <FlyoutBase.ContextFlyout>
-                            <!--Maybe put it in different viewModel?-->
                             <MenuFlyout>
+                                <MenuFlyoutItem Text="{loc:Translate BringForward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                <MenuFlyoutItem Text="{loc:Translate SendBackward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                <MenuFlyoutSeparator/>
                                 <MenuFlyoutItem Text="{loc:Translate Delete}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
                                                 CommandParameter="{Binding .}"/>
