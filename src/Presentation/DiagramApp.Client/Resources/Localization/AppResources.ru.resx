@@ -135,6 +135,9 @@
   <data name="Blocks" xml:space="preserve">
     <value>Блоки</value>
   </data>
+  <data name="BringForward" xml:space="preserve">
+    <value>На передний план</value>
+  </data>
   <data name="Build" xml:space="preserve">
     <value>Сборка: {0}</value>
   </data>
@@ -266,6 +269,9 @@
   </data>
   <data name="Select" xml:space="preserve">
     <value>Выбрать</value>
+  </data>
+  <data name="SendBackward" xml:space="preserve">
+    <value>На задний план</value>
   </data>
   <data name="Shapes" xml:space="preserve">
     <value>Фигуры</value>

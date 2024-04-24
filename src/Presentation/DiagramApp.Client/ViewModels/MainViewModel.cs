@@ -154,6 +154,19 @@ namespace DiagramApp.Client.ViewModels
         }
 
         [RelayCommand]
+        private void BringItemForward(ObservableFigure figure)
+        {
+            figure.ZIndex++;
+        }
+
+        [RelayCommand]
+        private void SendItemBackward(ObservableFigure figure)
+        {
+            if (figure.ZIndex != 1)
+                figure.ZIndex--;
+        }
+
+        [RelayCommand]
         private async Task ChangeLanguageAsync(string parameter)
         {
             _localizationResourceManager.CurrentCulture = new System.Globalization.CultureInfo(parameter);
