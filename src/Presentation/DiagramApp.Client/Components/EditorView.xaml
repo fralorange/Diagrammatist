@@ -11,15 +11,16 @@
        VerticalOptions="FillAndExpand">
     <Frame.Resources>
         <ResourceDictionary>
-            
+            <!--Refactor flyoutbase.contextflyout and other repeating stuff-->
             <DataTemplate x:Key="PathFigureTemplate"
                           x:DataType="wrappers:ObservablePathFigure">
                 <Path Data="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
                       Style="{StaticResource Shape}"
+                      Aspect="Fill"
                       TranslationX="{Binding TranslationX, Mode=TwoWay}"
                       TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                      WidthRequest="{Binding Size, Mode=TwoWay}"
-                      HeightRequest="{Binding Size, Mode=OneWay}"
+                      WidthRequest="{Binding Width, Mode=TwoWay}"
+                      HeightRequest="{Binding Height, Mode=TwoWay}"
                       Rotation="{Binding Rotation, Mode=TwoWay}"
                       ZIndex="{Binding ZIndex, Mode=OneWay}"
                       InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
