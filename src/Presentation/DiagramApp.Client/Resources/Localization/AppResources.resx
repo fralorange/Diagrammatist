@@ -123,6 +123,12 @@
   <data name="AdvancedToolbox" xml:space="preserve">
     <value>Advanced Toolbox</value>
   </data>
+  <data name="AspectRatio" xml:space="preserve">
+    <value>1 to 1 ratio</value>
+  </data>
+  <data name="AspectRatioDescription" xml:space="preserve">
+    <value>Brings the dimensions of the figure to a 1:1 ratio</value>
+  </data>
   <data name="Background" xml:space="preserve">
     <value>Background</value>
   </data>

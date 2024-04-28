@@ -16,12 +16,12 @@
                           x:DataType="wrappers:ObservablePathFigure">
                 <Path Data="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
                       Style="{StaticResource Shape}"
-                      Aspect="Fill"
+                      Aspect="{Binding Aspect, Mode=OneWay, Converter={StaticResource BoolToAspectRatioConverter}}"
                       TranslationX="{Binding TranslationX, Mode=TwoWay}"
                       TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                      WidthRequest="{Binding Width, Mode=TwoWay}"
-                      HeightRequest="{Binding Height, Mode=TwoWay}"
-                      Rotation="{Binding Rotation, Mode=TwoWay}"
+                      WidthRequest="{Binding Width, Mode=OneWay}"
+                      HeightRequest="{Binding Height, Mode=OneWay}"
+                      Rotation="{Binding Rotation, Mode=OneWay}"
                       ZIndex="{Binding ZIndex, Mode=OneWay}"
                       InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Path.GestureRecognizers>
@@ -52,7 +52,7 @@
                           Style="{StaticResource Flow}"
                           TranslationX="{Binding TranslationX, Mode=TwoWay}"
                           TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                          Rotation="{Binding Rotation, Mode=TwoWay}"
+                          Rotation="{Binding Rotation, Mode=OneWay}"
                           ZIndex="{Binding ZIndex, Mode=OneWay}"
                           InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Polyline.GestureRecognizers>
@@ -82,11 +82,11 @@
                 <Border Style="{StaticResource TextBorder}"
                         TranslationX="{Binding TranslationX, Mode=TwoWay}"
                         TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                        Rotation="{Binding Rotation, Mode=TwoWay}"
+                        Rotation="{Binding Rotation, Mode=OneWay}"
                         ZIndex="{Binding ZIndex, Mode=OneWay}"
                         InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
-                    <Label Text="{Binding Text, Mode=TwoWay}"
-                           FontSize="{Binding FontSize, Mode=TwoWay}"/>
+                    <Label Text="{Binding Text, Mode=OneWay}"
+                           FontSize="{Binding FontSize, Mode=OneWay}"/>
                     <Border.Triggers>
                         <DataTrigger TargetType="Border"
                                      Binding="{Binding HasOutline}"

@@ -79,6 +79,24 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на 1 to 1 ratio.
+        /// </summary>
+        internal static string AspectRatio {
+            get {
+                return ResourceManager.GetString("AspectRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Brings the dimensions of the figure to a 1:1 ratio.
+        /// </summary>
+        internal static string AspectRatioDescription {
+            get {
+                return ResourceManager.GetString("AspectRatioDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Background.
         /// </summary>
         internal static string Background {

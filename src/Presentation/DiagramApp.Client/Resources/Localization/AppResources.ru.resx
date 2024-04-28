@@ -123,6 +123,12 @@
   <data name="AdvancedToolbox" xml:space="preserve">
     <value>Продвинутый инструментарий</value>
   </data>
+  <data name="AspectRatio" xml:space="preserve">
+    <value>1 к 1 стороны</value>
+  </data>
+  <data name="AspectRatioDescription" xml:space="preserve">
+    <value>Приводит размеры фигуры к 1:1</value>
+  </data>
   <data name="Background" xml:space="preserve">
     <value>Фон</value>
   </data>

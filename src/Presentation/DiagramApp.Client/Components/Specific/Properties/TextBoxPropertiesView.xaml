@@ -36,5 +36,5 @@
            Margin="0, 0, 0, 15"/>
     <CheckBox ToolTipProperties.Text="{loc:Translate HasBackground}"
               IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.HasBackground, Mode=OneWay}"
-              CheckedChanged="CheckBox_CheckedChanged"/>
+              CheckedChanged="OnBackgroundCheckboxChanged"/>
 </toolkit:UniformItemsLayout>

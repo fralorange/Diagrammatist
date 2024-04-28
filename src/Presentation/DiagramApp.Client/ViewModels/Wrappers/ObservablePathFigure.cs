@@ -15,6 +15,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [ObservableProperty]
         private double _height = 50;
 
+        [ObservableProperty]
+        private bool _aspect;
+
         public string PathData
         {
             get => _pathFigure.PathData;

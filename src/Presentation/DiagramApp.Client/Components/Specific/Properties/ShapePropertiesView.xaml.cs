@@ -22,4 +22,7 @@ public partial class ShapePropertiesView : UniformItemsLayout
             return;
         PropertiesView.HandleEntryCompleted(BindingContext, sender, "Height", value => Convert.ToDouble(value));
     }
+
+    private void OnAspectCheckboxChanged(object sender, CheckedChangedEventArgs e)
+        => PropertiesView.HandleCheckboxCompleted(BindingContext, "Aspect", e);
 }
