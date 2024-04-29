@@ -38,6 +38,21 @@ public partial class PropertiesView : Frame
         }
     }
 
+    public static void HandleCheckboxCompleted(object BindingContext, string propertyName, CheckedChangedEventArgs e)
+    {
+        if (BindingContext is MainViewModel { CurrentCanvas: { SelectedFigure: { } figure } canvas })
+        {
+            var oldText = GetPropertyValue(figure, propertyName);
+            if (oldText is bool oldBool && oldBool == e.Value || oldText is null) return;
+            var newText = e.Value;
+
+            var action = new Action(() => SetPropertyValue(figure, propertyName, newText));
+            var undoAction = new Action(() => SetPropertyValue(figure, propertyName, oldText));
+
+            UndoableCommandHelper.ExecuteAction(canvas, action, undoAction);
+        }
+    }
+
     public static object? GetPropertyValue(object obj, string propertyName)
     {
         return obj.GetType().GetProperty(propertyName)?.GetValue(obj);

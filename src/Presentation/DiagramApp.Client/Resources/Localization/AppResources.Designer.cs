@@ -79,11 +79,38 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на 1 to 1 ratio.
+        /// </summary>
+        internal static string AspectRatio {
+            get {
+                return ResourceManager.GetString("AspectRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Brings the dimensions of the figure to a 1:1 ratio.
+        /// </summary>
+        internal static string AspectRatioDescription {
+            get {
+                return ResourceManager.GetString("AspectRatioDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Background.
         /// </summary>
         internal static string Background {
             get {
                 return ResourceManager.GetString("Background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bevel.
+        /// </summary>
+        internal static string Bevel {
+            get {
+                return ResourceManager.GetString("Bevel", resourceCulture);
             }
         }
         
@@ -201,6 +228,24 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Custom {
             get {
                 return ResourceManager.GetString("Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dashed.
+        /// </summary>
+        internal static string Dashed {
+            get {
+                return ResourceManager.GetString("Dashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Transform a line into a dashed line.
+        /// </summary>
+        internal static string DashedDescription {
+            get {
+                return ResourceManager.GetString("DashedDescription", resourceCulture);
             }
         }
         
@@ -358,6 +403,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Miter.
+        /// </summary>
+        internal static string Miter {
+            get {
+                return ResourceManager.GetString("Miter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Move.
         /// </summary>
         internal static string Move {
@@ -484,6 +538,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Round.
+        /// </summary>
+        internal static string Round {
+            get {
+                return ResourceManager.GetString("Round", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Russian.
         /// </summary>
         internal static string Russian {
@@ -561,6 +624,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string TextSize {
             get {
                 return ResourceManager.GetString("TextSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Thickness.
+        /// </summary>
+        internal static string Thickness {
+            get {
+                return ResourceManager.GetString("Thickness", resourceCulture);
             }
         }
         

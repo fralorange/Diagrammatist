@@ -9,10 +9,20 @@ public partial class ShapePropertiesView : UniformItemsLayout
 		InitializeComponent();
 	}
 
-    private void OnShapeEntryCompleted(object sender, EventArgs e)
+    private void OnWidthEntryCompleted(object sender, EventArgs e)
 	{
-		if (ShapeValidator.IsNotValid)
+		if (ShapeWidthValidator.IsNotValid)
 			return;
-        PropertiesView.HandleEntryCompleted(BindingContext, sender, "Size", value => Convert.ToDouble(value));
+        PropertiesView.HandleEntryCompleted(BindingContext, sender, "Width", value => Convert.ToDouble(value));
     }
+
+    private void OnHeightEntryCompleted(object sender, EventArgs e)
+    {
+        if (ShapeHeightValidator.IsNotValid)
+            return;
+        PropertiesView.HandleEntryCompleted(BindingContext, sender, "Height", value => Convert.ToDouble(value));
+    }
+
+    private void OnAspectCheckboxChanged(object sender, CheckedChangedEventArgs e)
+        => PropertiesView.HandleCheckboxCompleted(BindingContext, "Aspect", e);
 }

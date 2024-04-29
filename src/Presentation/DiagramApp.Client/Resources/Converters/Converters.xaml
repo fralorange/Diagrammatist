@@ -8,5 +8,7 @@
     <local:NullToScrollBarVisibilityConverter x:Key="NullToScrollBarVisibilityConverter"/>
     <local:FigureToValidPropertyConverter x:Key="FigureToValidPropertyConverter"/>
     <local:IsElementConverter x:Key="IsElementConverter"/>
+    <local:BoolToAspectRatioConverter x:Key="BoolToAspectRatioConverter"/>
+    <local:BoolToStrokeDashArrayConverter x:Key="BoolToStrokeDashArrayConverter"/>
 </ResourceDictionary>
 

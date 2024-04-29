@@ -10,7 +10,13 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         public ObservablePathFigure(PathFigure pathFigure) : base(pathFigure) => _pathFigure = pathFigure;
 
         [ObservableProperty]
-        private double _size = 50;
+        private double _width = 50;
+
+        [ObservableProperty]
+        private double _height = 50;
+
+        [ObservableProperty]
+        private bool _aspect;
 
         public string PathData
         {

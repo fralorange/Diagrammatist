@@ -123,8 +123,17 @@
   <data name="AdvancedToolbox" xml:space="preserve">
     <value>Advanced Toolbox</value>
   </data>
+  <data name="AspectRatio" xml:space="preserve">
+    <value>1 to 1 ratio</value>
+  </data>
+  <data name="AspectRatioDescription" xml:space="preserve">
+    <value>Brings the dimensions of the figure to a 1:1 ratio</value>
+  </data>
   <data name="Background" xml:space="preserve">
     <value>Background</value>
+  </data>
+  <data name="Bevel" xml:space="preserve">
+    <value>Bevel</value>
   </data>
   <data name="Black" xml:space="preserve">
     <value>Black</value>
@@ -164,6 +173,12 @@
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Custom</value>
+  </data>
+  <data name="Dashed" xml:space="preserve">
+    <value>Dashed</value>
+  </data>
+  <data name="DashedDescription" xml:space="preserve">
+    <value>Transform a line into a dashed line</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
@@ -216,6 +231,9 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Miter" xml:space="preserve">
+    <value>Miter</value>
+  </data>
   <data name="Move" xml:space="preserve">
     <value>Move</value>
   </data>
@@ -258,6 +276,9 @@
   <data name="Rotation" xml:space="preserve">
     <value>Rotation</value>
   </data>
+  <data name="Round" xml:space="preserve">
+    <value>Round</value>
+  </data>
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>
   </data>
@@ -284,6 +305,9 @@
   </data>
   <data name="TextSize" xml:space="preserve">
     <value>Text Size</value>
+  </data>
+  <data name="Thickness" xml:space="preserve">
+    <value>Thickness</value>
   </data>
   <data name="Toolbox" xml:space="preserve">
     <value>Toolbox</value>
