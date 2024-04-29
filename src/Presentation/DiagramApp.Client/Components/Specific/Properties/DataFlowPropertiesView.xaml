@@ -36,20 +36,23 @@
                  Grid.Row="2">
         <VerticalStackLayout Style="{StaticResource LineJoinLayout}">
             <ImageButton Source="{AppThemeBinding Light=miter.png, Dark=miter_dark.png}"
-                         Style="{StaticResource Tool}"/>
-            <Label Text="Miter"
+                         Style="{StaticResource Tool}"
+                         Clicked="OnMiterClicked"/>
+            <Label Text="{loc:Translate Miter}"
                    HorizontalOptions="Center"/>
         </VerticalStackLayout>
         <VerticalStackLayout Style="{StaticResource LineJoinLayout}">
             <ImageButton Source="{AppThemeBinding Light=bevel.png, Dark=bevel_dark.png}"
-                         Style="{StaticResource Tool}"/>
-            <Label Text="Bevel"
+                         Style="{StaticResource Tool}"
+                         Clicked="OnBevelClicked"/>
+            <Label Text="{loc:Translate Bevel}"
                    HorizontalOptions="Center"/>
         </VerticalStackLayout>
         <VerticalStackLayout Style="{StaticResource LineJoinLayout}">
             <ImageButton Source="{AppThemeBinding Light=round.png, Dark=round_dark.png}"
-                         Style="{StaticResource Tool}"/>
-            <Label Text="Round"
+                         Style="{StaticResource Tool}"
+                         Clicked="OnRoundClicked"/>
+            <Label Text="{loc:Translate Round}"
                    HorizontalOptions="Center"/>
         </VerticalStackLayout>
     </StackLayout>

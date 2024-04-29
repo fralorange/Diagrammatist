@@ -132,6 +132,9 @@
   <data name="Background" xml:space="preserve">
     <value>Фон</value>
   </data>
+  <data name="Bevel" xml:space="preserve">
+    <value>Фаска</value>
+  </data>
   <data name="Black" xml:space="preserve">
     <value>Чёрный</value>
   </data>
@@ -228,6 +231,9 @@
   <data name="Language" xml:space="preserve">
     <value>Язык</value>
   </data>
+  <data name="Miter" xml:space="preserve">
+    <value>Митер</value>
+  </data>
   <data name="Move" xml:space="preserve">
     <value>Двигать</value>
   </data>
@@ -269,6 +275,9 @@
   </data>
   <data name="Rotation" xml:space="preserve">
     <value>Поворот</value>
+  </data>
+  <data name="Round" xml:space="preserve">
+    <value>Круглый</value>
   </data>
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>

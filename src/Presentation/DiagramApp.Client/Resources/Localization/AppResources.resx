@@ -132,6 +132,9 @@
   <data name="Background" xml:space="preserve">
     <value>Background</value>
   </data>
+  <data name="Bevel" xml:space="preserve">
+    <value>Bevel</value>
+  </data>
   <data name="Black" xml:space="preserve">
     <value>Black</value>
   </data>
@@ -228,6 +231,9 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Miter" xml:space="preserve">
+    <value>Miter</value>
+  </data>
   <data name="Move" xml:space="preserve">
     <value>Move</value>
   </data>
@@ -269,6 +275,9 @@
   </data>
   <data name="Rotation" xml:space="preserve">
     <value>Rotation</value>
+  </data>
+  <data name="Round" xml:space="preserve">
+    <value>Round</value>
   </data>
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>

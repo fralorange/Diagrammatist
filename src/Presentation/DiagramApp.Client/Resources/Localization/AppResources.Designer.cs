@@ -106,6 +106,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Bevel.
+        /// </summary>
+        internal static string Bevel {
+            get {
+                return ResourceManager.GetString("Bevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Black.
         /// </summary>
         internal static string Black {
@@ -394,6 +403,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Miter.
+        /// </summary>
+        internal static string Miter {
+            get {
+                return ResourceManager.GetString("Miter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Move.
         /// </summary>
         internal static string Move {
@@ -516,6 +534,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Rotation {
             get {
                 return ResourceManager.GetString("Rotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Round.
+        /// </summary>
+        internal static string Round {
+            get {
+                return ResourceManager.GetString("Round", resourceCulture);
             }
         }
         

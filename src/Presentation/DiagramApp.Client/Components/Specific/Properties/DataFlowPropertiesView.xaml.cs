@@ -21,11 +21,11 @@ public partial class DataFlowPropertiesView : Grid
     private void OnDashedCheckboxChanged(object sender, CheckedChangedEventArgs e)
     => PropertiesView.HandleCheckboxCompleted(BindingContext, "Dashed", e);
 
-    private void OnLineJoinButtonClicked(object sender, EventArgs e)
+    private void OnLineJoinButtonClicked(object sender, string arg)
     {
-        if (sender is Button { Text: { } btnText } && BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: ObservablePolylineFigure figure })
+        if (sender is ImageButton && BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: ObservablePolylineFigure figure })
         {
-            figure.LineJoin = btnText switch
+            figure.LineJoin = arg switch
             {
                 "Miter" => PenLineJoin.Miter,
                 "Bevel" => PenLineJoin.Bevel,
@@ -34,4 +34,10 @@ public partial class DataFlowPropertiesView : Grid
             };
         }
     }
+
+    private void OnMiterClicked(object sender, EventArgs e) => OnLineJoinButtonClicked(sender, "Miter");
+
+    private void OnBevelClicked(object sender, EventArgs e) => OnLineJoinButtonClicked(sender, "Bevel");
+
+    private void OnRoundClicked(object sender, EventArgs e) => OnLineJoinButtonClicked(sender, "Round");
 }
