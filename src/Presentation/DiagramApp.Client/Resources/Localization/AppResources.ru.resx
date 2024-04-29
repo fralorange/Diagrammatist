@@ -171,6 +171,12 @@
   <data name="Custom" xml:space="preserve">
     <value>Заказная</value>
   </data>
+  <data name="Dashed" xml:space="preserve">
+    <value>Пунктир</value>
+  </data>
+  <data name="DashedDescription" xml:space="preserve">
+    <value>Преобразовать линию в пунктирную линию</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>По умолчанию</value>
   </data>
@@ -290,6 +296,9 @@
   </data>
   <data name="TextSize" xml:space="preserve">
     <value>Размер текста</value>
+  </data>
+  <data name="Thickness" xml:space="preserve">
+    <value>Толщина</value>
   </data>
   <data name="Toolbox" xml:space="preserve">
     <value>Инструментарий</value>

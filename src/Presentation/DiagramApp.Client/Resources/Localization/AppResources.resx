@@ -171,6 +171,12 @@
   <data name="Custom" xml:space="preserve">
     <value>Custom</value>
   </data>
+  <data name="Dashed" xml:space="preserve">
+    <value>Dashed</value>
+  </data>
+  <data name="DashedDescription" xml:space="preserve">
+    <value>Transform a line into a dashed line</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
@@ -290,6 +296,9 @@
   </data>
   <data name="TextSize" xml:space="preserve">
     <value>Text Size</value>
+  </data>
+  <data name="Thickness" xml:space="preserve">
+    <value>Thickness</value>
   </data>
   <data name="Toolbox" xml:space="preserve">
     <value>Toolbox</value>

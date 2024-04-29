@@ -50,6 +50,9 @@
                           x:DataType="wrappers:ObservablePolylineFigure">
                 <Polyline Points="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
                           Style="{StaticResource Flow}"
+                          StrokeThickness="{Binding Thickness, Mode=OneWay}"
+                          StrokeDashArray="{Binding Dashed, Mode=OneWay, Converter={StaticResource BoolToStrokeDashArrayConverter}}"
+                          StrokeLineJoin="{Binding LineJoin, Mode=OneWay}"
                           TranslationX="{Binding TranslationX, Mode=TwoWay}"
                           TranslationY="{Binding TranslationY, Mode=TwoWay}"
                           Rotation="{Binding Rotation, Mode=OneWay}"

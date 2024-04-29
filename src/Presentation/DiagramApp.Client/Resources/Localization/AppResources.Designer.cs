@@ -223,6 +223,24 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Dashed.
+        /// </summary>
+        internal static string Dashed {
+            get {
+                return ResourceManager.GetString("Dashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Transform a line into a dashed line.
+        /// </summary>
+        internal static string DashedDescription {
+            get {
+                return ResourceManager.GetString("DashedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Default.
         /// </summary>
         internal static string Default {
@@ -579,6 +597,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string TextSize {
             get {
                 return ResourceManager.GetString("TextSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Thickness.
+        /// </summary>
+        internal static string Thickness {
+            get {
+                return ResourceManager.GetString("Thickness", resourceCulture);
             }
         }
         
