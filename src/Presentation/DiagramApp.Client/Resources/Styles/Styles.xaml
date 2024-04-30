@@ -249,6 +249,7 @@
     <Style TargetType="components:ControlsView" BasedOn="{StaticResource DefaultFrame}"/>
     <Style TargetType="components:ExplorerView" BasedOn="{StaticResource DefaultFrame}"/>
     <Style TargetType="components:PropertiesView" BasedOn="{StaticResource DefaultFrame}"/>
+    <Style TargetType="components:AdditionalMenuProperties" BasedOn="{StaticResource DefaultFrame}"/>
 
     <Style TargetType="ImageButton">
         <Setter Property="BackgroundColor" Value="Transparent"/>

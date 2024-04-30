@@ -164,7 +164,7 @@
                     </Border.Triggers>
 
                     <Grid>
-                        <controls:VisibleGridView GridSpacing="50"
+                        <controls:VisibleGridView GridSpacing="{Binding CurrentCanvas.GridSpacing}"
                                                   IsVisible="{Binding CurrentCanvas.IsGridVisible}"/>
                         <AbsoluteLayout x:Name="CanvasContent"
                                         BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}"

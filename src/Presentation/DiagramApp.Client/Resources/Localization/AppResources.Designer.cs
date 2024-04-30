@@ -619,6 +619,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Grid step.
+        /// </summary>
+        internal static string Step {
+            get {
+                return ResourceManager.GetString("Step", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Text.
         /// </summary>
         internal static string TextProperty {
@@ -714,6 +723,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Width {
             get {
                 return ResourceManager.GetString("Width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zoom.
+        /// </summary>
+        internal static string Zoom {
+            get {
+                return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
         

@@ -29,6 +29,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         private bool _isGridVisible = true;
 
         [ObservableProperty]
+        private double _gridSpacing = 10;
+
+        [ObservableProperty]
         private bool _isSelected;
 
         [ObservableProperty]
