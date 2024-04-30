@@ -174,6 +174,15 @@ namespace DiagramApp.Client.ViewModels
             OnPropertyChanged(nameof(CurrentLanguage));
         }
 
+        [RelayCommand]
+        private void ChangeGridVisibility()
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            CurrentCanvas.ChangeGridVisibility();
+        }
+
         // refactor this spot l8r 
         [RelayCommand]
         private void ZoomIn()

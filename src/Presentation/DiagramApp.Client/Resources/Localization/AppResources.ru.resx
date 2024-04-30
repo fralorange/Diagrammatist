@@ -213,6 +213,9 @@
   <data name="GitHub" xml:space="preserve">
     <value>Нажмите сюда, чтобы перейти на GitHub</value>
   </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Сетка</value>
+  </data>
   <data name="HasBackground" xml:space="preserve">
     <value>Наличие фона</value>
   </data>

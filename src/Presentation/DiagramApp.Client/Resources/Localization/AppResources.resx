@@ -213,6 +213,9 @@
   <data name="GitHub" xml:space="preserve">
     <value>Click here to go to GitHub</value>
   </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
   <data name="HasBackground" xml:space="preserve">
     <value>Has Background</value>
   </data>

@@ -26,6 +26,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         }
 
         [ObservableProperty]
+        private bool _isGridVisible = true;
+
+        [ObservableProperty]
         private bool _isSelected;
 
         [ObservableProperty]
@@ -130,6 +133,11 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             _redoCommands.Push(command);
             UpdateUndoRedoState();
+        }
+
+        public void ChangeGridVisibility()
+        {
+            IsGridVisible = !IsGridVisible;
         }
 
         public void ZoomIn(double zoomFactor, int? mouseX = null, int? mouseY = null)

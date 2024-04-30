@@ -151,7 +151,7 @@ public partial class EditorView : Frame
 
     private void OnTappedInsideCanvas(object sender, TappedEventArgs e)
     {
-        if (BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: null, CurrentCanvas.IsBlocked: true } viewModel)
+        if (BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: null, CurrentCanvas.IsBlocked: true })
         {
             var canvas = (View)sender;
             var point = e.GetPosition(canvas);

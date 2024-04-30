@@ -83,6 +83,10 @@
                             Clicked="OnResetViewClicked"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
             <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="{loc:Translate Grid}"
+                            Command="{Binding ChangeGridVisibilityCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutSeparator/>
             <MenuFlyoutSubItem Text="{loc:Translate Language}">
                 <MenuFlyoutItem Text="{loc:Translate English}"
                                 Command="{Binding ChangeLanguageCommand}"
