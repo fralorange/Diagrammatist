@@ -56,6 +56,33 @@
                                          Key="Y"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutSubItem Text="{loc:Translate Settings}">
+                <MenuFlyoutSubItem Text="{loc:Translate Language}">
+                    <MenuFlyoutItem Text="{loc:Translate English}"
+                                    Command="{Binding ChangeLanguageCommand}"
+                                    CommandParameter="en"
+                                    IsEnabled="{Binding CurrentLanguage, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='en', FallbackValue=False}"/>
+                    <MenuFlyoutItem Text="{loc:Translate Russian}"
+                                    Command="{Binding ChangeLanguageCommand}"
+                                    CommandParameter="ru"
+                                    IsEnabled="{Binding CurrentLanguage, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='ru', FallbackValue=False}"/>
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSubItem Text="{loc:Translate Theme}">
+                    <MenuFlyoutItem Text="{loc:Translate SystemTheme}"
+                                    Command="{Binding ChangeThemeCommand}"
+                                    CommandParameter="Unspecified"
+                                    IsEnabled="{Binding CurrentTheme, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='Unspecified', FallbackValue=False}"/>
+                    <MenuFlyoutItem Text="{loc:Translate LightTheme}"
+                                    Command="{Binding ChangeThemeCommand}"
+                                    CommandParameter="Light"
+                                    IsEnabled="{Binding CurrentTheme, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='Light', FallbackValue=False}"/>
+                    <MenuFlyoutItem Text="{loc:Translate DarkTheme}"
+                                    Command="{Binding ChangeThemeCommand}"
+                                    CommandParameter="Dark"
+                                    IsEnabled="{Binding CurrentTheme, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='Dark', FallbackValue=False}"/>
+                </MenuFlyoutSubItem>
+            </MenuFlyoutSubItem>
         </MenuBarItem>
         <MenuBarItem Text="{loc:Translate Canvas}">
             <MenuFlyoutItem Text="{loc:Translate CanvasSize}"
@@ -86,17 +113,6 @@
             <MenuFlyoutItem Text="{loc:Translate Grid}"
                             Command="{Binding ChangeGridVisibilityCommand}"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
-            <MenuFlyoutSeparator/>
-            <MenuFlyoutSubItem Text="{loc:Translate Language}">
-                <MenuFlyoutItem Text="{loc:Translate English}"
-                                Command="{Binding ChangeLanguageCommand}"
-                                CommandParameter="en"
-                                IsEnabled="{Binding CurrentLanguage, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='en', FallbackValue=False}"/>
-                <MenuFlyoutItem Text="{loc:Translate Russian}"
-                                Command="{Binding ChangeLanguageCommand}"
-                                CommandParameter="ru"
-                                IsEnabled="{Binding CurrentLanguage, Converter={toolkit:IsNotEqualConverter}, ConverterParameter='ru', FallbackValue=False}"/>
-            </MenuFlyoutSubItem>
         </MenuBarItem>
         <MenuBarItem Text="{loc:Translate Help}">
             <MenuFlyoutItem Text="{loc:Translate HelpApp}"

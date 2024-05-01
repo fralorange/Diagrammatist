@@ -19,6 +19,9 @@ namespace DiagramApp.Client.ViewModels
 
         public string? CurrentLanguage => _localizationResourceManager?.CurrentCulture.TwoLetterISOLanguageName;
 
+        [ObservableProperty]
+        private string _currentTheme = App.Current.UserAppTheme.ToString();
+
         private int _canvasCounter = 0;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = [];
 
@@ -172,6 +175,16 @@ namespace DiagramApp.Client.ViewModels
             _localizationResourceManager.CurrentCulture = new System.Globalization.CultureInfo(parameter);
             await ToolboxViewModel.LoadToolboxCommand.ExecuteAsync(null);
             OnPropertyChanged(nameof(CurrentLanguage));
+        }
+
+        [RelayCommand]
+        private void ChangeTheme(string parameter)
+        {
+            var requestedTheme = (AppTheme)Enum.Parse(typeof(AppTheme), parameter);
+            App.Current!.UserAppTheme = requestedTheme;
+            CurrentTheme = parameter;
+
+            Preferences.Set("AppTheme", parameter);
         }
 
         [RelayCommand]
