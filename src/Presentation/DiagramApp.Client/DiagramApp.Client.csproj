@@ -21,7 +21,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>DiagramApp</ApplicationTitle>
+		<ApplicationTitle>Diagrammatist</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.diagramapp.client</ApplicationId>
