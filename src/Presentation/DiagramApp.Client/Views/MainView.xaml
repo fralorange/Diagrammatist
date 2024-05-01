@@ -83,6 +83,10 @@
                             Clicked="OnResetViewClicked"
                             IsEnabled="{Binding IsCanvasNotNull}"/>
             <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="{loc:Translate Grid}"
+                            Command="{Binding ChangeGridVisibilityCommand}"
+                            IsEnabled="{Binding IsCanvasNotNull}"/>
+            <MenuFlyoutSeparator/>
             <MenuFlyoutSubItem Text="{loc:Translate Language}">
                 <MenuFlyoutItem Text="{loc:Translate English}"
                                 Command="{Binding ChangeLanguageCommand}"
@@ -131,9 +135,14 @@
                                  Grid.Column="2"
                                  IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
 <!--Properties-->
-        <components:PropertiesView Grid.Row="2"
-                                   Grid.RowSpan="2"
-                                   Grid.Column="2"
-                                   IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"/>
+        <StackLayout Grid.Row="2"
+                     Grid.RowSpan="2"
+                     Grid.Column="2"
+                     Spacing="1"
+                     Orientation="Vertical">
+            <components:PropertiesView IsEnabled="{Binding CurrentCanvas.IsNotBlocked}"
+                                       VerticalOptions="FillAndExpand"/>
+            <components:AdditionalMenuProperties/>
+        </StackLayout>
     </Grid>
 </ContentPage>

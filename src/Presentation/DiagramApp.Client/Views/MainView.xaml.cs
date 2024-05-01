@@ -35,8 +35,12 @@ namespace DiagramApp.Client
         {
 #if WINDOWS
             var canvasView = CanvasWindow.GetVisualTreeDescendants().OfType<Border>().FirstOrDefault(b => b.StyleId == "CanvasView");
+            var canvasGrid = CanvasWindow.GetVisualTreeDescendants().OfType<VisibleGridView>().FirstOrDefault(b => b.StyleId == "CanvasGrid");
             if (canvasView?.Handler?.PlatformView is Microsoft.UI.Xaml.UIElement elem && BindingContext is MainViewModel { CurrentCanvas: { } } viewModel)
             {
+                var currentGridState = viewModel.CurrentCanvas.IsGridVisible;
+                viewModel.CurrentCanvas.IsGridVisible = false;
+
                 RenderTargetBitmap renderTargetBitmap = new();
                 await renderTargetBitmap.RenderAsync(elem);
 
@@ -53,6 +57,8 @@ namespace DiagramApp.Client
                 stream.Seek(0, SeekOrigin.Begin);
 
                 var fileSaverResult = await FileSaver.Default.SaveAsync($"{viewModel.CurrentCanvas!.Settings.FileName}.png", stream);
+
+                viewModel.CurrentCanvas.IsGridVisible = currentGridState;
 #if DEBUG
                 if (fileSaverResult.IsSuccessful)
                 {

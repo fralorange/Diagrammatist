@@ -68,8 +68,13 @@ public partial class EditorView : Frame
                 var newX = pointerPos.Value.X - view.Width / 2;
                 var newY = pointerPos.Value.Y - view.Height / 2;
 
-                clampedElemPos.X = Math.Max(0, Math.Min(newX, layout.Width - view.Width));
-                clampedElemPos.Y = Math.Max(0, Math.Min(newY, layout.Height - view.Height));
+                var gridSize = viewModel.CurrentCanvas.GridSpacing;
+
+                var snappedX = Math.Round(newX / gridSize) * gridSize;
+                var snappedY = Math.Round(newY / gridSize) * gridSize;
+
+                clampedElemPos.X = Math.Max(0, Math.Min(snappedX, layout.Width - view.Width));
+                clampedElemPos.Y = Math.Max(0, Math.Min(snappedY, layout.Height - view.Height));
 
                 view.TranslationX = clampedElemPos.X;
                 view.TranslationY = clampedElemPos.Y;
@@ -151,7 +156,7 @@ public partial class EditorView : Frame
 
     private void OnTappedInsideCanvas(object sender, TappedEventArgs e)
     {
-        if (BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: null, CurrentCanvas.IsBlocked: true } viewModel)
+        if (BindingContext is MainViewModel { CurrentCanvas.SelectedFigure: null, CurrentCanvas.IsBlocked: true })
         {
             var canvas = (View)sender;
             var point = e.GetPosition(canvas);

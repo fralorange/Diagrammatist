@@ -213,6 +213,9 @@
   <data name="GitHub" xml:space="preserve">
     <value>Нажмите сюда, чтобы перейти на GitHub</value>
   </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Сетка</value>
+  </data>
   <data name="HasBackground" xml:space="preserve">
     <value>Наличие фона</value>
   </data>
@@ -300,6 +303,9 @@
   <data name="Size" xml:space="preserve">
     <value>Размер</value>
   </data>
+  <data name="Step" xml:space="preserve">
+    <value>Шаг сетки</value>
+  </data>
   <data name="TextProperty" xml:space="preserve">
     <value>Текст</value>
   </data>
@@ -332,6 +338,9 @@
   </data>
   <data name="Width" xml:space="preserve">
     <value>Ширина</value>
+  </data>
+  <data name="Zoom" xml:space="preserve">
+    <value>Масштабирование</value>
   </data>
   <data name="ZoomIn" xml:space="preserve">
     <value>Приблизить</value>

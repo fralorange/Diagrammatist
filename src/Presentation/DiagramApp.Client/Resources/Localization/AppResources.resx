@@ -213,6 +213,9 @@
   <data name="GitHub" xml:space="preserve">
     <value>Click here to go to GitHub</value>
   </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
   <data name="HasBackground" xml:space="preserve">
     <value>Has Background</value>
   </data>
@@ -300,6 +303,9 @@
   <data name="Size" xml:space="preserve">
     <value>Size</value>
   </data>
+  <data name="Step" xml:space="preserve">
+    <value>Grid step</value>
+  </data>
   <data name="TextProperty" xml:space="preserve">
     <value>Text</value>
   </data>
@@ -332,6 +338,9 @@
   </data>
   <data name="Width" xml:space="preserve">
     <value>Width</value>
+  </data>
+  <data name="Zoom" xml:space="preserve">
+    <value>Zoom</value>
   </data>
   <data name="ZoomIn" xml:space="preserve">
     <value>Zoom In</value>

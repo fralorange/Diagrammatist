@@ -139,6 +139,7 @@
                                      ScrollX="{Binding CurrentCanvas.Offset.X, Mode=OneWayToSource}"
                                      ScrollY="{Binding CurrentCanvas.Offset.Y, Mode=OneWayToSource}"
                                      Scroll="{Binding CurrentCanvas.Offset, Mode=OneWay}">
+            
             <AbsoluteLayout x:Name="FrameCanvasContainer" 
                             WidthRequest="{Binding CurrentCanvas.ImaginaryWidth}" 
                             HeightRequest="{Binding CurrentCanvas.ImaginaryHeight}">
@@ -152,6 +153,7 @@
                         HeightRequest="{Binding CurrentCanvas.Settings.Height}"
                         Scale="{Binding CurrentCanvas.Zoom}"
                         Rotation="{Binding CurrentCanvas.Rotation}">
+                    
                     <Border.Triggers>
                         <DataTrigger Binding="{Binding IsCanvasNotNull}" TargetType="Border" Value="False">
                             <Setter Property="Opacity" Value="0" />
@@ -161,16 +163,22 @@
                         </DataTrigger>
                     </Border.Triggers>
 
-                    <AbsoluteLayout x:Name="CanvasContent"
-                                    BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}"
-                                    BindableLayout.ItemTemplateSelector="{StaticResource FigureSelector}">
-                        <AbsoluteLayout.GestureRecognizers>
-                            <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
-                                                      PointerExited="OnPointerExitedFromCanvas"/>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"
-                                                  Tapped="OnTappedInsideCanvas"/>
-                        </AbsoluteLayout.GestureRecognizers>
-                    </AbsoluteLayout>
+                    <Grid>
+                        <controls:VisibleGridView x:Name="CanvasGrid"
+                                                  GridSpacing="{Binding CurrentCanvas.GridSpacing}"
+                                                  IsVisible="{Binding CurrentCanvas.IsGridVisible}"/>
+                        <AbsoluteLayout x:Name="CanvasContent"
+                                        BindableLayout.ItemsSource="{Binding CurrentCanvas.Figures}"
+                                        BindableLayout.ItemTemplateSelector="{StaticResource FigureSelector}">
+                            <AbsoluteLayout.GestureRecognizers>
+                                <PointerGestureRecognizer PointerMoved="OnPointerMovedInsideCanvas"
+                                                          PointerExited="OnPointerExitedFromCanvas"/>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=ResetItemInCanvasCommand}"
+                                                      Tapped="OnTappedInsideCanvas"/>
+                            </AbsoluteLayout.GestureRecognizers>
+                        </AbsoluteLayout>
+                    </Grid>
+                    
                 </Border>
 
                 <AbsoluteLayout.GestureRecognizers>
@@ -178,6 +186,7 @@
                     <PointerGestureRecognizer PointerEntered="OnPointerEntered"/>
                 </AbsoluteLayout.GestureRecognizers>
             </AbsoluteLayout>
+            
         </controls:BindableScrollView>
 
         <Frame x:Name="SlideoutConfirmationView"
