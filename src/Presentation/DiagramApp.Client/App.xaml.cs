@@ -8,6 +8,8 @@ namespace DiagramApp.Client
             InitializeComponent();
 
             MainPage = new AppShell();
+
+            LoadPreferedTheme();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
@@ -24,5 +26,7 @@ namespace DiagramApp.Client
 #endif
             return window;
         }
+
+        private void LoadPreferedTheme() => Current!.UserAppTheme = (AppTheme)Enum.Parse(typeof(AppTheme), Preferences.Get("AppTheme", "Unspecified"));
     }
 }

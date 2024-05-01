@@ -183,14 +183,12 @@
         </Setter>
     </Style>
 
-    <!--<Style TargetType="Entry">
+    <Style TargetType="Entry">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -203,10 +201,10 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
-    </Style>-->
+    </Style>
 
     <Style TargetType="Entry" x:Key="EntryNew">
-        <Setter Property="WidthRequest" Value="120"/>
+        <Setter Property="WidthRequest" Value="160"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
@@ -358,14 +356,12 @@
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
     </Style>
 
-    <!--<Style TargetType="Picker">
+    <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -379,10 +375,10 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
-    </Style>-->
+    </Style>
 
     <Style TargetType="Picker" x:Key="PickerNew">
-        <Setter Property="WidthRequest" Value="120"/>
+        <Setter Property="WidthRequest" Value="160"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 

@@ -232,6 +232,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Dark Theme.
+        /// </summary>
+        internal static string DarkTheme {
+            get {
+                return ResourceManager.GetString("DarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Dashed.
         /// </summary>
         internal static string Dashed {
@@ -408,6 +417,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Light Theme.
+        /// </summary>
+        internal static string LightTheme {
+            get {
+                return ResourceManager.GetString("LightTheme", resourceCulture);
             }
         }
         
@@ -601,6 +619,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Shapes.
         /// </summary>
         internal static string Shapes {
@@ -628,6 +655,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на System Theme.
+        /// </summary>
+        internal static string SystemTheme {
+            get {
+                return ResourceManager.GetString("SystemTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Text.
         /// </summary>
         internal static string TextProperty {
@@ -642,6 +678,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string TextSize {
             get {
                 return ResourceManager.GetString("TextSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme.
+        /// </summary>
+        internal static string Theme {
+            get {
+                return ResourceManager.GetString("Theme", resourceCulture);
             }
         }
         

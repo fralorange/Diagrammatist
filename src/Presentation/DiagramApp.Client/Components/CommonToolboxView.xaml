@@ -29,8 +29,7 @@
                       RowDefinitions="Auto, Auto">
                     <Polyline Grid.Row="0"
                               Points="{Binding Figure, Converter={StaticResource FigureToValidPropertyConverter}}"
-                              Stroke="White"
-                              StrokeThickness="2"
+                              Style="{StaticResource Flow}"
                               ToolTipProperties.Text="{Binding Figure.Name}"/>
                 </Grid>
             </DataTemplate>
