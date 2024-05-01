@@ -61,7 +61,7 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на About DiagramApp.
+        ///   Ищет локализованную строку, похожую на About Diagrammatist.
         /// </summary>
         internal static string AboutApp {
             get {
@@ -403,7 +403,7 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на DiagramApp Help.
+        ///   Ищет локализованную строку, похожую на Diagrammatist Help.
         /// </summary>
         internal static string HelpApp {
             get {

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutApp" xml:space="preserve">
-    <value>О DiagramApp</value>
+    <value>О Diagrammatist</value>
   </data>
   <data name="AdvancedToolbox" xml:space="preserve">
     <value>Продвинутый инструментарий</value>
@@ -232,7 +232,7 @@
     <value>Справка</value>
   </data>
   <data name="HelpApp" xml:space="preserve">
-    <value>DiagramApp Справка</value>
+    <value>Diagrammatist Справка</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Язык</value>

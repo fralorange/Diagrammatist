@@ -26,7 +26,7 @@
                     </Label.FormattedText>
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TapCommand}"
-                                              CommandParameter="https://github.com/fralorange/diagram-app"/>
+                                              CommandParameter="https://github.com/fralorange/Diagrammatist"/>
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>
