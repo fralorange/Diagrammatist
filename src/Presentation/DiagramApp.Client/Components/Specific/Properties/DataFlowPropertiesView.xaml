@@ -7,7 +7,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       x:Class="DiagramApp.Client.Components.Specific.Properties.DataFlowPropertiesView"
       x:DataType="viewmodel:MainViewModel"
-      RowDefinitions="*, Auto">
+      RowDefinitions="*, *, Auto"
+      RowSpacing="5">
 
     <toolkit:UniformItemsLayout MaxColumns="2"
                                 Padding="5"
@@ -31,9 +32,50 @@
                   IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Dashed, Mode=OneWay}"
                   CheckedChanged="OnDashedCheckboxChanged"/>
     </toolkit:UniformItemsLayout>
+    <VerticalStackLayout Grid.Row="1"
+                         Padding="5"
+                         Spacing="5">
+        <Label Text="{loc:Translate Coords}"
+               HorizontalTextAlignment="Center"/>
+        <CollectionView ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Points}"
+                        x:DataType="Point">
+            <CollectionView.Header>
+                <Grid RowDefinitions="Auto"
+                      ColumnDefinitions="*, *">
+                    <Label Grid.Column="0"
+                           Text="X"
+                           HorizontalTextAlignment="Center"/>
+                    <Label Grid.Column="1"
+                           Text="Y"
+                           HorizontalTextAlignment="Center"/>
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid RowDefinitions="Auto"
+                          ColumnDefinitions="*, *"
+                          Padding="0"
+                          ColumnSpacing="2"
+                          Margin="0">
+                        <Entry Grid.Column="0"
+                               Text="{Binding X, Mode=OneWay}"
+                               HorizontalTextAlignment="Center"
+                               Placeholder="0"
+                               Completed="OnEntryXCompleted"/>
+                        <Entry Grid.Column="1"
+                               Text="{Binding Y,Mode=OneWay}"
+                               HorizontalTextAlignment="Center"
+                               Placeholder="0"
+                               Completed="OnEntryYCompleted"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
     <StackLayout Orientation="Horizontal" 
                  Spacing="5"
-                 Grid.Row="2">
+                 Grid.Row="2"
+                 Margin="0, 15, 0, 0">
         <VerticalStackLayout Style="{StaticResource LineJoinLayout}">
             <ImageButton Source="{AppThemeBinding Light=miter.png, Dark=miter_dark.png}"
                          Style="{StaticResource Tool}"

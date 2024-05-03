@@ -30,7 +30,14 @@ public partial class CommonToolboxView : Grid
                         break;
                     case PolylineFigure polylineFigure:
                         var blockedPoints = await viewModel.CurrentCanvas.BlockAsync<List<System.Drawing.Point>>();
-                        if (blockedPoints is null) return;
+                        if (blockedPoints is null) 
+                        {
+                            Dispatcher.Dispatch(() =>
+                            {
+                                collectionView.SelectedItem = null;
+                            });
+                            return;
+                        };
                         var points = new List<System.Drawing.Point>(blockedPoints);
                         var (translatedX, translatedY) = points.Count > 1
                             ? (points.Min(pt => pt.X), points.Min(pt => pt.Y))

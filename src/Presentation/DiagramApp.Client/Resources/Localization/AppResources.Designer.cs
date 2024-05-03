@@ -214,6 +214,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Points.
+        /// </summary>
+        internal static string Coords {
+            get {
+                return ResourceManager.GetString("Coords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New.
         /// </summary>
         internal static string Create {

@@ -168,6 +168,9 @@
   <data name="Controls" xml:space="preserve">
     <value>Controls</value>
   </data>
+  <data name="Coords" xml:space="preserve">
+    <value>Points</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>New</value>
   </data>

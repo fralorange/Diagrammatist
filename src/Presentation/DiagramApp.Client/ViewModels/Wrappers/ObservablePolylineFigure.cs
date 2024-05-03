@@ -1,14 +1,20 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DiagramApp.Domain.Canvas.Figures;
 using Microsoft.Maui.Controls.Shapes;
+using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.ViewModels.Wrappers
 {
     public partial class ObservablePolylineFigure : ObservableFigure
     {
-        private readonly PolylineFigure _polylineFigure;
+        [ObservableProperty]
+        private ObservableCollection<System.Drawing.Point> _points;
 
-        public ObservablePolylineFigure(PolylineFigure polylineFigure) : base(polylineFigure) => _polylineFigure = polylineFigure;
+        public ObservablePolylineFigure(PolylineFigure polylineFigure) : base(polylineFigure)
+        {
+            _points = polylineFigure.Points.ToObservableCollection();
+        }
 
         [ObservableProperty]
         private double _thickness = 2;
@@ -18,11 +24,5 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         [ObservableProperty]
         private PenLineJoin _lineJoin;
-
-        public List<System.Drawing.Point> Points
-        {
-            get => _polylineFigure.Points;
-            set => SetProperty(_polylineFigure.Points, value, _polylineFigure, (pF, ps) => pF.Points = ps);
-        }
     }
 }
