@@ -214,6 +214,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Points.
+        /// </summary>
+        internal static string Coords {
+            get {
+                return ResourceManager.GetString("Coords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New.
         /// </summary>
         internal static string Create {
@@ -318,6 +327,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Experimental feature.
+        /// </summary>
+        internal static string Experimental {
+            get {
+                return ResourceManager.GetString("Experimental", resourceCulture);
             }
         }
         
@@ -741,6 +759,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Unnamed {
             get {
                 return ResourceManager.GetString("Unnamed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Use at your own risk!.
+        /// </summary>
+        internal static string UseAtYourOwnRisk {
+            get {
+                return ResourceManager.GetString("UseAtYourOwnRisk", resourceCulture);
             }
         }
         

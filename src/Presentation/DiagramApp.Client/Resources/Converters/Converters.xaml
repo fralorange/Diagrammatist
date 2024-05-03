@@ -10,5 +10,7 @@
     <local:IsElementConverter x:Key="IsElementConverter"/>
     <local:BoolToAspectRatioConverter x:Key="BoolToAspectRatioConverter"/>
     <local:BoolToStrokeDashArrayConverter x:Key="BoolToStrokeDashArrayConverter"/>
+    <local:PointsToPointCollectionConverter x:Key="PointsToPointCollectionConverter"/>
+    <local:PathDataToDataConverter x:Key="PathDataToDataConverter"/>
 </ResourceDictionary>
 
