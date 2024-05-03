@@ -14,7 +14,7 @@
             <!--Refactor flyoutbase.contextflyout and other repeating stuff-->
             <DataTemplate x:Key="PathFigureTemplate"
                           x:DataType="wrappers:ObservablePathFigure">
-                <Path Data="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
+                <Path Data="{Binding PathData, Converter={StaticResource PathDataToDataConverter}}"
                       Style="{StaticResource Shape}"
                       Aspect="{Binding Aspect, Mode=OneWay, Converter={StaticResource BoolToAspectRatioConverter}}"
                       TranslationX="{Binding TranslationX, Mode=TwoWay}"
@@ -48,7 +48,7 @@
             </DataTemplate>
             <DataTemplate x:Key="PolylineFigureTemplate"
                           x:DataType="wrappers:ObservablePolylineFigure">
-                <Polyline Points="{Binding ., Converter={StaticResource FigureToValidPropertyConverter}}"
+                <Polyline Points="{Binding Points, Converter={StaticResource PointsToPointCollectionConverter}}"
                           Style="{StaticResource Flow}"
                           StrokeThickness="{Binding Thickness, Mode=OneWay}"
                           StrokeDashArray="{Binding Dashed, Mode=OneWay, Converter={StaticResource BoolToStrokeDashArrayConverter}}"

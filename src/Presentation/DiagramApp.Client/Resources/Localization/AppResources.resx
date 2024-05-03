@@ -207,6 +207,9 @@
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="Experimental" xml:space="preserve">
+    <value>Experimental feature</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export to PNG</value>
   </data>
@@ -347,6 +350,9 @@
   </data>
   <data name="Unnamed" xml:space="preserve">
     <value>Unnamed</value>
+  </data>
+  <data name="UseAtYourOwnRisk" xml:space="preserve">
+    <value>Use at your own risk!</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>

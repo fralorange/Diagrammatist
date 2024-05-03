@@ -11,11 +11,6 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [ObservableProperty]
         private ObservableCollection<System.Drawing.Point> _points;
 
-        public ObservablePolylineFigure(PolylineFigure polylineFigure) : base(polylineFigure)
-        {
-            _points = polylineFigure.Points.ToObservableCollection();
-        }
-
         [ObservableProperty]
         private double _thickness = 2;
 
@@ -24,5 +19,14 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         [ObservableProperty]
         private PenLineJoin _lineJoin;
+
+        public ObservablePolylineFigure(PolylineFigure polylineFigure) : base(polylineFigure)
+        {
+            _points = polylineFigure.Points.ToObservableCollection();
+            _points.CollectionChanged += PointsCollectionChanged;
+        }
+
+        private void PointsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) 
+            => OnPropertyChanged(nameof(Points));
     }
 }

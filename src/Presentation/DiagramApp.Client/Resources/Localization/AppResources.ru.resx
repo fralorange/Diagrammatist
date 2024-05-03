@@ -207,6 +207,9 @@
   <data name="Exit" xml:space="preserve">
     <value>Выход</value>
   </data>
+  <data name="Experimental" xml:space="preserve">
+    <value>Экспериментальное свойство</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Экспорт в PNG</value>
   </data>
@@ -347,6 +350,9 @@
   </data>
   <data name="Unnamed" xml:space="preserve">
     <value>Безымянный</value>
+  </data>
+  <data name="UseAtYourOwnRisk" xml:space="preserve">
+    <value>Используйте на свой риск!</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>Вид</value>
