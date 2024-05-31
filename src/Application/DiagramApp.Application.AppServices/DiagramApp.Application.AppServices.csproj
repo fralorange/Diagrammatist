@@ -25,6 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Contracts\DiagramApp.Contracts\DiagramApp.Contracts.csproj" />
 	  <ProjectReference Include="..\..\Domain\DiagramApp.Domain\DiagramApp.Domain.csproj" />
 	</ItemGroup>
 

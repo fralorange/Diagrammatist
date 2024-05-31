@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Maui;
-using DiagramApp.Application.AppServices.Services;
+using DiagramApp.Application.AppServices.Services.Toolbox;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.Views;
 using LocalizationResourceManager.Maui;

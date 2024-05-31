@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Helpers;
-using DiagramApp.Application.AppServices.Services;
+using DiagramApp.Application.AppServices.Services.Toolbox;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
@@ -20,7 +20,7 @@ namespace DiagramApp.Client.ViewModels
         public string? CurrentLanguage => _localizationResourceManager?.CurrentCulture.TwoLetterISOLanguageName;
 
         [ObservableProperty]
-        private string _currentTheme = App.Current.UserAppTheme.ToString();
+        private string _currentTheme = App.Current!.UserAppTheme.ToString();
 
         private int _canvasCounter = 0;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = [];

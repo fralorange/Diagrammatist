@@ -3,7 +3,7 @@ using DiagramApp.Domain.Toolbox;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 
-namespace DiagramApp.Application.AppServices.Services
+namespace DiagramApp.Application.AppServices.Services.Toolbox
 {
     public partial class ToolboxService : IToolboxService
     {
