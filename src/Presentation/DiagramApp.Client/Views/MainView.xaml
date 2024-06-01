@@ -19,25 +19,49 @@
                                          Key="N"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="{loc:Translate Open}"/>
+            <MenuFlyoutItem Text="{loc:Translate Open}"
+                            Command="{Binding LoadCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="O"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="{loc:Translate Close}"
                             IsEnabled="{Binding IsCanvasNotNull}"
                             Command="{Binding CloseCanvasCommand}"
-                            CommandParameter="{Binding CurrentCanvas}"/>
+                            CommandParameter="{Binding CurrentCanvas}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="W"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutItem Text="{loc:Translate CloseAll}"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding CanvasCounter, Converter={toolkit:IntToBoolConverter}}"
+                            Command="{Binding CloseAllCanvasesCommand}"/>
             <MenuFlyoutItem Text="{loc:Translate Save}"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding CurrentCanvas.CanSave, FallbackValue='False'}"
+                            Command="{Binding SaveCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="S"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutItem Text="{loc:Translate SaveAs}"
-                            IsEnabled="False"/>
+                            IsEnabled="{Binding IsCanvasNotNull}"
+                            Command="{Binding SaveAsCommand}"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="{loc:Translate Export}"
                             IsEnabled="{Binding IsCanvasNotNull}"
                             Clicked="ExportButtonClicked"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="{loc:Translate Exit}"
-                            Clicked="OnExitClicked"/>
+                            Command="{Binding ExitCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Ctrl"
+                                         Key="Q"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
         </MenuBarItem>
         <MenuBarItem Text="{loc:Translate Edit}">
             <MenuFlyoutItem Text="{loc:Translate Undo}"

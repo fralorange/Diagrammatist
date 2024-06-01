@@ -4,7 +4,7 @@ namespace DiagramApp.Application.AppServices.Services.File
 {
     public interface IFileService
     {
-        void Save(CanvasDto canvasDto, string filePath);
+        byte[] Save(CanvasDto canvasDto);
         CanvasDto? Load(string filePath);
     }
 }

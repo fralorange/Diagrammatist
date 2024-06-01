@@ -6,9 +6,9 @@ namespace DiagramApp.Application.AppServices.Services.File
 {
     public class FileService : IFileService
     {
-        public void Save(CanvasDto canvasDto, string filePath)
+        public byte[] Save(CanvasDto canvasDto)
         {
-            using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream)) 
             {
                 writer.Write(canvasDto.ImaginaryWidth);
@@ -25,6 +25,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                 writer.Write(canvasDto.IsGridVisible);
                 writer.Write(canvasDto.GridSpacing);
                 writer.Write(canvasDto.Rotation);
+                writer.Write(canvasDto.FileLocation);
                 writer.Write(canvasDto.Figures.Count);
                 foreach (var figure in canvasDto.Figures)
                 {
@@ -60,6 +61,8 @@ namespace DiagramApp.Application.AppServices.Services.File
                             break;
                     }
                 }
+                writer.Flush();
+                return stream.ToArray();
             }
         }
 
@@ -93,6 +96,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                     IsGridVisible = reader.ReadBoolean(),
                     GridSpacing = reader.ReadDouble(),
                     Rotation = reader.ReadDouble(),
+                    FileLocation = reader.ReadString(),
                 };
 
                 int figureCount = reader.ReadInt32();

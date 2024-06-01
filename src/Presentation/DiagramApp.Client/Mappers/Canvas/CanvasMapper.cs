@@ -41,6 +41,7 @@ namespace DiagramApp.Client.Mappers.Canvas
                 IsGridVisible = canvas.IsGridVisible,
                 GridSpacing = canvas.GridSpacing,
                 Rotation = canvas.Rotation,
+                FileLocation = canvas.FileLocation,
                 Figures = canvas.Figures.Select(f => _figureMapper.ToDto(f)).ToList()
             };
         }
@@ -74,6 +75,7 @@ namespace DiagramApp.Client.Mappers.Canvas
                 IsGridVisible = dto.IsGridVisible,
                 GridSpacing = dto.GridSpacing,
                 Rotation = dto.Rotation,
+                FileLocation = dto.FileLocation,
             };
 
             foreach (var item in dto.Figures)

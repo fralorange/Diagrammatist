@@ -12,18 +12,16 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         private readonly Stack<Action> _undoCommands = [];
         private readonly Stack<Action> _redoCommands = [];
 
+        public string FileLocation { get; set; } = string.Empty;
+
+        [ObservableProperty]
+        private bool _canSave;
+
         [ObservableProperty]
         private bool _canUndo;
 
         [ObservableProperty]
         private bool _canRedo;
-
-        public ObservableCanvas(Canvas canvas)
-        {
-            _canvas = canvas;
-            Zoom = _canvas.Zoom;
-            Offset = new ObservableOffset(_canvas.Offset);
-        }
 
         [ObservableProperty]
         private bool _isGridVisible = true;
@@ -80,7 +78,15 @@ namespace DiagramApp.Client.ViewModels.Wrappers
             set => SetProperty(_canvas.Settings, value, _canvas, (c, sett) => c.Settings = sett);
         }
 
+        public ObservableCanvas(Canvas canvas)
+        {
+            _canvas = canvas;
+            Zoom = _canvas.Zoom;
+            Offset = new ObservableOffset(_canvas.Offset);
+        }
+
         internal virtual void OnBlockedResourcesReceived(object obj) => BlockedResourcesReceived?.Invoke(this, obj);
+
         public async Task<TResult> BlockAsync<TResult>()
         {
             var tcs = new TaskCompletionSource<TResult>();
@@ -101,11 +107,14 @@ namespace DiagramApp.Client.ViewModels.Wrappers
             var result = await tcs.Task;
             return result;
         }
+
         private void UpdateUndoRedoState()
         {
             CanUndo = _undoCommands.Count != 0;
             CanRedo = _redoCommands.Count != 0;
+            CanSave = CanUndo;
         }
+
         public void Undo()
         {
             if (CanUndo)
@@ -126,6 +135,8 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         public void ClearRedoCommands() => _redoCommands.Clear();
 
+        public void ClearUndoCommand() => _undoCommands.Clear();
+
         public void AddUndoCommand(Action command)
         {
             _undoCommands.Push(command);
@@ -136,6 +147,16 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             _redoCommands.Push(command);
             UpdateUndoRedoState();
+        }
+
+        public void Save()
+        {
+            if (CanSave)
+            {
+                ClearRedoCommands();
+                ClearUndoCommand();
+                UpdateUndoRedoState();
+            }
         }
 
         public void ChangeGridVisibility()

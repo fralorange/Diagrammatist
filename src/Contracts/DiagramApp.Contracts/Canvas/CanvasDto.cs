@@ -15,5 +15,6 @@ namespace DiagramApp.Contracts.Canvas
         public required double GridSpacing { get; set; }
         public required double Rotation { get; set; }
         public List<FigureDto> Figures { get; set; } = [];
+        public string FileLocation { get; set; } = string.Empty;
     }
 }

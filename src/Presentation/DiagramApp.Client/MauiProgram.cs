@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Maui;
+using DiagramApp.Client.Platforms.Windows.Handlers;
+using DiagramApp.Client.ViewModels;
 using LocalizationResourceManager.Maui;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace DiagramApp.Client
 {
@@ -21,6 +24,26 @@ namespace DiagramApp.Client
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                })
+                .ConfigureLifecycleEvents(events =>
+                {
+#if WINDOWS
+                    events.AddWindows(windowsLifecycleBuilder =>
+                    {
+                        windowsLifecycleBuilder.OnWindowCreated(window =>
+                        {
+                            var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                            var id = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
+                            var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
+
+                            var serviceProvider = builder.Services.BuildServiceProvider();
+                            var localizationResourceManager = serviceProvider.GetService<ILocalizationResourceManager>();
+                            var windowClosingEventHandler = new WindowClosingEventHandler(localizationResourceManager!);
+
+                            appWindow.Closing += windowClosingEventHandler.OnWindowClosing;
+                        });
+                    });
+#endif
                 });
 
 #if DEBUG
