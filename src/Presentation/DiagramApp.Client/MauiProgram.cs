@@ -1,7 +1,4 @@
 ﻿using CommunityToolkit.Maui;
-using DiagramApp.Application.AppServices.Services.Toolbox;
-using DiagramApp.Client.ViewModels;
-using DiagramApp.Client.Views;
 using LocalizationResourceManager.Maui;
 using Microsoft.Extensions.Logging;
 
@@ -29,12 +26,12 @@ namespace DiagramApp.Client
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton<MainView>();
-            builder.Services.AddSingleton<MainViewModel>();
-            builder.Services.AddTransient<IToolboxService, ToolboxService>();
-            builder.Services.AddTransientPopup<AboutPopupView, AboutPopupViewModel>();
-            builder.Services.AddTransientPopup<ChangeDiagramSizePopupView, ChangeDiagramSizePopupViewModel>();
-            builder.Services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewModel>();
+            builder.Services.AddViews();
+            builder.Services.AddViewModels();
+            builder.Services.AddMappers();
+            builder.Services.AddServices();
+            builder.Services.AddPopups();
+
             return builder.Build();
         }
     }
