@@ -38,7 +38,12 @@
             </MenuFlyoutItem>
             <MenuFlyoutItem Text="{loc:Translate CloseAll}"
                             IsEnabled="{Binding CanvasCounter, Converter={toolkit:IntToBoolConverter}}"
-                            Command="{Binding CloseAllCanvasesCommand}"/>
+                            Command="{Binding CloseAllCanvasesCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Alt,Ctrl"
+                                         Key="W"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutItem Text="{loc:Translate Save}"
                             IsEnabled="{Binding CurrentCanvas.CanSave, FallbackValue='False'}"
                             Command="{Binding SaveCommand}">
@@ -49,7 +54,12 @@
             </MenuFlyoutItem>
             <MenuFlyoutItem Text="{loc:Translate SaveAs}"
                             IsEnabled="{Binding IsCanvasNotNull}"
-                            Command="{Binding SaveAsCommand}"/>
+                            Command="{Binding SaveAsCommand}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Shift,Ctrl"
+                                         Key="S"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="{loc:Translate Export}"
                             IsEnabled="{Binding IsCanvasNotNull}"
@@ -132,7 +142,11 @@
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="{loc:Translate ResetView}"
                             Clicked="OnResetViewClicked"
-                            IsEnabled="{Binding IsCanvasNotNull}"/>
+                            IsEnabled="{Binding IsCanvasNotNull}">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Home"/>
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="{loc:Translate Grid}"
                             Command="{Binding ChangeGridVisibilityCommand}"

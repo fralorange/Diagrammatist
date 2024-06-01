@@ -74,12 +74,12 @@ namespace DiagramApp.Client.ViewModels
             {
                 CurrentCanvas.FileLocation = result.FilePath;
 
-                await SaveChanges(result.FilePath);
+                await SaveChangesAsync(result.FilePath);
             }
         }
 
         [RelayCommand]
-        private async Task Save()
+        private async Task SaveAsync()
         {
             if (CurrentCanvas is null)
                 return;
@@ -90,10 +90,10 @@ namespace DiagramApp.Client.ViewModels
                 return;
             }
 
-            await SaveChanges(CurrentCanvas.FileLocation);
+            await SaveChangesAsync(CurrentCanvas.FileLocation);
         }
 
-        private async Task SaveChanges(string path)
+        private async Task SaveChangesAsync(string path)
         {
             var data = _fileService.Save(_canvasMapper.ToDto(CurrentCanvas!));
             await File.WriteAllBytesAsync(path, data);
@@ -102,7 +102,7 @@ namespace DiagramApp.Client.ViewModels
         }
 
         [RelayCommand]
-        private async Task Load()
+        private async Task LoadAsync()
         {
             var file = await FilePicker.Default.PickAsync(new PickOptions
             {
@@ -122,12 +122,16 @@ namespace DiagramApp.Client.ViewModels
         }
 
         [RelayCommand]
-        private async Task Exit()
+        private async Task ExitAsync()
         {
             if (CurrentCanvas is { CanSave: true })
             {
-                await WindowClosingEventHandler.ProcessMessage(_localizationResourceManager);
+                var result = await WindowClosingEventHandler.DisplayMessage(_localizationResourceManager);
+
+                if (!result) return;
             }
+
+            App.Current!.Quit();
         }
 
         [RelayCommand]
@@ -213,19 +217,26 @@ namespace DiagramApp.Client.ViewModels
         }
 
         [RelayCommand]
-        private void CloseCanvas(ObservableCanvas targetCanvas)
+        private async Task CloseCanvasAsync(ObservableCanvas targetCanvas)
         {
+            if (targetCanvas is { CanSave: true })
+            {
+                var result = await WindowClosingEventHandler.DisplayMessage(_localizationResourceManager);
+
+                if (!result) return;
+            }
+
             Canvases.Remove(targetCanvas);
             CurrentCanvas = null;
             IsCanvasNull = true;
         }
 
         [RelayCommand]
-        private void CloseAllCanvases()
+        private async Task CloseAllCanvasesAsync()
         {
             foreach (var canvas in Canvases.ToList())
             {
-                CloseCanvas(canvas);
+                await CloseCanvasAsync(canvas);
             }
         }
 
