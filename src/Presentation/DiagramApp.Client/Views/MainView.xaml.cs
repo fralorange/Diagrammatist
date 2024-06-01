@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Storage;
 using DiagramApp.Client.Controls;
 using DiagramApp.Client.ViewModels;
+using LocalizationResourceManager.Maui;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics.Imaging;
@@ -24,11 +25,6 @@ namespace DiagramApp.Client
                 viewModel.ZoomResetCommand.Execute(null);
                 OnScrollToPosition();
             }
-        }
-
-        private void OnExitClicked(object sender, EventArgs e)
-        {
-            App.Current!.Quit();
         }
 
         private async void ExportButtonClicked(object sender, EventArgs e)

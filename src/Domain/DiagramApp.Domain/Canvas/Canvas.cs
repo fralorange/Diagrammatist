@@ -4,7 +4,6 @@ namespace DiagramApp.Domain.Canvas
 {
     public class Canvas
     {
-        private readonly (int X, int Y) _center = (0, 0);
         public int ImaginaryWidth { get; set; }
         public int ImaginaryHeight { get; set; }
         public DiagramSettingsEntity Settings { get; set; }
@@ -81,8 +80,8 @@ namespace DiagramApp.Domain.Canvas
             int borderWidth = Settings.Width * 3;
             int borderHeight = Settings.Height * 3;
 
-            int borderCenterX = _center.X;
-            int borderCenterY = _center.Y;
+            int borderCenterX = 0;
+            int borderCenterY = 0;
 
             ImaginaryWidth = Math.Abs(borderCenterX - borderWidth / 2) + Math.Abs(borderCenterX + borderWidth / 2);
             ImaginaryHeight = Math.Abs(borderCenterY - borderHeight / 2) + Math.Abs(borderCenterY + borderHeight / 2);

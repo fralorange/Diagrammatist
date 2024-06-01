@@ -1,6 +1,6 @@
 ﻿using DiagramApp.Domain.Toolbox;
 
-namespace DiagramApp.Application.AppServices.Services
+namespace DiagramApp.Application.AppServices.Services.Toolbox
 {
     public interface IToolboxService
     {

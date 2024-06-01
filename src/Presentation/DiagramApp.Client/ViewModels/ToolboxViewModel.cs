@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DiagramApp.Application.AppServices.Services;
+using DiagramApp.Application.AppServices.Services.Toolbox;
 using DiagramApp.Domain.Toolbox;
 using LocalizationResourceManager.Maui;
 

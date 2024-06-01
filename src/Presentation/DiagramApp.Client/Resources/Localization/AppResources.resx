@@ -351,17 +351,26 @@
   <data name="Unnamed" xml:space="preserve">
     <value>Unnamed</value>
   </data>
+  <data name="UnsavedChanges" xml:space="preserve">
+    <value>You have unsaved changes, are you sure you want to continue?</value>
+  </data>
   <data name="UseAtYourOwnRisk" xml:space="preserve">
     <value>Use at your own risk!</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
   <data name="White" xml:space="preserve">
     <value>White</value>
   </data>
   <data name="Width" xml:space="preserve">
     <value>Width</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>

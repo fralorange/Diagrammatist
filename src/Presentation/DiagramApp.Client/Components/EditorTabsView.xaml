@@ -27,6 +27,11 @@
                                  Value="True">
                         <Setter Property="Opacity" Value="0.5"/>
                     </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding CanSave}"
+                                 Value="True">
+                        <Setter Property="Text" Value="{Binding Settings.FileName, StringFormat='{0}*'}"/>
+                    </DataTrigger>
                 </Button.Triggers>
             </Button>
         </DataTemplate>

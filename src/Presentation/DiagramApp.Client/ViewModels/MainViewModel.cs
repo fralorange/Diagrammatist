@@ -1,8 +1,12 @@
 ﻿using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Helpers;
-using DiagramApp.Application.AppServices.Services;
+using DiagramApp.Application.AppServices.Services.File;
+using DiagramApp.Application.AppServices.Services.Toolbox;
+using DiagramApp.Client.Mappers.Canvas;
+using DiagramApp.Client.Platforms.Windows.Handlers;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
 using DiagramApp.Domain.DiagramSettings;
@@ -15,13 +19,16 @@ namespace DiagramApp.Client.ViewModels
     {
         private readonly IPopupService _popupService;
         private readonly IToolboxService _toolboxService;
+        private readonly IFileService _fileService;
         private readonly ILocalizationResourceManager _localizationResourceManager;
+        private readonly ICanvasMapper _canvasMapper;
 
         public string? CurrentLanguage => _localizationResourceManager?.CurrentCulture.TwoLetterISOLanguageName;
 
         [ObservableProperty]
-        private string _currentTheme = App.Current.UserAppTheme.ToString();
+        private string _currentTheme = App.Current!.UserAppTheme.ToString();
 
+        [ObservableProperty]
         private int _canvasCounter = 0;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = [];
 
@@ -36,13 +43,91 @@ namespace DiagramApp.Client.ViewModels
         [ObservableProperty]
         private ToolboxViewModel _toolboxViewModel;
 
-        public MainViewModel(IPopupService popupService, IToolboxService toolboxService, ILocalizationResourceManager localizationResourceManager)
+        public MainViewModel(
+            IPopupService popupService,
+            IToolboxService toolboxService,
+            IFileService fileService,
+            ILocalizationResourceManager localizationResourceManager,
+            ICanvasMapper canvasMapper)
         {
             _popupService = popupService;
             _toolboxService = toolboxService;
+            _fileService = fileService;
             _localizationResourceManager = localizationResourceManager;
+            _canvasMapper = canvasMapper;
 
             _toolboxViewModel = new(_toolboxService, localizationResourceManager);
+        }
+
+        [RelayCommand]
+        private async Task SaveAsAsync()
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            var data = _fileService.Save(_canvasMapper.ToDto(CurrentCanvas));
+            var stream = new MemoryStream(data);
+            
+            var result = await FileSaver.Default.SaveAsync($"{CurrentCanvas.Settings.FileName}.dgmt", stream);
+
+            if (result.IsSuccessful)
+            {
+                CurrentCanvas.FileLocation = result.FilePath;
+
+                await SaveChanges(result.FilePath);
+            }
+        }
+
+        [RelayCommand]
+        private async Task Save()
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            if (string.IsNullOrEmpty(CurrentCanvas.FileLocation))
+            {
+                await SaveAsAsync();
+                return;
+            }
+
+            await SaveChanges(CurrentCanvas.FileLocation);
+        }
+
+        private async Task SaveChanges(string path)
+        {
+            var data = _fileService.Save(_canvasMapper.ToDto(CurrentCanvas!));
+            await File.WriteAllBytesAsync(path, data);
+
+            CurrentCanvas!.Save();
+        }
+
+        [RelayCommand]
+        private async Task Load()
+        {
+            var file = await FilePicker.Default.PickAsync(new PickOptions
+            {
+                FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.WinUI, new[] { ".dgmt" } },
+                })
+            });
+
+            var loadedFile = _fileService.Load(file!.FullPath);
+            var canvas = _canvasMapper.FromDto(loadedFile!);
+
+            Canvases.Add(canvas);
+            CanvasCounter++;
+
+            await SelectCanvasAsync(canvas);
+        }
+
+        [RelayCommand]
+        private async Task Exit()
+        {
+            if (CurrentCanvas is { CanSave: true })
+            {
+                await WindowClosingEventHandler.ProcessMessage(_localizationResourceManager);
+            }
         }
 
         [RelayCommand]
@@ -61,7 +146,7 @@ namespace DiagramApp.Client.ViewModels
             if (result is DiagramSettings settings)
             {
                 if (string.IsNullOrEmpty(settings.FileName))
-                    settings.FileName = $"{_localizationResourceManager["Unnamed"]}{++_canvasCounter}";
+                    settings.FileName = $"{_localizationResourceManager["Unnamed"]}{++CanvasCounter}";
                 Canvas canvas = new(settings);
                 ObservableCanvas observableCanvas = new(canvas);
 
@@ -134,7 +219,16 @@ namespace DiagramApp.Client.ViewModels
             CurrentCanvas = null;
             IsCanvasNull = true;
         }
-        //maybe try create some what of factory for this like:
+
+        [RelayCommand]
+        private void CloseAllCanvases()
+        {
+            foreach (var canvas in Canvases.ToList())
+            {
+                CloseCanvas(canvas);
+            }
+        }
+
         [RelayCommand]
         private void DeleteItemFromCanvas(ObservableFigure figure)
         {
