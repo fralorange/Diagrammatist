@@ -20,23 +20,23 @@ namespace DiagramApp.Client.Platforms.Windows.Handlers
             {
                 e.Cancel = true;
 
-                await ProcessMessage(_localizationResourceManager);
+                var result = await DisplayMessage(_localizationResourceManager);
+
+                if (result)
+                {
+                    App.Current!.Quit();
+                }
             }
         }
 
-        public static async Task ProcessMessage(ILocalizationResourceManager localizationResourceManager)
+        public static async Task<bool> DisplayMessage(ILocalizationResourceManager localizationResourceManager)
         {
             var warning = localizationResourceManager!["Warning"] + "!";
             var message = localizationResourceManager["UnsavedChanges"];
             var confirm = localizationResourceManager["Yes"];
             var cancel = localizationResourceManager["Cancel"];
 
-            bool result = await App.Current!.MainPage!.DisplayAlert(warning, message, confirm, cancel);
-
-            if (result)
-            {
-                App.Current.Quit();
-            }
+            return await App.Current!.MainPage!.DisplayAlert(warning, message, confirm, cancel);
         }
     }
 }

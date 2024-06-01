@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui;
 using DiagramApp.Client.Platforms.Windows.Handlers;
-using DiagramApp.Client.ViewModels;
 using LocalizationResourceManager.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
