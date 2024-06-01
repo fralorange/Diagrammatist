@@ -6,7 +6,7 @@ namespace DiagramApp.Application.AppServices.Services.File
 {
     public class FileService : IFileService
     {
-        public void SaveAsync(CanvasDto canvasDto, string filePath)
+        public void Save(CanvasDto canvasDto, string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
             using (var writer = new BinaryWriter(stream)) 
@@ -63,7 +63,7 @@ namespace DiagramApp.Application.AppServices.Services.File
             }
         }
 
-        public CanvasDto? LoadAsync(string filePath)
+        public CanvasDto? Load(string filePath)
         {
             if (!System.IO.File.Exists(filePath) || !filePath.EndsWith(".dgmt"))
                 return null;

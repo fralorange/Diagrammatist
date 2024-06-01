@@ -4,7 +4,7 @@ namespace DiagramApp.Application.AppServices.Services.File
 {
     public interface IFileService
     {
-        void SaveAsync(CanvasDto canvasDto, string filePath);
-        CanvasDto? LoadAsync(string filePath);
+        void Save(CanvasDto canvasDto, string filePath);
+        CanvasDto? Load(string filePath);
     }
 }
