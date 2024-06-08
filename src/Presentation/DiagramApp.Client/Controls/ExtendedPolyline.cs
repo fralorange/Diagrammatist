@@ -65,7 +65,7 @@ namespace DiagramApp.Client.Controls
 
         private void AddArrowToEnd(PathF path, Point start, Point end)
         {
-            var arrowLength = 20;
+            var arrowLength = 10;
             var arrowAngle = Math.PI / 6;
 
             var angle = Math.Atan2(end.Y - start.Y, end.X - start.X);
