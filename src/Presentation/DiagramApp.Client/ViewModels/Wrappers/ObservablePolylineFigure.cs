@@ -18,6 +18,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         private bool _dashed;
 
         [ObservableProperty]
+        private bool _arrow;
+
+        [ObservableProperty]
         private PenLineJoin _lineJoin;
 
         public ObservablePolylineFigure(PolylineFigure polylineFigure) : base(polylineFigure)

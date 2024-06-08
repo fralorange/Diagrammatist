@@ -123,6 +123,12 @@
   <data name="AdvancedToolbox" xml:space="preserve">
     <value>Advanced Toolbox</value>
   </data>
+  <data name="Arrow" xml:space="preserve">
+    <value>Arrow</value>
+  </data>
+  <data name="ArrowDescription" xml:space="preserve">
+    <value>Adds an arrow to the end of the line</value>
+  </data>
   <data name="AspectRatio" xml:space="preserve">
     <value>1 to 1 ratio</value>
   </data>

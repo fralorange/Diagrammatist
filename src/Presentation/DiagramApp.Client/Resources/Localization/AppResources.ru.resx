@@ -123,6 +123,12 @@
   <data name="AdvancedToolbox" xml:space="preserve">
     <value>Продвинутый инструментарий</value>
   </data>
+  <data name="Arrow" xml:space="preserve">
+    <value>Стрелка</value>
+  </data>
+  <data name="ArrowDescription" xml:space="preserve">
+    <value>Добавляет стрелку на конец линии</value>
+  </data>
   <data name="AspectRatio" xml:space="preserve">
     <value>1 к 1 стороны</value>
   </data>

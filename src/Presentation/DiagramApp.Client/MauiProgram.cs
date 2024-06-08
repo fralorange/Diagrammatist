@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using DiagramApp.Client.Controls;
 using DiagramApp.Client.Platforms.Windows.Handlers;
 using LocalizationResourceManager.Maui;
 using Microsoft.Extensions.Logging;
@@ -43,6 +44,10 @@ namespace DiagramApp.Client
                         });
                     });
 #endif
+                })
+                .ConfigureMauiHandlers(handlers =>
+                {
+                    handlers.AddHandler<ExtendedPolyline, ExtendedPolylineHandler>();
                 });
 
 #if DEBUG

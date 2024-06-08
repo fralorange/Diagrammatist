@@ -2,7 +2,6 @@ using DiagramApp.Application.AppServices.Helpers;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
 using Microsoft.Maui.Controls.Shapes;
-using System.ComponentModel.DataAnnotations;
 
 namespace DiagramApp.Client.Components.Specific.Properties;
 
@@ -21,7 +20,10 @@ public partial class DataFlowPropertiesView : Grid
     }
 
     private void OnDashedCheckboxChanged(object sender, CheckedChangedEventArgs e)
-    => PropertiesView.HandleCheckboxCompleted(BindingContext, "Dashed", e);
+        => PropertiesView.HandleCheckboxCompleted(BindingContext, "Dashed", e);
+
+    private void OnArrowCheckboxChanged(object sender, CheckedChangedEventArgs e)
+        => PropertiesView.HandleCheckboxCompleted(BindingContext, "Arrow", e);
 
     private void OnLineJoinButtonClicked(object sender, string arg)
     {

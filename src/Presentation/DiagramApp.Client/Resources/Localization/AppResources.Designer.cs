@@ -79,6 +79,24 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Arrow.
+        /// </summary>
+        internal static string Arrow {
+            get {
+                return ResourceManager.GetString("Arrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Adds an arrow to the end of the line.
+        /// </summary>
+        internal static string ArrowDescription {
+            get {
+                return ResourceManager.GetString("ArrowDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на 1 to 1 ratio.
         /// </summary>
         internal static string AspectRatio {
