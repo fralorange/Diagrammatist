@@ -79,6 +79,9 @@
 	  <Compile Update="Components\Specific\Properties\DataFlowPropertiesView.xaml.cs">
 	    <DependentUpon>DataFlowPropertiesView.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Components\Specific\Properties\ShapeTextPropertiesView.xaml.cs">
+	    <DependentUpon>ShapeTextPropertiesView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Localization\AppResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -123,6 +126,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Specific\Properties\DataFlowPropertiesView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Specific\Properties\ShapeTextPropertiesView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\Specific\Properties\ShapePropertiesView.xaml">

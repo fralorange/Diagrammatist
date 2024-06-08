@@ -46,6 +46,48 @@
                     </FlyoutBase.ContextFlyout>
                 </Path>
             </DataTemplate>
+            <DataTemplate x:Key="PathTextFigureTemplate"
+                          x:DataType="wrappers:ObservablePathTextFigure">
+                <Border StrokeThickness="0"
+                        Background="Transparent"
+                        TranslationX="{Binding TranslationX, Mode=TwoWay}"
+                          TranslationY="{Binding TranslationY, Mode=TwoWay}"
+                          WidthRequest="{Binding Width, Mode=OneWay}"
+                          HeightRequest="{Binding Height, Mode=OneWay}"
+                          Rotation="{Binding Rotation, Mode=OneWay}"
+                          ZIndex="{Binding ZIndex, Mode=OneWay}"
+                          InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
+                    <Grid>
+                        <Path Data="{Binding PathData, Converter={StaticResource PathDataToDataConverter}}"
+                              Style="{StaticResource Shape}"
+                              Aspect="{Binding Aspect, Mode=OneWay, Converter={StaticResource BoolToAspectRatioConverter}}"/>
+                        <Label Text="{Binding Text}"
+                               FontSize="{Binding FontSize}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"/>
+                    </Grid>
+                    <Border.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="OnPanElementUpdated"/>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SelectItemInCanvasCommand}"
+                                              CommandParameter="{Binding .}"/>
+                        <PointerGestureRecognizer PointerEntered="OnPointerElementEntered"/>
+                    </Border.GestureRecognizers>
+                    <FlyoutBase.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate BringForward}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate SendBackward}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                            CommandParameter="{Binding .}"/>
+                        </MenuFlyout>
+                    </FlyoutBase.ContextFlyout>
+                </Border>
+            </DataTemplate>
             <DataTemplate x:Key="PolylineFigureTemplate"
                           x:DataType="wrappers:ObservablePolylineFigure">
                 <Polyline Points="{Binding Points, Converter={StaticResource PointsToPointCollectionConverter}}"
@@ -127,6 +169,7 @@
             </DataTemplate>
             <components:FigureDataTemplateSelector x:Key="FigureSelector"
                                                    PathFigureTemplate="{StaticResource PathFigureTemplate}"
+                                                   PathTextFigureTemplate="{StaticResource PathTextFigureTemplate}"
                                                    PolylineFigureTemplate="{StaticResource PolylineFigureTemplate}"
                                                    TextFigureTemplate="{StaticResource TextFigureTemplate}"/>
         </ResourceDictionary>

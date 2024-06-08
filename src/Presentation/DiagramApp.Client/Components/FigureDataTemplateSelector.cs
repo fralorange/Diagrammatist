@@ -9,6 +9,7 @@ namespace DiagramApp.Client.Components
         {
             return item switch
             {
+                ObservablePathTextFigure => PathTextFigureTemplate,
                 ObservablePathFigure => PathFigureTemplate,
                 ObservablePolylineFigure => PolylineFigureTemplate,
                 ObservableTextFigure => TextFigureTemplate,

@@ -11,7 +11,7 @@ namespace DiagramApp.Client.Converters
             var valueType = value.GetType();
             var parameterType = parameter as Type;
 
-            return parameterType!.IsAssignableFrom(valueType);
+            return valueType == parameterType;
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
