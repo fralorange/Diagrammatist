@@ -32,6 +32,19 @@
                     </Path.GestureRecognizers>
                     <FlyoutBase.ContextFlyout>
                         <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate Copy}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CopyItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Cut}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CutItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Duplicate}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DuplicateItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
                             <MenuFlyoutItem Text="{loc:Translate BringForward}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
                                                 CommandParameter="{Binding .}"/>
@@ -39,9 +52,6 @@
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
                                                 CommandParameter="{Binding .}"/>
                             <MenuFlyoutSeparator/>
-                            <MenuFlyoutItem Text="{loc:Translate Delete}"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
-                                                CommandParameter="{Binding .}"/>
                         </MenuFlyout>
                     </FlyoutBase.ContextFlyout>
                 </Path>
@@ -74,16 +84,26 @@
                     </Border.GestureRecognizers>
                     <FlyoutBase.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="{loc:Translate BringForward}"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                            <MenuFlyoutItem Text="{loc:Translate Copy}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CopyItemCommand}"
                                             CommandParameter="{Binding .}"/>
-                            <MenuFlyoutItem Text="{loc:Translate SendBackward}"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                            <MenuFlyoutItem Text="{loc:Translate Cut}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CutItemCommand}"
                                             CommandParameter="{Binding .}"/>
-                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Text="{loc:Translate Duplicate}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DuplicateItemCommand}"
+                                            CommandParameter="{Binding .}"/>
                             <MenuFlyoutItem Text="{loc:Translate Delete}"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
                                             CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Text="{loc:Translate BringForward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate SendBackward}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
+                                                CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
                         </MenuFlyout>
                     </FlyoutBase.ContextFlyout>
                 </Border>
@@ -109,6 +129,19 @@
                     </controls:ExtendedPolyline.GestureRecognizers>
                     <FlyoutBase.ContextFlyout>
                         <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate Copy}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CopyItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Cut}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CutItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Duplicate}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DuplicateItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
                             <MenuFlyoutItem Text="{loc:Translate BringForward}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
                                                 CommandParameter="{Binding .}"/>
@@ -116,9 +149,6 @@
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
                                                 CommandParameter="{Binding .}"/>
                             <MenuFlyoutSeparator/>
-                            <MenuFlyoutItem Text="{loc:Translate Delete}"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
-                                                CommandParameter="{Binding .}"/>
                         </MenuFlyout>
                     </FlyoutBase.ContextFlyout>
                 </controls:ExtendedPolyline>
@@ -153,6 +183,19 @@
                     </Border.GestureRecognizers>
                     <FlyoutBase.ContextFlyout>
                         <MenuFlyout>
+                            <MenuFlyoutItem Text="{loc:Translate Copy}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CopyItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Cut}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CutItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Duplicate}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DuplicateItemCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutItem Text="{loc:Translate Delete}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            <MenuFlyoutSeparator/>
                             <MenuFlyoutItem Text="{loc:Translate BringForward}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=BringItemForwardCommand}"
                                                 CommandParameter="{Binding .}"/>
@@ -160,9 +203,6 @@
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=SendItemBackwardCommand}"
                                                 CommandParameter="{Binding .}"/>
                             <MenuFlyoutSeparator/>
-                            <MenuFlyoutItem Text="{loc:Translate Delete}"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteItemFromCanvasCommand}"
-                                                CommandParameter="{Binding .}"/>
                         </MenuFlyout>
                     </FlyoutBase.ContextFlyout>
                 </Border>

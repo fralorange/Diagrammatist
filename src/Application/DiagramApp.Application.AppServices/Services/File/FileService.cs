@@ -33,6 +33,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                     writer.Write(figure.Name);
                     writer.Write(figure.TranslationX);
                     writer.Write(figure.TranslationY);
+                    writer.Write(figure.Rotation);
                     writer.Write(figure.ZIndex);
                     switch (figure)
                     {
@@ -115,6 +116,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                     var figureName = reader.ReadString();
                     var translationX = reader.ReadDouble();
                     var translationY = reader.ReadDouble();
+                    var rotation = reader.ReadDouble();
                     var zIndex = reader.ReadDouble();
                     FigureDto figure = figureType switch
                     {
@@ -123,6 +125,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             PathData = reader.ReadString(),
                             Width = reader.ReadDouble(),
@@ -136,6 +139,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             PathData = reader.ReadString(),
                             Width = reader.ReadDouble(),
@@ -147,6 +151,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             Points = Enumerable.Range(0, reader.ReadInt32()).Select(_ => new System.Drawing.Point
                             {
@@ -163,6 +168,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             Text = reader.ReadString(),
                             FontSize = reader.ReadDouble(),

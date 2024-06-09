@@ -23,9 +23,10 @@
             <HorizontalStackLayout Spacing="15">
                 <VerticalStackLayout Style="{StaticResource ToolLayout}">
                     <ImageButton Source="{AppThemeBinding Light=paste.png, Dark=paste_dark.png}"
+                                 Command="{Binding PasteItemCommand}"
                                  Aspect="AspectFit"
                                  Style="{StaticResource Tool}"
-                                 IsEnabled="{Binding IsClipboardEmpty}"/>
+                                 IsEnabled="{Binding IsClipboardNotEmpty}"/>
                     <Label Text="{loc:Translate Paste}"
                            Style="{StaticResource LabelControlName}"
                            HorizontalOptions="Center"/>
@@ -33,6 +34,7 @@
                 <VerticalStackLayout>
                     <HorizontalStackLayout Spacing="5">
                         <ImageButton Source="{AppThemeBinding Light=copy.png, Dark=copy_dark.png}"
+                                     Command="{Binding CopyItemCommand}"
                                      Aspect="AspectFit"
                                      Style="{StaticResource MiniTool}"
                                      IsEnabled="{Binding CurrentCanvas.SelectedFigure.IsSelected, FallbackValue='False'}"/>
@@ -42,6 +44,7 @@
                     </HorizontalStackLayout>
                     <HorizontalStackLayout Spacing="5">
                         <ImageButton Source="{AppThemeBinding Light=cut.png, Dark=cut_dark.png}"
+                                     Command="{Binding CutItemCommand}"
                                      Aspect="AspectFit"
                                      Style="{StaticResource MiniTool}"
                                      IsEnabled="{Binding CurrentCanvas.SelectedFigure.IsSelected, FallbackValue='False'}"/>
@@ -51,6 +54,7 @@
                     </HorizontalStackLayout>
                     <HorizontalStackLayout Spacing="5">
                         <ImageButton Source="{AppThemeBinding Light=duplicate.png, Dark=duplicate_dark.png}"
+                                     Command="{Binding DuplicateItemCommand}"
                                      Aspect="AspectFit"
                                      Style="{StaticResource MiniTool}"
                                      IsEnabled="{Binding CurrentCanvas.SelectedFigure.IsSelected, FallbackValue='False'}"/>
