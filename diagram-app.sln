@@ -23,7 +23,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Contracts", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F965C9D-07A9-46D9-8277-30A909E9CC0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Tests.Unit", "tests\DiagramApp.Tests.Unit\DiagramApp.Tests.Unit.csproj", "{068FA67D-6822-4E27-B47C-BF81F6313D86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Tests.Unit", "tests\DiagramApp.Tests.Unit\DiagramApp.Tests.Unit.csproj", "{068FA67D-6822-4E27-B47C-BF81F6313D86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{416DD9AF-C437-4FFB-9F51-F45F98A9C45B}"
+	ProjectSection(SolutionItems) = preProject
+		docs\assets\assets.md = docs\assets\assets.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

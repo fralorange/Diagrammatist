@@ -37,7 +37,7 @@
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
             <MenuFlyoutItem Text="{loc:Translate CloseAll}"
-                            IsEnabled="{Binding CanvasCounter, Converter={toolkit:IntToBoolConverter}}"
+                            IsEnabled="{Binding IsCanvasesEmpty}"
                             Command="{Binding CloseAllCanvasesCommand}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Modifiers="Alt,Ctrl"

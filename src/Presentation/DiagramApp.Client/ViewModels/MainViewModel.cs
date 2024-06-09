@@ -32,6 +32,8 @@ namespace DiagramApp.Client.ViewModels
         private int _canvasCounter = 0;
         public ObservableCollection<ObservableCanvas> Canvases { get; set; } = [];
 
+        public bool IsCanvasesEmpty => Canvases.Count > 0;
+
         [ObservableProperty]
         private ObservableCanvas? _currentCanvas;
 
@@ -114,10 +116,13 @@ namespace DiagramApp.Client.ViewModels
                 })
             });
 
+            if (file is null)
+                return;
+
             var loadedFile = _fileService.Load(file!.FullPath);
             var canvas = _canvasMapper.FromDto(loadedFile!);
 
-            Canvases.Add(canvas);
+            AddToCanvases(canvas);
             CanvasCounter++;
 
             await SelectCanvasAsync(canvas);
@@ -156,7 +161,7 @@ namespace DiagramApp.Client.ViewModels
                 Canvas canvas = new(settings);
                 ObservableCanvas observableCanvas = new(canvas);
 
-                Canvases.Add(observableCanvas);
+                AddToCanvases(observableCanvas);
                 _ = SelectCanvasAsync(observableCanvas);
             }
         }
@@ -228,7 +233,7 @@ namespace DiagramApp.Client.ViewModels
                 if (!result) return;
             }
 
-            Canvases.Remove(targetCanvas);
+            RemoveFromCanvases(targetCanvas);
             CurrentCanvas = null;
             IsCanvasNull = true;
         }
@@ -356,6 +361,18 @@ namespace DiagramApp.Client.ViewModels
                 return;
 
             CurrentCanvas.Rotation += degrees;
+        }
+
+        private void AddToCanvases(ObservableCanvas canvas)
+        {
+            Canvases.Add(canvas);
+            OnPropertyChanged(nameof(IsCanvasesEmpty));
+        }
+
+        private void RemoveFromCanvases(ObservableCanvas canvas)
+        {
+            Canvases.Remove(canvas);
+            OnPropertyChanged(nameof(IsCanvasesEmpty));
         }
     }
 }

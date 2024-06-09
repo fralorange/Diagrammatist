@@ -29,4 +29,8 @@
 	  <ProjectReference Include="..\..\Domain\DiagramApp.Domain\DiagramApp.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\Clipboard\" />
+	</ItemGroup>
+
 </Project>
