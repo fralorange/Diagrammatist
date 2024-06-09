@@ -165,6 +165,9 @@
   <data name="CanvasSize" xml:space="preserve">
     <value>Изменить размер холста</value>
   </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Буфер обмена</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Закрыть</value>
   </data>
@@ -177,11 +180,17 @@
   <data name="Coords" xml:space="preserve">
     <value>Точки</value>
   </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Заказная</value>
+  </data>
+  <data name="Cut" xml:space="preserve">
+    <value>Вырезать</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
     <value>Тёмная тема</value>
@@ -197,6 +206,9 @@
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Дублировать</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактирование</value>
@@ -278,6 +290,9 @@
   </data>
   <data name="Outline" xml:space="preserve">
     <value>Контур</value>
+  </data>
+  <data name="Paste" xml:space="preserve">
+    <value>Вставить</value>
   </data>
   <data name="Properties" xml:space="preserve">
     <value>Свойства</value>

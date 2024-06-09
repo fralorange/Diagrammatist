@@ -43,6 +43,8 @@ namespace DiagramApp.Client.ViewModels
         [ObservableProperty]
         private ToolboxViewModel _toolboxViewModel;
 
+        public bool IsClipboardEmpty => !Clipboard.Default.HasText;
+
         public MainViewModel(
             IPopupService popupService,
             IToolboxService toolboxService,

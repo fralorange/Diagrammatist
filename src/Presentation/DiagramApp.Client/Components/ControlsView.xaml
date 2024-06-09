@@ -7,12 +7,70 @@
        x:Class="DiagramApp.Client.Components.ControlsView"
        x:DataType="viewmodel:MainViewModel"
        Padding="0">
+    <Frame.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="ToolGrid">
+                <Setter Property="RowSpacing" Value="10" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+        </ResourceDictionary>
+    </Frame.Resources>
     <StackLayout Orientation="Horizontal"
                  Spacing="5">
         <Grid RowDefinitions="*, Auto"
               ColumnDefinitions="*"
-              RowSpacing="10"
-              Margin="10">
+              Style="{StaticResource ToolGrid}">
+            <HorizontalStackLayout Spacing="15">
+                <VerticalStackLayout Style="{StaticResource ToolLayout}">
+                    <ImageButton Source="{AppThemeBinding Light=paste.png, Dark=paste_dark.png}"
+                                 Aspect="AspectFit"
+                                 Style="{StaticResource Tool}"
+                                 IsEnabled="{Binding IsClipboardEmpty}"/>
+                    <Label Text="{loc:Translate Paste}"
+                           Style="{StaticResource LabelControlName}"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <HorizontalStackLayout Spacing="5">
+                        <ImageButton Source="{AppThemeBinding Light=copy.png, Dark=copy_dark.png}"
+                                     Aspect="AspectFit"
+                                     Style="{StaticResource MiniTool}"
+                                     IsEnabled="{Binding CurrentCanvas.SelectedFigure.IsSelected, FallbackValue='False'}"/>
+                        <Label Text="{loc:Translate Copy}"
+                               Style="{StaticResource LabelControlName}"
+                               VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="5">
+                        <ImageButton Source="{AppThemeBinding Light=cut.png, Dark=cut_dark.png}"
+                                     Aspect="AspectFit"
+                                     Style="{StaticResource MiniTool}"
+                                     IsEnabled="{Binding CurrentCanvas.SelectedFigure.IsSelected, FallbackValue='False'}"/>
+                        <Label Text="{loc:Translate Cut}"
+                               Style="{StaticResource LabelControlName}"
+                               VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="5">
+                        <ImageButton Source="{AppThemeBinding Light=duplicate.png, Dark=duplicate_dark.png}"
+                                     Aspect="AspectFit"
+                                     Style="{StaticResource MiniTool}"
+                                     IsEnabled="{Binding CurrentCanvas.SelectedFigure.IsSelected, FallbackValue='False'}"/>
+                        <Label Text="{loc:Translate Duplicate}"
+                               Style="{StaticResource LabelControlName}"
+                               VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+            <Label Text="{loc:Translate Clipboard}"
+                   Style="{StaticResource LabelControl}"
+                   Grid.Row="1" 
+                   Grid.ColumnSpan="2"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" />
+        </Grid>
+        <BoxView Style="{StaticResource VerticalSeparator}"/>
+        <Grid RowDefinitions="*, Auto"
+              ColumnDefinitions="*"
+              Style="{StaticResource ToolGrid}">
             <HorizontalStackLayout Spacing="5">
                 <VerticalStackLayout Style="{StaticResource ToolLayout}">
                     <ImageButton Source="{AppThemeBinding Light=select.png, Dark=select_dark.png}"
@@ -22,8 +80,8 @@
                                  Style="{StaticResource Tool}">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton"
-                                     Binding="{Binding CurrentCanvas.Controls}"
-                                     Value="{x:Static models:ControlsType.Select}">
+                                         Binding="{Binding CurrentCanvas.Controls}"
+                                         Value="{x:Static models:ControlsType.Select}">
                                 <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
                             </DataTrigger>
                         </ImageButton.Triggers>

@@ -288,6 +288,13 @@
         <Setter Property="MaximumHeightRequest" Value="60"/>
     </Style>
 
+    <Style TargetType="ImageButton" x:Key="MiniTool">
+        <Setter Property="MinimumWidthRequest" Value="25"/>
+        <Setter Property="MaximumWidthRequest" Value="25"/>
+        <Setter Property="MinimumHeightRequest" Value="30"/>
+        <Setter Property="MaximumHeightRequest" Value="30"/>
+    </Style>
+
     <Style TargetType="VerticalStackLayout" x:Key="ToolLayout">
         <Setter Property="Spacing" Value="5" />
         <Setter Property="Padding" Value="0" />

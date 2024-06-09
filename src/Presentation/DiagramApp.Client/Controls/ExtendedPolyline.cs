@@ -1,5 +1,4 @@
-﻿using DiagramApp.Client.Platforms.Windows.Handlers;
-using Microsoft.Maui.Controls.Shapes;
+﻿using Microsoft.Maui.Controls.Shapes;
 
 namespace DiagramApp.Client.Controls
 {
