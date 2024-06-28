@@ -50,7 +50,7 @@
     "Data": "Lorem"
   },
   {
-    "Name": "Start/Stop",
+    "Name": "Start/End",
     "Category": "Blocks",
     "Data": "M200,0 A50,50 0 0 1 250,50 A50,50 0 0 1 200,100 H50 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
   },

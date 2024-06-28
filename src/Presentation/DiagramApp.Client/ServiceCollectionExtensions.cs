@@ -47,6 +47,7 @@ namespace DiagramApp.Client
             services.AddTransientPopup<AboutPopupView, AboutPopupViewModel>();
             services.AddTransientPopup<ChangeDiagramSizePopupView, ChangeDiagramSizePopupViewModel>();
             services.AddTransientPopup<NewDiagramPopupView, NewDiagramPopupViewModel>();
+            services.AddTransientPopup<BuildFlowchartPopupView, BuildFlowchartPopupViewModel>();
 
             return services;
         }

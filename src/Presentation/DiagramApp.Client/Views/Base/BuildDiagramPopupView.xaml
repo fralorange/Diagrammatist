@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:builders="clr-namespace:DiagramApp.Client.Components.Specific.Builders"
+               xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+               xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               x:Class="DiagramApp.Client.Views.Base.BuildDiagramPopupView"
+               x:DataType="viewmodel:BuildDiagramPopupViewModel"
+               CanBeDismissedByTappingOutsideOfPopup="False"
+               Size="975,750">
+    <Frame Padding="0">
+        <StackLayout>
+            <Grid RowDefinitions="*"
+                  ColumnDefinitions="Auto, 70*"
+                  VerticalOptions="FillAndExpand">
+                <ScrollView Grid.Column="0">
+                    <StackLayout Orientation="Horizontal"
+                                 x:Name="ToolsWithBorderLayout">
+                        <BoxView Style="{StaticResource VerticalSeparator}"/>
+                    </StackLayout>
+                </ScrollView>
+                <Frame Grid.Column="1"
+                       BorderColor="Transparent"
+                       x:Name="PreviewFrame"/>
+            </Grid>
+            <BoxView Style="{StaticResource HorizontalSeparator}"/>
+            <StackLayout Orientation="Horizontal"
+                         Spacing="5"
+                         Margin="10"
+                         HorizontalOptions="End">
+                <Button Text="{loc:Translate OK}"/>
+                <Button Text="{loc:Translate Cancel}"
+                        Clicked="OnCancelClicked"/>
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</toolkit:Popup>

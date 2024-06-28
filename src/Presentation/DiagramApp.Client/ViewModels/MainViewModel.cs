@@ -11,7 +11,6 @@ using DiagramApp.Client.Mappers.Figure;
 using DiagramApp.Client.Platforms.Windows.Handlers;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Domain.Canvas.Figures;
 using DiagramApp.Domain.DiagramSettings;
 using LocalizationResourceManager.Maui;
 using System.Collections.ObjectModel;
@@ -154,6 +153,20 @@ namespace DiagramApp.Client.ViewModels
         private async Task ViewProgramAboutAsync() => await _popupService.ShowPopupAsync<AboutPopupViewModel>(CancellationToken.None);
 
         [RelayCommand]
+        private async Task BuildDiagramAsync()
+        {
+            if (CurrentCanvas is null)
+                return;
+
+            object? result = CurrentCanvas.Settings.Type switch
+            {
+                DiagramType.Flowchart => await _popupService.ShowPopupAsync<BuildFlowchartPopupViewModel>(CancellationToken.None),
+                _ => null,
+            };
+            // pass result to DiagramDrawer or smth like that
+        }
+
+        [RelayCommand]
         private void Undo() => CurrentCanvas?.Undo();
 
         [RelayCommand]
@@ -171,7 +184,7 @@ namespace DiagramApp.Client.ViewModels
                 ObservableCanvas observableCanvas = new(canvas);
 
                 AddToCanvases(observableCanvas);
-                _ = SelectCanvasAsync(observableCanvas);
+                await SelectCanvasAsync(observableCanvas);
             }
         }
 

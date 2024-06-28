@@ -144,9 +144,6 @@
   <data name="Black" xml:space="preserve">
     <value>Black</value>
   </data>
-  <data name="Block" xml:space="preserve">
-    <value>Block</value>
-  </data>
   <data name="Blocks" xml:space="preserve">
     <value>Blocks</value>
   </data>
@@ -155,6 +152,12 @@
   </data>
   <data name="Build" xml:space="preserve">
     <value>Build: {0}</value>
+  </data>
+  <data name="BuildDiagram" xml:space="preserve">
+    <value>Build Diagram</value>
+  </data>
+  <data name="BuildDiagramLabel" xml:space="preserve">
+    <value>Diagram Builder</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -173,6 +176,9 @@
   </data>
   <data name="CloseAll" xml:space="preserve">
     <value>Close All</value>
+  </data>
+  <data name="Connector" xml:space="preserve">
+    <value>Connector</value>
   </data>
   <data name="Controls" xml:space="preserve">
     <value>Controls</value>
@@ -201,17 +207,26 @@
   <data name="DashedDescription" xml:space="preserve">
     <value>Transform a line into a dashed line</value>
   </data>
+  <data name="Decision" xml:space="preserve">
+    <value>Decision</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Document" xml:space="preserve">
+    <value>Document</value>
+  </data>
   <data name="Duplicate" xml:space="preserve">
     <value>Duplicate</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
@@ -237,6 +252,9 @@
   <data name="FileName" xml:space="preserve">
     <value>File Name</value>
   </data>
+  <data name="Flowchart" xml:space="preserve">
+    <value>Flowchart</value>
+  </data>
   <data name="GitHub" xml:space="preserve">
     <value>Click here to go to GitHub</value>
   </data>
@@ -257,6 +275,9 @@
   </data>
   <data name="HelpApp" xml:space="preserve">
     <value>Diagrammatist Help</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
@@ -291,8 +312,17 @@
   <data name="Outline" xml:space="preserve">
     <value>Outline</value>
   </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
   <data name="Paste" xml:space="preserve">
     <value>Paste</value>
+  </data>
+  <data name="Preparation" xml:space="preserve">
+    <value>Preparation</value>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Process</value>
   </data>
   <data name="Properties" xml:space="preserve">
     <value>Properties</value>
@@ -338,6 +368,9 @@
   </data>
   <data name="Size" xml:space="preserve">
     <value>Size</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="Step" xml:space="preserve">
     <value>Grid step</value>

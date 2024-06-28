@@ -144,9 +144,6 @@
   <data name="Black" xml:space="preserve">
     <value>Чёрный</value>
   </data>
-  <data name="Block" xml:space="preserve">
-    <value>Блочная</value>
-  </data>
   <data name="Blocks" xml:space="preserve">
     <value>Блоки</value>
   </data>
@@ -155,6 +152,12 @@
   </data>
   <data name="Build" xml:space="preserve">
     <value>Сборка: {0}</value>
+  </data>
+  <data name="BuildDiagram" xml:space="preserve">
+    <value>Собрать диаграмму</value>
+  </data>
+  <data name="BuildDiagramLabel" xml:space="preserve">
+    <value>Конструктор диаграмм</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
@@ -173,6 +176,9 @@
   </data>
   <data name="CloseAll" xml:space="preserve">
     <value>Закрыть все</value>
+  </data>
+  <data name="Connector" xml:space="preserve">
+    <value>Соединитель</value>
   </data>
   <data name="Controls" xml:space="preserve">
     <value>Управление</value>
@@ -201,17 +207,26 @@
   <data name="DashedDescription" xml:space="preserve">
     <value>Преобразовать линию в пунктирную линию</value>
   </data>
+  <data name="Decision" xml:space="preserve">
+    <value>Решение</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>По умолчанию</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
+  <data name="Document" xml:space="preserve">
+    <value>Документ</value>
+  </data>
   <data name="Duplicate" xml:space="preserve">
     <value>Дублировать</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактирование</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Конец</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>Английский</value>
@@ -237,6 +252,9 @@
   <data name="FileName" xml:space="preserve">
     <value>Имя файла</value>
   </data>
+  <data name="Flowchart" xml:space="preserve">
+    <value>Блочная</value>
+  </data>
   <data name="GitHub" xml:space="preserve">
     <value>Нажмите сюда, чтобы перейти на GitHub</value>
   </data>
@@ -257,6 +275,9 @@
   </data>
   <data name="HelpApp" xml:space="preserve">
     <value>Diagrammatist Справка</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Вход</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Язык</value>
@@ -291,8 +312,17 @@
   <data name="Outline" xml:space="preserve">
     <value>Контур</value>
   </data>
+  <data name="Output" xml:space="preserve">
+    <value>Выход</value>
+  </data>
   <data name="Paste" xml:space="preserve">
     <value>Вставить</value>
+  </data>
+  <data name="Preparation" xml:space="preserve">
+    <value>Подготовка</value>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Процесс</value>
   </data>
   <data name="Properties" xml:space="preserve">
     <value>Свойства</value>
@@ -338,6 +368,9 @@
   </data>
   <data name="Size" xml:space="preserve">
     <value>Размер</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Начало</value>
   </data>
   <data name="Step" xml:space="preserve">
     <value>Шаг сетки</value>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:loc="clr-namespace:LocalizationResourceManager.Maui;assembly=LocalizationResourceManager.Maui"
+             xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
+             x:Class="DiagramApp.Client.Components.Specific.Builders.FlowchartBuilderView"
+             x:DataType="viewmodel:BuildFlowchartPopupViewModel"
+             Spacing="5">
+    <StackLayout.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" BasedOn="{StaticResource RegularButton}">
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="Command" Value="{Binding AddObjectCommand}" />
+            </Style>
+        </ResourceDictionary>
+    </StackLayout.Resources>
+    <Button Text="{loc:Translate Start}"
+            CommandParameter="Start"/>
+    <Button Text="{loc:Translate End}"
+            CommandParameter="End"/>
+    <Button Text="{loc:Translate Process}"
+            CommandParameter="Process"/>
+    <Button Text="{loc:Translate Input}"
+            CommandParameter="Input"/>
+    <Button Text="{loc:Translate Output}"
+            CommandParameter="Output"/>
+    <Button Text="{loc:Translate Decision}"
+            CommandParameter="Decision"/>
+    <Button Text="{loc:Translate Connector}"
+            CommandParameter="Connector"
+            IsEnabled="False"/>
+    <Button Text="{loc:Translate Preparation}"
+            CommandParameter="Preparation"
+            IsEnabled="False"/>
+    <Button Text="{loc:Translate Document}"
+            CommandParameter="Document"
+            IsEnabled="False"/>
+</StackLayout>
