@@ -6,7 +6,6 @@
                xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                x:Class="DiagramApp.Client.Views.Base.BuildDiagramPopupView"
-               x:DataType="viewmodel:BuildDiagramPopupViewModel"
                CanBeDismissedByTappingOutsideOfPopup="False"
                Size="975,750">
     <Frame Padding="0">
@@ -20,9 +19,11 @@
                         <BoxView Style="{StaticResource VerticalSeparator}"/>
                     </StackLayout>
                 </ScrollView>
-                <Frame Grid.Column="1"
-                       BorderColor="Transparent"
-                       x:Name="PreviewFrame"/>
+                <ScrollView Grid.Column="1"
+                            x:Name="PreviewScroll">
+                    <AbsoluteLayout x:Name="PreviewContent"
+                                    ChildAdded="OnPreviewContentChildAdded"/>
+                </ScrollView>
             </Grid>
             <BoxView Style="{StaticResource HorizontalSeparator}"/>
             <StackLayout Orientation="Horizontal"

@@ -61,12 +61,12 @@
                 <Border StrokeThickness="0"
                         Background="Transparent"
                         TranslationX="{Binding TranslationX, Mode=TwoWay}"
-                          TranslationY="{Binding TranslationY, Mode=TwoWay}"
-                          WidthRequest="{Binding Width, Mode=OneWay}"
-                          HeightRequest="{Binding Height, Mode=OneWay}"
-                          Rotation="{Binding Rotation, Mode=OneWay}"
-                          ZIndex="{Binding ZIndex, Mode=OneWay}"
-                          InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
+                        TranslationY="{Binding TranslationY, Mode=TwoWay}"
+                        WidthRequest="{Binding Width, Mode=OneWay}"
+                        HeightRequest="{Binding Height, Mode=OneWay}"
+                        Rotation="{Binding Rotation, Mode=OneWay}"
+                        ZIndex="{Binding ZIndex, Mode=OneWay}"
+                        InputTransparent="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.IsBlocked}">
                     <Grid>
                         <Path Data="{Binding PathData, Converter={StaticResource PathDataToDataConverter}}"
                               Style="{StaticResource Shape}"

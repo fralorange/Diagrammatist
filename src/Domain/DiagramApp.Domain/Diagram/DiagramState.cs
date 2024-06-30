@@ -13,6 +13,9 @@
 
         public virtual void AddObject(Component component)
         {
+            component.XPos = _head?.XPos ?? 0;
+            component.YPos = _head?.YPos + 100 ?? 0;
+
             _diagram.Components.Add(component);
             _head = component;
         }
