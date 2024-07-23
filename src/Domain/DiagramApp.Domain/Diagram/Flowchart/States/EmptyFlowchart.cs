@@ -9,7 +9,7 @@
             if (component is FlowchartComponent { FlowType: FlowchartType.Start } flowchartComponent)
             {
                 base.AddObject(flowchartComponent);
-                _diagram.ChangeState(new AwaitingConnectionFlowchart(_diagram, _head!));
+                _diagram.ChangeState(new AwaitingConnectionFlowchart(_diagram, Head!));
             }
         }
         public override void RemoveObject(Component component)

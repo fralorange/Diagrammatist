@@ -14,9 +14,14 @@ namespace DiagramApp.Application.AppServices.Services.Diagram.Flowchart
             _flowchart = new FlowchartEntity();
         }
 
-        public void AddObject(Component component)
+        public void SetHead(Component head)
         {
-            _flowchart.AddObject(component);
+            _flowchart.SetHead(head);
+        }
+
+        public void AddObject(Component component, out Component? head)
+        {
+            _flowchart.AddObject(component, out head);
             subscribers.ForEach(sub => sub.UpdateComponents(_flowchart.Components));
         }
 

@@ -2,22 +2,27 @@
 {
     public abstract class DiagramState
     {
-        protected Diagram _diagram;
-        protected Component? _head;
+        public Component? Head { get; private set; }
+        protected readonly Diagram _diagram;
 
         public DiagramState(Diagram diagram, Component? head)
         {
             _diagram = diagram;
-            _head = head;
+            Head = head;
+        }
+
+        public void SetHead(Component head)
+        {
+            Head = head;
         }
 
         public virtual void AddObject(Component component)
         {
-            component.XPos = _head?.XPos ?? 0;
-            component.YPos = _head?.YPos + 100 ?? 0;
+            component.XPos = Head?.XPos ?? 0;
+            component.YPos = Head?.YPos + 100 ?? 0;
 
             _diagram.Components.Add(component);
-            _head = component;
+            Head = component;
         }
 
         public virtual void RemoveObject(Component component)

@@ -44,9 +44,10 @@ namespace DiagramApp.Domain.Diagram.Flowchart
             Height = maxY - minY;
         }
 
-        public override void AddObject(Component component)
+        public override void AddObject(Component component, out Component? head)
         {
             _state?.AddObject(component);
+            head = _state?.Head;
         }
 
         public override void RemoveObject(Component component)

@@ -1,4 +1,5 @@
 using DiagramApp.Client.Components.Specific.Builders;
+using DiagramApp.Client.Converters;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.Views.Base;
 using Microsoft.Maui.Layouts;
@@ -32,10 +33,34 @@ public class BuildFlowchartPopupView : BuildDiagramPopupView
                 StrokeDashArray = new DoubleCollection(new double[] { 6, 3 }),
                 StrokeDashOffset = 1
             };
+
             border.SetBinding(Border.TranslationXProperty, new Binding("XPos"));
             border.SetBinding(Border.TranslationYProperty, new Binding("YPos"));
             border.SetBinding(Border.WidthRequestProperty, new Binding("Width"));
             border.SetBinding(Border.HeightRequestProperty, new Binding("Height"));
+
+            var multiBinding = new MultiBinding();
+            multiBinding.Bindings.Add(new Binding("."));
+            multiBinding.Bindings.Add(new Binding("Head", source: viewModel));
+            multiBinding.Converter = new IsEqualMultiValueConverter();
+
+            var dataTrigger = new DataTrigger(typeof(Border))
+            {
+                Binding = multiBinding,
+                Value = true
+            };
+            dataTrigger.Setters.Add(new Setter { Property = Border.StrokeProperty, Value = Colors.Red });
+
+            border.Triggers.Add(dataTrigger);
+
+            var flyout = new MenuFlyout();
+            var menuItem = new MenuFlyoutItem { Text = viewModel.SetAsHeadString.Localized };
+            menuItem.SetBinding(MenuFlyoutItem.CommandProperty, new Binding("SetHeadCommand", source: viewModel));
+            menuItem.SetBinding(MenuFlyoutItem.CommandParameterProperty, new Binding("."));
+
+            flyout.Add(menuItem);
+
+            FlyoutBase.SetContextFlyout(border, flyout);
 
             AbsoluteLayout.SetLayoutBounds(border, new Rect(0.5, 0.01, -1, -1));
             AbsoluteLayout.SetLayoutFlags(border, AbsoluteLayoutFlags.PositionProportional);
@@ -45,6 +70,7 @@ public class BuildFlowchartPopupView : BuildDiagramPopupView
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center
             };
+
             label.SetBinding(Label.TextProperty, new Binding("Text"));
 
             border.Content = label;

@@ -12,5 +12,6 @@
     <local:BoolToStrokeDashArrayConverter x:Key="BoolToStrokeDashArrayConverter"/>
     <local:PointsToPointCollectionConverter x:Key="PointsToPointCollectionConverter"/>
     <local:PathDataToDataConverter x:Key="PathDataToDataConverter"/>
+    <local:IsEqualMultiValueConverter x:Key="IsEqualMultiValueConverter"/>
 </ResourceDictionary>
 

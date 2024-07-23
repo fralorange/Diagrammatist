@@ -1,5 +1,4 @@
 using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Layouts;
 
 namespace DiagramApp.Client.Views.Base;
 

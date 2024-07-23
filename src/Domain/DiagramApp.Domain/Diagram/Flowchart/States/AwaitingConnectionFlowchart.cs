@@ -8,9 +8,9 @@
         {
             if (component is not FlowchartComponent flowchartComponent || component is FlowchartComponent { FlowType: FlowchartType.Start }) return;
             if (flowchartComponent.FlowType == FlowchartType.End)
-                _diagram.ChangeState(new FinishedFlowchart(_diagram, _head!));
+                _diagram.ChangeState(new FinishedFlowchart(_diagram, Head!));
 
-            var oldObject = _head!;
+            var oldObject = Head!;
             base.AddObject(flowchartComponent);  
             
             AddConnection(oldObject);
@@ -25,7 +25,7 @@
 
         public override void AddConnection(Component component)
         {
-            if (component is not FlowchartComponent primaryFlowComp || _head is not FlowchartComponent secondaryFlowComp) return;
+            if (component is not FlowchartComponent primaryFlowComp || Head is not FlowchartComponent secondaryFlowComp) return;
             if (primaryFlowComp.FlowType == FlowchartType.Decision && !_diagram.Connections.Any(conn => conn.PrimaryComp.Equals(primaryFlowComp)))
             {
                 _diagram.ChangeState(new AwaitingConnectionFlowchart(_diagram, primaryFlowComp));

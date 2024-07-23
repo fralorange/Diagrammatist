@@ -6,7 +6,8 @@ namespace DiagramApp.Application.AppServices.Services.Diagram
     public interface IDiagramBuilder
     {
         void Reset();
-        void AddObject(Component component);
+        void SetHead(Component component);
+        void AddObject(Component component, out Component? head);
         void RemoveObject(Component component);
         void AddConnection(Component component);
         void RemoveConnection(Connection connection);

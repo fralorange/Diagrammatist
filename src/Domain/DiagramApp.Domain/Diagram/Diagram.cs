@@ -8,9 +8,10 @@
         public double Width { get; protected set; }
         public double Height { get; protected set; }
 
+        public void SetHead(Component head) => _state?.SetHead(head);
         public void ChangeState(DiagramState? state) => _state = state;
         public abstract void UpdateSize();
-        public abstract void AddObject(Component component);
+        public abstract void AddObject(Component component, out Component? head);
         public abstract void RemoveObject(Component component);
         public abstract void AddConnection(Component secondaryComp);
         public abstract void RemoveConnection(Connection connection);

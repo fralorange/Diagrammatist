@@ -360,6 +360,9 @@
   <data name="SendBackward" xml:space="preserve">
     <value>Send Backward</value>
   </data>
+  <data name="SetAsHead" xml:space="preserve">
+    <value>Set as Head</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>

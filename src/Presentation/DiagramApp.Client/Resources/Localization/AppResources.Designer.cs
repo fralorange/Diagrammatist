@@ -790,6 +790,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Set as Head.
+        /// </summary>
+        internal static string SetAsHead {
+            get {
+                return ResourceManager.GetString("SetAsHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
         internal static string Settings {

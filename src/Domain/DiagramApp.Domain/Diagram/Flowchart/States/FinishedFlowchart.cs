@@ -14,7 +14,7 @@
             if (component is FlowchartComponent { FlowType: FlowchartType.End } flowchartComponent)
             {
                 base.RemoveObject(flowchartComponent);
-                _diagram.ChangeState(new AwaitingConnectionFlowchart(_diagram, _head!));
+                _diagram.ChangeState(new AwaitingConnectionFlowchart(_diagram, Head!));
             }
         }
 

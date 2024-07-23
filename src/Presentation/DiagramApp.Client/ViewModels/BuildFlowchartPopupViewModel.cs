@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiagramApp.Application.AppServices.Services.Diagram;
 using DiagramApp.Application.AppServices.Services.Diagram.Flowchart;
@@ -12,15 +11,21 @@ namespace DiagramApp.Client.ViewModels
 {
     public partial class BuildFlowchartPopupViewModel : ObservableObject, IDiagramObserver
     {
-        private readonly FlowchartBuilder _flowchartBuilder = new();
-        private readonly ILocalizationResourceManager _localizationResourceManager;
+        public LocalizedString SetAsHeadString { get; init; }
 
         public ObservableCollection<FlowchartComponent> Components = [];
         public ObservableCollection<Connection> Connections = [];
 
+        private readonly FlowchartBuilder _flowchartBuilder = new();
+        private readonly ILocalizationResourceManager _localizationResourceManager;
+
+        [ObservableProperty]
+        private Component? _head;
+
         public BuildFlowchartPopupViewModel(ILocalizationResourceManager localizationResourceManager)
         {
             _localizationResourceManager = localizationResourceManager;
+            SetAsHeadString = new(() => _localizationResourceManager["SetAsHead"]);
             _flowchartBuilder.Subscribe(this);
         }
 
@@ -37,6 +42,13 @@ namespace DiagramApp.Client.ViewModels
         }
 
         [RelayCommand]
+        private void SetHead(Component head)
+        {
+            _flowchartBuilder.SetHead(head);
+            Head = head;
+        }
+
+        [RelayCommand]
         private void AddObject(string name)
         {
             FlowchartType flowType = (FlowchartType)Enum.Parse(typeof(FlowchartType), name);
@@ -50,7 +62,8 @@ namespace DiagramApp.Client.ViewModels
                 Text = text,
             };
 
-            _flowchartBuilder.AddObject(flowComponent);
+            _flowchartBuilder.AddObject(flowComponent, out var head);
+            Head = head;
         }
     }
 }
