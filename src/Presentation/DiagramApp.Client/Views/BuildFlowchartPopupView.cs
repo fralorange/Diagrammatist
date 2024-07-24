@@ -54,11 +54,16 @@ public class BuildFlowchartPopupView : BuildDiagramPopupView
             border.Triggers.Add(dataTrigger);
 
             var flyout = new MenuFlyout();
-            var menuItem = new MenuFlyoutItem { Text = viewModel.SetAsHeadString.Localized };
-            menuItem.SetBinding(MenuFlyoutItem.CommandProperty, new Binding("SetHeadCommand", source: viewModel));
-            menuItem.SetBinding(MenuFlyoutItem.CommandParameterProperty, new Binding("."));
+            var menuItem1 = new MenuFlyoutItem { Text = viewModel.SetAsHeadString.Localized };
+            menuItem1.SetBinding(MenuFlyoutItem.CommandProperty, new Binding("SetHeadCommand", source: viewModel));
+            menuItem1.SetBinding(MenuFlyoutItem.CommandParameterProperty, new Binding("."));
 
-            flyout.Add(menuItem);
+            var menuItem2 = new MenuFlyoutItem { Text = viewModel.RemoveComponentString.Localized };
+            menuItem2.SetBinding(MenuFlyoutItem.CommandProperty, new Binding("RemoveObjectCommand", source: viewModel));
+            menuItem2.SetBinding(MenuFlyoutItem.CommandParameterProperty, new Binding("."));
+
+            flyout.Add(menuItem1);
+            flyout.Add(menuItem2);
 
             FlyoutBase.SetContextFlyout(border, flyout);
 

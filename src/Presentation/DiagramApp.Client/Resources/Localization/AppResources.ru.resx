@@ -330,6 +330,9 @@
   <data name="Redo" xml:space="preserve">
     <value>Повторить</value>
   </data>
+  <data name="RemoveComponent" xml:space="preserve">
+    <value>Удалить компонент</value>
+  </data>
   <data name="ResetView" xml:space="preserve">
     <value>Сбросить вид</value>
   </data>

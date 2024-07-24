@@ -11,6 +11,7 @@ namespace DiagramApp.Client.ViewModels
 {
     public partial class BuildFlowchartPopupViewModel : ObservableObject, IDiagramObserver
     {
+        public LocalizedString RemoveComponentString { get; init; }
         public LocalizedString SetAsHeadString { get; init; }
 
         public ObservableCollection<FlowchartComponent> Components = [];
@@ -26,6 +27,7 @@ namespace DiagramApp.Client.ViewModels
         {
             _localizationResourceManager = localizationResourceManager;
             SetAsHeadString = new(() => _localizationResourceManager["SetAsHead"]);
+            RemoveComponentString = new(() => _localizationResourceManager["RemoveComponent"]);
             _flowchartBuilder.Subscribe(this);
         }
 
@@ -44,8 +46,9 @@ namespace DiagramApp.Client.ViewModels
         [RelayCommand]
         private void SetHead(Component head)
         {
-            _flowchartBuilder.SetHead(head);
-            Head = head;
+            _flowchartBuilder.SetHead(head, out var successFlag);
+            if (successFlag)
+                Head = head;
         }
 
         [RelayCommand]
@@ -63,6 +66,13 @@ namespace DiagramApp.Client.ViewModels
             };
 
             _flowchartBuilder.AddObject(flowComponent, out var head);
+            Head = head;
+        }
+
+        [RelayCommand]
+        private void RemoveObject(Component component)
+        {
+            _flowchartBuilder.RemoveObject(component, out var head);
             Head = head;
         }
     }

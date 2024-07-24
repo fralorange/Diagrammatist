@@ -14,9 +14,9 @@ namespace DiagramApp.Application.AppServices.Services.Diagram.Flowchart
             _flowchart = new FlowchartEntity();
         }
 
-        public void SetHead(Component head)
+        public void SetHead(Component head, out bool successFlag)
         {
-            _flowchart.SetHead(head);
+            successFlag = _flowchart.SetHead(head);
         }
 
         public void AddObject(Component component, out Component? head)
@@ -25,9 +25,9 @@ namespace DiagramApp.Application.AppServices.Services.Diagram.Flowchart
             subscribers.ForEach(sub => sub.UpdateComponents(_flowchart.Components));
         }
 
-        public void RemoveObject(Component component)
+        public void RemoveObject(Component component, out Component? head)
         {
-            _flowchart.RemoveObject(component);
+            _flowchart.RemoveObject(component, out head);
             subscribers.ForEach(sub => sub.UpdateComponents(_flowchart.Components));
         }
 

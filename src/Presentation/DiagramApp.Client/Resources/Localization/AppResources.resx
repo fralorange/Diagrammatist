@@ -330,6 +330,9 @@
   <data name="Redo" xml:space="preserve">
     <value>Redo</value>
   </data>
+  <data name="RemoveComponent" xml:space="preserve">
+    <value>Remove component</value>
+  </data>
   <data name="ResetView" xml:space="preserve">
     <value>Reset View</value>
   </data>

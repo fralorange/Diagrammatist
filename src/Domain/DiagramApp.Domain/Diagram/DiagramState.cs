@@ -1,8 +1,10 @@
-﻿namespace DiagramApp.Domain.Diagram
+﻿using DiagramApp.Domain.Diagram.Flowchart;
+
+namespace DiagramApp.Domain.Diagram
 {
     public abstract class DiagramState
     {
-        public Component? Head { get; private set; }
+        public Component? Head { get; protected set; }
         protected readonly Diagram _diagram;
 
         public DiagramState(Diagram diagram, Component? head)
@@ -11,9 +13,15 @@
             Head = head;
         }
 
-        public void SetHead(Component head)
+        public bool SetHead(Component newHead)
         {
-            Head = head;
+            var connectionCond = !_diagram.Connections.Any(conn => conn.PrimaryComp == newHead);
+            var decisionCond = newHead is FlowchartComponent { FlowType: FlowchartType.Decision } comp && (_diagram.Connections.Count(conn => conn.PrimaryComp == comp) < 2);
+            
+            var flag = connectionCond || decisionCond;
+            if (flag)
+                Head = newHead;
+            return flag;
         }
 
         public virtual void AddObject(Component component)

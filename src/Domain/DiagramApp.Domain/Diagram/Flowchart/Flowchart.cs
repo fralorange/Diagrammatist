@@ -50,9 +50,10 @@ namespace DiagramApp.Domain.Diagram.Flowchart
             head = _state?.Head;
         }
 
-        public override void RemoveObject(Component component)
+        public override void RemoveObject(Component component, out Component? head)
         {
             _state?.RemoveObject(component);
+            head = _state?.Head;
         }
 
         public override void AddConnection(Component component)

@@ -700,6 +700,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove component.
+        /// </summary>
+        internal static string RemoveComponent {
+            get {
+                return ResourceManager.GetString("RemoveComponent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reset View.
         /// </summary>
         internal static string ResetView {
