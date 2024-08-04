@@ -153,20 +153,6 @@ namespace DiagramApp.Client.ViewModels
         private async Task ViewProgramAboutAsync() => await _popupService.ShowPopupAsync<AboutPopupViewModel>(CancellationToken.None);
 
         [RelayCommand]
-        private async Task BuildDiagramAsync()
-        {
-            if (CurrentCanvas is null)
-                return;
-
-            object? result = CurrentCanvas.Settings.Type switch
-            {
-                DiagramType.Flowchart => await _popupService.ShowPopupAsync<BuildFlowchartPopupViewModel>(CancellationToken.None),
-                _ => null,
-            };
-            // pass result to DiagramDrawer or smth like that
-        }
-
-        [RelayCommand]
         private void Undo() => CurrentCanvas?.Undo();
 
         [RelayCommand]

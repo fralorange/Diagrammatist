@@ -119,29 +119,5 @@
                    HorizontalOptions="Center" />
         </Grid>
         <BoxView Style="{StaticResource VerticalSeparator}"/>
-        <Grid Style="{StaticResource ToolGrid}"
-              x:Name="BuildDiagramControl">
-            <Button Text="{loc:Translate BuildDiagram}"
-                    Command="{Binding BuildDiagramCommand}"
-                    Margin="0, 15"
-                    VerticalOptions="Fill"
-                    CornerRadius="0"/>
-            <Label Text="{loc:Translate BuildDiagramLabel}"
-                   Style="{StaticResource LabelControl}"
-                   Grid.Row="1"
-                   Grid.ColumnSpan="2"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"/>
-            <Grid.Triggers>
-                <DataTrigger TargetType="Grid"
-                             Binding="{Binding CurrentCanvas.Settings.Type, FallbackValue=Custom}"
-                             Value="Custom">
-                    <Setter Property="IsVisible"
-                            Value="False"/>
-                </DataTrigger>
-            </Grid.Triggers>
-        </Grid>
-        <BoxView Style="{StaticResource VerticalSeparator}"
-                 IsVisible="{Binding Source={x:Reference BuildDiagramControl}, Path=IsVisible}"/>
     </StackLayout>
 </Frame>
