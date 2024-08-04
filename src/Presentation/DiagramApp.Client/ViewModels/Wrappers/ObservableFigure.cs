@@ -3,7 +3,7 @@ using DiagramApp.Domain.Canvas.Figures;
 
 namespace DiagramApp.Client.ViewModels.Wrappers
 {
-    public partial class ObservableFigure : ObservableObject
+    public partial class ObservableFigure : ObservableObject, ICloneable
     {
         protected readonly Figure _figure;
 
@@ -29,6 +29,11 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             get => _figure.Name;
             set => SetProperty(_figure.Name, value, _figure, (f, n) =>  f.Name = n);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Contracts.Canvas.Figures;
 using DiagramApp.Domain.Canvas.Figures;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace DiagramApp.Client.Mappers.Figure
 {
@@ -11,11 +10,26 @@ namespace DiagramApp.Client.Mappers.Figure
         {
             return figure switch
             {
+                ObservablePathTextFigure pathTextFigure => new PathTextFigureDto
+                {
+                    Name = pathTextFigure.Name,
+                    TranslationX = pathTextFigure.TranslationX,
+                    TranslationY = pathTextFigure.TranslationY,
+                    Rotation = pathTextFigure.Rotation,
+                    ZIndex = pathTextFigure.ZIndex,
+                    PathData = pathTextFigure.PathData,
+                    Width = pathTextFigure.Width,
+                    Height = pathTextFigure.Height,
+                    Aspect = pathTextFigure.Aspect,
+                    Text = pathTextFigure.Text,
+                    FontSize = pathTextFigure.FontSize,
+                },
                 ObservablePathFigure pathFigure => new PathFigureDto
                 {
                     Name = pathFigure.Name,
                     TranslationX = pathFigure.TranslationX,
                     TranslationY = pathFigure.TranslationY,
+                    Rotation = pathFigure.Rotation,
                     ZIndex = pathFigure.ZIndex,
                     PathData = pathFigure.PathData,
                     Width = pathFigure.Width,
@@ -27,8 +41,10 @@ namespace DiagramApp.Client.Mappers.Figure
                     Name = polylineFigure.Name,
                     TranslationX = polylineFigure.TranslationX,
                     TranslationY = polylineFigure.TranslationY,
+                    Rotation = polylineFigure.Rotation,
                     ZIndex = polylineFigure.ZIndex,
                     Dashed = polylineFigure.Dashed,
+                    Arrow = polylineFigure.Arrow,
                     LineJoin = polylineFigure.LineJoin.ToString(),
                     Thickness = polylineFigure.Thickness,
                     Points = polylineFigure.Points.ToList(),
@@ -38,6 +54,7 @@ namespace DiagramApp.Client.Mappers.Figure
                     Name = textFigure.Name,
                     TranslationX = textFigure.TranslationX,
                     TranslationY = textFigure.TranslationY,
+                    Rotation = textFigure.Rotation,
                     ZIndex = textFigure.ZIndex,
                     Text = textFigure.Text,
                     FontSize = textFigure.FontSize,
@@ -52,28 +69,44 @@ namespace DiagramApp.Client.Mappers.Figure
         {
             return dto switch
             {
-                PathFigureDto pathFigure => new ObservablePathFigure(new Domain.Canvas.Figures.PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData, })
+                PathTextFigureDto pathTextFigure => new ObservablePathTextFigure(new PathFigure { Name = pathTextFigure.Name, PathData = pathTextFigure.PathData, })
+                {
+                    TranslationX = pathTextFigure.TranslationX,
+                    TranslationY = pathTextFigure.TranslationY,
+                    Rotation = pathTextFigure.Rotation,
+                    ZIndex = pathTextFigure.ZIndex,
+                    Width = pathTextFigure.Width,
+                    Height = pathTextFigure.Height,
+                    Aspect = pathTextFigure.Aspect,
+                    Text = pathTextFigure.Text,
+                    FontSize = pathTextFigure.FontSize,
+                },
+                PathFigureDto pathFigure => new ObservablePathFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData, })
                 {
                     TranslationX = pathFigure.TranslationX,
                     TranslationY = pathFigure.TranslationY,
+                    Rotation = pathFigure.Rotation,
                     ZIndex = pathFigure.ZIndex,
                     Width = pathFigure.Width,
                     Height = pathFigure.Height,
                     Aspect = pathFigure.Aspect,
                 },
-                PolylineFigureDto polylineFigure => new ObservablePolylineFigure(new PolylineFigure { Name = polylineFigure.Name, Points = polylineFigure.Points.ToList()})
+                PolylineFigureDto polylineFigure => new ObservablePolylineFigure(new PolylineFigure { Name = polylineFigure.Name, Points = polylineFigure.Points.ToList() })
                 {
                     TranslationX = polylineFigure.TranslationX,
                     TranslationY = polylineFigure.TranslationY,
+                    Rotation = polylineFigure.Rotation,
                     ZIndex = polylineFigure.ZIndex,
                     Dashed = polylineFigure.Dashed,
-                    LineJoin = (PenLineJoin)Enum.Parse(typeof(PenLineJoin), polylineFigure.LineJoin),
+                    Arrow = polylineFigure.Arrow,
+                    LineJoin = (Microsoft.Maui.Controls.Shapes.PenLineJoin)Enum.Parse(typeof(Microsoft.Maui.Controls.Shapes.PenLineJoin), polylineFigure.LineJoin),
                     Thickness = polylineFigure.Thickness,
                 },
                 TextFigureDto textFigure => new ObservableTextFigure(new TextFigure { Name = textFigure.Name, Text = textFigure.Text })
                 {
                     TranslationX = textFigure.TranslationX,
                     TranslationY = textFigure.TranslationY,
+                    Rotation = textFigure.Rotation,
                     ZIndex = textFigure.ZIndex,
                     Text = textFigure.Text,
                     FontSize = textFigure.FontSize,

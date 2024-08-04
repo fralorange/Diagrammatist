@@ -104,7 +104,7 @@
                         Style="{StaticResource PickerNew}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type local:DiagramType}">
-                            <local:DiagramType>Block</local:DiagramType>
+                            <local:DiagramType>Flowchart</local:DiagramType>
                             <local:DiagramType>Custom</local:DiagramType>
                         </x:Array>
                     </Picker.ItemsSource>

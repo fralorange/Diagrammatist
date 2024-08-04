@@ -25,12 +25,16 @@ public partial class CommonToolboxView : Grid
                 ObservableFigure? observableFigure = null;
                 switch (figure)
                 {
+                    case PathFigure pathFigure when current.Category.Equals(ToolboxCategory.Blocks):
+                        observableFigure = new ObservablePathTextFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData });
+                        (observableFigure as ObservablePathTextFigure)!.Aspect = true;
+                        break;
                     case PathFigure pathFigure:
                         observableFigure = new ObservablePathFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData });
                         break;
                     case PolylineFigure polylineFigure:
                         var blockedPoints = await viewModel.CurrentCanvas.BlockAsync<List<System.Drawing.Point>>();
-                        if (blockedPoints is null) 
+                        if (blockedPoints is null)
                         {
                             Dispatcher.Dispatch(() =>
                             {

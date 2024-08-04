@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using DiagramApp.Application.AppServices.Services.Clipboard;
 using DiagramApp.Application.AppServices.Services.File;
 using DiagramApp.Application.AppServices.Services.Toolbox;
 using DiagramApp.Client.Mappers.Canvas;
@@ -36,6 +37,7 @@ namespace DiagramApp.Client
         {
             services.AddTransient<IToolboxService, ToolboxService>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IClipboardService, ClipboardService>();
 
             return services;
         }

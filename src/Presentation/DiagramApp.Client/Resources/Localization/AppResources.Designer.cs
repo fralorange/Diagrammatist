@@ -79,6 +79,24 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Arrow.
+        /// </summary>
+        internal static string Arrow {
+            get {
+                return ResourceManager.GetString("Arrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Adds an arrow to the end of the line.
+        /// </summary>
+        internal static string ArrowDescription {
+            get {
+                return ResourceManager.GetString("ArrowDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на 1 to 1 ratio.
         /// </summary>
         internal static string AspectRatio {
@@ -124,15 +142,6 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Block.
-        /// </summary>
-        internal static string Block {
-            get {
-                return ResourceManager.GetString("Block", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Blocks.
         /// </summary>
         internal static string Blocks {
@@ -156,6 +165,24 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Build {
             get {
                 return ResourceManager.GetString("Build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Build Diagram.
+        /// </summary>
+        internal static string BuildDiagram {
+            get {
+                return ResourceManager.GetString("BuildDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Diagram Builder.
+        /// </summary>
+        internal static string BuildDiagramLabel {
+            get {
+                return ResourceManager.GetString("BuildDiagramLabel", resourceCulture);
             }
         }
         
@@ -187,6 +214,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Clipboard.
+        /// </summary>
+        internal static string Clipboard {
+            get {
+                return ResourceManager.GetString("Clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Close.
         /// </summary>
         internal static string Close {
@@ -201,6 +237,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string CloseAll {
             get {
                 return ResourceManager.GetString("CloseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Connector.
+        /// </summary>
+        internal static string Connector {
+            get {
+                return ResourceManager.GetString("Connector", resourceCulture);
             }
         }
         
@@ -223,6 +268,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Copy.
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New.
         /// </summary>
         internal static string Create {
@@ -237,6 +291,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Custom {
             get {
                 return ResourceManager.GetString("Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cut.
+        /// </summary>
+        internal static string Cut {
+            get {
+                return ResourceManager.GetString("Cut", resourceCulture);
             }
         }
         
@@ -268,6 +331,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Decision.
+        /// </summary>
+        internal static string Decision {
+            get {
+                return ResourceManager.GetString("Decision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Default.
         /// </summary>
         internal static string Default {
@@ -286,11 +358,38 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Document.
+        /// </summary>
+        internal static string Document {
+            get {
+                return ResourceManager.GetString("Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duplicate.
+        /// </summary>
+        internal static string Duplicate {
+            get {
+                return ResourceManager.GetString("Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Edit.
         /// </summary>
         internal static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на End.
+        /// </summary>
+        internal static string End {
+            get {
+                return ResourceManager.GetString("End", resourceCulture);
             }
         }
         
@@ -367,6 +466,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Flowchart.
+        /// </summary>
+        internal static string Flowchart {
+            get {
+                return ResourceManager.GetString("Flowchart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Click here to go to GitHub.
         /// </summary>
         internal static string GitHub {
@@ -426,6 +534,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string HelpApp {
             get {
                 return ResourceManager.GetString("HelpApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Input.
+        /// </summary>
+        internal static string Input {
+            get {
+                return ResourceManager.GetString("Input", resourceCulture);
             }
         }
         
@@ -529,6 +646,42 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Output.
+        /// </summary>
+        internal static string Output {
+            get {
+                return ResourceManager.GetString("Output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Paste.
+        /// </summary>
+        internal static string Paste {
+            get {
+                return ResourceManager.GetString("Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Preparation.
+        /// </summary>
+        internal static string Preparation {
+            get {
+                return ResourceManager.GetString("Preparation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Process.
+        /// </summary>
+        internal static string Process {
+            get {
+                return ResourceManager.GetString("Process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Properties.
         /// </summary>
         internal static string Properties {
@@ -543,6 +696,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Redo {
             get {
                 return ResourceManager.GetString("Redo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove component.
+        /// </summary>
+        internal static string RemoveComponent {
+            get {
+                return ResourceManager.GetString("RemoveComponent", resourceCulture);
             }
         }
         
@@ -637,6 +799,15 @@ namespace DiagramApp.Client.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Set as Head.
+        /// </summary>
+        internal static string SetAsHead {
+            get {
+                return ResourceManager.GetString("SetAsHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
         internal static string Settings {
@@ -660,6 +831,15 @@ namespace DiagramApp.Client.Resources.Localization {
         internal static string Size {
             get {
                 return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Start.
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
         

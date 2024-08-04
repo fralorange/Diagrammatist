@@ -36,11 +36,13 @@
                 </Entry>
             </toolkit:UniformItemsLayout>
             <properties:TextBoxPropertiesView Grid.Row="2"
-                                              IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservableTextFigure}, FallbackValue={x:Boolean False}}"/>
+                                              IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservableTextFigure}, FallbackValue='False'}"/>
             <properties:ShapePropertiesView Grid.Row="2"
-                                            IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservablePathFigure}, FallbackValue={x:Boolean False}}"/>
+                                            IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservablePathFigure}, FallbackValue='False'}"/>
+            <properties:ShapeTextPropertiesView Grid.Row="2"
+                                IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservablePathTextFigure}, FallbackValue='False'}"/>
             <properties:DataFlowPropertiesView Grid.Row="2"
-                                               IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservablePolylineFigure}, FallbackValue={x:Boolean False}}"/>
+                                               IsVisible="{Binding CurrentCanvas.SelectedFigure, Converter={StaticResource IsElementConverter}, ConverterParameter={x:Type wrappers:ObservablePolylineFigure}, FallbackValue='False'}"/>
         </Grid>
     </ScrollView>
 </Frame>

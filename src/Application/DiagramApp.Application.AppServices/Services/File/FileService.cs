@@ -33,9 +33,18 @@ namespace DiagramApp.Application.AppServices.Services.File
                     writer.Write(figure.Name);
                     writer.Write(figure.TranslationX);
                     writer.Write(figure.TranslationY);
+                    writer.Write(figure.Rotation);
                     writer.Write(figure.ZIndex);
                     switch (figure)
                     {
+                        case PathTextFigureDto pathTextFigure:
+                            writer.Write(pathTextFigure.PathData);
+                            writer.Write(pathTextFigure.Width);
+                            writer.Write(pathTextFigure.Height);
+                            writer.Write(pathTextFigure.Aspect);
+                            writer.Write(pathTextFigure.Text);
+                            writer.Write(pathTextFigure.FontSize);
+                            break;
                         case PathFigureDto pathFigure:
                             writer.Write(pathFigure.PathData);
                             writer.Write(pathFigure.Width);
@@ -51,6 +60,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             }
                             writer.Write(polylineFigure.Thickness);
                             writer.Write(polylineFigure.Dashed);
+                            writer.Write(polylineFigure.Arrow);
                             writer.Write(polylineFigure.LineJoin);
                             break;
                         case TextFigureDto textFigure:
@@ -106,14 +116,30 @@ namespace DiagramApp.Application.AppServices.Services.File
                     var figureName = reader.ReadString();
                     var translationX = reader.ReadDouble();
                     var translationY = reader.ReadDouble();
+                    var rotation = reader.ReadDouble();
                     var zIndex = reader.ReadDouble();
                     FigureDto figure = figureType switch
                     {
+                        nameof(PathTextFigureDto) => new PathTextFigureDto
+                        {
+                            Name = figureName,
+                            TranslationX = translationX,
+                            TranslationY = translationY,
+                            Rotation = rotation,
+                            ZIndex = zIndex,
+                            PathData = reader.ReadString(),
+                            Width = reader.ReadDouble(),
+                            Height = reader.ReadDouble(),
+                            Aspect = reader.ReadBoolean(),
+                            Text = reader.ReadString(),
+                            FontSize = reader.ReadDouble(),
+                        },
                         nameof(PathFigureDto) => new PathFigureDto
                         {
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             PathData = reader.ReadString(),
                             Width = reader.ReadDouble(),
@@ -125,6 +151,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             Points = Enumerable.Range(0, reader.ReadInt32()).Select(_ => new System.Drawing.Point
                             {
@@ -133,6 +160,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             }).ToList(),
                             Thickness = reader.ReadDouble(),
                             Dashed = reader.ReadBoolean(),
+                            Arrow = reader.ReadBoolean(),
                             LineJoin = reader.ReadString()
                         },
                         nameof(TextFigureDto) => new TextFigureDto
@@ -140,6 +168,7 @@ namespace DiagramApp.Application.AppServices.Services.File
                             Name = figureName,
                             TranslationX = translationX,
                             TranslationY = translationY,
+                            Rotation = rotation,
                             ZIndex = zIndex,
                             Text = reader.ReadString(),
                             FontSize = reader.ReadDouble(),

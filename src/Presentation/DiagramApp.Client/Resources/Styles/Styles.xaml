@@ -66,7 +66,7 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
         <Setter Property="HeightRequest" Value="1"/>
     </Style>
-    <Style TargetType="Button">
+    <Style TargetType="Button" x:Key="RegularButton">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource White}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
@@ -101,6 +101,8 @@
             </VisualStateGroupList>
         </Setter>
     </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource RegularButton}"/>
 
     <Style TargetType="Button" x:Key="Tab">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource White}}"/>
@@ -286,6 +288,13 @@
         <Setter Property="MaximumWidthRequest" Value="50"/>
         <Setter Property="MinimumHeightRequest" Value="60"/>
         <Setter Property="MaximumHeightRequest" Value="60"/>
+    </Style>
+
+    <Style TargetType="ImageButton" x:Key="MiniTool">
+        <Setter Property="MinimumWidthRequest" Value="25"/>
+        <Setter Property="MaximumWidthRequest" Value="25"/>
+        <Setter Property="MinimumHeightRequest" Value="30"/>
+        <Setter Property="MaximumHeightRequest" Value="30"/>
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="ToolLayout">

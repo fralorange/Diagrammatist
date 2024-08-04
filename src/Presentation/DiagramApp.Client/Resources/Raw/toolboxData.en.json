@@ -48,5 +48,40 @@
     "Name": "Text box",
     "Category": "Advanced",
     "Data": "Lorem"
+  },
+  {
+    "Name": "Start/End",
+    "Category": "Blocks",
+    "Data": "M200,0 A50,50 0 0 1 250,50 A50,50 0 0 1 200,100 H50 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
+  },
+  {
+    "Name": "Process",
+    "Category": "Blocks",
+    "Data": "M0,0 L125,0 L125,50 L0,50 Z"
+  },
+  {
+    "Name": "Input/Output",
+    "Category": "Blocks",
+    "Data": "M30,0 L125,0 L95,50 L0,50 Z"
+  },
+  {
+    "Name": "Decision",
+    "Category": "Blocks",
+    "Data": "M50,50 L100,75 L150,50 L100,25 Z"
+  },
+  {
+    "Name": "Connector",
+    "Category": "Blocks",
+    "Data": "M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
+  },
+  {
+    "Name": "Preparation",
+    "Category": "Blocks",
+    "Data": "M50,0 L25,25 L50,50 L125,50 L150,25 L125,0 Z"
+  },
+  {
+    "Name": "Document",
+    "Category": "Blocks",
+    "Data": "M100,0 L0,0 L0,50 Q15,65 50,50 T100,40 Z"
   }
 ]

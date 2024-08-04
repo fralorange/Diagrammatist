@@ -2,7 +2,7 @@
 {
     public enum DiagramType
     {
-        Block,
+        Flowchart,
         Custom
     }
 }

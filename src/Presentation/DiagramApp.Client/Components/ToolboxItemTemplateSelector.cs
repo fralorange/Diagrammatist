@@ -6,6 +6,7 @@ namespace DiagramApp.Client.Components
     public class ToolboxItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate? PathFigureTemplate { get; set; }
+        public DataTemplate? PathTextFigureTemplate { get; set; }
         public DataTemplate? PolylineFigureTemplate { get; set; }
         public DataTemplate? TextFigureTemplate { get; set; }
 

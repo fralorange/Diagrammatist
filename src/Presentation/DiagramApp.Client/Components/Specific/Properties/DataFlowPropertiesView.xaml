@@ -31,6 +31,12 @@
         <CheckBox ToolTipProperties.Text="{loc:Translate DashedDescription}"
                   IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Dashed, Mode=OneWay}"
                   CheckedChanged="OnDashedCheckboxChanged"/>
+
+        <Label Text="{loc:Translate Arrow, StringFormat='{0}: '}"
+               Margin="0, 0, 0, 15"/>
+        <CheckBox ToolTipProperties.Text="{loc:Translate ArrowDescription}"
+                  IsChecked="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=CurrentCanvas.SelectedFigure.Arrow, Mode=OneWay}"
+                  CheckedChanged="OnArrowCheckboxChanged"/>
     </toolkit:UniformItemsLayout>
     <VerticalStackLayout Grid.Row="1"
                          Padding="5"
