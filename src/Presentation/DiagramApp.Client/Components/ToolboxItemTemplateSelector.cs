@@ -1,4 +1,4 @@
-﻿using DiagramApp.Domain.Canvas.Figures;
+﻿using DiagramApp.Domain.Figures;
 using DiagramApp.Domain.Toolbox;
 
 namespace DiagramApp.Client.Components

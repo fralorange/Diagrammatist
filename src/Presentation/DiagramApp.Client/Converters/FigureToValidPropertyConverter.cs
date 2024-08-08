@@ -1,8 +1,8 @@
 ﻿using DiagramApp.Client.ViewModels.Wrappers;
-using DiagramApp.Domain.Canvas.Figures;
+using DiagramApp.Domain.Figures;
 using Microsoft.Maui.Controls.Shapes;
 using System.Globalization;
-using PathFigure = DiagramApp.Domain.Canvas.Figures.PathFigure;
+using PathFigure = DiagramApp.Domain.Figures.PathFigure;
 
 namespace DiagramApp.Client.Converters
 {

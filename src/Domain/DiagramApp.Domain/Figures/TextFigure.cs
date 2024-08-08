@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Domain.Canvas.Figures
+﻿namespace DiagramApp.Domain.Figures
 {
     public class TextFigure : Figure
     {

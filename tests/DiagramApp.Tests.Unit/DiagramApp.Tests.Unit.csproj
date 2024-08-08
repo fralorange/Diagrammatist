@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Application\DiagramApp.Application.AppServices\DiagramApp.Application.AppServices.csproj" />
+    <ProjectReference Include="..\..\src\Application\DiagramApp.Application.AppServices\DiagramApp.Application.csproj" />
     <ProjectReference Include="..\..\src\Contracts\DiagramApp.Contracts\DiagramApp.Contracts.csproj" />
   </ItemGroup>
 

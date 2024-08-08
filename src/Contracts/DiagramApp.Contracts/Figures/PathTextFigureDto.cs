@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Contracts.Canvas.Figures
+﻿namespace DiagramApp.Contracts.Figures
 {
     public class PathTextFigureDto : PathFigureDto
     {

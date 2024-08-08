@@ -1,5 +1,5 @@
-﻿using DiagramApp.Contracts.Canvas.Figures;
-using DiagramApp.Contracts.DiagramSettings;
+﻿using DiagramApp.Contracts.DiagramSettings;
+using DiagramApp.Contracts.Figures;
 
 namespace DiagramApp.Contracts.Canvas
 {

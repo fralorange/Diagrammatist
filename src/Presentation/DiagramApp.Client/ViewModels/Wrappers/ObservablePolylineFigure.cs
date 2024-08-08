@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using DiagramApp.Domain.Canvas.Figures;
+using DiagramApp.Domain.Figures;
 using Microsoft.Maui.Controls.Shapes;
 using System.Collections.ObjectModel;
 

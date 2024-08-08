@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DiagramApp.Contracts.Canvas.Figures
+namespace DiagramApp.Contracts.Figures
 {
     public class PolylineFigureDto : FigureDto
     {

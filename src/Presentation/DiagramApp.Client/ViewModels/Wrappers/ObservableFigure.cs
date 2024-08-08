@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DiagramApp.Domain.Canvas.Figures;
+using DiagramApp.Domain.Figures;
 
 namespace DiagramApp.Client.ViewModels.Wrappers
 {

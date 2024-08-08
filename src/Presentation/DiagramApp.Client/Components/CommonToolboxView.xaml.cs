@@ -1,7 +1,7 @@
 using DiagramApp.Application.AppServices.Helpers;
 using DiagramApp.Client.ViewModels;
 using DiagramApp.Client.ViewModels.Wrappers;
-using DiagramApp.Domain.Canvas.Figures;
+using DiagramApp.Domain.Figures;
 using DiagramApp.Domain.Toolbox;
 
 namespace DiagramApp.Client.Components;

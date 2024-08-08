@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Domain", "src\Do
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{401091BE-C79E-4239-9B03-E73EE2A13C6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Application.AppServices", "src\Application\DiagramApp.Application.AppServices\DiagramApp.Application.AppServices.csproj", "{26BCFF26-5702-4B1B-AA25-71E878FC7B96}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{D3CB94B0-92D3-47D7-87F6-A240845E7235}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Contracts", "src\Contracts\DiagramApp.Contracts\DiagramApp.Contracts.csproj", "{E7303A4E-C46E-4DF5-B471-B15CBA43FA27}"
@@ -29,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{416DD9AF-C
 	ProjectSection(SolutionItems) = preProject
 		docs\assets\assets.md = docs\assets\assets.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Application.AppServices", "src\Application\DiagramApp.Application.AppServices\DiagramApp.Application.AppServices.csproj", "{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +46,6 @@ Global
 		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26BCFF26-5702-4B1B-AA25-71E878FC7B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26BCFF26-5702-4B1B-AA25-71E878FC7B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26BCFF26-5702-4B1B-AA25-71E878FC7B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26BCFF26-5702-4B1B-AA25-71E878FC7B96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7303A4E-C46E-4DF5-B471-B15CBA43FA27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E7303A4E-C46E-4DF5-B471-B15CBA43FA27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7303A4E-C46E-4DF5-B471-B15CBA43FA27}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,6 +54,10 @@ Global
 		{068FA67D-6822-4E27-B47C-BF81F6313D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{068FA67D-6822-4E27-B47C-BF81F6313D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{068FA67D-6822-4E27-B47C-BF81F6313D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,10 +68,10 @@ Global
 		{6FFD73AC-E446-44B7-9154-916CC14601E8} = {DB478693-0571-4D79-8290-C5E87B44C895}
 		{44164DF9-6A75-4E65-AF6A-8AC89D9C6399} = {6B5F9AAE-7AC8-4A53-9A9C-6D899D3112E2}
 		{401091BE-C79E-4239-9B03-E73EE2A13C6B} = {19A7644F-412D-44FD-A3DF-485E90D48D71}
-		{26BCFF26-5702-4B1B-AA25-71E878FC7B96} = {401091BE-C79E-4239-9B03-E73EE2A13C6B}
 		{D3CB94B0-92D3-47D7-87F6-A240845E7235} = {19A7644F-412D-44FD-A3DF-485E90D48D71}
 		{E7303A4E-C46E-4DF5-B471-B15CBA43FA27} = {D3CB94B0-92D3-47D7-87F6-A240845E7235}
 		{068FA67D-6822-4E27-B47C-BF81F6313D86} = {4F965C9D-07A9-46D9-8277-30A909E9CC0B}
+		{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6} = {401091BE-C79E-4239-9B03-E73EE2A13C6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F0DF37D-74DA-4F7B-831E-E3C2B2B50437}

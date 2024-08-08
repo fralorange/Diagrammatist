@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DiagramApp.Domain.Canvas.Figures
+namespace DiagramApp.Domain.Figures
 {
     public class PolylineFigure : Figure
     {
