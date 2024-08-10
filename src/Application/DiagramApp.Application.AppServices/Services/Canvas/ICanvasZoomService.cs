@@ -6,5 +6,6 @@ namespace DiagramApp.Application.AppServices.Services.Canvas
     {
         void ZoomIn(CanvasDto canvas, double zoomFactor, int? mouseX = null, int? mouseY = null);
         void ZoomOut(CanvasDto canvas, double zoomFactor, int? mouseX = null, int? mouseY = null);
+        void ZoomReset(CanvasDto canvas);
     }
 }

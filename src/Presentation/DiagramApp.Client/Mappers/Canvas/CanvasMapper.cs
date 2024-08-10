@@ -63,7 +63,7 @@ namespace DiagramApp.Client.Mappers.Canvas
                 ImaginaryWidth = dto.ImaginaryWidth,
                 ImaginaryHeight = dto.ImaginaryHeight,
                 Zoom = dto.Zoom,
-                Offset = new Offset
+                ScreenOffset = new ScreenOffset
                 {
                     X = dto.Offset.X,
                     Y = dto.Offset.Y

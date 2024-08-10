@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.ViewModels.Wrappers
 {
+    [Obsolete("Refactored")]
     public partial class ObservableCanvas : ObservableObject
     {
         private readonly Canvas _canvas;
@@ -22,12 +23,6 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         [ObservableProperty]
         private bool _canRedo;
-
-        [ObservableProperty]
-        private bool _isGridVisible = true;
-
-        [ObservableProperty]
-        private double _gridSpacing = 10;
 
         [ObservableProperty]
         private bool _isSelected;
@@ -82,31 +77,31 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         {
             _canvas = canvas;
             Zoom = _canvas.Zoom;
-            Offset = new ObservableOffset(_canvas.Offset);
+            Offset = new ObservableOffset(_canvas.ScreenOffset);
         }
 
-        internal virtual void OnBlockedResourcesReceived(object obj) => BlockedResourcesReceived?.Invoke(this, obj);
+        //internal virtual void OnBlockedResourcesReceived(object obj) => BlockedResourcesReceived?.Invoke(this, obj);
 
-        public async Task<TResult> BlockAsync<TResult>()
-        {
-            var tcs = new TaskCompletionSource<TResult>();
+        //public async Task<TResult> BlockAsync<TResult>()
+        //{
+        //    var tcs = new TaskCompletionSource<TResult>();
 
-            EventHandler<object>? handler = null;
-            handler = (sender, result) =>
-            {
-                IsBlocked = false;
-                BlockedResourcesReceived -= handler;
-                tcs.SetResult((TResult)result);
-            };
-            BlockedResourcesReceived += handler;
+        //    EventHandler<object>? handler = null;
+        //    handler = (sender, result) =>
+        //    {
+        //        IsBlocked = false;
+        //        BlockedResourcesReceived -= handler;
+        //        tcs.SetResult((TResult)result);
+        //    };
+        //    BlockedResourcesReceived += handler;
 
-            IsBlocked = true;
-            ChangeControls("Select");
-            DeselectFigure();
+        //    IsBlocked = true;
+        //    ChangeControls("Select");
+        //    DeselectFigure();
 
-            var result = await tcs.Task;
-            return result;
-        }
+        //    var result = await tcs.Task;
+        //    return result;
+        //}
 
         private void UpdateUndoRedoState()
         {
@@ -157,48 +152,6 @@ namespace DiagramApp.Client.ViewModels.Wrappers
                 ClearUndoCommand();
                 UpdateUndoRedoState();
             }
-        }
-
-        public void ChangeGridVisibility()
-        {
-            IsGridVisible = !IsGridVisible;
-        }
-
-        public void ZoomIn(double zoomFactor, int? mouseX = null, int? mouseY = null)
-        {
-            _canvas.ZoomIn(zoomFactor, mouseX, mouseY);
-            ZoomChanged();
-        }
-
-        public void ZoomOut(double zoomFactor, int? mouseX = null, int? mouseY = null)
-        {
-            _canvas.ZoomOut(zoomFactor, mouseX, mouseY);
-            ZoomChanged();
-        }
-
-        public void ZoomReset()
-        {
-            _canvas.Zoom = 1;
-            ZoomChanged();
-        }
-
-        public void MoveCanvas(double deltaX, double deltaY)
-        {
-            _canvas.MoveCanvas(deltaX, deltaY);
-            OnPropertyChanged(nameof(Offset));
-        }
-
-        public void ChangeControls(string controlName)
-        {
-            _canvas.ChangeControls(controlName);
-            OnPropertyChanged(nameof(Controls));
-        }
-
-        public void UpdateSettings(DiagramSettings settings)
-        {
-            _canvas.UpdateSettings(settings);
-            OnPropertyChanged(nameof(Settings));
-            ZoomChanged();
         }
 
         public void SelectFigure(ObservableFigure figure)

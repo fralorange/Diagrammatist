@@ -1,4 +1,5 @@
 ﻿using DiagramApp.Contracts.Canvas;
+using DiagramApp.Domain.Canvas.Constants;
 
 namespace DiagramApp.Application.AppServices.Services.Canvas
 {
@@ -20,7 +21,7 @@ namespace DiagramApp.Application.AppServices.Services.Canvas
 
             canvas.Offset.X = newPositionX;
             canvas.Offset.Y = newPositionY;
-            canvas.Zoom = Math.Min(2, canvas.Zoom + zoomFactor);
+            canvas.Zoom = Math.Min(CanvasZoomConstants.MaxZoom, canvas.Zoom + zoomFactor);
 
             UpdateImaginaryBorders(canvas);
             EnsureCanvasWithinBorders(canvas);
@@ -42,7 +43,7 @@ namespace DiagramApp.Application.AppServices.Services.Canvas
 
             canvas.Offset.X = newPositionX;
             canvas.Offset.Y = newPositionY;
-            canvas.Zoom = Math.Max(0.5f, canvas.Zoom - zoomFactor);
+            canvas.Zoom = Math.Max(CanvasZoomConstants.MinZoom, canvas.Zoom - zoomFactor);
 
             UpdateImaginaryBorders(canvas);
             EnsureCanvasWithinBorders(canvas);
@@ -77,6 +78,11 @@ namespace DiagramApp.Application.AppServices.Services.Canvas
             {
                 canvas.Offset.Y = Math.Max(0, Math.Min(offsetY, canvas.ImaginaryHeight));
             }
+        }
+
+        public void ZoomReset(CanvasDto canvas)
+        {
+            canvas.Zoom = CanvasZoomConstants.DefaultZoom;
         }
     }
 }

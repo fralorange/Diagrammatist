@@ -5,9 +5,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 {
     public class ObservableOffset : ObservableObject
     {
-        private readonly Offset _offset;
+        private readonly ScreenOffset _offset;
 
-        public ObservableOffset(Offset offset)
+        public ObservableOffset(ScreenOffset offset)
         {
             _offset = offset;
         }

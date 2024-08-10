@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{416DD9AF-C
 		docs\assets\assets.md = docs\assets\assets.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Application.AppServices", "src\Application\DiagramApp.Application.AppServices\DiagramApp.Application.AppServices.csproj", "{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Application.AppServices", "src\Application\DiagramApp.Application.AppServices\DiagramApp.Application.AppServices.csproj", "{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
