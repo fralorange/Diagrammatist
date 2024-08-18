@@ -43,5 +43,13 @@
         {
             _figures.Remove(figure);
         }
+
+        /// <summary>
+        /// Clears figures from collection.
+        /// </summary>
+        public void ClearFigures()
+        {
+            _figures.Clear();
+        }
     }
 }

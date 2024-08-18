@@ -16,8 +16,8 @@ namespace DiagramApp.Client.Components
             {
                 return toolboxItem.Figure switch
                 {
-                    PathFigure => PathFigureTemplate,
-                    PolylineFigure => PolylineFigureTemplate,
+                    ShapeFigure => PathFigureTemplate,
+                    LineFigure => PolylineFigureTemplate,
                     TextFigure => TextFigureTemplate,
                     _ => null,
                 };

@@ -5,7 +5,7 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 {
     public partial class ObservablePathTextFigure : ObservablePathFigure
     {
-        public ObservablePathTextFigure(PathFigure pathFigure) : base(pathFigure) { }
+        public ObservablePathTextFigure(ShapeFigure pathFigure) : base(pathFigure) { }
 
         [ObservableProperty]
         private string _text = string.Empty;

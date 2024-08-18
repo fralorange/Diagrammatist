@@ -7,11 +7,11 @@ namespace DiagramApp.Domain.Canvas
     public class Canvas
     {
         /// <summary>
-        /// Invisible border width which prevents user from scrolling into abyss...
+        /// Width of Invisible border which prevents user from scrolling in to the abyss...
         /// </summary>
         public int ImaginaryWidth { get; set; }
         /// <summary>
-        /// Invisible border height which prevents user from scrolling into abyss...
+        /// Height of Invisible border which prevents user from scrolling in to the abyss...
         /// </summary>
         public int ImaginaryHeight { get; set; }
         /// <summary>
@@ -31,10 +31,6 @@ namespace DiagramApp.Domain.Canvas
         /// Determines canvas position on the user's screen.
         /// </summary>
         public ScreenOffset ScreenOffset { get; set; } = new();
-        /// <summary>
-        /// Controls parameter.
-        /// </summary>
-        public ControlsType Controls { get; set; } = CanvasControlsConstants.DefaultControls;
         /// <summary>
         /// Grid spacing parameter.
         /// </summary>

@@ -1,5 +1,8 @@
 ﻿namespace DiagramApp.Domain.DiagramSettings.Constants
 {
+    /// <summary>
+    /// Diagram Settings constants.
+    /// </summary>
     public static class DiagramSettingsConstants
     {
         /// <summary>

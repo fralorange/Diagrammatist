@@ -23,7 +23,7 @@ namespace DiagramApp.Client.ViewModels.Wrappers
         [ObservableProperty]
         private PenLineJoin _lineJoin;
 
-        public ObservablePolylineFigure(PolylineFigure polylineFigure) : base(polylineFigure)
+        public ObservablePolylineFigure(LineFigure polylineFigure) : base(polylineFigure)
         {
             _points = polylineFigure.Points.ToObservableCollection();
             _points.CollectionChanged += PointsCollectionChanged;

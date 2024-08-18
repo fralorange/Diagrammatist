@@ -25,14 +25,14 @@ public partial class CommonToolboxView : Grid
                 ObservableFigure? observableFigure = null;
                 switch (figure)
                 {
-                    case PathFigure pathFigure when current.Category.Equals(ToolboxCategory.Blocks):
-                        observableFigure = new ObservablePathTextFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData });
+                    case ShapeFigure pathFigure when current.Category.Equals(ToolboxCategory.Blocks):
+                        observableFigure = new ObservablePathTextFigure(new ShapeFigure { Name = pathFigure.Name, Data = pathFigure.Data });
                         (observableFigure as ObservablePathTextFigure)!.Aspect = true;
                         break;
-                    case PathFigure pathFigure:
-                        observableFigure = new ObservablePathFigure(new PathFigure { Name = pathFigure.Name, PathData = pathFigure.PathData });
+                    case ShapeFigure pathFigure:
+                        observableFigure = new ObservablePathFigure(new ShapeFigure { Name = pathFigure.Name, Data = pathFigure.Data });
                         break;
-                    case PolylineFigure polylineFigure:
+                    case LineFigure polylineFigure:
                         var blockedPoints = await viewModel.CurrentCanvas.BlockAsync<List<System.Drawing.Point>>();
                         if (blockedPoints is null)
                         {
@@ -47,7 +47,7 @@ public partial class CommonToolboxView : Grid
                             ? (points.Min(pt => pt.X), points.Min(pt => pt.Y))
                             : (default(int), default(int));
                         NormalizePoints(points, (translatedX, translatedY));
-                        observableFigure = new ObservablePolylineFigure(new PolylineFigure
+                        observableFigure = new ObservablePolylineFigure(new LineFigure
                         {
                             Name = polylineFigure.Name,
                             Points = points.Count > 1 ? points : polylineFigure.Points

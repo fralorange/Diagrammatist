@@ -2,7 +2,7 @@
 using DiagramApp.Domain.Figures;
 using Microsoft.Maui.Controls.Shapes;
 using System.Globalization;
-using PathFigure = DiagramApp.Domain.Figures.PathFigure;
+using ShapeFigure = DiagramApp.Domain.Figures.ShapeFigure;
 
 namespace DiagramApp.Client.Converters
 {
@@ -12,8 +12,8 @@ namespace DiagramApp.Client.Converters
         {
             return value switch
             {
-                PathFigure { PathData: { } data } pathFigure => (Geometry)new PathGeometryConverter().ConvertFromInvariantString(data)!,
-                PolylineFigure { Points: { } points } polylineFigure => new PointCollection(points.Select(p => new Point(p.X, p.Y)).ToArray()),
+                ShapeFigure { Data: { } data } pathFigure => (Geometry)new PathGeometryConverter().ConvertFromInvariantString(data)!,
+                LineFigure { Points: { } points } polylineFigure => new PointCollection(points.Select(p => new Point(p.X, p.Y)).ToArray()),
                 TextFigure { Text: { } text } textFigure => text,
                 _ => value,
             };

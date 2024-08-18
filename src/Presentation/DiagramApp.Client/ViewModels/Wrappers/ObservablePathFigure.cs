@@ -5,9 +5,9 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 {
     public partial class ObservablePathFigure : ObservableFigure
     {
-        private readonly PathFigure _pathFigure;
+        private readonly ShapeFigure _pathFigure;
 
-        public ObservablePathFigure(PathFigure pathFigure) : base(pathFigure) => _pathFigure = pathFigure;
+        public ObservablePathFigure(ShapeFigure pathFigure) : base(pathFigure) => _pathFigure = pathFigure;
 
         [ObservableProperty]
         private double _width = 50;
@@ -20,8 +20,8 @@ namespace DiagramApp.Client.ViewModels.Wrappers
 
         public string PathData
         {
-            get => _pathFigure.PathData;
-            set => SetProperty(_pathFigure.PathData, value, _pathFigure, (pF, pD) => pF.PathData = pD);
+            get => _pathFigure.Data;
+            set => SetProperty(_pathFigure.Data, value, _pathFigure, (pF, pD) => pF.Data = pD);
         }
     }
 }
