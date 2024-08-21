@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using DiagramApp.Domain.DiagramSettings;
+using DiagramApp.Domain.Settings;
 
 namespace DiagramApp.Client.ViewModels
 {

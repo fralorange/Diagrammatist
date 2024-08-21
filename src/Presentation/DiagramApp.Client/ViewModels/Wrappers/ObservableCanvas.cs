@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Domain.DiagramSettings;
+using DiagramApp.Domain.Settings;
 using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.ViewModels.Wrappers

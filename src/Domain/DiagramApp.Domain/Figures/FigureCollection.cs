@@ -8,13 +8,10 @@
         private readonly List<Figure> _figures = [];
 
         /// <summary>
-        /// Returns readonly collection.
+        /// Returns figure collection.
         /// </summary>
-        /// <returns><see cref="IReadOnlyCollection{T}"/> of figures</returns>
-        public IReadOnlyCollection<Figure> GetFigures()
-        {
-            return _figures;
-        }
+        /// <returns><see cref="List{T}"/> of figures</returns>
+        public List<Figure> Figures { get { return _figures; } }
 
         /// <summary>
         /// Returns figure by predicate.

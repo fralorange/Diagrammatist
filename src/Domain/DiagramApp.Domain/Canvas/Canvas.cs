@@ -1,9 +1,12 @@
 ﻿using DiagramApp.Domain.Canvas.Constants;
 using DiagramApp.Domain.Figures;
-using DiagramSettingsEntity = DiagramApp.Domain.DiagramSettings.DiagramSettings;
+using DiagramSettingsEntity = DiagramApp.Domain.Settings.DiagramSettings;
 
 namespace DiagramApp.Domain.Canvas
 {
+    /// <summary>
+    /// Canvas.
+    /// </summary>
     public class Canvas
     {
         /// <summary>
@@ -42,6 +45,6 @@ namespace DiagramApp.Domain.Canvas
         /// <summary>
         /// Drawing context for canvas.
         /// </summary>
-        public FigureCollection FigureCollection { get; set; } = new();
+        public List<Figure> Figures { get; set; } = [];
     }
 }

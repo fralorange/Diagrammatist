@@ -1,4 +1,4 @@
-﻿using DiagramApp.Domain.DiagramSettings;
+﻿using DiagramApp.Domain.Settings;
 using System.Globalization;
 
 namespace DiagramApp.Client.Converters

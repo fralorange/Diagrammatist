@@ -1,9 +1,9 @@
 ﻿using DiagramApp.Client.Mappers.Figure;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Contracts.Canvas;
-using DiagramApp.Contracts.DiagramSettings;
+using DiagramApp.Contracts.Settings;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Domain.DiagramSettings;
+using DiagramApp.Domain.Settings;
 using System.Collections.ObjectModel;
 
 namespace DiagramApp.Client.Mappers.Canvas
@@ -32,7 +32,7 @@ namespace DiagramApp.Client.Mappers.Canvas
                     Type = canvas.Settings.Type.ToString(),
                 },
                 Zoom = canvas.Zoom,
-                Offset = new OffsetDto
+                ScreenOffset = new ScreenOffsetDto
                 {
                     X = canvas.Offset.X,
                     Y = canvas.Offset.Y,
@@ -65,8 +65,8 @@ namespace DiagramApp.Client.Mappers.Canvas
                 Zoom = dto.Zoom,
                 ScreenOffset = new ScreenOffset
                 {
-                    X = dto.Offset.X,
-                    Y = dto.Offset.Y
+                    X = dto.ScreenOffset.X,
+                    Y = dto.ScreenOffset.Y
                 },
             };
 

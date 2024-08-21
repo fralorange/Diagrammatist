@@ -5,7 +5,7 @@
                x:Class="DiagramApp.Client.Views.NewDiagramPopupView"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                xmlns:viewmodel="clr-namespace:DiagramApp.Client.ViewModels"
-               xmlns:local="clr-namespace:DiagramApp.Domain.DiagramSettings;assembly=DiagramApp.Domain"
+               xmlns:local="clr-namespace:DiagramApp.Domain.Settings;assembly=DiagramApp.Domain"
                CanBeDismissedByTappingOutsideOfPopup="False"
                x:DataType="viewmodel:NewDiagramPopupViewModel"
                Size="400, 300">

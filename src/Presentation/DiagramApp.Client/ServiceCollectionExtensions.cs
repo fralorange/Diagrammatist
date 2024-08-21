@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
-using DiagramApp.Application.AppServices.Services.Clipboard;
-using DiagramApp.Application.AppServices.Services.File;
+using DiagramApp.Application.AppServices.Contexts.Clipboard.Services;
+using DiagramApp.Application.AppServices.Contexts.File.Services;
+using DiagramApp.Application.AppServices.Contexts.Toolbox.Services;
 using DiagramApp.Application.AppServices.Services.Toolbox;
 using DiagramApp.Client.Mappers.Canvas;
 using DiagramApp.Client.Mappers.Figure;

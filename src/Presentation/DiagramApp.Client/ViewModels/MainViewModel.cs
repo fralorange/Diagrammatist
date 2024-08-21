@@ -2,16 +2,16 @@
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DiagramApp.Application.AppServices.Contexts.Clipboard.Services;
+using DiagramApp.Application.AppServices.Contexts.File.Services;
+using DiagramApp.Application.AppServices.Contexts.Toolbox.Services;
 using DiagramApp.Application.AppServices.Helpers;
-using DiagramApp.Application.AppServices.Services.Clipboard;
-using DiagramApp.Application.AppServices.Services.File;
-using DiagramApp.Application.AppServices.Services.Toolbox;
 using DiagramApp.Client.Mappers.Canvas;
 using DiagramApp.Client.Mappers.Figure;
 using DiagramApp.Client.Platforms.Windows.Handlers;
 using DiagramApp.Client.ViewModels.Wrappers;
 using DiagramApp.Domain.Canvas;
-using DiagramApp.Domain.DiagramSettings;
+using DiagramApp.Domain.Settings;
 using LocalizationResourceManager.Maui;
 using System.Collections.ObjectModel;
 // TO-DO: Rethink some methods, combine some similar methods in one, move some methods in ObservableCanvas 

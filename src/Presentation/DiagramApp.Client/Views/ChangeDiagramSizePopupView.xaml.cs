@@ -1,7 +1,7 @@
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Messaging;
 using DiagramApp.Client.ViewModels;
-using DiagramApp.Domain.DiagramSettings;
+using DiagramApp.Domain.Settings;
 using LocalizationResourceManager.Maui;
 
 namespace DiagramApp.Client.Views;

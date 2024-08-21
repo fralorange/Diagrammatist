@@ -1,11 +1,29 @@
 ﻿namespace DiagramApp.Contracts.Figures
 {
+    /// <summary>
+    /// Figure dto base class.
+    /// </summary>
     public abstract class FigureDto
     {
-        public required string Name { get; set; }
-        public required double TranslationX { get; set; }
-        public required double TranslationY { get; set; }
-        public required double Rotation { get; set; }
-        public required double ZIndex { get; set; }
+        /// <summary>
+        /// Figure name.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Figure position by X-axis.
+        /// </summary>
+        public double PosX { get; set; }
+        /// <summary>
+        /// Figure position by Y-axis.
+        /// </summary>
+        public double PosY { get; set; }
+        /// <summary>
+        /// Figure rotation.
+        /// </summary>
+        public double Rotation { get; set; }
+        /// <summary>
+        /// Figure Z index.
+        /// </summary>
+        public double ZIndex { get; set; }
     }
 }
