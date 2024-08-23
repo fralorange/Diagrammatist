@@ -18,11 +18,8 @@ namespace DiagramApp.Application.AppServices.Contexts.Canvas.Helpers
             var settings = canvas.Settings;
             var zoom = canvas.Zoom;
 
-            int borderWidth = (int)(settings.Width * BorderMultiplier * zoom);
-            int borderHeight = (int)(settings.Height * BorderMultiplier * zoom);
-
-            canvas.ImaginaryWidth = Math.Abs(0 - borderWidth / 2) + Math.Abs(0 + borderWidth / 2);
-            canvas.ImaginaryHeight = Math.Abs(0 - borderHeight / 2) + Math.Abs(0 + borderHeight / 2);
+            canvas.ImaginaryWidth = (int)(settings.Width * BorderMultiplier / zoom);
+            canvas.ImaginaryHeight = (int)(settings.Height * BorderMultiplier / zoom);
         }
     }
 }

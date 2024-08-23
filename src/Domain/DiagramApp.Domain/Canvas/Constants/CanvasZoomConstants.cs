@@ -17,5 +17,13 @@
         /// Zoom min value.
         /// </summary>
         public const double MinZoom = 0.5d;
+        /// <summary>
+        /// Zoom In factor.
+        /// </summary>
+        public const double ZoomInFactor = 1.1d;
+        /// <summary>
+        /// Zoom Out factor.
+        /// </summary>
+        public const double ZoomOutFactor = 0.9d;
     }
 }

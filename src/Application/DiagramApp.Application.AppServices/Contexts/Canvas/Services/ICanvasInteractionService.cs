@@ -18,9 +18,9 @@ namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
         /// Zoom canvas.
         /// </summary>
         /// <param name="canvas">Canvas model.</param>
-        /// <param name="zoomFactor">Zoom factor.</param>
+        /// <param name="isZoomIn">Zoom In parameter.</param>
         /// <param name="mouseX">Mouse position by X-axis (optional).</param>
         /// <param name="mouseY">Mouse position by Y-axis (optional).</param>
-        void Zoom(CanvasDto canvas, double zoomFactor, int? mouseX = null, int? mouseY = null);
+        void Zoom(CanvasDto canvas, bool isZoomIn, int? mouseX = null, int? mouseY = null);
     }
 }

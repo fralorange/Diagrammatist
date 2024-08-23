@@ -17,30 +17,30 @@ namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
         }
 
         /// <inheritdoc/>
-        public void Zoom(CanvasDto canvas, double zoomFactor, int? mouseX = null, int? mouseY = null)
+        public void Zoom(CanvasDto canvas, bool isZoomIn = true, int? mouseX = null, int? mouseY = null)
         {
-            var isZoomIn = canvas.Zoom < zoomFactor;
-
-            UpdateCanvasOffset(canvas, zoomFactor, mouseX, mouseY, isZoomIn);
+            var oldZoom = canvas.Zoom;
 
             canvas.Zoom = (isZoomIn)
-                ? Math.Min(CanvasZoomConstants.MaxZoom, canvas.Zoom + zoomFactor)
-                : Math.Max(CanvasZoomConstants.MinZoom, canvas.Zoom - zoomFactor);
+                ? Math.Min(CanvasZoomConstants.MaxZoom, canvas.Zoom * CanvasZoomConstants.ZoomInFactor)
+                : Math.Max(CanvasZoomConstants.MinZoom, canvas.Zoom * CanvasZoomConstants.ZoomOutFactor);
 
+            UpdateCanvasOffset(canvas, isZoomIn, oldZoom, mouseX, mouseY);
             CanvasBoundaryHelper.UpdateCanvasBounds(canvas);
             EnsureCanvasWithinBorders(canvas);
         }
 
-        private void UpdateCanvasOffset(CanvasDto canvas, double zoomFactor, int? mouseX, int? mouseY, bool isZoomIn)
+        private void UpdateCanvasOffset(CanvasDto canvas, bool isZoomIn, double oldZoom, int? mouseX, int? mouseY)
         {
             var newOffsetX = canvas.ScreenOffset.X;
             var newOffsetY = canvas.ScreenOffset.Y;
 
             if (mouseX.HasValue && mouseY.HasValue)
             {
-                var factor = (isZoomIn) ? zoomFactor : -zoomFactor;
-                newOffsetX -= (int)((mouseX.Value - newOffsetX) * factor);
-                newOffsetY -= (int)((mouseY.Value - newOffsetY) * factor);
+                var factor = (isZoomIn) ? CanvasZoomConstants.ZoomInFactor : CanvasZoomConstants.ZoomOutFactor;
+
+                newOffsetX = (int)Math.Abs((mouseX.Value * (factor - oldZoom) + factor * canvas.ScreenOffset.X));
+                newOffsetY = (int)Math.Abs((mouseY.Value * (factor - oldZoom) + factor * canvas.ScreenOffset.Y));
             }
 
             canvas.ScreenOffset.X = newOffsetX;
@@ -49,18 +49,8 @@ namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
 
         private void EnsureCanvasWithinBorders(CanvasDto canvas)
         {
-            var offsetX = canvas.ScreenOffset.X;
-            var offsetY = canvas.ScreenOffset.Y;
-
-            if (offsetX < 0 || offsetX > canvas.ImaginaryWidth)
-            {
-                canvas.ScreenOffset.X = Math.Max(0, Math.Min(offsetX, canvas.ImaginaryWidth));
-            }
-
-            if (offsetY < 0 || offsetY > canvas.ImaginaryHeight)
-            {
-                canvas.ScreenOffset.Y = Math.Max(0, Math.Min(offsetY, canvas.ImaginaryHeight));
-            }
+            canvas.ScreenOffset.X = Math.Max(0, Math.Min(canvas.ScreenOffset.X, canvas.ImaginaryWidth));
+            canvas.ScreenOffset.Y = Math.Max(0, Math.Min(canvas.ScreenOffset.Y, canvas.ImaginaryHeight));
         }
     }
 }
