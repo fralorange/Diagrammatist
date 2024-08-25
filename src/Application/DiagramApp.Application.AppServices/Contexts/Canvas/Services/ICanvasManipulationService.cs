@@ -1,5 +1,5 @@
 ﻿using DiagramApp.Contracts.Canvas;
-using DiagramApp.Domain.Settings;
+using DiagramApp.Contracts.Settings;
 
 namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
 {
@@ -13,6 +13,12 @@ namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
         /// </summary>
         /// <param name="settings">Settings.</param>
         /// <returns><see cref="CanvasDto"/>. Canvas model.</returns>
-        CanvasDto CreateCanvas(DiagramSettings settings);
+        CanvasDto CreateCanvas(DiagramSettingsDto settings);
+        /// <summary>
+        /// Edits existing canvas.
+        /// </summary>
+        /// <param name="canvas">Target canvas.</param>
+        /// <param name="settings">New settings.</param>
+        void UpdateCanvas(CanvasDto canvas, DiagramSettingsDto settings);
     }
 }

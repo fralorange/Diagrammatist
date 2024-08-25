@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="DiagramApp.Presentation.WPF.Components.TabsComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Components"
+             mc:Ignorable="d">
+    <ListBox>
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Focusable" Value="False" />
+            </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.Items>
+            <ListBoxItem>Tab 1</ListBoxItem>
+            <ListBoxItem>Tab 2</ListBoxItem>
+            <ListBoxItem>Tab 3</ListBoxItem>
+            <ListBoxItem>Tab 4</ListBoxItem>
+        </ListBox.Items>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Button Content="{Binding Content}"/>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
+</UserControl>

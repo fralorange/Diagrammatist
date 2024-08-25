@@ -34,7 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Application.AppS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{1837172F-D393-4518-95D4-FEA626BE2294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Infrastructure.ComponentRegistrar", "src\Infrastructure\DiagramApp.Infrastructure.ComponentRegistrar\DiagramApp.Infrastructure.ComponentRegistrar.csproj", "{D87DA399-FF07-4D5E-8A1F-7FED882CBE72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure.ComponentRegistrar", "src\Infrastructure\DiagramApp.Infrastructure.ComponentRegistrar\DiagramApp.Infrastructure.ComponentRegistrar.csproj", "{D87DA399-FF07-4D5E-8A1F-7FED882CBE72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Presentation.WPF", "src\Presentation\DiagramApp.Presentation.WPF\DiagramApp.Presentation.WPF.csproj", "{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,10 @@ Global
 		{D87DA399-FF07-4D5E-8A1F-7FED882CBE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D87DA399-FF07-4D5E-8A1F-7FED882CBE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D87DA399-FF07-4D5E-8A1F-7FED882CBE72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{8FA16E5B-1970-49C1-9079-68C477EDD2A8} = {4C0A1236-CF31-43A3-A2C7-66916D0792D4}
 		{1837172F-D393-4518-95D4-FEA626BE2294} = {19A7644F-412D-44FD-A3DF-485E90D48D71}
 		{D87DA399-FF07-4D5E-8A1F-7FED882CBE72} = {1837172F-D393-4518-95D4-FEA626BE2294}
+		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F} = {DB478693-0571-4D79-8290-C5E87B44C895}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F0DF37D-74DA-4F7B-831E-E3C2B2B50437}
