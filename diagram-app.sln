@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure.ComponentRegistrar", "src\Infrastructure\DiagramApp.Infrastructure.ComponentRegistrar\DiagramApp.Infrastructure.ComponentRegistrar.csproj", "{D87DA399-FF07-4D5E-8A1F-7FED882CBE72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Presentation.WPF", "src\Presentation\DiagramApp.Presentation.WPF\DiagramApp.Presentation.WPF.csproj", "{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Presentation.WPF", "src\Presentation\DiagramApp.Presentation.WPF\DiagramApp.Presentation.WPF.csproj", "{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
