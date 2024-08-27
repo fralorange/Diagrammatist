@@ -3,25 +3,37 @@
 namespace DiagramApp.Domain.Figures
 {
     /// <summary>
-    /// Text figure.
+    /// A text figure class. Derived class from <see cref="Figure"/>.
     /// </summary>
     public class TextFigure : Figure
     {
         /// <summary>
-        /// Figure Text.
+        /// Gets or sets figure Text.
         /// </summary>
+        /// <remarks>
+        /// This property used to display text in figure UI.
+        /// </remarks>
         public string Text { get; set; } = FigureTextConstants.DefaultText;
         /// <summary>
-        /// Font size.
+        /// Gets or sets font size.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure font size.
+        /// </remarks>
         public double FontSize { get; set; } = TextFigureManipulationConstants.DefaultFontSize;
         /// <summary>
-        /// Indicates whether figure has outline.
+        /// Gets or sets figure outline condition.
         /// </summary>
+        /// <remarks>
+        /// This property indicates whether figure has outline.
+        /// </remarks>
         public bool HasOutline { get; set; } = TextFigureBoolConstants.DefaultOutlineParameter;
         /// <summary>
-        /// Indicates whether figure has background.
+        /// Gets or sets figure background condition,
         /// </summary>
+        /// <remarks>
+        /// This property indicates whether figure has background.
+        /// </remarks>
         public bool HasBackground { get; set; } = TextFigureBoolConstants.DefaultBackgroundParameter;
     }
 }

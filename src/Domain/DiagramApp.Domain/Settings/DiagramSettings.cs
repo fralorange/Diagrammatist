@@ -8,24 +8,39 @@ namespace DiagramApp.Domain.Settings
     public class DiagramSettings
     {
         /// <summary>
-        /// Diagram file name.
+        /// Gets or sets diagram file name.
         /// </summary>
+        /// <remarks>
+        /// This property used to set file name.
+        /// </remarks>
         public string FileName { get; set; } = DiagramSettingsConstants.DefaultFileName;
         /// <summary>
-        /// Diagram canvas width.
+        /// Gets or sets diagram canvas width.
         /// </summary>
+        /// <remarks>
+        /// This property used to store diagram's canvas width.
+        /// </remarks>
         public int Width { get; set; } = DiagramSettingsConstants.DefaultWidth;
         /// <summary>
-        /// Diagram canvas height.
+        /// Gets or sets diagram canvas height.
         /// </summary>
+        /// <remarks>
+        /// This property used to store diagram's canvas height.
+        /// </remarks>
         public int Height { get; set; } = DiagramSettingsConstants.DefaultHeight;
         /// <summary>
-        /// Diagram canvas background type.
+        /// Gets or sets diagram canvas background type.
         /// </summary>
+        /// <remarks>
+        /// This property used to store diagram background type.
+        /// </remarks>
         public BackgroundType Background { get; set; } = DiagramSettingsConstants.DefaultBackground;
         /// <summary>
-        /// Diagram type.
+        /// Gets or sets diagram type.
         /// </summary>
+        /// <remarks>
+        /// This property used to store diagram type.
+        /// </remarks>
         public DiagramType Type { get; set; } = DiagramSettingsConstants.DefaultType;
     }
 }

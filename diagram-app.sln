@@ -38,6 +38,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Presentation.WPF", "src\Presentation\DiagramApp.Presentation.WPF\DiagramApp.Presentation.WPF.csproj", "{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Infrastructure", "src\Infrastructure\DiagramApp.Infrastructure\DiagramApp.Infrastructure.csproj", "{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{1837172F-D393-4518-95D4-FEA626BE2294} = {19A7644F-412D-44FD-A3DF-485E90D48D71}
 		{D87DA399-FF07-4D5E-8A1F-7FED882CBE72} = {1837172F-D393-4518-95D4-FEA626BE2294}
 		{73698BBB-3C80-423E-BBBD-DC4F4BB4092F} = {DB478693-0571-4D79-8290-C5E87B44C895}
+		{06CB279A-0CB3-4636-B39F-6FBF472E4CEB} = {1837172F-D393-4518-95D4-FEA626BE2294}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F0DF37D-74DA-4F7B-831E-E3C2B2B50437}

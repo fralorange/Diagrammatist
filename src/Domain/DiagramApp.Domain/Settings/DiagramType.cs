@@ -6,12 +6,12 @@
     public enum DiagramType
     {
         /// <summary>
+        /// Custom diagram.
+        /// </summary>
+        Custom,
+        /// <summary>
         /// Flowchart diagram.
         /// </summary>
         Flowchart,
-        /// <summary>
-        /// Custom diagram.
-        /// </summary>
-        Custom
     }
 }

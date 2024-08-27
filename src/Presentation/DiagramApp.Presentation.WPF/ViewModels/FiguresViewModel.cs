@@ -6,7 +6,7 @@ using DiagramApp.Contracts.Canvas;
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
     /// <summary>
-    /// Figures view model.
+    /// A view model class for figures (toolbox) component.
     /// </summary>
     public sealed class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<CanvasDto>>
     {

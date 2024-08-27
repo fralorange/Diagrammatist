@@ -1,29 +1,44 @@
 ﻿namespace DiagramApp.Contracts.Figures
 {
     /// <summary>
-    /// Figure dto base class.
+    /// A base class for figure dto objects.
     /// </summary>
     public abstract class FigureDto
     {
         /// <summary>
-        /// Figure name.
+        /// Gets or sets figure name.
         /// </summary>
+        /// <remarks>
+        /// This property used to store figure name.
+        /// </remarks>
         public string Name { get; set; }
         /// <summary>
-        /// Figure position by X-axis.
+        /// Gets or sets figure position by X-axis.
         /// </summary>
+        /// <remarks>
+        /// This property used to determine figure position by x-axis.
+        /// </remarks>
         public double PosX { get; set; }
         /// <summary>
-        /// Figure position by Y-axis.
+        /// Gets or sets figure position by Y-axis.
         /// </summary>
+        /// <remarks>
+        /// This property used to determine figure position by y-axis.
+        /// </remarks>
         public double PosY { get; set; }
         /// <summary>
-        /// Figure rotation.
+        /// Gets or sets figure rotation.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure figure rotation.
+        /// </remarks>
         public double Rotation { get; set; }
         /// <summary>
-        /// Figure Z index.
+        /// Gets or sets figure Z index.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure overlap order between figures.
+        /// </remarks>
         public double ZIndex { get; set; }
     }
 }

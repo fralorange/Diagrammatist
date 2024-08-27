@@ -6,15 +6,18 @@ using DiagramApp.Contracts.Figures;
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
     /// <summary>
-    /// Properties view model.
+    /// A view model class for properties component.
     /// </summary>
     public sealed class PropertiesViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<FigureDto>>
     {
         private FigureDto? _currentFigure;
 
         /// <summary>
-        /// Current figure.
+        /// Gets current figure.
         /// </summary>
+        /// <remarks>
+        /// This property used to display current figure in UI.
+        /// </remarks>
         public FigureDto? CurrentFigure
         {
             get => _currentFigure;

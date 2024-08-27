@@ -9,41 +9,53 @@ namespace DiagramApp.Contracts.Canvas
     public class CanvasDto
     {
         /// <summary>
-        /// Width of Invisible border.
+        /// Gets or sets width of invisible border.
         /// </summary>
+        /// <remarks>
+        /// This property used to prevent user from scrolling by X-axis in to the abyss...
+        /// </remarks>
         public int ImaginaryWidth { get; set; }
         /// <summary>
-        /// Height of Invisible border.
+        /// Gets or sets height of invisible border.
         /// </summary>
+        /// <remarks>
+        /// This property used to prevent user from scrolling by Y-axis in to the abyss...
+        /// </remarks>
         public int ImaginaryHeight { get; set; }
         /// <summary>
-        /// Diagram settings.
+        /// Gets or sets diagram settings.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure canvas.
+        /// </remarks>
         public required DiagramSettingsDto Settings { get; set; }
         /// <summary>
-        /// Zoom parameter.
+        /// Gets or sets zoom parameter.
         /// </summary>
+        /// <remarks>
+        /// This property used to set canvas scale.
+        /// </remarks>
         public double Zoom { get; set; }
         /// <summary>
-        /// Rotation parameter.
+        /// Gets or sets rotation parameter.
         /// </summary>
+        /// <remarks>
+        /// This property used to set canvas rotation.
+        /// </remarks>
         public double Rotation { get; set; }
         /// <summary>
-        /// Screen offset.
-        /// Determines canvas position on the user's screen.
+        /// Gets or sets screen offset.
         /// </summary>
+        /// <remarks>
+        /// This property used to determine canvas position in window.
+        /// </remarks>
         public ScreenOffsetDto ScreenOffset { get; set; }
         /// <summary>
-        /// Grid spacing parameter.
+        /// Gets or sets figure collection.
         /// </summary>
-        public double GridSpacing { get; set; }
-        /// <summary>
-        /// Grid visible parameter.
-        /// </summary>
-        public bool IsGridVisible { get; set; }
-        /// <summary>
-        /// Figures.
-        /// </summary>
+        /// <remarks>
+        /// This property used to set drawing context for canvas.
+        /// </remarks>
         public List<FigureDto> Figures { get; set; } = [];
     }
 }

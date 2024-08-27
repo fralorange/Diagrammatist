@@ -3,9 +3,10 @@
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
     /// <summary>
-    /// Main view model.
+    /// A view model class for main window.
     /// </summary>
     public sealed class MainViewModel : ObservableObject
     {
+
     }
 }

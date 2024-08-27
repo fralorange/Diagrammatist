@@ -5,13 +5,16 @@ using System.Collections.ObjectModel;
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
     /// <summary>
-    /// Canvas tabs view model.
+    /// A view model class for canvas component.
     /// </summary>
     public sealed partial class TabsViewModel : ObservableRecipient
     {
         /// <summary>
-        /// Collection of <see cref="CanvasDto"/>.
+        /// Gets or sets collection of <see cref="CanvasDto"/>.
         /// </summary>
+        /// <remarks>
+        /// This property used to store canvases in tabs UI.
+        /// </remarks>
         public ObservableCollection<CanvasDto>? Canvases { get; set; }
 
         [ObservableProperty]

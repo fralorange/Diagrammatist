@@ -3,17 +3,23 @@
 namespace DiagramApp.Domain.Figures
 {
     /// <summary>
-    /// Shape figure.
+    /// A shape figure class. Derived class from <see cref="Figure"/>.
     /// </summary>
     public class ShapeFigure : Figure
     {
         /// <summary>
-        /// Width.
+        /// Gets or sets width.
         /// </summary>
+        /// <remarks>
+        /// This property used to store figure width.
+        /// </remarks>
         public double Width { get; set; } = FigureManipulationConstants.DefaultWidth;
         /// <summary>
-        /// Height.
+        /// Gets or sets height.
         /// </summary>
+        /// <remarks>
+        /// This property used to store figure height.
+        /// </remarks>
         public double Height { get; set; } = FigureManipulationConstants.DefaultHeight;
     }
 }

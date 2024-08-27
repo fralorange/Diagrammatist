@@ -5,46 +5,58 @@ using DiagramSettingsEntity = DiagramApp.Domain.Settings.DiagramSettings;
 namespace DiagramApp.Domain.Canvas
 {
     /// <summary>
-    /// Canvas.
+    /// Canvas class.
     /// </summary>
     public class Canvas
     {
         /// <summary>
-        /// Width of Invisible border which prevents user from scrolling in to the abyss...
+        /// Gets or sets width of invisible border.
         /// </summary>
+        /// <remarks>
+        /// This property used to prevent user from scrolling by X-axis in to the abyss...
+        /// </remarks>
         public int ImaginaryWidth { get; set; }
         /// <summary>
-        /// Height of Invisible border which prevents user from scrolling in to the abyss...
+        /// Gets or sets height of invisible border.
         /// </summary>
+        /// <remarks>
+        /// This property used to prevent user from scrolling by Y-axis in to the abyss...
+        /// </remarks>
         public int ImaginaryHeight { get; set; }
         /// <summary>
-        /// Diagram settings.
+        /// Gets or sets diagram settings.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure canvas.
+        /// </remarks>
         public required DiagramSettingsEntity Settings { get; set; }
         /// <summary>
-        /// Zoom parameter.
+        /// Gets or sets zoom parameter.
         /// </summary>
+        /// <remarks>
+        /// This property used to set canvas scale.
+        /// </remarks>
         public double Zoom { get; set; } = CanvasZoomConstants.DefaultZoom;
         /// <summary>
-        /// Rotation parameter.
+        /// Gets or sets rotation parameter.
         /// </summary>
+        /// <remarks>
+        /// This property used to set canvas rotation.
+        /// </remarks>
         public double Rotation { get; set; } = CanvasRotationConstants.DefaultRotation;
         /// <summary>
-        /// Screen offset.
-        /// Determines canvas position on the user's screen.
+        /// Gets or sets screen offset.
         /// </summary>
+        /// <remarks>
+        /// This property used to determine canvas position in window.
+        /// </remarks>
         public ScreenOffset ScreenOffset { get; set; } = new();
         /// <summary>
-        /// Grid spacing parameter.
+        /// Gets or sets figure collection.
         /// </summary>
-        public double GridSpacing { get; set; } = CanvasGridConstants.DefaultGridSpacing;
-        /// <summary>
-        /// Grid visible parameter.
-        /// </summary>
-        public bool IsGridVisible { get; set; } = CanvasGridConstants.DefaultGridVisible;
-        /// <summary>
-        /// Drawing context for canvas.
-        /// </summary>
+        /// <remarks>
+        /// This property used to set drawing context for canvas.
+        /// </remarks>
         public List<Figure> Figures { get; set; } = [];
     }
 }

@@ -10,11 +10,19 @@
 
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Messages\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contracts\DiagramApp.Contracts\DiagramApp.Contracts.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\DiagramApp.Infrastructure\DiagramApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

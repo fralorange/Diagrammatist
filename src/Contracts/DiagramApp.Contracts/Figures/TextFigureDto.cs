@@ -1,25 +1,37 @@
 ﻿namespace DiagramApp.Contracts.Figures
 {
     /// <summary>
-    /// Text figure.
+    /// A text figure dto. Derived class from <see cref="FigureDto"/>.
     /// </summary>
     public class TextFigureDto : FigureDto
     {
         /// <summary>
-        /// Figure Text.
+        /// Gets or sets figure Text.
         /// </summary>
+        /// <remarks>
+        /// This property used to display text in figure UI.
+        /// </remarks>
         public required string Text { get; set; }
         /// <summary>
-        /// Font size.
+        /// Gets or sets font size.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure font size.
+        /// </remarks>
         public required double FontSize { get; set; }
         /// <summary>
-        /// Indicates whether figure has outline.
+        /// Gets or sets figure outline condition.
         /// </summary>
+        /// <remarks>
+        /// This property indicates whether figure has outline.
+        /// </remarks>
         public required bool HasOutline { get; set; }
         /// <summary>
-        /// Indicates whether figure has background.
+        /// Gets or sets figure background condition,
         /// </summary>
+        /// <remarks>
+        /// This property indicates whether figure has background.
+        /// </remarks>
         public required bool HasBackground { get; set; }
     }
 }

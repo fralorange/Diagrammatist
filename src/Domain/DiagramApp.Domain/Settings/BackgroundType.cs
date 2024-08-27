@@ -7,20 +7,18 @@
     {
         /// <summary>
         /// Default background.
-        /// (Defined by system)
         /// </summary>
+        /// <remarks>
+        /// Defined by system.
+        /// </remarks>
         Default,
-        /// <summary>
-        /// White background.
-        /// </summary>
-        White,
-        /// <summary>
-        /// Black background.
-        /// </summary>
-        Black,
         /// <summary>
         /// Transparent blackground.
         /// </summary>
         Transparent,
+        /// <summary>
+        /// Colored background.
+        /// </summary>
+        Color,
     }
 }

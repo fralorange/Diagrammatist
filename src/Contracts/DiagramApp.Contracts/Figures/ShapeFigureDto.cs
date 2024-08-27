@@ -1,17 +1,23 @@
 ﻿namespace DiagramApp.Contracts.Figures
 {
     /// <summary>
-    /// Shape figure.
+    /// A shape figure dto. Derived class from <see cref="FigureDto"/>.
     /// </summary>
     public class ShapeFigureDto : FigureDto
     {
         /// <summary>
-        /// Width.
+        /// Gets or sets width.
         /// </summary>
+        /// <remarks>
+        /// This property used to store figure width.
+        /// </remarks>
         public required double Width { get; set; }
         /// <summary>
-        /// Height.
+        /// Gets or sets height.
         /// </summary>
+        /// <remarks>
+        /// This property used to store figure height.
+        /// </remarks>
         public required double Height { get; set; }
     }
 }

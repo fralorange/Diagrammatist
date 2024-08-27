@@ -25,8 +25,6 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
                 Zoom = canvas.Zoom,
                 Rotation = canvas.Rotation,
                 ScreenOffset = canvas.ScreenOffset.ToDto(),
-                GridSpacing = canvas.GridSpacing,
-                IsGridVisible = canvas.IsGridVisible,
                 Figures = canvas.Figures.Select(figure => figure.ToDto()).ToList(),
             };
         }
@@ -46,8 +44,6 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
                 Zoom = canvas.Zoom,
                 Rotation = canvas.Rotation,
                 ScreenOffset = canvas.ScreenOffset.ToEntity(),
-                GridSpacing = canvas.GridSpacing,
-                IsGridVisible = canvas.IsGridVisible,
                 Figures = canvas.Figures.Select(figure => figure.ToEntity()).ToList(),
             };
         }

@@ -4,25 +4,37 @@ using System.Drawing;
 namespace DiagramApp.Domain.Figures
 {
     /// <summary>
-    /// Line figure.
+    /// A line figure class. Derived class from <see cref="Figure"/>.
     /// </summary>
     public class LineFigure : Figure
     {
         /// <summary>
-        /// Collection of points.
+        /// Gets or sets collection of points.
         /// </summary>
+        /// <remarks>
+        /// This property used to draw line by points.
+        /// </remarks>
         public List<Point> Points { get; set; } = [];
         /// <summary>
-        /// Line thickness.
+        /// Gets or sets line thickness.
         /// </summary>
+        /// <remarks>
+        /// This property used to configure line thickness.
+        /// </remarks>
         public double Thickness { get; set; } = LineFigureManipulationConstants.DefaultThickness;
         /// <summary>
-        /// Indicates whether the line is dashed.
+        /// Gets or sets line dash condition.
         /// </summary>
+        /// <remarks>
+        /// This property indicates whether the line is dashed.
+        /// </remarks>
         public bool IsDashed { get; set; } = LineFigureBoolConstants.DefaultDashedParameter;
         /// <summary>
-        /// Indicates whether the line has arrow on last point.
+        /// Gets or sets line arrow condition.
         /// </summary>
+        /// <remarks>
+        /// This property indicates whether the line has arrow on last point.
+        /// </remarks>
         public bool HasArrow { get; set; } = LineFigureBoolConstants.DefaultArrowParameter;
     }
 }

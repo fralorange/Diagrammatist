@@ -7,16 +7,18 @@ using System.Collections.ObjectModel;
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
     /// <summary>
-    /// Object tree (Explorer) view model.
+    /// A view model class for object tree (explorer) component.
     /// </summary>
     public sealed partial class ObjectTreeViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<object>>
     {
-        // placeholder for FigureDto collection from msg.
         private ObservableCollection<FigureDto>? _figures;
 
         /// <summary>
-        /// Collection of <see cref="FigureDto"/>
+        /// Gets collection of <see cref="FigureDto"/>
         /// </summary>
+        /// <remarks>
+        /// This property used to display figures in UI.
+        /// </remarks>
         public ObservableCollection<FigureDto>? Figures
         {
             get => _figures;
@@ -26,8 +28,11 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         private FigureDto? _selectedFigure;
 
         /// <summary>
-        /// Selected figure from collection <see cref="Figures"/>
+        /// Gets selected figure from collection <see cref="Figures"/>
         /// </summary>
+        /// <remarks>
+        /// This property used to store selected figure.
+        /// </remarks>
         public FigureDto? SelectedFigure
         {
             get => _selectedFigure;
@@ -37,17 +42,17 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         /// <inheritdoc/>
         public void Receive(PropertyChangedMessage<object> message)
         {
-            //if (message.Sender.GetType() != typeof(CanvasViewModel)) return;
+            if (message.Sender.GetType() != typeof(CanvasViewModel)) return;
 
-            //switch (message.PropertyName)
-            //{
-            //    case nameof(CanvasViewModel.Figures):
-            //        Figures = message.NewValue as ObservableCollection<FigureDto>;
-            //        break;
-            //    case nameof(CanvasViewModel.SelectedFigure):
-            //        SelectedFigure = message.NewValue as FigureDto;
-            //        break;
-            //}
+            switch (message.PropertyName)
+            {
+                case nameof(CanvasViewModel.Figures):
+                    Figures = message.NewValue as ObservableCollection<FigureDto>;
+                    break;
+                case nameof(CanvasViewModel.SelectedFigure):
+                    SelectedFigure = message.NewValue as FigureDto;
+                    break;
+            }
         }
     }
 }
