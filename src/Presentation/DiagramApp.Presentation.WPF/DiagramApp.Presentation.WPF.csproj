@@ -12,7 +12,7 @@
     <Folder Include="Commands\" />
     <Folder Include="Messages\" />
     <Folder Include="Converters\" />
-    <Folder Include="Resources\" />
+    <Folder Include="Resources\Icon\" />
   </ItemGroup>
 
   <ItemGroup>

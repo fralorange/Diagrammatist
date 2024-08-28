@@ -50,7 +50,7 @@
         
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.20*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="0.30*"/>
             </Grid.RowDefinitions>
@@ -61,11 +61,13 @@
             </Grid.ColumnDefinitions>
 
             <components:ToolbarComponent Grid.Row="0"
-                                         Grid.ColumnSpan="3"/>
+                                         Grid.ColumnSpan="3"
+                                         Style="{StaticResource Component}"/>
 
             <components:FiguresComponent Grid.Row="1"
                                          Grid.RowSpan="2"
-                                         Grid.Column="0"/>
+                                         Grid.Column="0"
+                                         Style="{StaticResource Component}"/>
 
             <Grid Grid.Row="1" 
                   Grid.RowSpan="2" 
@@ -75,16 +77,20 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <components:CanvasComponent Grid.Row="0"/>
-                <components:TabsComponent Grid.Row="1"/>
+                <components:CanvasComponent Grid.Row="0"
+                                            Style="{StaticResource Component}"/>
+                <components:TabsComponent Grid.Row="1"
+                                          Style="{StaticResource Component}"/>
             </Grid>
 
             <components:ObjectTreeComponent Grid.Row="1"
-                                            Grid.Column="2"/>
+                                            Grid.Column="2"
+                                            Style="{StaticResource Component}"/>
 
             <components:PropertiesComponent Grid.Row="2"
                                             Grid.RowSpan="2"
-                                            Grid.Column="2"/>
+                                            Grid.Column="2"
+                                            Style="{StaticResource Component}"/>
         </Grid>
     </DockPanel>
 </Window>

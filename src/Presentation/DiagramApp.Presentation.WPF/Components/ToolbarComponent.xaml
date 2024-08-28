@@ -3,22 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Components"
+             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Components" 
+             xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ToolbarViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="ContentControl">
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="5 5 5 0"/>
-        </Style>
-
         <ControlTemplate x:Key="ToolTemplate" TargetType="ContentControl">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -27,6 +21,7 @@
                 <ContentPresenter Grid.Row="0"/>
                 <Label Grid.Row="1" 
                        HorizontalContentAlignment="Center" 
+                       VerticalContentAlignment="Bottom"
                        Content="{TemplateBinding Tag}"/>
             </Grid>
         </ControlTemplate>
