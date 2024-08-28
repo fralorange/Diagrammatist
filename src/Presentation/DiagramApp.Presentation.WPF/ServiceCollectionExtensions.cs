@@ -1,4 +1,7 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels;
+﻿using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
+using DiagramApp.Application.AppServices.Contexts.Figures.Services;
+using DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Repositories;
+using DiagramApp.Presentation.WPF.ViewModels;
 using DiagramApp.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +13,7 @@ namespace DiagramApp.Presentation.WPF
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Add startup services, e.g. <see cref="App"/> and <see cref="MainWindow"/> as Singletons.
+        /// Adds startup services, e.g. <see cref="App"/> and <see cref="MainWindow"/> as Singletons.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -23,7 +26,7 @@ namespace DiagramApp.Presentation.WPF
         }
 
         /// <summary>
-        /// Add view models as Singletons.
+        /// Adds view models as Singletons.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -35,6 +38,30 @@ namespace DiagramApp.Presentation.WPF
             services.AddSingleton<PropertiesViewModel>();
             services.AddSingleton<TabsViewModel>();
             services.AddSingleton<ToolbarViewModel>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds services as Scoped.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IFigureService, FigureService>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds repositories as Scoped.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IFigureRepository, JsonFigureRepository>();
 
             return services;
         }

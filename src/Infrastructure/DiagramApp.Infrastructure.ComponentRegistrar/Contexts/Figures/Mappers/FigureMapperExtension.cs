@@ -37,6 +37,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             {
                 Width = figure.Width,
                 Height = figure.Height,
+                Data = figure.Data,
             };
             
             MapCommonProperties(dto, figure);
@@ -54,6 +55,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             {
                 Width = dto.Width,
                 Height = dto.Height,
+                Data = dto.Data,
             };
 
             MapCommonProperties(entity, dto);

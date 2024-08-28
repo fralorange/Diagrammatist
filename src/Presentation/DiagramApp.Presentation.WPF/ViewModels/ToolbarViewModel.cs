@@ -12,7 +12,6 @@ namespace DiagramApp.Presentation.WPF.ViewModels
     public sealed partial class ToolbarViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<CanvasDto>>
     {
         private CanvasDto? _currentCanvas;
-
         private CanvasDto? CurrentCanvas
         {
             get => _currentCanvas;

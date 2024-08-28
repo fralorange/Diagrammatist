@@ -28,8 +28,6 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Services
                 Zoom = 1,
                 Rotation = 0,
                 ScreenOffset = new() { X = default, Y = default },
-                GridSpacing = 10,
-                IsGridVisible = true,
                 Figures = [],
             };
 

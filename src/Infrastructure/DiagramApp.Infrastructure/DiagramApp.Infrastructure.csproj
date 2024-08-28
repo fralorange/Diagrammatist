@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Data\FiguresData.json">
+      <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </None>
+  </ItemGroup>
+
 </Project>

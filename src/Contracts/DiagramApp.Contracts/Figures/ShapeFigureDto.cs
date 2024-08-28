@@ -19,5 +19,12 @@
         /// This property used to store figure height.
         /// </remarks>
         public required double Height { get; set; }
+        /// <summary>
+        /// Gets or sets collection of data.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store data.
+        /// </remarks>
+        public required List<string> Data { get; set; } = [];
     }
 }

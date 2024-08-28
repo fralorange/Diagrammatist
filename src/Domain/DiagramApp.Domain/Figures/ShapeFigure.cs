@@ -21,5 +21,12 @@ namespace DiagramApp.Domain.Figures
         /// This property used to store figure height.
         /// </remarks>
         public double Height { get; set; } = FigureManipulationConstants.DefaultHeight;
+        /// <summary>
+        /// Gets or sets collection of data.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store data.
+        /// </remarks>
+        public List<string> Data { get; set; } = [];
     }
 }
