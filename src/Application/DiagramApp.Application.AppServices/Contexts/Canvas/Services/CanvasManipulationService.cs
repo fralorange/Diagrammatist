@@ -7,11 +7,13 @@ using CanvasEntity = DiagramApp.Domain.Canvas.Canvas;
 
 namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
 {
-    /// <inheritdoc cref="ICanvasManipulationService"/>
+    /// <summary>
+    /// A class that implements <see cref="ICanvasManipulationService"/>. A canvas manipulation service.
+    /// </summary>
     public class CanvasManipulationService : ICanvasManipulationService
     {
         /// <inheritdoc/>
-        public CanvasDto CreateCanvas(DiagramSettingsDto settings)
+        public Task<CanvasDto> CreateCanvasAsync(DiagramSettingsDto settings)
         {
             var canvas = new CanvasEntity
             {
@@ -22,7 +24,7 @@ namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
 
             CanvasBoundaryHelper.UpdateCanvasBounds(dto);
 
-            return dto;
+            return Task.FromResult(dto);
         }
 
         /// <inheritdoc/>

@@ -8,9 +8,9 @@ namespace DiagramApp.Presentation.WPF.Components
     {
         public CanvasComponent()
         {
-            InitializeComponent();
-
             DataContext = App.Current.Services.GetService<CanvasViewModel>();
+            
+            InitializeComponent();
         }
     }
 }

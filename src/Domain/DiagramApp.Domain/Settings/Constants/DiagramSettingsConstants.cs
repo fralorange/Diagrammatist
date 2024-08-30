@@ -1,4 +1,6 @@
-﻿namespace DiagramApp.Domain.Settings.Constants
+﻿using System.Drawing;
+
+namespace DiagramApp.Domain.Settings.Constants
 {
     /// <summary>
     /// Diagram Settings constants.
@@ -20,7 +22,7 @@
         /// <summary>
         /// Default value for diagram canvas background.
         /// </summary>
-        public const BackgroundType DefaultBackground = BackgroundType.Default;
+        public static readonly Color DefaultBackground = Color.DimGray;
         /// <summary>
         /// Default value for diagram's type.
         /// </summary>

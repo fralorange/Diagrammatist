@@ -10,14 +10,15 @@
 
   <ItemGroup>
     <Folder Include="Commands\" />
-    <Folder Include="Messages\" />
-    <Folder Include="Converters\" />
     <Folder Include="Resources\Icon\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+    <PackageReference Include="MvvmDialogs" Version="9.1.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
 
   <ItemGroup>

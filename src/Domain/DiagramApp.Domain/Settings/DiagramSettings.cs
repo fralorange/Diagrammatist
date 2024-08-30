@@ -1,4 +1,5 @@
 ﻿using DiagramApp.Domain.Settings.Constants;
+using System.Drawing;
 
 namespace DiagramApp.Domain.Settings
 {
@@ -29,12 +30,12 @@ namespace DiagramApp.Domain.Settings
         /// </remarks>
         public int Height { get; set; } = DiagramSettingsConstants.DefaultHeight;
         /// <summary>
-        /// Gets or sets diagram canvas background type.
+        /// Gets or sets diagram canvas background color.
         /// </summary>
         /// <remarks>
-        /// This property used to store diagram background type.
+        /// This property used to store diagram background color.
         /// </remarks>
-        public BackgroundType Background { get; set; } = DiagramSettingsConstants.DefaultBackground;
+        public Color Background { get; set; } = DiagramSettingsConstants.DefaultBackground;
         /// <summary>
         /// Gets or sets diagram type.
         /// </summary>

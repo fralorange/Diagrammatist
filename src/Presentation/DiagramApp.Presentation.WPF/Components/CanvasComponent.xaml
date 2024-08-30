@@ -3,18 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Components" 
-             xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Components"
+             xmlns:behaviors="clr-namespace:DiagramApp.Presentation.WPF.Behaviors"
+             xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels"
+             xmlns:converters="clr-namespace:DiagramApp.Presentation.WPF.Converters"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                   VerticalScrollBarVisibility="Visible">
-        <Grid Width="2048" Height="2048">
-            <Canvas Width="512"
-                    Height="512"
-                    Background="DimGray">
-
+        <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
+              Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
+            <Canvas Width="{Binding CurrentCanvas.Settings.Width, FallbackValue=0}"
+                    Height="{Binding CurrentCanvas.Settings.Height, FallbackValue=0}"
+                    Background="{Binding CurrentCanvas.Settings.Background, Converter={converters:ColorToBrushConverter}, FallbackValue=Transparent}">
+                
             </Canvas>
         </Grid>
+        <i:Interaction.Behaviors>
+            <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.ScreenOffset.X, Mode=TwoWay, FallbackValue=0}"
+                                            HorizontalOffset="{Binding CurrentCanvas.ScreenOffset.Y, Mode=TwoWay, FallbackValue=0}"/>
+        </i:Interaction.Behaviors>
     </ScrollViewer>
 </UserControl>

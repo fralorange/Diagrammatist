@@ -32,7 +32,7 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Services
             };
 
             // Act
-            var canvas = service.CreateCanvas(settingsDto);
+            var canvas = service.CreateCanvasAsync(settingsDto);
 
             // Assert
             canvas.Should().BeEquivalentTo(expectedCanvas);

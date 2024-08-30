@@ -1,4 +1,6 @@
-﻿namespace DiagramApp.Contracts.Settings
+﻿using System.Drawing;
+
+namespace DiagramApp.Contracts.Settings
 {
     /// <summary>
     /// Diagram settings dto.
@@ -27,18 +29,18 @@
         /// </remarks>
         public required int Height { get; set; }
         /// <summary>
-        /// Gets or sets diagram canvas background type.
+        /// Gets or sets diagram canvas background color.
         /// </summary>
         /// <remarks>
-        /// This property used to store diagram background type.
+        /// This property used to store diagram background color.
         /// </remarks>
-        public required string Background { get; set; }
+        public required Color Background { get; set; }
         /// <summary>
         /// Gets or sets diagram type.
         /// </summary>
         /// <remarks>
         /// This property used to store diagram type.
         /// </remarks>
-        public required string Type { get; set; }
+        public required DiagramTypeDto Type { get; set; }
     }
 }

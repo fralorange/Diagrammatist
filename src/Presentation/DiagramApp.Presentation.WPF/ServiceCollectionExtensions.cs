@@ -1,9 +1,11 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
+﻿using DiagramApp.Application.AppServices.Contexts.Canvas.Services;
+using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
 using DiagramApp.Application.AppServices.Contexts.Figures.Services;
 using DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using DiagramApp.Presentation.WPF.ViewModels;
 using DiagramApp.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
+using MvvmDialogs;
 
 namespace DiagramApp.Presentation.WPF
 {
@@ -13,7 +15,7 @@ namespace DiagramApp.Presentation.WPF
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds startup services, e.g. <see cref="App"/> and <see cref="MainWindow"/> as Singletons.
+        /// Add startup services, e.g. <see cref="App"/> and <see cref="MainWindow"/> as Singletons.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -26,7 +28,7 @@ namespace DiagramApp.Presentation.WPF
         }
 
         /// <summary>
-        /// Adds view models as Singletons.
+        /// Add view models as Singletons.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -43,25 +45,42 @@ namespace DiagramApp.Presentation.WPF
         }
 
         /// <summary>
-        /// Adds services as Scoped.
+        /// Add services as Transient.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IFigureService, FigureService>();
-
+            #region Figures
+            services.AddTransient<IFigureService, FigureService>();
+            #endregion
+            #region Canvases
+            services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
+            services.AddTransient<ICanvasInteractionService, CanvasInteractionService>();
+            #endregion
             return services;
         }
 
         /// <summary>
-        /// Adds repositories as Scoped.
+        /// Add repositories as Transient.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IFigureRepository, JsonFigureRepository>();
+            services.AddTransient<IFigureRepository, JsonFigureRepository>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Add dialog services as singleton.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddDialogServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IDialogService, DialogService>();
 
             return services;
         }

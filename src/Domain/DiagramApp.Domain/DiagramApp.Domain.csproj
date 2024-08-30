@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Figures\Json\" />
+    <Compile Remove="Figures\Json\**" />
+    <EmbeddedResource Remove="Figures\Json\**" />
+    <None Remove="Figures\Json\**" />
   </ItemGroup>
 
 </Project>

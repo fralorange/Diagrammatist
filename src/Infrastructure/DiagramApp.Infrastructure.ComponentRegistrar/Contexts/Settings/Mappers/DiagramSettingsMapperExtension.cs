@@ -20,8 +20,8 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers
                 FileName = diagramSettings.FileName,
                 Width = diagramSettings.Width,
                 Height = diagramSettings.Height,
-                Background = diagramSettings.Background.ToString(),
-                Type = diagramSettings.Type.ToString(),
+                Background = diagramSettings.Background,
+                Type = (DiagramTypeDto)Enum.Parse(typeof(DiagramTypeDto), diagramSettings.Type.ToString()),
             };
         }
 
@@ -37,8 +37,8 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers
                 FileName = diagramSettings.FileName,
                 Width = diagramSettings.Width,
                 Height = diagramSettings.Height,
-                Background = (BackgroundType)Enum.Parse(typeof(BackgroundType), diagramSettings.Background),
-                Type = (DiagramType)Enum.Parse(typeof(DiagramType), diagramSettings.Type),
+                Background = diagramSettings.Background,
+                Type = (DiagramType)Enum.Parse(typeof(DiagramType), diagramSettings.Type.ToString()),
             };
         }
     }

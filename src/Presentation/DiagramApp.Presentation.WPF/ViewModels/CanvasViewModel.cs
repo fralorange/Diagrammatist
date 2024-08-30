@@ -13,7 +13,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels
     /// <summary>
     /// A view model class for canvas component.
     /// </summary>
-    public sealed partial class CanvasViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<object>>
+    public sealed partial class CanvasViewModel : ObservableRecipient
     {
         private CanvasDto? _currentCanvas;
 
@@ -168,21 +168,29 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         [ObservableProperty]
         private FigureDto? _selectedFigure;
 
-        /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<object> message)
+        public CanvasViewModel()
         {
-            switch (message.PropertyName)
+            IsActive = true;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            Messenger.Register<CanvasViewModel, PropertyChangedMessage<CanvasDto?>>(this, (r, m) =>
             {
-                case nameof(TabsViewModel.SelectedCanvas) when message.NewValue is CanvasDto canvas:
-                    CurrentCanvas = canvas;
+                CurrentCanvas = m.NewValue;
 
-                    Figures = new ObservableCollection<FigureDto>(CurrentCanvas.Figures);
-                    Figures.LinkTo(CurrentCanvas.Figures);
-                    break;
-                case nameof(ToolbarViewModel.CurrentMouseMode) when message.NewValue is MouseMode mode:
+                Figures = CurrentCanvas?.Figures is not null
+                    ? new ObservableCollection<FigureDto>(CurrentCanvas.Figures)
+                    : null;
 
-                    break;
-            }
+                Figures?.LinkTo(CurrentCanvas!.Figures);
+            });
+
+            Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
+            {
+                CurrentMouseMode = m.NewValue;
+            });
         }
     }
 }

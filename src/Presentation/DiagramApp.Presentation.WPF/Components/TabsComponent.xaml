@@ -7,21 +7,11 @@
              xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
              mc:Ignorable="d">
-    <ListBox>
-        <ListBox.ItemContainerStyle>
-            <Style TargetType="ListBoxItem">
-                <Setter Property="Focusable" Value="False" />
-            </Style>
-        </ListBox.ItemContainerStyle>
-        <ListBox.Items>
-            <ListBoxItem>Tab 1</ListBoxItem>
-            <ListBoxItem>Tab 2</ListBoxItem>
-            <ListBoxItem>Tab 3</ListBoxItem>
-            <ListBoxItem>Tab 4</ListBoxItem>
-        </ListBox.Items>
+    <ListBox ItemsSource="{Binding Canvases}"
+             SelectedItem="{Binding SelectedCanvas, Mode=TwoWay}">
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <Button Content="{Binding Content}"/>
+                <Button Content="{Binding Settings.FileName}"/>
             </DataTemplate>
         </ListBox.ItemTemplate>
         <ListBox.ItemsPanel>
