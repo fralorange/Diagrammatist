@@ -25,13 +25,13 @@ namespace DiagramApp.Presentation.WPF.Controls
             DependencyProperty.Register(nameof(MaxZoom), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(10f));
 
         public static readonly DependencyProperty ZoomModifierProperty =
-            DependencyProperty.Register(nameof(ZoomModifier), typeof(ModifierKeys), typeof(ExtendedCanvas), new PropertyMetadata(ModifierKeys.Control));
+            DependencyProperty.Register(nameof(ZoomModifier), typeof(ModifierKeys), typeof(ExtendedScrollViewer), new PropertyMetadata(ModifierKeys.Control));
 
         public static readonly DependencyProperty ZoomFactorProperty =
-            DependencyProperty.Register(nameof(ZoomFactor), typeof(float), typeof(ExtendedCanvas), new PropertyMetadata(1.1f));
+            DependencyProperty.Register(nameof(ZoomFactor), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(1.1f));
 
         public static readonly DependencyProperty IsPanEnabledProperty =
-            DependencyProperty.Register(nameof(IsPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+            DependencyProperty.Register(nameof(IsPanEnabled), typeof(bool), typeof(ExtendedScrollViewer), new PropertyMetadata(true));
 
         /// <summary>
         /// Gets or sets the minimal zoom.

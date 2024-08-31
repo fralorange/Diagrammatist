@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Markup;
 
 namespace DiagramApp.Presentation.WPF.Converters
 {
     [ValueConversion(typeof(Enum), typeof(IEnumerable<string>))]
-    public class EnumToCollectionConverter : MarkupExtension, IValueConverter
+    public class EnumToCollectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,11 +18,6 @@ namespace DiagramApp.Presentation.WPF.Converters
         public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
-        }
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return this;
         }
     }
 }

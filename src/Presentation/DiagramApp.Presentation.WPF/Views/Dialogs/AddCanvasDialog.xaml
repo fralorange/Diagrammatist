@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Dialogs"
         xmlns:vmd="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Dialogs"
-        xmlns:converters="clr-namespace:DiagramApp.Presentation.WPF.Converters"
         mc:Ignorable="d"
         Height="450" 
         Width="450"
@@ -31,7 +30,7 @@
             <Label Content="Background:"/>
             <Button Content="Placeholder"/>
             <Label Content="Diagram type:"/>
-            <ComboBox ItemsSource="{Binding DiagramType, Converter={converters:EnumToCollectionConverter}, Mode=OneTime}"
+            <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
                       SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </UniformGrid>
 

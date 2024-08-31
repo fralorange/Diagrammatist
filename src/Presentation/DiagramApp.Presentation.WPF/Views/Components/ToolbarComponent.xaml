@@ -40,8 +40,15 @@
         <Separator/>
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="Controls">
             <StackPanel Orientation="Horizontal">
-                <Button Content="Selection Mode"/>
-                <Button Content="Drag Mode"/>
+                <Button Content="Selection Mode" 
+                        Command="{Binding ChangeModeCommand}"
+                        CommandParameter="Select"/>
+                <Button Content="Pan Mode" 
+                        Command="{Binding ChangeModeCommand}"
+                        CommandParameter="Pan"/>
+                <Button Content="Transform Mode" 
+                        Command="{Binding ChangeModeCommand}"
+                        CommandParameter="Transform"/>
             </StackPanel>
         </ContentControl>
         <Separator/>

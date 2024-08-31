@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DiagramApp.Presentation.WPF.ViewModels.Components;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 
 namespace DiagramApp.Presentation.WPF.Views.Components
@@ -9,7 +10,7 @@ namespace DiagramApp.Presentation.WPF.Views.Components
         {
             InitializeComponent();
 
-            DataContext = App.Current.Services.GetService<ToolbarComponent>();
+            DataContext = App.Current.Services.GetService<ToolbarViewModel>();
         }
     }
 }

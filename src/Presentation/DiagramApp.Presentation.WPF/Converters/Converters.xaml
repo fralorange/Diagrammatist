@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Converters">
+    <local:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
+    <local:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    <local:MouseModeIsPanConverter x:Key="MouseModeIsPanConverter"/>
+    <local:MouseModeToCursorConverter x:Key="MouseModeToCursorConverter"/>
+</ResourceDictionary>

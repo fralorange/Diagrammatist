@@ -8,17 +8,18 @@
              xmlns:controls="clr-namespace:DiagramApp.Presentation.WPF.Controls"
              xmlns:behaviors="clr-namespace:DiagramApp.Presentation.WPF.Behaviors"
              xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Components"
-             xmlns:converters="clr-namespace:DiagramApp.Presentation.WPF.Converters"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d">
     <controls:ExtendedScrollViewer HorizontalScrollBarVisibility="Visible"
                                    VerticalScrollBarVisibility="Visible"
-                                   Focusable="False">
+                                   Focusable="False"
+                                   IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsPanConverter}}"
+                                   Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}">
         <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
             <Canvas Width="{Binding CurrentCanvas.Settings.Width, FallbackValue=0}"
                     Height="{Binding CurrentCanvas.Settings.Height, FallbackValue=0}"
-                    Background="{Binding CurrentCanvas.Settings.Background, Converter={converters:ColorToBrushConverter}, FallbackValue=Transparent}">
+                    Background="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}">
                 
             </Canvas>
         </Grid>
