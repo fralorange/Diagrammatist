@@ -1,17 +1,19 @@
-﻿<UserControl x:Class="DiagramApp.Presentation.WPF.Components.CanvasComponent"
+﻿<UserControl x:Class="DiagramApp.Presentation.WPF.Views.Components.CanvasComponent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Components"
+             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Components"
+             xmlns:controls="clr-namespace:DiagramApp.Presentation.WPF.Controls"
              xmlns:behaviors="clr-namespace:DiagramApp.Presentation.WPF.Behaviors"
              xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels"
              xmlns:converters="clr-namespace:DiagramApp.Presentation.WPF.Converters"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Visible"
-                  VerticalScrollBarVisibility="Visible">
+    <controls:ExtendedScrollViewer HorizontalScrollBarVisibility="Visible"
+                                   VerticalScrollBarVisibility="Visible"
+                                   Focusable="False">
         <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
             <Canvas Width="{Binding CurrentCanvas.Settings.Width, FallbackValue=0}"
@@ -24,5 +26,5 @@
             <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.ScreenOffset.X, Mode=TwoWay, FallbackValue=0}"
                                             HorizontalOffset="{Binding CurrentCanvas.ScreenOffset.Y, Mode=TwoWay, FallbackValue=0}"/>
         </i:Interaction.Behaviors>
-    </ScrollViewer>
+    </controls:ExtendedScrollViewer>
 </UserControl>

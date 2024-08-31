@@ -12,7 +12,7 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Services
     public class CanvasManipulationServiceTests
     {
         [Fact]
-        public void CreateCanvas_CanvasCreatedWithDefaultSettingsAndBorders()
+        public async void CreateCanvas_CanvasCreatedWithDefaultSettingsAndBorders()
         {
             // Arrange
             var settings = new DiagramSettings();
@@ -32,7 +32,7 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Services
             };
 
             // Act
-            var canvas = service.CreateCanvasAsync(settingsDto);
+            var canvas = await service.CreateCanvasAsync(settingsDto);
 
             // Assert
             canvas.Should().BeEquivalentTo(expectedCanvas);

@@ -50,7 +50,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         /// <inheritdoc/>
         public void Receive(NewCanvasSettingsMessage message)
         {
-            Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            Dispatcher.CurrentDispatcher.Invoke(async () =>
             {
                 await CreateCanvas(message.Value);
             });

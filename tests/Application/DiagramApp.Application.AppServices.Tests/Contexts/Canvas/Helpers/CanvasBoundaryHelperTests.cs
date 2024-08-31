@@ -3,6 +3,7 @@ using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Settings;
 using DiagramApp.Domain.Canvas.Constants;
 using Moq;
+using System.Drawing;
 
 namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Helpers
 {
@@ -12,9 +13,9 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Helpers
     public class CanvasBoundaryHelperTests
     {
         [Theory]
-        [InlineData(CanvasZoomConstants.MinZoom)]
+        [InlineData(0.5)]
         [InlineData(CanvasZoomConstants.DefaultZoom)]
-        [InlineData(CanvasZoomConstants.MaxZoom)]
+        [InlineData(2)]
         public void BorderSizeChanges_WhenZooming(double zoom)
         {
             // Arrange
@@ -23,7 +24,7 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Helpers
 
             var canvas = new CanvasDto
             {
-                Settings = new DiagramSettingsDto { Width = canvasWidth, Height = canvasHeight, FileName = string.Empty, Background = string.Empty, Type = string.Empty },
+                Settings = new DiagramSettingsDto { Width = canvasWidth, Height = canvasHeight, FileName = string.Empty, Background = Color.DimGray, Type = default },
                 Zoom = zoom
             };
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views"
         xmlns:vm="clr-namespace:DiagramApp.Presentation.WPF.ViewModels"
-        xmlns:components="clr-namespace:DiagramApp.Presentation.WPF.Components"
+        xmlns:components="clr-namespace:DiagramApp.Presentation.WPF.Views.Components"
         xmlns:md="clr-namespace:MvvmDialogs;assembly=MvvmDialogs"
         md:DialogServiceViews.IsRegistered="True"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"

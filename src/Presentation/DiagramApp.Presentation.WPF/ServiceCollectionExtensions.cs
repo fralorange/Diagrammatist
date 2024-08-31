@@ -56,7 +56,6 @@ namespace DiagramApp.Presentation.WPF
             #endregion
             #region Canvases
             services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
-            services.AddTransient<ICanvasInteractionService, CanvasInteractionService>();
             #endregion
             return services;
         }

@@ -4,6 +4,9 @@ using System.Windows.Controls;
 
 namespace DiagramApp.Presentation.WPF.Behaviors
 {
+    /// <summary>
+    /// A scroll viewer behavior that allows to create two-way bindings for vertical and horizontal offsets.
+    /// </summary>
     public class ScrollViewerBehavior : Behavior<ScrollViewer>
     {
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty
