@@ -1,4 +1,4 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels;
+﻿using DiagramApp.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 

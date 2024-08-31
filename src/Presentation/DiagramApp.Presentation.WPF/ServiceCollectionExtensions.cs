@@ -3,6 +3,7 @@ using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
 using DiagramApp.Application.AppServices.Contexts.Figures.Services;
 using DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using DiagramApp.Presentation.WPF.ViewModels;
+using DiagramApp.Presentation.WPF.ViewModels.Components;
 using DiagramApp.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;

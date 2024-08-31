@@ -7,7 +7,7 @@ using DiagramApp.Presentation.WPF.Messages;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
-namespace DiagramApp.Presentation.WPF.ViewModels
+namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for canvas component.

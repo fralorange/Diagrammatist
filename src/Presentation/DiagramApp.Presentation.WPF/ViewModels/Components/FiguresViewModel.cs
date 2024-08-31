@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
 using DiagramApp.Application.AppServices.Contexts.Figures.Services;
 using DiagramApp.Contracts.Canvas;
 
-namespace DiagramApp.Presentation.WPF.ViewModels
+namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for figures (toolbox) component.

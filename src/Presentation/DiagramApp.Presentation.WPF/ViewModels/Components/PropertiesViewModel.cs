@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Contracts.Figures;
 
-namespace DiagramApp.Presentation.WPF.ViewModels
+namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for properties component.

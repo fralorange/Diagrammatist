@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Contracts.Figures;
 using System.Collections.ObjectModel;
 
-namespace DiagramApp.Presentation.WPF.ViewModels
+namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for object tree (explorer) component.
@@ -22,7 +22,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         public ObservableCollection<FigureDto>? Figures
         {
             get => _figures;
-            private set => SetProperty(ref  _figures, value);
+            private set => SetProperty(ref _figures, value);
         }
 
         private FigureDto? _selectedFigure;

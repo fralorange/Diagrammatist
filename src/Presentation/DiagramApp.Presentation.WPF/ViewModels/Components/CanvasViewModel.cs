@@ -8,7 +8,7 @@ using DiagramApp.Infrastructure.Extensions.ObservableCollection;
 using DiagramApp.Presentation.WPF.ViewModels.Enums.Modes;
 using System.Collections.ObjectModel;
 
-namespace DiagramApp.Presentation.WPF.ViewModels
+namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for canvas component.
