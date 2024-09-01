@@ -38,6 +38,8 @@ namespace DiagramApp.Presentation.WPF
 
             services.AddDialogServices();
 
+            services.AddManagers();
+
             return services.BuildServiceProvider();
         }
 

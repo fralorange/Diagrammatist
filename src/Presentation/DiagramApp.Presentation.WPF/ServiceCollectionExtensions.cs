@@ -2,6 +2,7 @@
 using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
 using DiagramApp.Application.AppServices.Contexts.Figures.Services;
 using DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Repositories;
+using DiagramApp.Presentation.WPF.Commands.Manager;
 using DiagramApp.Presentation.WPF.ViewModels;
 using DiagramApp.Presentation.WPF.ViewModels.Components;
 using DiagramApp.Presentation.WPF.Views;
@@ -46,7 +47,7 @@ namespace DiagramApp.Presentation.WPF
         }
 
         /// <summary>
-        /// Add services as Transient.
+        /// Add services (from application layer) as Transient.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -77,10 +78,22 @@ namespace DiagramApp.Presentation.WPF
         /// Add dialog services as singleton.
         /// </summary>
         /// <param name="services"></param>
-        /// <returns></returns>
+        /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
         public static IServiceCollection AddDialogServices(this IServiceCollection services)
         {
             services.AddSingleton<IDialogService, DialogService>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Add managers as singleton.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
+        public static IServiceCollection AddManagers(this IServiceCollection services)
+        {
+            services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
 
             return services;
         }

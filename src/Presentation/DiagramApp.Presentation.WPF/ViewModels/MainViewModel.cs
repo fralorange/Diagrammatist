@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using DiagramApp.Presentation.WPF.Messages;
 using DiagramApp.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
+using System.Windows.Input;
 
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
@@ -25,6 +26,9 @@ namespace DiagramApp.Presentation.WPF.ViewModels
             _dialogService = dialogService;
         }
 
+        #region Menu
+
+        #region File
         [RelayCommand]
         public void MenuNew()
         {
@@ -38,5 +42,31 @@ namespace DiagramApp.Presentation.WPF.ViewModels
                 Messenger.Send<NewCanvasSettingsMessage>(new(settings!));
             }
         }
+
+        #endregion
+        #region Edit
+        [RelayCommand]
+        public void MenuUndo()
+        {
+
+        }
+
+        [RelayCommand]
+        public void MenuRedo()
+        {
+
+        }
+        #endregion
+        #region Canvas
+
+        #endregion
+        #region View
+
+        #endregion
+        #region Help
+
+        #endregion
+
+        #endregion
     }
 }
