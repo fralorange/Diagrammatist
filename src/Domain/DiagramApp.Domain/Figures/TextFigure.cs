@@ -1,4 +1,5 @@
 ﻿using DiagramApp.Domain.Figures.Constants;
+using System.Drawing;
 
 namespace DiagramApp.Domain.Figures
 {
@@ -14,6 +15,13 @@ namespace DiagramApp.Domain.Figures
         /// This property used to display text in figure UI.
         /// </remarks>
         public string Text { get; set; } = FigureTextConstants.DefaultText;
+        /// <summary>
+        /// Gets or sets figure text color.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store figure text color.
+        /// </remarks>
+        public Color TextColor { get; set; } = Color.Black;
         /// <summary>
         /// Gets or sets font size.
         /// </summary>

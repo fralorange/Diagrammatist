@@ -1,4 +1,6 @@
-﻿namespace DiagramApp.Contracts.Figures
+﻿using System.Drawing;
+
+namespace DiagramApp.Contracts.Figures
 {
     /// <summary>
     /// A text figure dto. Derived class from <see cref="FigureDto"/>.
@@ -12,6 +14,13 @@
         /// This property used to display text in figure UI.
         /// </remarks>
         public required string Text { get; set; }
+        /// <summary>
+        /// Gets or sets figure text color.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store figure text color.
+        /// </remarks>
+        public Color TextColor { get; set; }
         /// <summary>
         /// Gets or sets font size.
         /// </summary>

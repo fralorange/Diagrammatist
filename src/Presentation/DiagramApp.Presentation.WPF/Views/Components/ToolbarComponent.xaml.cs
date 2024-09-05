@@ -8,9 +8,9 @@ namespace DiagramApp.Presentation.WPF.Views.Components
     {
         public ToolbarComponent()
         {
-            InitializeComponent();
-
             DataContext = App.Current.Services.GetService<ToolbarViewModel>();
+
+            InitializeComponent();
         }
     }
 }

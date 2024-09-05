@@ -1,4 +1,6 @@
-﻿namespace DiagramApp.Contracts.Figures
+﻿using System.Drawing;
+
+namespace DiagramApp.Contracts.Figures
 {
     /// <summary>
     /// A base class for figure dto objects.
@@ -40,5 +42,12 @@
         /// This property used to configure overlap order between figures.
         /// </remarks>
         public double ZIndex { get; set; }
+        /// <summary>
+        /// Gets or sets figure background color.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store figure background color.
+        /// </remarks>
+        public Color BackgroundColor { get; set; }
     }
 }

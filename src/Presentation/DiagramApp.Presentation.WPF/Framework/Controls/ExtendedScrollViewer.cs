@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace DiagramApp.Presentation.WPF.Controls
+namespace DiagramApp.Presentation.WPF.Framework.Controls
 {
     /// <summary>
     /// A class that derives from <see cref="ScrollViewer"/> and represents extended scroll viewer control.

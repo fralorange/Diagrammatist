@@ -5,7 +5,7 @@ using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Figures;
 using DiagramApp.Contracts.Settings;
 using DiagramApp.Infrastructure.Extensions.ObservableCollection;
-using DiagramApp.Presentation.WPF.ViewModels.Enums.Modes;
+using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 
 namespace DiagramApp.Presentation.WPF.ViewModels.Components
@@ -157,7 +157,9 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This property used to store figures that placed on the canvas.
         /// </remarks>
-        public ObservableCollection<FigureDto>? Figures { get; set; }
+        [ObservableProperty]
+        [NotifyPropertyChangedRecipients]
+        private ObservableCollection<FigureDto>? _figures;
 
         /// <summary>
         /// Gets or sets selected figure.

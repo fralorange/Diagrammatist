@@ -1,9 +1,9 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels.Enums.Modes;
+﻿using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace DiagramApp.Presentation.WPF.Converters
+namespace DiagramApp.Presentation.WPF.Framework.Converters
 {
     [ValueConversion(typeof(MouseMode), typeof(Cursors))]
     public class MouseModeToCursorConverter : IValueConverter

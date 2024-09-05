@@ -1,6 +1,6 @@
-﻿using DiagramApp.Presentation.WPF.Commands.UndoableCommand;
+﻿using DiagramApp.Presentation.WPF.Framework.Commands.UndoableCommand;
 
-namespace DiagramApp.Presentation.WPF.Commands.Manager
+namespace DiagramApp.Presentation.WPF.Framework.Commands.Manager
 {
     /// <summary>
     /// A class that implements <see cref="IUndoableCommandManager"/>. Manages undoable commands.

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using DiagramApp.Application.AppServices.Contexts.Canvas.Services;
 using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Settings;
-using DiagramApp.Presentation.WPF.Messages;
+using DiagramApp.Presentation.WPF.Framework.Messages;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 

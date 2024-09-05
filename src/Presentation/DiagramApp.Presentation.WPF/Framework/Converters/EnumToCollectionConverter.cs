@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace DiagramApp.Presentation.WPF.Converters
+namespace DiagramApp.Presentation.WPF.Framework.Converters
 {
     [ValueConversion(typeof(Enum), typeof(IEnumerable<string>))]
     public class EnumToCollectionConverter : IValueConverter

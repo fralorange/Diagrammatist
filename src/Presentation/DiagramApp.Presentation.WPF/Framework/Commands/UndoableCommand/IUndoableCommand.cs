@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace DiagramApp.Presentation.WPF.Commands.UndoableCommand
+namespace DiagramApp.Presentation.WPF.Framework.Commands.UndoableCommand
 {
     /// <summary>
     /// An interface expanding <see cref="ICommand"/> with undo behavior.

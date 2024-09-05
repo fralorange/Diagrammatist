@@ -15,6 +15,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             target.PosY = source.PosY;
             target.Rotation = source.Rotation;
             target.ZIndex = source.ZIndex;
+            target.BackgroundColor = source.BackgroundColor;
         }
 
         private static void MapCommonProperties(Figure target, FigureDto source)
@@ -24,6 +25,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             target.PosY = source.PosY;
             target.Rotation = source.Rotation;
             target.ZIndex = source.ZIndex;
+            target.BackgroundColor = source.BackgroundColor;
         }
 
         /// <summary>
@@ -110,6 +112,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             var dto = new TextFigureDto
             {
                 Text = figure.Text,
+                TextColor = figure.TextColor,
                 FontSize = figure.FontSize,
                 HasBackground = figure.HasBackground,
                 HasOutline = figure.HasOutline,
@@ -129,6 +132,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             var entity = new TextFigure
             {
                 Text = dto.Text,
+                TextColor = dto.TextColor,
                 FontSize = dto.FontSize,
                 HasBackground = dto.HasBackground,
                 HasOutline = dto.HasOutline,

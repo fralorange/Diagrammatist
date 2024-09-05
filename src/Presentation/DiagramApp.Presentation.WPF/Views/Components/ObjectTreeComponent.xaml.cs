@@ -8,9 +8,9 @@ namespace DiagramApp.Presentation.WPF.Views.Components
     {
         public ObjectTreeComponent()
         {
-            InitializeComponent();
-
             DataContext = App.Current.Services.GetService<ObjectTreeViewModel>();
+
+            InitializeComponent();
         }
     }
 }

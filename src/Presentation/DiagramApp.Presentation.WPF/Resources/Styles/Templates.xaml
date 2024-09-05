@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:figures="clr-namespace:DiagramApp.Contracts.Figures;assembly=DiagramApp.Contracts"
+                    xmlns:selector="clr-namespace:DiagramApp.Presentation.WPF.Framework.Selectors">
+    
+    <DataTemplate x:Key="ToolboxShapeFigureTemplate"
+                  DataType="figures:ShapeFigureDto">
+        <Path ToolTip="{Binding Name}"
+              Style="{StaticResource Shape}"
+              Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ToolboxLineFigureTemplate"
+                  DataType="figures:LineFigureDto">
+        <Polyline ToolTip="{Binding Name}"
+                  Style="{StaticResource Line}"
+                  Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ToolboxTextFigureTemplate"
+                  DataType="figures:TextFigureDto">
+        <Border ToolTip="{Binding Name}"
+                Style="{StaticResource ToolboxTextBorder}">
+            <TextBox Text="{Binding Text}"/>
+        </Border>
+    </DataTemplate>
+
+    <selector:FigureItemTemplateSelector x:Key="ToolboxFiguresSelector"
+                                         ShapeFigureTemplate="{StaticResource ToolboxShapeFigureTemplate}"
+                                         LineFigureTemplate="{StaticResource ToolboxLineFigureTemplate}"
+                                         TextFigureTemplate="{StaticResource ToolboxTextFigureTemplate}"/>
+
+    <DataTemplate x:Key="CanvasShapeFigureTemplate"
+                  DataType="figures:ShapeFigureDto">
+        <Path Style="{StaticResource Shape}"
+              Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
+              Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+              Width="{Binding Width}"
+              Height="{Binding Height}">
+            <Path.RenderTransform>
+                <RotateTransform Angle="{Binding Rotation}"/>
+            </Path.RenderTransform>
+        </Path>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CanvasLineFigureTemplate"
+                  DataType="figures:LineFigureDto">
+        <Polyline Style="{StaticResource Line}"
+                  Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
+                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                  StrokeThickness="{Binding Thickness}"
+                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CanvasTextFigureTemplate"
+                  DataType="figures:TextFigureDto">
+        <Border Background="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}">
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource TextBorder}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasOutline}"
+                                     Value="False">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HasBackground}"
+                                     Value="False">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <TextBox Text="{Binding Text, Mode=TwoWay}"
+                     FontSize="{Binding FontSize}"
+                     Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"/>
+        </Border>
+    </DataTemplate>
+
+    <selector:FigureItemTemplateSelector x:Key="CanvasFiguresSelector"
+                                         ShapeFigureTemplate="{StaticResource CanvasShapeFigureTemplate}"
+                                         LineFigureTemplate="{StaticResource CanvasLineFigureTemplate}"
+                                         TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"/>
+
+</ResourceDictionary>

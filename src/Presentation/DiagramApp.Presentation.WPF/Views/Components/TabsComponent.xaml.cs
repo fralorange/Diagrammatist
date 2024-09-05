@@ -8,9 +8,9 @@ namespace DiagramApp.Presentation.WPF.Views.Components
     {
         public TabsComponent()
         {
-            DataContext = App.Current.Services.GetService<TabsViewModel>();
-            
             InitializeComponent();
+            
+            DataContext = App.Current.Services.GetService<TabsViewModel>();
         }
     }
 }

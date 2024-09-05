@@ -1,4 +1,5 @@
 ﻿using DiagramApp.Domain.Figures.Constants;
+using System.Drawing;
 
 namespace DiagramApp.Domain.Figures
 {
@@ -42,5 +43,12 @@ namespace DiagramApp.Domain.Figures
         /// This property used to configure overlap order between figures.
         /// </remarks>
         public double ZIndex { get; set; } = FigureManipulationConstants.DefaultZIndex;
+        /// <summary>
+        /// Gets or sets figure background color.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store figure background color.
+        /// </remarks>
+        public Color BackgroundColor { get; set; } = Color.MediumPurple;
     }
 }

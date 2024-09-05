@@ -8,9 +8,9 @@ namespace DiagramApp.Presentation.WPF.Views.Components
     {
         public PropertiesComponent()
         {
-            InitializeComponent();
-
             DataContext = App.Current.Services.GetService<PropertiesViewModel>();
+
+            InitializeComponent();
         }
     }
 }

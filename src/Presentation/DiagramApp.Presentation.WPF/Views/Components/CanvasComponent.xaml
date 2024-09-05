@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Components"
-             xmlns:controls="clr-namespace:DiagramApp.Presentation.WPF.Controls"
-             xmlns:behaviors="clr-namespace:DiagramApp.Presentation.WPF.Behaviors"
+             xmlns:controls="clr-namespace:DiagramApp.Presentation.WPF.Framework.Controls"
+             xmlns:behaviors="clr-namespace:DiagramApp.Presentation.WPF.Framework.Behaviors"
              xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Components"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d">
@@ -17,11 +17,23 @@
                                    Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}">
         <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
-            <Canvas Width="{Binding CurrentCanvas.Settings.Width, FallbackValue=0}"
-                    Height="{Binding CurrentCanvas.Settings.Height, FallbackValue=0}"
-                    Background="{Binding CurrentCanvas.Settings.Background, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}">
-                
-            </Canvas>
+            <ItemsControl ItemsSource="{Binding Figures}"
+                          ItemTemplateSelector="{StaticResource CanvasFiguresSelector}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=0}"
+                                                 Height="{Binding DataContext.CurrentCanvas.Settings.Height, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=0}"
+                                                 Background="{Binding DataContext.CurrentCanvas.Settings.Background, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
         </Grid>
         <i:Interaction.Behaviors>
             <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.ScreenOffset.X, Mode=TwoWay, FallbackValue=0}"

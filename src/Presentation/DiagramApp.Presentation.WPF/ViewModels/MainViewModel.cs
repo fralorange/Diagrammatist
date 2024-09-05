@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using DiagramApp.Presentation.WPF.Messages;
+using DiagramApp.Presentation.WPF.Framework.Messages;
 using DiagramApp.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
-using System.Windows.Input;
 
 namespace DiagramApp.Presentation.WPF.ViewModels
 {
@@ -30,7 +29,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels
 
         #region File
         [RelayCommand]
-        public void MenuNew()
+        private void MenuNew()
         {
             var dialogViewModel = new AddCanvasDialogViewModel();
 
@@ -46,13 +45,13 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #endregion
         #region Edit
         [RelayCommand]
-        public void MenuUndo()
+        private void MenuUndo()
         {
 
         }
 
         [RelayCommand]
-        public void MenuRedo()
+        private void MenuRedo()
         {
 
         }

@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using CommunityToolkit.Mvvm.Messaging;
-using DiagramApp.Contracts.Canvas;
-using DiagramApp.Presentation.WPF.ViewModels.Enums.Modes;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using DiagramApp.Contracts.Canvas;
+using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
 namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
@@ -46,7 +46,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         }
 
         [RelayCommand]
-        public void ChangeMode(string mode)
+        private void ChangeMode(string mode)
         {
             CurrentMouseMode = (MouseMode)Enum.Parse(typeof(MouseMode), mode);
         }

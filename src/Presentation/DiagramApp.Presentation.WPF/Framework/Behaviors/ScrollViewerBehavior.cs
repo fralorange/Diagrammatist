@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DiagramApp.Presentation.WPF.Behaviors
+namespace DiagramApp.Presentation.WPF.Framework.Behaviors
 {
     /// <summary>
     /// A scroll viewer behavior that allows to create two-way bindings for vertical and horizontal offsets.

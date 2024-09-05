@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace DiagramApp.Presentation.WPF.Converters
+namespace DiagramApp.Presentation.WPF.Framework.Converters
 {
     [ValueConversion(typeof(System.Drawing.Color), typeof(Brush))]
     public class ColorToBrushConverter : IValueConverter

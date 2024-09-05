@@ -44,4 +44,36 @@
         <Setter Property="Background" Value="Transparent" />
     </Style>
 
+    <Style TargetType="Shape" x:Key="BaseGeometry">
+        <Setter Property="Stroke" Value="MediumPurple" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
+    <Style TargetType="Path" x:Key="Shape" BasedOn="{StaticResource BaseGeometry}">
+        <Setter Property="Fill" Value="GhostWhite" />
+    </Style>
+
+    <Style TargetType="Polyline" x:Key="Line" BasedOn="{StaticResource BaseGeometry}">
+        <Setter Property="Fill" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="TextBorder">
+        <Setter Property="BorderBrush" Value="MediumPurple" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Background" Value="GhostWhite" />
+        <Setter Property="Padding" Value="5" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="ToolboxTextBorder" BasedOn="{StaticResource TextBorder}">
+        <Style.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="SelectionOpacity" Value="0" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+        </Style.Resources>
+    </Style>
+
 </ResourceDictionary>

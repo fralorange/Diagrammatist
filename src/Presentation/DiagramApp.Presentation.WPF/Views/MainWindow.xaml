@@ -11,6 +11,20 @@
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="557" Width="985">
+    <Window.Resources>
+        <Style TargetType="GridSplitter" x:Key="Base">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+        <Style TargetType="GridSplitter" x:Key="Vertical" BasedOn="{StaticResource Base}">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Width" Value="3" />
+        </Style>
+        <Style TargetType="GridSplitter" x:Key="Horizontal" BasedOn="{StaticResource Base}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Height" Value="3" />
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -55,22 +69,34 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="0.30*"/>
+                <RowDefinition Height="0.30*"
+                               MinHeight="200"
+                               MaxHeight="400"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.15*"
+                                  MinWidth="200"
+                                  MaxWidth="400"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.15*"
+                                  MinWidth="200"
+                                  MaxWidth="400"/>
             </Grid.ColumnDefinitions>
 
             <components:ToolbarComponent Grid.Row="0"
                                          Grid.ColumnSpan="3"
                                          Style="{StaticResource Component}"/>
-
             <components:FiguresComponent Grid.Row="1"
                                          Grid.RowSpan="2"
                                          Grid.Column="0"
                                          Style="{StaticResource Component}"/>
+            
+            <!--Splits FiguresComponent from CanvasComponent-->
+            <GridSplitter Grid.Row="1" 
+                          Grid.RowSpan="2" 
+                          Grid.Column="0" 
+                          Style="{StaticResource Vertical}" 
+                          HorizontalAlignment="Right"/>
 
             <Grid Grid.Row="1" 
                   Grid.RowSpan="2" 
@@ -86,12 +112,24 @@
                                           Style="{StaticResource Component}"/>
             </Grid>
 
+            <!--Splits ObjectTreeComponent and PropertiesComponent from CanvasComponent-->
+            <GridSplitter Grid.Row="1" 
+                          Grid.RowSpan="2" 
+                          Grid.Column="2" 
+                          Style="{StaticResource Vertical}" 
+                          HorizontalAlignment="Left"/>
+
             <components:ObjectTreeComponent Grid.Row="1"
                                             Grid.Column="2"
                                             Style="{StaticResource Component}"/>
-
+            
+            <!--Splits PropertiesComponent from ObjectTreeComponent-->
+            <GridSplitter Grid.Row="2" 
+                          Grid.Column="2" 
+                          Style="{StaticResource Horizontal}"
+                          VerticalAlignment="Top" />
+            
             <components:PropertiesComponent Grid.Row="2"
-                                            Grid.RowSpan="2"
                                             Grid.Column="2"
                                             Style="{StaticResource Component}"/>
         </Grid>

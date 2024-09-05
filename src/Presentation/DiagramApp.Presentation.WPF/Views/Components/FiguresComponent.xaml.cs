@@ -8,9 +8,15 @@ namespace DiagramApp.Presentation.WPF.Views.Components
     {
         public FiguresComponent()
         {
-            InitializeComponent();
+            var viewModel = App.Current.Services.GetRequiredService<FiguresViewModel>();
+            DataContext = viewModel;
 
-            DataContext = App.Current.Services.GetService<FiguresViewModel>();
+            Loaded += async (s, e) =>
+            {
+                await viewModel.LoadFiguresAsync();
+            };
+
+            InitializeComponent();
         }
     }
 }

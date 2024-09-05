@@ -1,24 +1,32 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Application.AppServices.Contexts.Figures.Services;
-using DiagramApp.Contracts.Canvas;
+using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners;
+using DiagramApp.Contracts.Figures;
+using System.Collections.ObjectModel;
 
 namespace DiagramApp.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for figures (toolbox) component.
     /// </summary>
-    public sealed class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<CanvasDto>>
+    public sealed partial class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<ObservableCollection<FigureDto>?>>
     {
         private IFigureService _figureService;
 
-        private CanvasDto? _currentCanvas;
-        private CanvasDto? CurrentCanvas
-        {
-            get => _currentCanvas;
-            set => SetProperty(ref _currentCanvas, value);
-        }
+        [ObservableProperty]
+        private ObservableCollection<FigureDto>? _canvasFigures;
+
+        [ObservableProperty]
+        private Dictionary<string, List<FigureDto>>? _figures;
+
+        [ObservableProperty]
+        private KeyValuePair<string, List<FigureDto>> _selectedCategory;
+
+        [ObservableProperty]
+        private FigureDto? _selectedFigure;
 
         /// <summary>
         /// Initializes a new figures view model.
@@ -27,16 +35,39 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         public FiguresViewModel(IFigureService figureService)
         {
             _figureService = figureService;
+
+            IsActive = true;
         }
 
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<CanvasDto> message)
+        public void Receive(PropertyChangedMessage<ObservableCollection<FigureDto>?> message)
         {
             if (message.Sender.GetType() == typeof(CanvasViewModel) &&
-                message.PropertyName == nameof(CanvasViewModel.CurrentCanvas))
+                message.PropertyName == nameof(CanvasViewModel.Figures))
             {
-                CurrentCanvas = message.NewValue;
+                CanvasFigures = message.NewValue;
             }
+        }
+
+        /// <summary>
+        /// Loads figures in <see cref="Figures"/> externally and asynchronously.
+        /// </summary>
+        public async Task LoadFiguresAsync()
+        {
+            Figures = await _figureService.GetAsync();
+        }
+
+        /// <summary>
+        /// Adds new figure to canvas component.
+        /// </summary>
+        [RelayCommand]
+        private void AddFigure()
+        {
+            if (CanvasFigures is not null && SelectedFigure is not null)
+            {
+                CanvasFigures.Add(SelectedFigure.Clone());
+            }
+            SelectedFigure = null;
         }
     }
 }

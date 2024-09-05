@@ -1,8 +1,8 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels.Enums.Modes;
+﻿using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace DiagramApp.Presentation.WPF.Converters
+namespace DiagramApp.Presentation.WPF.Framework.Converters
 {
     [ValueConversion(typeof(MouseMode), typeof(bool))]
     public class MouseModeIsPanConverter : IValueConverter

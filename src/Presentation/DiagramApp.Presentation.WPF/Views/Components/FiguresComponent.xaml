@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Components"
              d:DataContext="{d:DesignInstance Type=viewmodels:FiguresViewModel}"
@@ -22,28 +23,33 @@
                HorizontalAlignment="Center"/>
 
         <ComboBox Grid.Row="1"
-                  SelectedIndex="0">
-            <TextBlock>Figure elements</TextBlock>
-            <TextBlock>Flowchart symbols</TextBlock>
-        </ComboBox>
+                  Margin="5 5"
+                  ItemsSource="{Binding Figures}"
+                  DisplayMemberPath="Key"
+                  SelectedItem="{Binding SelectedCategory}"
+                  SelectedIndex="0"/>
 
-        <ListBox Grid.Row="2">
+        <ListBox Grid.Row="2"
+                 ItemsSource="{Binding SelectedCategory.Value}"
+                 SelectedItem="{Binding SelectedFigure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 ItemTemplateSelector="{StaticResource ToolboxFiguresSelector}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding AddFigureCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Margin" Value="2.5 2.5"/>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBox.Items>
-                <ListBoxItem>Figure 1</ListBoxItem>
-                <ListBoxItem>Figure 2</ListBoxItem>
-                <ListBoxItem>Figure 3</ListBoxItem>
-                <ListBoxItem>Figure 4</ListBoxItem>
-                <ListBoxItem>Figure 5</ListBoxItem>
-                <ListBoxItem>Figure 6</ListBoxItem>
-            </ListBox.Items>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"/>
+                    <WrapPanel Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"
+                               VerticalAlignment="Top"
+                               Orientation="Horizontal"
+                               ItemWidth="70"
+                               ItemHeight="70"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
