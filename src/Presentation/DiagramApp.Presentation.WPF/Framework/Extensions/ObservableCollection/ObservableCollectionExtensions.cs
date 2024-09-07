@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace DiagramApp.Infrastructure.Extensions.ObservableCollection
+namespace DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection
 {
     /// <summary>
     /// Observable collection extensions.

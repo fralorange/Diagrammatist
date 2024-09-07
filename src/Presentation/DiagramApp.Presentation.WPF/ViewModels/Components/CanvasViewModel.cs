@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Figures;
 using DiagramApp.Contracts.Settings;
-using DiagramApp.Infrastructure.Extensions.ObservableCollection;
+using DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 
@@ -168,6 +168,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         /// This property used to store selected figure that placed on the canvas.
         /// </remarks>
         [ObservableProperty]
+        [NotifyPropertyChangedRecipients]
         private FigureDto? _selectedFigure;
 
         public CanvasViewModel()
@@ -192,6 +193,11 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
             {
                 CurrentMouseMode = m.NewValue;
+            });
+
+            Messenger.Register<CanvasViewModel, PropertyChangedMessage<FigureDto?>>(this, (r, m) =>
+            {
+                SelectedFigure = m.NewValue;
             });
         }
     }

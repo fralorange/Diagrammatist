@@ -9,7 +9,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
     /// <summary>
     /// A view model class for object tree (explorer) component.
     /// </summary>
-    public sealed partial class ObjectTreeViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<object>>
+    public sealed partial class ObjectTreeViewModel : ObservableRecipient
     {
         private ObservableCollection<FigureDto>? _figures;
 
@@ -25,34 +25,35 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             private set => SetProperty(ref _figures, value);
         }
 
-        private FigureDto? _selectedFigure;
-
         /// <summary>
         /// Gets selected figure from collection <see cref="Figures"/>
         /// </summary>
         /// <remarks>
         /// This property used to store selected figure.
         /// </remarks>
-        public FigureDto? SelectedFigure
+        [ObservableProperty]
+        [NotifyPropertyChangedRecipients]
+        private FigureDto? _selectedFigure;
+
+        public ObjectTreeViewModel()
         {
-            get => _selectedFigure;
-            private set => SetProperty(ref _selectedFigure, value, true);
+            IsActive = true;
         }
 
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<object> message)
+        protected override void OnActivated()
         {
-            if (message.Sender.GetType() != typeof(CanvasViewModel)) return;
+            base.OnActivated();
 
-            switch (message.PropertyName)
+            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<ObservableCollection<FigureDto>?>>(this, (r, m) =>
             {
-                case nameof(CanvasViewModel.Figures):
-                    Figures = message.NewValue as ObservableCollection<FigureDto>;
-                    break;
-                case nameof(CanvasViewModel.SelectedFigure):
-                    SelectedFigure = message.NewValue as FigureDto;
-                    break;
-            }
+                Figures = m?.NewValue;
+            });
+
+            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<FigureDto?>>(this, (r, m) =>
+            {
+                SelectedFigure = m.NewValue;
+            });
         }
     }
 }

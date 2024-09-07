@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using DiagramApp.Presentation.WPF.Framework.Extensions.DependencyObject;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -20,6 +22,7 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
         private UIElement? _selectedElement;
         private Point _startPoint;
+        private Cursor? _previousCursor;
 
         public static readonly DependencyProperty IsGridVisibleProperty =
             DependencyProperty.Register(nameof(IsGridVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata { DefaultValue = true });
@@ -71,27 +74,35 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
         public ExtendedCanvas()
         {
-            MouseLeftButtonDown += ExtendedCanvas_MouseLeftButtonDown;
+            PreviewMouseLeftButtonDown += ExtendedCanvas_MouseLeftButtonDown;
             MouseMove += ExtendedCanvas_MouseMove;
             MouseLeftButtonUp += ExtendedCanvas_MouseLeftButtonUp;
         }
 
-        private void ExtendedCanvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ExtendedCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsElementPanEnabled)
+            if (IsElementPanEnabled && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item)
             {
                 _startPoint = e.GetPosition(this);
 
-                _selectedElement = FindAncestorOfType(e.Source as DependencyObject, typeof(ContentPresenter)) as ContentPresenter;
+                _selectedElement = item;
 
-                if (_selectedElement is not null)
-                {
-                    CaptureMouse();
-                }
+                item.IsSelected = true;
+                item.Focus();
+
+                _previousCursor = Cursor;
+                Cursor = Cursors.None;
+
+                CaptureMouse();
+            }
+            else if (e.OriginalSource is ExtendedCanvas && Keyboard.FocusedElement is ListBoxItem focusedItem)
+            {
+                focusedItem.IsSelected = false;
+                Keyboard.ClearFocus();
             }
         }
 
-        private void ExtendedCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ExtendedCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (IsElementPanEnabled && IsMouseCaptured)
             {
@@ -111,26 +122,15 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
             }
         }
 
-        private void ExtendedCanvas_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ExtendedCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_selectedElement is not null)
             {
-                ReleaseMouseCapture();
                 _selectedElement = null;
-            }
-        }
+                Cursor = _previousCursor;
 
-        private DependencyObject? FindAncestorOfType(DependencyObject? element, Type type)
-        {
-            while (element != null)
-            {
-                if (element.GetType() == type)
-                {
-                    return element;
-                }
-                element = VisualTreeHelper.GetParent(element);
+                ReleaseMouseCapture();
             }
-            return null;
         }
 
         private void DrawGridLines()

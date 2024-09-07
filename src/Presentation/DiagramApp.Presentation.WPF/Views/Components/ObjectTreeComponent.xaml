@@ -17,15 +17,19 @@
                Content="Explorer"
                HorizontalContentAlignment="Center"/>
 
-        <TreeView Grid.Row="1">
-            <TreeViewItem Header="Figure 1"/>
-            <TreeViewItem Header="Figure 2"/>
-            <TreeViewItem Header="Figure 3"/>
-            <TreeViewItem Header="Figure group 1">
-                <TreeViewItem Header="Figure 4"/>
-                <TreeViewItem Header="Figure 5"/>
-            </TreeViewItem>
-            <TreeViewItem Header="Figure 6"/>
-        </TreeView>
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Figures}"
+                 SelectedItem="{Binding SelectedFigure}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Margin" Value="5 5" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Framework.Converters">
     <local:EnumToCollectionConverter x:Key="EnumToCollectionConverter"/>
     <local:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
-    <local:MouseModeIsPanConverter x:Key="MouseModeIsPanConverter"/>
+    <local:MouseModeIsControlConverter x:Key="MouseModeIsControlConverter"/>
     <local:MouseModeToCursorConverter x:Key="MouseModeToCursorConverter"/>
     <local:DataToGeometryGroupConverter x:Key="DataToGeometryGroupConverter"/>
     <local:DataToPointCollectionConverter x:Key="DataToPointCollectionConverter"/>

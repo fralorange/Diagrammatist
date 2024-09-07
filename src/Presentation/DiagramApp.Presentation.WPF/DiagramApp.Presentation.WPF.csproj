@@ -23,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Application\DiagramApp.Application.AppServices\DiagramApp.Application.AppServices.csproj" />
     <ProjectReference Include="..\..\Infrastructure\DiagramApp.Infrastructure.DataAccess\DiagramApp.Infrastructure.DataAccess.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\DiagramApp.Infrastructure\DiagramApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
