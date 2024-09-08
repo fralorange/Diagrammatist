@@ -8,10 +8,12 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
              mc:Ignorable="d">
     <ListBox ItemsSource="{Binding Canvases}"
-             SelectedItem="{Binding SelectedCanvas, Mode=TwoWay}">
+             SelectedItem="{Binding SelectedCanvas, Mode=TwoWay}"
+             SelectionMode="Single">
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <Button Content="{Binding Settings.FileName}"/>
+                <Button Content="{Binding Settings.FileName}"
+                        IsHitTestVisible="False"/>
             </DataTemplate>
         </ListBox.ItemTemplate>
         <ListBox.ItemsPanel>
