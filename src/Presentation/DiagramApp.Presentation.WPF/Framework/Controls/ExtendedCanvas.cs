@@ -92,7 +92,9 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
                 CaptureMouse();
             }
-            else if (e.OriginalSource is ExtendedCanvas && Keyboard.FocusedElement is ListBoxItem focusedItem)
+            else if (e.OriginalSource is ExtendedCanvas
+                     && Keyboard.FocusedElement is ListBoxItem focusedItem
+                     && VisualTreeHelper.GetParent(focusedItem) is ExtendedCanvas)
             {
                 focusedItem.IsSelected = false;
                 Keyboard.ClearFocus();
