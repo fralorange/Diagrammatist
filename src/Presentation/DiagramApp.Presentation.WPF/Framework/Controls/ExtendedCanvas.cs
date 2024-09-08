@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace DiagramApp.Presentation.WPF.Framework.Controls
 {
@@ -13,25 +13,22 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
     /// <remarks>
     /// Features:<br/>-Visible grid;<br/>-Element panning.
     /// <para>
-    /// Works only when extended canvas used as items panel in items control.
+    /// Works only when extended canvas used as items panel in selector.
     /// </para>
     /// </remarks>
     public class ExtendedCanvas : Canvas
     {
-        private List<Line> _gridLines = [];
-
-        private UIElement? _selectedElement;
-        private Point _startPoint;
+        private FrameworkElement? _selectedElement;
         private Cursor? _previousCursor;
 
         public static readonly DependencyProperty IsGridVisibleProperty =
-            DependencyProperty.Register(nameof(IsGridVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata { DefaultValue = true });
+            DependencyProperty.Register(nameof(IsGridVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnGridChange));
 
         public static readonly DependencyProperty GridStepProperty =
-            DependencyProperty.Register(nameof(GridStep), typeof(int), typeof(ExtendedCanvas), new PropertyMetadata { DefaultValue = 10 });
+            DependencyProperty.Register(nameof(GridStep), typeof(int), typeof(ExtendedCanvas), new PropertyMetadata(10, OnGridChange));
 
         public static readonly DependencyProperty GridLineColorProperty =
-            DependencyProperty.Register(nameof(GridLineColor), typeof(Color), typeof(ExtendedCanvas));
+            DependencyProperty.Register(nameof(GridLineColor), typeof(Color), typeof(ExtendedCanvas), new PropertyMetadata(Colors.MediumPurple, OnGridChange));
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
@@ -74,22 +71,22 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
         public ExtendedCanvas()
         {
-            PreviewMouseLeftButtonDown += ExtendedCanvas_MouseLeftButtonDown;
-            MouseMove += ExtendedCanvas_MouseMove;
-            MouseLeftButtonUp += ExtendedCanvas_MouseLeftButtonUp;
+            PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
+            MouseMove += OnMouseMove;
+            MouseLeftButtonUp += OnMouseLeftButtonUp;
         }
 
-        private void ExtendedCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsElementPanEnabled && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item)
             {
-                _startPoint = e.GetPosition(this);
-
                 _selectedElement = item;
 
+                // Select element
                 item.IsSelected = true;
                 item.Focus();
 
+                // Disable cursor
                 _previousCursor = Cursor;
                 Cursor = Cursors.None;
 
@@ -102,27 +99,58 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
             }
         }
 
-        private void ExtendedCanvas_MouseMove(object sender, MouseEventArgs e)
+        private void OnMouseMove(object sender, MouseEventArgs e)
         {
             if (IsElementPanEnabled && IsMouseCaptured)
             {
-                var endPoint = e.GetPosition(this);
-                Vector delta = endPoint - _startPoint;
+                double newX = e.GetPosition(this).X;
+                double newY = e.GetPosition(this).Y;
 
-                double newX = GetLeft(_selectedElement) + delta.X;
-                double newY = GetTop(_selectedElement) + delta.Y;
+                var selBorder = GetSelectedElementSelectionBorder();
 
-                newX = Math.Max(0, Math.Min(newX, ActualWidth - (_selectedElement as FrameworkElement)!.ActualWidth));
-                newY = Math.Max(0, Math.Min(newY, ActualHeight - (_selectedElement as FrameworkElement)!.ActualHeight));
+                Dispatcher.Invoke(() =>
+                {
+                    CenterSelectedElement(selBorder, ref newX, ref newY);
+                    SnapCoordinatesToGrid(selBorder, ref newX, ref newY);
+                    EnsureElementInsideCanvas(selBorder, ref newX, ref newY);
+                });
 
                 SetLeft(_selectedElement, newX);
                 SetTop(_selectedElement, newY);
-
-                _startPoint = endPoint;
             }
         }
 
-        private void ExtendedCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private Thickness GetSelectedElementSelectionBorder()
+        {
+            if (_selectedElement is Control control)
+            {
+                var pad = control.Padding;
+                var border = control.BorderThickness;
+                return new Thickness(pad.Left + border.Left, pad.Top + border.Top, pad.Right + border.Top, pad.Bottom + border.Bottom);
+            }
+
+            return new Thickness();
+        }
+
+        private void CenterSelectedElement(Thickness selBorder, ref double x, ref double y)
+        {
+            x -= (_selectedElement!.ActualWidth - selBorder.Left - selBorder.Right) / 2;
+            y -= (_selectedElement!.ActualHeight - selBorder.Top - selBorder.Bottom) / 2;
+        }
+
+        private void SnapCoordinatesToGrid(Thickness selBorder, ref double x, ref double y)
+        {
+            x = Math.Round(x / GridStep) * GridStep - selBorder.Left;
+            y = Math.Round(y / GridStep) * GridStep - selBorder.Top;
+        }
+
+        private void EnsureElementInsideCanvas(Thickness selBorder, ref double x, ref double y)
+        {
+            x = Math.Max(0 - selBorder.Left, Math.Min(x, ActualWidth - _selectedElement!.ActualWidth + selBorder.Right));
+            y = Math.Max(0 - selBorder.Top, Math.Min(y, ActualHeight - _selectedElement!.ActualHeight + selBorder.Bottom));
+        }
+
+        private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_selectedElement is not null)
             {
@@ -133,55 +161,35 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
             }
         }
 
-        private void DrawGridLines()
+        private static void OnGridChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //for (int x = -4000; x <= 4000; x += 100)
-            //{
-            //    Line verticalLine = new Line
-            //    {
-            //        Stroke = new SolidColorBrush(Colors.AliceBlue),
-            //        X1 = x,
-            //        Y1 = -4000,
-            //        X2 = x,
-            //        Y2 = 4000
-            //    };
+            if (d is ExtendedCanvas canvas)
+            {
+                canvas.InvalidateVisual();
+            }
+        }
 
-            //    if (x % 1000 == 0)
-            //    {
-            //        verticalLine.StrokeThickness = 6;
-            //    }
-            //    else
-            //    {
-            //        verticalLine.StrokeThickness = 2;
-            //    }
+        protected override void OnRender(DrawingContext dc)
+        {
+            base.OnRender(dc);
 
-            //    Children.Add(verticalLine);
-            //    _gridLines.Add(verticalLine);
-            //}
+            if (IsGridVisible)
+            {
+                var brush = new SolidColorBrush(GridLineColor);
 
-            //for (int y = -4000; y <= 4000; y += 100)
-            //{
-            //    Line horizontalLine = new Line
-            //    {
-            //        Stroke = new SolidColorBrush(Colors.AliceBlue),
-            //        X1 = -4000,
-            //        Y1 = y,
-            //        X2 = 4000,
-            //        Y2 = y
-            //    };
+                var penLight = new Pen(brush, 0.5);
+                var penBold = new Pen(brush, 1);
 
-            //    if (y % 1000 == 0)
-            //    {
-            //        horizontalLine.StrokeThickness = 6;
-            //    }
-            //    else
-            //    {
-            //        horizontalLine.StrokeThickness = 2;
-            //    }
+                for (int x = 0, cellCount = 0; x < ActualWidth; x += GridStep, cellCount++)
+                {
+                    dc.DrawLine((cellCount % GridStep == 0) ? penBold : penLight, new Point(x, 0), new Point(x, ActualHeight));
+                }
 
-            //    Children.Add(horizontalLine);
-            //    _gridLines.Add(horizontalLine);
-            //}
+                for (int y = 0, cellCount = 0; y < ActualHeight; y += GridStep, cellCount++)
+                {
+                    dc.DrawLine((cellCount % GridStep == 0) ? penBold : penLight, new Point(0, y), new Point(ActualWidth, y));
+                }
+            }
         }
     }
 }
