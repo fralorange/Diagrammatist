@@ -102,12 +102,9 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
                 var selBorder = GetSelectedElementSelectionBorder();
 
-                Dispatcher.Invoke(() =>
-                {
-                    CenterSelectedElement(selBorder, ref newX, ref newY);
-                    SnapCoordinatesToGrid(selBorder, ref newX, ref newY);
-                    EnsureElementInsideCanvas(selBorder, ref newX, ref newY);
-                });
+                CenterSelectedElement(selBorder, ref newX, ref newY);
+                SnapCoordinatesToGrid(selBorder, ref newX, ref newY);
+                EnsureElementInsideCanvas(selBorder, ref newX, ref newY);
 
                 SetLeft(_selectedElement, newX);
                 SetTop(_selectedElement, newY);

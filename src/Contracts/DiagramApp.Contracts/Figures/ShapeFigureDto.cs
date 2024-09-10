@@ -20,6 +20,13 @@
         /// </remarks>
         public required double Height { get; set; }
         /// <summary>
+        /// Gets or sets aspect ratio keep parameter.
+        /// </summary>
+        /// <remarks>
+        /// This property is used to determine whether or not to keep the aspect ratio.
+        /// </remarks>
+        public required bool KeepAspectRatio { get; set; }
+        /// <summary>
         /// Gets or sets collection of data.
         /// </summary>
         /// <remarks>

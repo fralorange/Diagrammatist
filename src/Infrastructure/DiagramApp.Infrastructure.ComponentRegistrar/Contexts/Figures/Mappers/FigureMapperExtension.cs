@@ -39,6 +39,7 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
             {
                 Width = figure.Width,
                 Height = figure.Height,
+                KeepAspectRatio = figure.KeepAspectRatio,
                 Data = figure.Data,
             };
             

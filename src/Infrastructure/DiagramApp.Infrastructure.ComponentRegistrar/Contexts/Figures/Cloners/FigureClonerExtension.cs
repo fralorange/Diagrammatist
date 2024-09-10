@@ -24,7 +24,13 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners
         /// <returns></returns>
         public static ShapeFigureDto Clone(this ShapeFigureDto figure)
         {
-            var cloneFigure = new ShapeFigureDto { Width = figure.Width, Height = figure.Height, Data = figure.Data.Select(s => s).ToList() };
+            var cloneFigure = new ShapeFigureDto
+            {
+                Width = figure.Width,
+                Height = figure.Height,
+                KeepAspectRatio = figure.KeepAspectRatio,
+                Data = figure.Data.Select(s => s).ToList()
+            };
 
             CloneCommonProperties(cloneFigure, figure);
 

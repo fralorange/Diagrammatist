@@ -33,11 +33,21 @@
     <!--#region Canvas-->
     <DataTemplate x:Key="CanvasShapeFigureTemplate"
                   DataType="figures:ShapeFigureDto">
-        <Path Style="{StaticResource Shape}"
-              Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
+        <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
               Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
               Width="{Binding Width}"
-              Height="{Binding Height}"/>
+              Height="{Binding Height}">
+            <Path.Style>
+                <Style TargetType="Path" BasedOn="{StaticResource Shape}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding KeepAspectRatio}"
+                                     Value="False">
+                            <Setter Property="Stretch" Value="Fill" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasLineFigureTemplate"
@@ -89,54 +99,62 @@
             <TextBox Text="{Binding BackgroundColor, Mode=TwoWay}"/>
         </UniformGrid>
     </DataTemplate>
-    
+
     <DataTemplate x:Key="PropertiesShapeFigureTemplate"
                   DataType="figures:ShapeFigureDto">
-        <StackPanel>
-            <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-            <UniformGrid Columns="2">
-                <Label Content="Width: "/>
-                <TextBox Text="{Binding Width, Mode=TwoWay}"/>
-                <Label Content="Height: "/>
-                <TextBox Text="{Binding Height, Mode=TwoWay}"/>
-            </UniformGrid>
-        </StackPanel>
+        <ScrollViewer>
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="Width: "/>
+                    <TextBox Text="{Binding Width, Mode=TwoWay}"/>
+                    <Label Content="Height: "/>
+                    <TextBox Text="{Binding Height, Mode=TwoWay}"/>
+                </UniformGrid>
+                <CheckBox Content="Keep aspect ratio"
+                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesLineFigureTemplate"
                   DataType="figures:LineFigureDto">
-        <StackPanel>
-            <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-            <UniformGrid Columns="2">
-                <Label Content="Thickness: "/>
-                <Slider Value="{Binding Thickness, Mode=TwoWay}" 
-                    Minimum="1" 
-                    Maximum="10"/>
+        <ScrollViewer>
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="Thickness: "/>
+                    <Slider Value="{Binding Thickness, Mode=TwoWay}" 
+                            Minimum="1" 
+                            Maximum="10"/>
+                </UniformGrid>
                 <CheckBox Content="Is Dashed"
-                      IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
+                          IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
                 <CheckBox Content="Has Arrow"
-                      IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
-            </UniformGrid>
-        </StackPanel>
+                          IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesTextFigureTemplate"
                   DataType="figures:TextFigureDto">
-        <StackPanel>
-            <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-            <UniformGrid Columns="2">
-                <Label Content="Text: "/>
-                <TextBox Text="{Binding Text, Mode=TwoWay}"/>
-                <Label Content="Font size: "/>
-                <TextBox Text="{Binding FontSize, Mode=TwoWay}"/>
-                <Label Content="Text color: "/>
-                <TextBox Text="{Binding TextColor, Mode=TwoWay}"/>
+        <ScrollViewer>
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="Text: "/>
+                    <TextBox Text="{Binding Text, Mode=TwoWay}"/>
+                    <Label Content="Font size: "/>
+                    <TextBox Text="{Binding FontSize, Mode=TwoWay}"/>
+                    <Label Content="Text color: "/>
+                    <TextBox Text="{Binding TextColor, Mode=TwoWay}"/>
+                </UniformGrid>
                 <CheckBox Content="Has Outline"
-                      IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
+                          IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
                 <CheckBox Content="Has Background"
-                      IsChecked="{Binding HasBackground, Mode=TwoWay}"/>
-            </UniformGrid>
-        </StackPanel>
+                          IsChecked="{Binding HasBackground, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
     </DataTemplate>
 
     <selector:FigureItemTemplateSelector x:Key="PropertiesFigureSelector"

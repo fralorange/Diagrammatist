@@ -22,6 +22,13 @@ namespace DiagramApp.Domain.Figures
         /// </remarks>
         public double Height { get; set; } = FigureManipulationConstants.DefaultHeight;
         /// <summary>
+        /// Gets or sets aspect ratio keep parameter.
+        /// </summary>
+        /// <remarks>
+        /// This property is used to determine whether or not to keep the aspect ratio.
+        /// </remarks>
+        public bool KeepAspectRatio { get; set; } = ShapeFigureBoolConstants.DefaultAspectRatioParameter;
+        /// <summary>
         /// Gets or sets collection of data.
         /// </summary>
         /// <remarks>
