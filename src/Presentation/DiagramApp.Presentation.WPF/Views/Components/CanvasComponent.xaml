@@ -26,7 +26,8 @@
             <ListBox ItemsSource="{Binding Figures}"
                      ItemTemplateSelector="{StaticResource CanvasFiguresSelector}"
                      SelectedItem="{Binding SelectedFigure}"
-                     Template="{StaticResource UnscrollableListBox}">
+                     Template="{StaticResource UnscrollableListBox}"
+                     PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=0}"
@@ -40,6 +41,12 @@
                         <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+                        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <RotateTransform Angle="{Binding Rotation}"/>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>

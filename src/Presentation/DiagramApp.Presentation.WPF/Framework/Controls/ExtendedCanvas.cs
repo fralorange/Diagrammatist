@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml.Linq;
 
 namespace DiagramApp.Presentation.WPF.Framework.Controls
 {
@@ -91,13 +90,6 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
                 Cursor = Cursors.None;
 
                 CaptureMouse();
-            }
-            else if (e.OriginalSource is ExtendedCanvas
-                     && Keyboard.FocusedElement is ListBoxItem focusedItem
-                     && VisualTreeHelper.GetParent(focusedItem) is ExtendedCanvas)
-            {
-                focusedItem.IsSelected = false;
-                Keyboard.ClearFocus();
             }
         }
 

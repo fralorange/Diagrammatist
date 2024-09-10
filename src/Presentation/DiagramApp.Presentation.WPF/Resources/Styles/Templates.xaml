@@ -37,11 +37,7 @@
               Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
               Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
               Width="{Binding Width}"
-              Height="{Binding Height}">
-            <Path.RenderTransform>
-                <RotateTransform Angle="{Binding Rotation}"/>
-            </Path.RenderTransform>
-        </Path>
+              Height="{Binding Height}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasLineFigureTemplate"
@@ -50,11 +46,7 @@
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   StrokeThickness="{Binding Thickness}"
-                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}">
-            <Polyline.RenderTransform>
-                <RotateTransform Angle="{Binding Rotation}"/>
-            </Polyline.RenderTransform>
-        </Polyline>
+                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasTextFigureTemplate"
@@ -137,6 +129,8 @@
                 <TextBox Text="{Binding Text, Mode=TwoWay}"/>
                 <Label Content="Font size: "/>
                 <TextBox Text="{Binding FontSize, Mode=TwoWay}"/>
+                <Label Content="Text color: "/>
+                <TextBox Text="{Binding TextColor, Mode=TwoWay}"/>
                 <CheckBox Content="Has Outline"
                       IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
                 <CheckBox Content="Has Background"
