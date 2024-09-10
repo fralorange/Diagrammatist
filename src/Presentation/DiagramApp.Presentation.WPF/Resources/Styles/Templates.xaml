@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:figures="clr-namespace:DiagramApp.Contracts.Figures;assembly=DiagramApp.Contracts"
                     xmlns:selector="clr-namespace:DiagramApp.Presentation.WPF.Framework.Selectors">
-    
+    <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"
                   DataType="figures:ShapeFigureDto">
         <Path ToolTip="{Binding Name}"
@@ -29,7 +29,8 @@
                                          ShapeFigureTemplate="{StaticResource ToolboxShapeFigureTemplate}"
                                          LineFigureTemplate="{StaticResource ToolboxLineFigureTemplate}"
                                          TextFigureTemplate="{StaticResource ToolboxTextFigureTemplate}"/>
-
+    <!--#endregion-->
+    <!--#region Canvas-->
     <DataTemplate x:Key="CanvasShapeFigureTemplate"
                   DataType="figures:ShapeFigureDto">
         <Path Style="{StaticResource Shape}"
@@ -49,7 +50,11 @@
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   StrokeThickness="{Binding Thickness}"
-                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
+                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}">
+            <Polyline.RenderTransform>
+                <RotateTransform Angle="{Binding Rotation}"/>
+            </Polyline.RenderTransform>
+        </Polyline>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasTextFigureTemplate"
@@ -79,5 +84,70 @@
                                          ShapeFigureTemplate="{StaticResource CanvasShapeFigureTemplate}"
                                          LineFigureTemplate="{StaticResource CanvasLineFigureTemplate}"
                                          TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"/>
+    <!--#endregion-->
+    <!--#region Properties-->
+    <DataTemplate x:Key="BasePropertiesFigureTemplate"
+                  DataType="figures:FigureDto">
+        <UniformGrid Columns="2">
+            <Label Content="Name: "/>
+            <TextBox Text="{Binding Name, Mode=TwoWay}"/>
+            <Label Content="Rotation: "/>
+            <TextBox Text="{Binding Rotation, Mode=TwoWay}"/>
+            <Label Content="Color: "/>
+            <TextBox Text="{Binding BackgroundColor, Mode=TwoWay}"/>
+        </UniformGrid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="PropertiesShapeFigureTemplate"
+                  DataType="figures:ShapeFigureDto">
+        <StackPanel>
+            <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+            <UniformGrid Columns="2">
+                <Label Content="Width: "/>
+                <TextBox Text="{Binding Width, Mode=TwoWay}"/>
+                <Label Content="Height: "/>
+                <TextBox Text="{Binding Height, Mode=TwoWay}"/>
+            </UniformGrid>
+        </StackPanel>
+    </DataTemplate>
 
+    <DataTemplate x:Key="PropertiesLineFigureTemplate"
+                  DataType="figures:LineFigureDto">
+        <StackPanel>
+            <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+            <UniformGrid Columns="2">
+                <Label Content="Thickness: "/>
+                <Slider Value="{Binding Thickness, Mode=TwoWay}" 
+                    Minimum="1" 
+                    Maximum="10"/>
+                <CheckBox Content="Is Dashed"
+                      IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
+                <CheckBox Content="Has Arrow"
+                      IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
+            </UniformGrid>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PropertiesTextFigureTemplate"
+                  DataType="figures:TextFigureDto">
+        <StackPanel>
+            <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+            <UniformGrid Columns="2">
+                <Label Content="Text: "/>
+                <TextBox Text="{Binding Text, Mode=TwoWay}"/>
+                <Label Content="Font size: "/>
+                <TextBox Text="{Binding FontSize, Mode=TwoWay}"/>
+                <CheckBox Content="Has Outline"
+                      IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
+                <CheckBox Content="Has Background"
+                      IsChecked="{Binding HasBackground, Mode=TwoWay}"/>
+            </UniformGrid>
+        </StackPanel>
+    </DataTemplate>
+
+    <selector:FigureItemTemplateSelector x:Key="PropertiesFigureSelector"
+                                         ShapeFigureTemplate="{StaticResource PropertiesShapeFigureTemplate}"
+                                         LineFigureTemplate="{StaticResource PropertiesLineFigureTemplate}"
+                                         TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"/>
+    <!--#endregion-->
 </ResourceDictionary>

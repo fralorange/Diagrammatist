@@ -16,11 +16,11 @@
 
         <Label Grid.Row="0"
                HorizontalAlignment="Center"
-               Content="Properties"/>
+               Content="Properties"
+               Margin="5"/>
 
-        <UniformGrid Grid.Row="1"
-                     Rows="2">
-            
-        </UniformGrid>
+        <ContentControl Grid.Row="1"
+                        Content="{Binding CurrentFigure, FallbackValue=0}"
+                        ContentTemplateSelector="{StaticResource PropertiesFigureSelector}"/>
     </Grid>
 </UserControl>

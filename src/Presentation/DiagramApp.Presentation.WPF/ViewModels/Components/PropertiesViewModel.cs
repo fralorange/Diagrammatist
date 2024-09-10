@@ -8,7 +8,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
     /// <summary>
     /// A view model class for properties component.
     /// </summary>
-    public sealed class PropertiesViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<FigureDto>>
+    public sealed class PropertiesViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<FigureDto?>>
     {
         private FigureDto? _currentFigure;
 
@@ -24,8 +24,13 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             private set => SetProperty(ref _currentFigure, value);
         }
 
+        public PropertiesViewModel()
+        {
+            IsActive = true;
+        }
+
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<FigureDto> message)
+        public void Receive(PropertyChangedMessage<FigureDto?> message)
         {
             if (message.Sender.GetType() == typeof(ObjectTreeViewModel) &&
                 message.PropertyName == nameof(ObjectTreeViewModel.SelectedFigure))
