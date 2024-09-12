@@ -1,4 +1,5 @@
 ﻿using DiagramApp.Presentation.WPF.Framework.Commands.UndoableCommand;
+using System.Runtime.CompilerServices;
 
 namespace DiagramApp.Presentation.WPF.Framework.Commands.Manager
 {
@@ -7,54 +8,96 @@ namespace DiagramApp.Presentation.WPF.Framework.Commands.Manager
     /// </summary>
     public sealed class UndoableCommandManager : IUndoableCommandManager
     {
-        private readonly Stack<IUndoableCommand> _undoStack = [];
-        private readonly Stack<IUndoableCommand> _redoStack = [];
+        private readonly ConditionalWeakTable<object, Stack<IUndoableCommand>> _undoLayer = [];
+        private readonly ConditionalWeakTable<object, Stack<IUndoableCommand>> _redoLayer = [];
+
+        private object? CurrentKey { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether an undo operation can be performed.
         /// </summary>
-        private bool CanUndo => _undoStack.Count > 0;
+        private bool CanUndo 
+        { 
+            get
+            {
+                if (CurrentKey is not null && _undoLayer.TryGetValue(CurrentKey, out var undoStack))
+                {
+                    return undoStack.Count > 0;
+                }
+                return false;
+            } 
+        }
 
         /// <summary>
         /// Gets a value indicating whether a redo operation can be performed.
         /// </summary>
-        private bool CanRedo => _redoStack.Count > 0;
+        private bool CanRedo
+        {
+            get
+            {
+                if (CurrentKey is not null && _redoLayer.TryGetValue(CurrentKey, out var redoStack))
+                {
+                    return redoStack.Count > 0;
+                }
+                return false;
+            }
+        }
 
         /// <inheritdoc/>
         public void Execute(IUndoableCommand command)
         {
-            command.Execute(null);
-            _undoStack.Push(command);
-            _redoStack.Clear();
+            if (command is null)
+                return;
+
+            if (CurrentKey is not null && _undoLayer.TryGetValue(CurrentKey, out var undoStack) && _redoLayer.TryGetValue(CurrentKey, out var redoStack))
+            {
+                command.Execute(null);
+                undoStack.Push(command);
+                redoStack.Clear();
+            }
         }
 
         /// <inheritdoc/>
         public void Undo()
         {
-            if (CanUndo)
+            if (CanUndo && _undoLayer.TryGetValue(CurrentKey!, out var undoStack) && _redoLayer.TryGetValue(CurrentKey!, out var redoStack))
             {
-                var command = _undoStack.Pop();
+                var command = undoStack.Pop();
                 command.Undo();
-                _redoStack.Push(command);
+                redoStack.Push(command);
             }
         }
 
         /// <inheritdoc/>
         public void Redo()
         {
-            if (CanRedo)
+            if (CanRedo && _undoLayer.TryGetValue(CurrentKey!, out var undoStack) && _redoLayer.TryGetValue(CurrentKey!, out var redoStack))
             {
-                var command = _redoStack.Pop();
+                var command = redoStack.Pop();
                 command.Execute(null);
-                _undoStack.Push(command);
+                undoStack.Push(command);
             }
         }
 
         /// <inheritdoc/>
         public void Clear()
         {
-            _undoStack.Clear();
-            _redoStack.Clear();
+            if (CurrentKey is not null && _undoLayer.TryGetValue(CurrentKey!, out var undoStack) && _redoLayer.TryGetValue(CurrentKey!, out var redoStack))
+            {            
+                undoStack.Clear();
+                redoStack.Clear();
+            }
+        }
+
+        public void UpdateContent(object? key)
+        {
+            CurrentKey = key;
+
+            if (CurrentKey is not null)
+            {
+                _undoLayer.TryAdd(CurrentKey, []);
+                _redoLayer.TryAdd(CurrentKey, []);
+            }
         }
     }
 }

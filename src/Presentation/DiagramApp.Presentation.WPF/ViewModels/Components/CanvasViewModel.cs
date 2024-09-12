@@ -176,6 +176,16 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
+        private void Undo()
+        {
+
+        }
+
+        private void Redo()
+        {
+
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {

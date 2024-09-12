@@ -24,5 +24,10 @@ namespace DiagramApp.Presentation.WPF.Framework.Commands.Manager
         /// Clears history of all commands inside manager.
         /// </summary>
         public void Clear();
+        /// <summary>
+        /// Updates manager content.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        public void UpdateContent(object key);
     }
 }
