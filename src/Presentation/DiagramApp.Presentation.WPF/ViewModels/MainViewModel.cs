@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
 using DiagramApp.Presentation.WPF.Framework.Messages;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using DiagramApp.Presentation.WPF.ViewModels.Dialogs;
@@ -77,7 +78,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuRedo()
         {
-            Messenger.Send(MessengerFlags.Undo);
+            Messenger.Send(MessengerFlags.Redo);
         }
         #endregion
         #region Canvas
@@ -111,6 +112,14 @@ namespace DiagramApp.Presentation.WPF.ViewModels
 
         #endregion
         #region Help
+
+        [RelayCommand]
+        private void MenuHelpCommand()
+        {
+            var helpUrl = App.Current.Resources["HelpUrl"] as string;
+
+            HelpUrlHelper.OpenHelpUrl(helpUrl);
+        }
 
         #endregion
 
