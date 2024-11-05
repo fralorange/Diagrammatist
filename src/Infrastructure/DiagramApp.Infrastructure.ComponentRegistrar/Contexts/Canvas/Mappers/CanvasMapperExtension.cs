@@ -23,7 +23,6 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
                 ImaginaryHeight = canvas.ImaginaryHeight,
                 Settings = canvas.Settings.ToDto(),
                 Zoom = canvas.Zoom,
-                Rotation = canvas.Rotation,
                 ScreenOffset = canvas.ScreenOffset.ToDto(),
                 Figures = canvas.Figures.Select(figure => figure.ToDto()).ToList(),
             };
@@ -42,7 +41,6 @@ namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
                 ImaginaryHeight = canvas.ImaginaryHeight,
                 Settings = canvas.Settings.ToEntity(),
                 Zoom = canvas.Zoom,
-                Rotation = canvas.Rotation,
                 ScreenOffset = canvas.ScreenOffset.ToEntity(),
                 Figures = canvas.Figures.Select(figure => figure.ToEntity()).ToList(),
             };

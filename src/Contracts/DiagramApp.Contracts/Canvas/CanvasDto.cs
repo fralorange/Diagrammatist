@@ -37,13 +37,6 @@ namespace DiagramApp.Contracts.Canvas
         /// </remarks>
         public double Zoom { get; set; }
         /// <summary>
-        /// Gets or sets rotation parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set canvas rotation.
-        /// </remarks>
-        public double Rotation { get; set; }
-        /// <summary>
         /// Gets or sets screen offset.
         /// </summary>
         /// <remarks>

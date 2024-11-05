@@ -20,9 +20,17 @@
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding Figures}"
                  SelectedItem="{Binding SelectedFigure}">
+            <ListBox.Resources>
+                <ContextMenu x:Key="ElementMenu">
+                    <MenuItem Header="Delete"
+                              Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                </ContextMenu>
+            </ListBox.Resources>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Margin" Value="5 5" />
+                    <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>

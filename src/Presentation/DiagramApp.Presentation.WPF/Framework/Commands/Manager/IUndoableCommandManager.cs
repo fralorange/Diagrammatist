@@ -28,6 +28,6 @@ namespace DiagramApp.Presentation.WPF.Framework.Commands.Manager
         /// Updates manager content.
         /// </summary>
         /// <param name="key">Key.</param>
-        public void UpdateContent(object key);
+        public void UpdateContent(object? key);
     }
 }

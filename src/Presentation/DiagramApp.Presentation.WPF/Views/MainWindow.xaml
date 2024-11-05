@@ -32,31 +32,38 @@
                           Command="{Binding MenuNewCommand}"/>
                 <MenuItem Header="Open"/>
                 <Separator/>
-                <MenuItem Header="Close"/>
-                <MenuItem Header="Close all"/>
+                <MenuItem Header="Close"
+                          Command="{Binding MenuCloseCommand}"/>
+                <MenuItem Header="Close all"
+                          Command="{Binding MenuCloseAllCommand}"/>
                 <Separator/>
                 <MenuItem Header="Save"/>
                 <MenuItem Header="Save As"/>
                 <Separator/>
                 <MenuItem Header="Export"/>
                 <Separator/>
-                <MenuItem Header="Exit"/>
+                <MenuItem Header="Exit"
+                          Command="{Binding MenuExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="Undo"/>
-                <MenuItem Header="Redo"/>
+                <MenuItem Header="Undo"
+                          Command="{Binding MenuUndoCommand}"/>
+                <MenuItem Header="Redo"
+                          Command="{Binding MenuRedoCommand}"/>
             </MenuItem>
             <MenuItem Header="Canvas">
                 <MenuItem Header="Change size"/>
-                <MenuItem Header="Rotate CW"/>
-                <MenuItem Header="Rotate CCW"/>
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem Header="Zoom In"/>
-                <MenuItem Header="Zoom Out"/>
-                <MenuItem Header="Reset Zoom"/>
+                <MenuItem Header="Zoom In"
+                          Command="{Binding MenuZoomInCommand}"/>
+                <MenuItem Header="Zoom Out"
+                          Command="{Binding MenuZoomOutCommand}"/>
+                <MenuItem Header="Reset Zoom"
+                          Command="{Binding MenuZoomResetCommand}"/>
                 <Separator/>
-                <MenuItem Header="Enable Grid"/>
+                <MenuItem Header="Enable Grid"
+                          Command="{Binding MenuEnableGridCommand}"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="View Help"/>

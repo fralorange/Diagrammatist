@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Figures;
 using DiagramApp.Contracts.Settings;
+using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
+using DiagramApp.Presentation.WPF.Framework.Commands.Manager;
 using DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection;
+using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 
@@ -15,6 +19,12 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
     /// </summary>
     public sealed partial class CanvasViewModel : ObservableRecipient
     {
+        private readonly IUndoableCommandManager _undoableCommandManager;
+
+        public event Action? OnRequestZoomIn;
+        public event Action? OnRequestZoomOut;
+        public event Action? OnRequestZoomReset;
+
         private CanvasDto? _currentCanvas;
 
         /// <summary>
@@ -26,7 +36,13 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         public CanvasDto? CurrentCanvas
         {
             get => _currentCanvas;
-            private set => SetProperty(ref _currentCanvas, value, true);
+            private set
+            {
+                if (SetProperty(ref _currentCanvas, value, true))
+                {
+                    OnPropertyChanged(nameof(Zoom));
+                }
+            }
         }
 
         private MouseMode _currentMouseMode;
@@ -105,30 +121,12 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         /// </remarks>
         public double Zoom
         {
-            get => CurrentCanvas?.Zoom ?? default;
-            private set
+            get => CurrentCanvas?.Zoom ?? 1.0;
+            set
             {
                 if (CurrentCanvas is not null)
                 {
                     SetProperty(CurrentCanvas.Zoom, value, CurrentCanvas, (c, z) => c.Zoom = z);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets rotation parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure canvas rotation.
-        /// </remarks>
-        public double Rotation
-        {
-            get => CurrentCanvas?.Rotation ?? default;
-            private set
-            {
-                if (CurrentCanvas is not null)
-                {
-                    SetProperty(CurrentCanvas.Rotation, value, CurrentCanvas, (c, r) => c.Rotation = r);
                 }
             }
         }
@@ -171,24 +169,58 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureDto? _selectedFigure;
 
-        public CanvasViewModel()
+        [ObservableProperty]
+        private bool _isGridVisible = true;
+
+        public CanvasViewModel(IUndoableCommandManager undoableCommandManager)
         {
+            _undoableCommandManager = undoableCommandManager;
+
             IsActive = true;
         }
 
         private void Undo()
         {
-
+            _undoableCommandManager.Undo();
         }
 
         private void Redo()
         {
+            _undoableCommandManager.Redo();
+        }
 
+        private void ZoomIn()
+        {
+
+        }
+
+        private void ResetZoom()
+        {
+
+        }
+
+        private void EnableGrid()
+        {
+            IsGridVisible = !IsGridVisible;
+        }
+
+        /// <summary>
+        /// Deletes item from canvas.
+        /// </summary>
+        /// <param name="figure">Target figure.</param>
+        [RelayCommand]
+        private void DeleteItem(FigureDto figure)
+        {
+            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
+
+            _undoableCommandManager.Execute(command);
         }
 
         /// <inheritdoc/>
         protected override void OnActivated()
         {
+            base.OnActivated();
+
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<CanvasDto?>>(this, (r, m) =>
             {
                 CurrentCanvas = m.NewValue;
@@ -208,6 +240,31 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<FigureDto?>>(this, (r, m) =>
             {
                 SelectedFigure = m.NewValue;
+            });
+
+            Messenger.Register<CanvasViewModel, string>(this, (r, m) =>
+            {
+                switch (m)
+                {
+                    case MessengerFlags.Undo:
+                        Undo();
+                        break;
+                    case MessengerFlags.Redo:
+                        Redo();
+                        break;
+                    case MessengerFlags.ZoomIn:
+                        ZoomIn();
+                        break;
+                    case MessengerFlags.ZoomOut:
+
+                        break;
+                    case MessengerFlags.ZoomReset:
+
+                        break;
+                    case MessengerFlags.EnableGrid:
+                        EnableGrid();
+                        break;
+                }
             });
         }
     }

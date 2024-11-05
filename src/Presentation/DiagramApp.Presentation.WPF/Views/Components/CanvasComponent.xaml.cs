@@ -9,7 +9,9 @@ namespace DiagramApp.Presentation.WPF.Views.Components
     {
         public CanvasComponent()
         {
-            DataContext = App.Current.Services.GetService<CanvasViewModel>();
+            var viewModel = App.Current.Services.GetService<CanvasViewModel>();
+
+            DataContext = viewModel;
             
             InitializeComponent();
         }

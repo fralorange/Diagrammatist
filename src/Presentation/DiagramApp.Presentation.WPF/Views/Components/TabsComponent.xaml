@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Components"
              d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
@@ -10,10 +11,21 @@
     <ListBox ItemsSource="{Binding Canvases}"
              SelectedItem="{Binding SelectedCanvas, Mode=TwoWay}"
              SelectionMode="Single">
+        <ListBox.Resources>
+            <ContextMenu x:Key="CanvasMenu">
+                <MenuItem Header="Close"
+                          Command="{Binding DataContext.CloseCanvasCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+            </ContextMenu>
+        </ListBox.Resources>
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="ContextMenu" Value="{StaticResource CanvasMenu}" />
+            </Style>
+        </ListBox.ItemContainerStyle>
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <Button Content="{Binding Settings.FileName}"
-                        IsHitTestVisible="False"/>
+                <TextBlock Text="{Binding Settings.FileName}"/>
             </DataTemplate>
         </ListBox.ItemTemplate>
         <ListBox.ItemsPanel>
@@ -21,5 +33,10 @@
                 <StackPanel Orientation="Horizontal"/>
             </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="SelectionChanged">
+                <i:InvokeCommandAction Command="{Binding CanvasChangedCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
     </ListBox>
 </UserControl>

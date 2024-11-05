@@ -18,8 +18,11 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
         private Point initialMousePos;
         private bool isDragging;
 
+        public static readonly DependencyProperty ZoomProperty =
+            DependencyProperty.Register(nameof(Zoom), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(1f, OnZoomChanged));
+
         public static readonly DependencyProperty MinZoomProperty =
-        DependencyProperty.Register(nameof(MinZoom), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(0.1f));
+            DependencyProperty.Register(nameof(MinZoom), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(0.1f));
 
         public static readonly DependencyProperty MaxZoomProperty =
             DependencyProperty.Register(nameof(MaxZoom), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(10f));
@@ -32,6 +35,15 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
         public static readonly DependencyProperty IsPanEnabledProperty =
             DependencyProperty.Register(nameof(IsPanEnabled), typeof(bool), typeof(ExtendedScrollViewer), new PropertyMetadata(true));
+
+        /// <summary>
+        /// Gets or sets the current zoom.
+        /// </summary>
+        public float Zoom
+        {
+            get { return (float)GetValue(ZoomProperty); }
+            set { SetValue(ZoomProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the minimal zoom.
@@ -127,25 +139,19 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
 
         private void ExtendedScrollViewer_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if(IsPanEnabled && Keyboard.Modifiers == ZoomModifier)
+            if (IsPanEnabled && Keyboard.Modifiers == ZoomModifier)
             {
                 e.Handled = true;
-                var scaleTransform = LayoutTransform as ScaleTransform;
+
                 var mousePos = Mouse.GetPosition(this);
 
                 var scaleFactor = e.Delta > 0 ? ZoomFactor : 1f / ZoomFactor;
-
                 var newOffset = CalculateOffset(mousePos, scaleFactor);
 
                 ScrollToHorizontalOffset(newOffset.X);
                 ScrollToVerticalOffset(newOffset.Y);
 
-                var newScale = scaleTransform!.ScaleX * scaleFactor;
-                if (newScale < MinZoom || newScale > MaxZoom)
-                    return;
-
-                scaleTransform!.ScaleX *= scaleFactor;
-                scaleTransform!.ScaleY *= scaleFactor;
+                Zoom = CalculateZoom(scaleFactor);
             }
         }
 
@@ -154,6 +160,25 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
             return new Point(
                 mousePos.X + HorizontalOffset - mousePos.X / scaleFactor,
                 mousePos.Y + VerticalOffset - mousePos.Y / scaleFactor);
+        }
+
+        private float CalculateZoom(float factor)
+        {
+            var newZoom = Zoom * factor;
+            return newZoom < MinZoom ? MinZoom : newZoom > MaxZoom ? MaxZoom : newZoom;
+        }
+
+        private void ApplyZoom(float zoom)
+        {
+            var scaleTransform = LayoutTransform as ScaleTransform;
+            scaleTransform!.ScaleX = zoom;
+            scaleTransform!.ScaleY = zoom;
+        }
+
+        private static void OnZoomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var extendedScrollViewer = (ExtendedScrollViewer)d;
+            extendedScrollViewer.ApplyZoom((float)e.NewValue);
         }
     }
 }

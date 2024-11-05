@@ -20,7 +20,8 @@
                                    VerticalScrollBarVisibility="Visible"
                                    Focusable="False"
                                    IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
-                                   Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}">
+                                   Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}"
+                                   Zoom="{Binding Zoom, Mode=TwoWay}">
         <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
             <ListBox ItemsSource="{Binding Figures}"
@@ -28,12 +29,20 @@
                      SelectedItem="{Binding SelectedFigure}"
                      Template="{StaticResource UnscrollableListBox}"
                      PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
+                <ListBox.Resources>
+                    <ContextMenu x:Key="ElementMenu">
+                        <MenuItem Header="Delete"
+                                  Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                    </ContextMenu>
+                </ListBox.Resources>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=0}"
-                                                 Height="{Binding DataContext.CurrentCanvas.Settings.Height, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=0}"
-                                                 Background="{Binding DataContext.CurrentCanvas.Settings.Background, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}"
-                                                 IsElementPanEnabled="{Binding DataContext.CurrentMouseMode, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Select', FallbackValue=False}"/>
+                        <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=0}"
+                                                 Height="{Binding DataContext.CurrentCanvas.Settings.Height, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=0}"
+                                                 Background="{Binding DataContext.CurrentCanvas.Settings.Background, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}"
+                                                 IsElementPanEnabled="{Binding DataContext.CurrentMouseMode, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Select', FallbackValue=False}"
+                                                 IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
@@ -44,9 +53,10 @@
                         <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
                         <Setter Property="RenderTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="{Binding Rotation}"/>
+                                <RotateTransform Angle="{Binding Rotation, TargetNullValue=0}"/>
                             </Setter.Value>
                         </Setter>
+                        <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>

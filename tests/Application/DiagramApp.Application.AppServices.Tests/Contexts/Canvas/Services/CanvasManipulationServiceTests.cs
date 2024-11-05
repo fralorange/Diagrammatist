@@ -26,7 +26,6 @@ namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Services
                 ImaginaryHeight = 2048,
                 Settings = settings.ToDto(),
                 Zoom = 1,
-                Rotation = 0,
                 ScreenOffset = new() { X = default, Y = default },
                 Figures = [],
             };

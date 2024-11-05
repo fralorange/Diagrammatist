@@ -7,9 +7,16 @@ namespace DiagramApp.Presentation.WPF.Views
     {
         public MainWindow(MainViewModel viewModel)
         {
-            InitializeComponent();
-
             DataContext = viewModel;
+
+            viewModel.OnRequestClose += CloseWindow;
+
+            InitializeComponent();
+        }
+
+        private void CloseWindow()
+        {
+            Close();
         }
     }
 }

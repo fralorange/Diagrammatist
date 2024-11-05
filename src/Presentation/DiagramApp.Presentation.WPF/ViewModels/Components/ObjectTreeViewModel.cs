@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Contracts.Figures;
+using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
+using DiagramApp.Presentation.WPF.Framework.Commands.Manager;
 using System.Collections.ObjectModel;
 
 namespace DiagramApp.Presentation.WPF.ViewModels.Components
@@ -11,6 +14,8 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
     /// </summary>
     public sealed partial class ObjectTreeViewModel : ObservableRecipient
     {
+        private readonly IUndoableCommandManager _undoableCommandManager;
+
         private ObservableCollection<FigureDto>? _figures;
 
         /// <summary>
@@ -35,9 +40,26 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureDto? _selectedFigure;
 
-        public ObjectTreeViewModel()
+        public ObjectTreeViewModel(IUndoableCommandManager undoableCommandManager)
         {
+            _undoableCommandManager = undoableCommandManager;
+
             IsActive = true;
+        }
+
+        /// <summary>
+        /// Deletes item from object tree.
+        /// </summary>
+        /// <remarks>
+        /// Also deletes item from canvas.
+        /// </remarks>
+        /// <param name="figure">Target figure.</param>
+        [RelayCommand]
+        private void DeleteItem(FigureDto figure)
+        {
+            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
+
+            _undoableCommandManager.Execute(command);
         }
 
         /// <inheritdoc/>

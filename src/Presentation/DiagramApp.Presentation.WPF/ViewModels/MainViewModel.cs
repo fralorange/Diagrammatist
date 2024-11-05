@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DiagramApp.Presentation.WPF.Framework.Messages;
+using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using DiagramApp.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
 
@@ -19,6 +20,8 @@ namespace DiagramApp.Presentation.WPF.ViewModels
     public sealed partial class MainViewModel : ObservableRecipient
     {
         private readonly IDialogService _dialogService;
+
+        public event Action? OnRequestClose;
 
         public MainViewModel(IDialogService dialogService)
         {
@@ -42,24 +45,69 @@ namespace DiagramApp.Presentation.WPF.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void MenuClose()
+        {
+            Messenger.Send(MessengerFlags.CloseCanvas);
+        }
+
+        [RelayCommand]
+        private void MenuCloseAll()
+        {
+            Messenger.Send(MessengerFlags.CloseCanvases);
+        }
+
+        [RelayCommand]
+        private void MenuExit()
+        {
+            if (OnRequestClose is not null)
+            {
+                OnRequestClose();
+            }
+        }
+
         #endregion
         #region Edit
         [RelayCommand]
         private void MenuUndo()
         {
-
+            Messenger.Send(MessengerFlags.Undo);
         }
 
         [RelayCommand]
         private void MenuRedo()
         {
-
+            Messenger.Send(MessengerFlags.Undo);
         }
         #endregion
         #region Canvas
 
         #endregion
         #region View
+
+        [RelayCommand]
+        private void MenuZoomIn()
+        {
+            Messenger.Send(MessengerFlags.ZoomIn);
+        }
+
+        [RelayCommand]
+        private void MenuZoomOut()
+        {
+            Messenger.Send(MessengerFlags.ZoomOut);
+        }
+
+        [RelayCommand]
+        private void MenuZoomReset()
+        {
+            Messenger.Send(MessengerFlags.ZoomReset);
+        }
+
+        [RelayCommand]
+        private void MenuEnableGrid()
+        {
+            Messenger.Send(MessengerFlags.EnableGrid);
+        }
 
         #endregion
         #region Help
