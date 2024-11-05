@@ -191,12 +191,26 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
 
         private void ZoomIn()
         {
-
+            if (OnRequestZoomIn is not null)
+            {
+                OnRequestZoomIn();
+            }
         }
 
-        private void ResetZoom()
+        private void ZoomOut()
         {
+            if (OnRequestZoomOut is not null)
+            {
+                OnRequestZoomOut();
+            }
+        }
 
+        private void ZoomReset()
+        {
+            if (OnRequestZoomReset is not null)
+            {
+                OnRequestZoomReset();
+            }
         }
 
         private void EnableGrid()
@@ -256,10 +270,10 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
                         ZoomIn();
                         break;
                     case MessengerFlags.ZoomOut:
-
+                        ZoomOut();
                         break;
                     case MessengerFlags.ZoomReset:
-
+                        ZoomReset();
                         break;
                     case MessengerFlags.EnableGrid:
                         EnableGrid();

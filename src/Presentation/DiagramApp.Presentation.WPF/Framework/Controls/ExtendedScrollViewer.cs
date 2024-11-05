@@ -100,6 +100,45 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
             LayoutTransform = new ScaleTransform();
         }
 
+        /// <summary>
+        /// Zooms content in.
+        /// </summary>
+        /// <remarks>
+        /// This method used to zoom in current content relatively to center without mouse position.
+        /// </remarks>
+        public void ZoomIn()
+        {
+            CenterContentRelatively(ZoomFactor);
+
+            Zoom = CalculateZoom(ZoomFactor);
+        }
+
+        /// <summary>
+        /// Zooms content out.
+        /// </summary>
+        /// <remarks>
+        /// This method used to zoom out current content relatively to center without mouse position.
+        /// </remarks>
+        public void ZoomOut()
+        {
+            CenterContentRelatively(1f / ZoomFactor);
+
+            Zoom = CalculateZoom(1f / ZoomFactor);
+        }
+
+        /// <summary>
+        /// Resets current content scale.
+        /// </summary>
+        /// <remarks>
+        /// This method used to reset and center current content.
+        /// </remarks>
+        public void ZoomReset()
+        {
+            Zoom = 1f;
+
+            Dispatcher.BeginInvoke(CenterContent, System.Windows.Threading.DispatcherPriority.Render);
+        }
+
         private void ExtendedScrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsPanEnabled && e.OriginalSource is not Rectangle { TemplatedParent: Thumb })
@@ -155,11 +194,27 @@ namespace DiagramApp.Presentation.WPF.Framework.Controls
             }
         }
 
-        private Point CalculateOffset(Point mousePos, float scaleFactor)
+        private Point CalculateOffset(Point pos, float scaleFactor)
         {
             return new Point(
-                mousePos.X + HorizontalOffset - mousePos.X / scaleFactor,
-                mousePos.Y + VerticalOffset - mousePos.Y / scaleFactor);
+                pos.X + HorizontalOffset - pos.X / scaleFactor,
+                pos.Y + VerticalOffset - pos.Y / scaleFactor);
+        }
+
+        private void CenterContent()
+        {
+            ScrollToHorizontalOffset(ScrollableWidth / 2);
+            ScrollToVerticalOffset(ScrollableHeight / 2);
+        }
+
+        private void CenterContentRelatively(float factor)
+        {
+            var viewportCenter = new Point(ViewportWidth / 2, ViewportHeight / 2);
+
+            var newOffset = CalculateOffset(viewportCenter, factor);
+
+            ScrollToHorizontalOffset(newOffset.X);
+            ScrollToVerticalOffset(newOffset.Y);
         }
 
         private float CalculateZoom(float factor)

@@ -21,7 +21,8 @@
                                    Focusable="False"
                                    IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
                                    Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}"
-                                   Zoom="{Binding Zoom, Mode=TwoWay}">
+                                   Zoom="{Binding Zoom, Mode=TwoWay}"
+                                   x:Name="extScrollViewer">
         <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
             <ListBox ItemsSource="{Binding Figures}"
