@@ -2,9 +2,9 @@
 
 namespace DiagramApp.Presentation.WPF.Framework.Commands.Helpers
 {
-    public static class HelpUrlHelper
+    public static class UrlHelper
     {
-        public static void OpenHelpUrl(string? url)
+        public static void OpenUrl(string? url)
         {
             if (url is null)
                 return;

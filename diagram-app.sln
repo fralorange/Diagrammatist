@@ -38,13 +38,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Presentation.WPF", "src\Presentation\DiagramApp.Presentation.WPF\DiagramApp.Presentation.WPF.csproj", "{73698BBB-3C80-423E-BBBD-DC4F4BB4092F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Infrastructure", "src\Infrastructure\DiagramApp.Infrastructure\DiagramApp.Infrastructure.csproj", "{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure", "src\Infrastructure\DiagramApp.Infrastructure\DiagramApp.Infrastructure.csproj", "{06CB279A-0CB3-4636-B39F-6FBF472E4CEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Infrastructure.DataAccess", "src\Infrastructure\DiagramApp.Infrastructure.DataAccess\DiagramApp.Infrastructure.DataAccess.csproj", "{59C48E0D-5E08-4888-A5CC-C570048DFF86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure.DataAccess", "src\Infrastructure\DiagramApp.Infrastructure.DataAccess\DiagramApp.Infrastructure.DataAccess.csproj", "{59C48E0D-5E08-4888-A5CC-C570048DFF86}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{895EB5E3-AB43-43AC-8175-DE60847090B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramApp.Infrastructure.DataAccess.Tests", "tests\Infrastructure\DiagramApp.Infrastructure.DataAccess.Tests\DiagramApp.Infrastructure.DataAccess.Tests.csproj", "{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramApp.Infrastructure.DataAccess.Tests", "tests\Infrastructure\DiagramApp.Infrastructure.DataAccess.Tests\DiagramApp.Infrastructure.DataAccess.Tests.csproj", "{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

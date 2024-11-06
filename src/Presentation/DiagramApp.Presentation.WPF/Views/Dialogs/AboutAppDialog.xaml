@@ -1,0 +1,65 @@
+﻿<Window x:Class="DiagramApp.Presentation.WPF.Views.Dialogs.AboutAppDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Dialogs"
+        xmlns:vmd="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Dialogs"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        d:DataContext="{d:DesignInstance {x:Type vmd:AboutAppDialogViewModel}}">
+    <Grid Width="450"
+          Height="450">
+        <Grid.Resources>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="5" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="4">
+            <TextBlock Style="{StaticResource Heading}"
+                       Text="{Binding AppTitle}"
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock Style="{StaticResource Heading}"
+                       Text="{Binding AppVersion}"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    VerticalAlignment="Bottom">
+            <Label Content="{Binding AppAuthor}"/>
+            <TextBlock Text="GitHub" 
+                       TextDecorations="Underline"
+                       Cursor="Hand">
+                <TextBlock.InputBindings>
+                    <MouseBinding Command="{Binding OpenLinkCommand}" 
+                      MouseAction="LeftClick"/>
+                </TextBlock.InputBindings>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Grid.Column="3"
+                    VerticalAlignment="Bottom">
+            <Button Content="OK" 
+                    IsDefault="True" 
+                    IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

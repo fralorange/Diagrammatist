@@ -8,6 +8,7 @@ using DiagramApp.Contracts.Settings;
 using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
 using DiagramApp.Presentation.WPF.Framework.Commands.Manager;
 using DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection;
+using DiagramApp.Presentation.WPF.Framework.Messages;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
@@ -255,6 +256,19 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             {
                 SelectedFigure = m.NewValue;
             });
+
+            Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
+            {
+                m.Reply(r.CurrentCanvas);
+            });
+
+            Messenger.Register<CanvasViewModel, RefreshCanvasMessage>(this, (r, m) =>
+            {
+                if (CurrentCanvas is not null && CurrentCanvas.Settings == m.Value)
+                {
+                    OnPropertyChanged(nameof(CurrentCanvas));
+                }
+            }); 
 
             Messenger.Register<CanvasViewModel, string>(this, (r, m) =>
             {

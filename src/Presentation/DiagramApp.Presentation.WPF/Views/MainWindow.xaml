@@ -52,7 +52,8 @@
                           Command="{Binding MenuRedoCommand}"/>
             </MenuItem>
             <MenuItem Header="Canvas">
-                <MenuItem Header="Change size"/>
+                <MenuItem Header="Change size"
+                          Command="{Binding MenuChangeSizeCommand}"/>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Zoom In"
@@ -67,9 +68,10 @@
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="View Help"
-                          Command="{Binding MenuHelpCommandCommand}"/>
+                          Command="{Binding MenuHelpCommand}"/>
                 <Separator/>
-                <MenuItem Header="About App"/>
+                <MenuItem Header="About App"
+                          Command="{Binding MenuAboutCommand}"/>
             </MenuItem>
         </Menu>
         

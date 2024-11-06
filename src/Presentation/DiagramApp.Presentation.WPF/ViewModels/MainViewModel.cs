@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using DiagramApp.Contracts.Settings;
 using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
 using DiagramApp.Presentation.WPF.Framework.Messages;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
@@ -83,6 +84,34 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #endregion
         #region Canvas
 
+        [RelayCommand]
+        private void MenuChangeSize()
+        {
+            var currentCanvas = Messenger.Send<CurrentCanvasRequestMessage>().Response;
+
+            if (currentCanvas is null)
+                return;
+
+            var settings = new DiagramSettingsDto
+            {
+                Width = currentCanvas.Settings.Width,
+                Height = currentCanvas.Settings.Height,
+                FileName = currentCanvas.Settings.FileName,
+                Background = currentCanvas.Settings.Background,
+                Type = currentCanvas.Settings.Type,
+            };
+
+            var dialogViewModel = new ChangeCanvasSizeDialogViewModel(settings);
+
+            var success = _dialogService.ShowDialog(this, dialogViewModel);
+            if (success == true)
+            {
+                var newSettings = dialogViewModel.Settings!;
+
+                Messenger.Send<UpdatedSettingsMessage>(new(newSettings));
+            }
+        }
+
         #endregion
         #region View
 
@@ -114,11 +143,19 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #region Help
 
         [RelayCommand]
-        private void MenuHelpCommand()
+        private void MenuHelp()
         {
             var helpUrl = App.Current.Resources["HelpUrl"] as string;
 
-            HelpUrlHelper.OpenHelpUrl(helpUrl);
+            UrlHelper.OpenUrl(helpUrl);
+        }
+
+        [RelayCommand]
+        private void MenuAbout()
+        {
+            var dialogViewModel = new AboutAppDialogViewModel();
+
+            _dialogService.ShowDialog(this, dialogViewModel);
         }
 
         #endregion

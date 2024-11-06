@@ -2,4 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:String x:Key="HelpUrl">https://github.com/fralorange/Diagrammatist/wiki</sys:String>
+    <sys:String x:Key="HubUrl">https://github.com/fralorange/Diagrammatist</sys:String>
+    <sys:String x:Key="Author">(c) Alexei `fralorange` Rodionov.</sys:String>
 </ResourceDictionary>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Application.AppServices.Contexts.Canvas.Services;
 using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Settings;
@@ -53,6 +54,21 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
+        /// Updates existing <see cref="CanvasDto"/> settings.
+        /// </summary>
+        /// <param name="target">Target canvas.</param>
+        /// <param name="newSettings">New settings.</param>
+        private void UpdateCanvas(DiagramSettingsDto newSettings)
+        {
+            if (SelectedCanvas is not null)
+            {
+                _canvasManipulationService.UpdateCanvas(SelectedCanvas, newSettings);
+
+                Messenger.Send<RefreshCanvasMessage>(new(newSettings));
+            }
+        }
+
+        /// <summary>
         /// Deletes existing <see cref="CanvasDto"/> from <see cref="Canvases"/>.
         /// </summary>
         /// <param name="target">Target canvas.</param>
@@ -94,9 +110,14 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
                 });
             });
 
+            Messenger.Register<TabsViewModel, UpdatedSettingsMessage>(this, (r, m) =>
+            {
+                UpdateCanvas(m.Value);
+            });
+
             Messenger.Register<TabsViewModel, string>(this, (r, m) =>
             {
-                switch(m)
+                switch (m)
                 {
                     case MessengerFlags.CloseCanvas when SelectedCanvas is not null:
                         CloseCanvas(SelectedCanvas);
