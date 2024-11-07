@@ -62,6 +62,36 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             _undoableCommandManager.Execute(command);
         }
 
+        /// <summary>
+        /// Brings item forward on canvas.
+        /// </summary>
+        /// <remarks>
+        /// Also brings item forward on canvas.
+        /// </remarks>
+        /// <param name="figure">Target figure.</param>
+        [RelayCommand]
+        private void BringForwardItem(FigureDto figure)
+        {
+            var command = BringForwardHelper.CreateBringForwardCommand(figure);
+
+            _undoableCommandManager.Execute(command);
+        }
+
+        /// <summary>
+        /// Sends item backward on canvas.
+        /// </summary>
+        /// <remarks>
+        /// Also sends item backward on canvas.
+        /// </remarks>
+        /// <param name="figure">Target figure.</param>
+        [RelayCommand]
+        private void SendBackwardItem(FigureDto figure)
+        {
+            var command = SendBackwardHelper.CreateSendBackwardCommand(figure);
+
+            _undoableCommandManager.Execute(command);
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {

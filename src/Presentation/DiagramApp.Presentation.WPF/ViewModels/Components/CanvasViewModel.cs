@@ -231,6 +231,34 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
             _undoableCommandManager.Execute(command);
         }
 
+        /// <summary>
+        /// Brings item forward on canvas.
+        /// </summary>
+        /// <param name="figure">Target figure.</param>
+        [RelayCommand]
+        private void BringForwardItem(FigureDto figure)
+        {
+            var command = BringForwardHelper.CreateBringForwardCommand(figure);
+
+            _undoableCommandManager.Execute(command);
+
+            Figures?.Refresh();
+        }
+
+        /// <summary>
+        /// Sends item backward on canvas.
+        /// </summary>
+        /// <param name="figure">Target figure.</param>
+        [RelayCommand]
+        private void SendBackwardItem(FigureDto figure)
+        {
+            var command = SendBackwardHelper.CreateSendBackwardCommand(figure);
+
+            _undoableCommandManager.Execute(command);
+
+            Figures?.Refresh();
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
@@ -268,7 +296,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
                 {
                     OnPropertyChanged(nameof(CurrentCanvas));
                 }
-            }); 
+            });
 
             Messenger.Register<CanvasViewModel, string>(this, (r, m) =>
             {
