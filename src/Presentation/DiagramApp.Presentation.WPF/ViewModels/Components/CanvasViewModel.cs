@@ -22,8 +22,26 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
     {
         private readonly IUndoableCommandManager _undoableCommandManager;
 
+        /// <summary>
+        /// Occurs when a request is made to zoom current window in.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a zoom in action from menu button.
+        /// </remarks>
         public event Action? OnRequestZoomIn;
+        /// <summary>
+        /// Occurs when a request is made to zoom current window out.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a zoom out action from menu button.
+        /// </remarks>
         public event Action? OnRequestZoomOut;
+        /// <summary>
+        /// Occurs when a request is made to reset current window zoom.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a zoom reset action from menu button.
+        /// </remarks>
         public event Action? OnRequestZoomReset;
 
         private CanvasDto? _currentCanvas;

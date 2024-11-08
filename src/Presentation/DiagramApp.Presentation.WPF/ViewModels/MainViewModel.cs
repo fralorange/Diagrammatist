@@ -24,7 +24,7 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         private readonly IDialogService _dialogService;
 
         /// <summary>
-        /// Occurs when a requiest is made to close the current canvas.
+        /// Occurs when a request is made to close the current canvas.
         /// </summary>
         /// <remarks>
         /// This event is triggered when user initiates a close action from menu button.
