@@ -5,7 +5,9 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Application.AppServices.Contexts.Canvas.Services;
 using DiagramApp.Contracts.Canvas;
 using DiagramApp.Contracts.Settings;
+using DiagramApp.Presentation.WPF.Framework.Commands.Helpers.Undoable;
 using DiagramApp.Presentation.WPF.Framework.Commands.Manager;
+using DiagramApp.Presentation.WPF.Framework.Commands.UndoableCommand;
 using DiagramApp.Presentation.WPF.Framework.Messages;
 using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using System.Collections.ObjectModel;
@@ -29,6 +31,12 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         /// </remarks>
         public ObservableCollection<CanvasDto> Canvases { get; } = [];
 
+        /// <summary>
+        /// Gets or sets <see cref="CanvasDto"/>.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store and distribute selected <see cref="CanvasDto"/>.
+        /// </remarks>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
         private CanvasDto? _selectedCanvas;
@@ -62,9 +70,23 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         {
             if (SelectedCanvas is not null)
             {
-                _canvasManipulationService.UpdateCanvas(SelectedCanvas, newSettings);
+                var oldSettings = SelectedCanvas.Settings;
+                var currentCanvas = SelectedCanvas;
 
-                Messenger.Send<RefreshCanvasMessage>(new(newSettings));
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () =>
+                    {
+                        _canvasManipulationService.UpdateCanvas(currentCanvas, newSettings);
+                        Messenger.Send<RefreshCanvasMessage>(new(newSettings));
+                    },
+                    () =>
+                    {
+                        _canvasManipulationService.UpdateCanvas(currentCanvas, oldSettings);
+                        Messenger.Send<RefreshCanvasMessage>(new(oldSettings));
+                    }
+                );
+
+                _undoableCommandManager.Execute(command);
             }
         }
 

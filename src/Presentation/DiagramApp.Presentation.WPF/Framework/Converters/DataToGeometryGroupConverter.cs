@@ -4,9 +4,13 @@ using System.Windows.Media;
 
 namespace DiagramApp.Presentation.WPF.Framework.Converters
 {
+    /// <summary>
+    /// A class that converts from <see cref="List{T}"/> to <see cref="Geometry"/>.
+    /// </summary>
     [ValueConversion(typeof(List<string>), typeof(Geometry))]
     public class DataToGeometryGroupConverter : IValueConverter
     {
+        /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is List<string> stringGeometryGroup)
@@ -22,6 +26,7 @@ namespace DiagramApp.Presentation.WPF.Framework.Converters
             return value;
         }
 
+        /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

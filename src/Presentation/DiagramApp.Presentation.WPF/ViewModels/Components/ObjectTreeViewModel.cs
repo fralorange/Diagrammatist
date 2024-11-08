@@ -3,8 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using DiagramApp.Contracts.Figures;
-using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
+using DiagramApp.Presentation.WPF.Framework.Commands.Helpers.Undoable;
 using DiagramApp.Presentation.WPF.Framework.Commands.Manager;
+using DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection;
 using System.Collections.ObjectModel;
 
 namespace DiagramApp.Presentation.WPF.ViewModels.Components
@@ -72,9 +73,14 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void BringForwardItem(FigureDto figure)
         {
-            var command = BringForwardHelper.CreateBringForwardCommand(figure);
+            if (Figures is null)
+                return;
+
+            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true, refreshEvent: Figures.Refresh);
 
             _undoableCommandManager.Execute(command);
+
+            Figures?.Refresh();
         }
 
         /// <summary>
@@ -87,9 +93,14 @@ namespace DiagramApp.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void SendBackwardItem(FigureDto figure)
         {
-            var command = SendBackwardHelper.CreateSendBackwardCommand(figure);
+            if (Figures is null)
+                return;
+
+            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false, refreshEvent: Figures.Refresh);
 
             _undoableCommandManager.Execute(command);
+
+            Figures?.Refresh();
         }
 
         /// <inheritdoc/>

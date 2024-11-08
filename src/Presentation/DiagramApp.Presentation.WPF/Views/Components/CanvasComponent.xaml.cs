@@ -1,12 +1,16 @@
-﻿using DiagramApp.Presentation.WPF.Framework.Controls;
-using DiagramApp.Presentation.WPF.Framework.Extensions.DependencyObject;
-using DiagramApp.Presentation.WPF.ViewModels.Components;
+﻿using DiagramApp.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DiagramApp.Presentation.WPF.Views.Components
 {
+    /// <summary>
+    /// A class that represents canvas component and derives from <see cref="UserControl"/>.
+    /// </summary>
+    /// <remarks>
+    /// Main module of the app that used to show current selected canvas and items on it.
+    /// </remarks>
     public partial class CanvasComponent : UserControl
     {
         public CanvasComponent()
@@ -16,9 +20,9 @@ namespace DiagramApp.Presentation.WPF.Views.Components
             viewModel.OnRequestZoomIn += ZoomIn;
             viewModel.OnRequestZoomOut += ZoomOut;
             viewModel.OnRequestZoomReset += ZoomReset;
-            
+
             DataContext = viewModel;
-            
+
             InitializeComponent();
         }
 

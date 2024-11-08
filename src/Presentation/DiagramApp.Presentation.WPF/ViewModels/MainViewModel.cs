@@ -23,6 +23,12 @@ namespace DiagramApp.Presentation.WPF.ViewModels
     {
         private readonly IDialogService _dialogService;
 
+        /// <summary>
+        /// Occurs when a requiest is made to close the current canvas.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a close action from menu button.
+        /// </remarks>
         public event Action? OnRequestClose;
 
         public MainViewModel(IDialogService dialogService)
@@ -33,6 +39,10 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #region Menu
 
         #region File
+
+        /// <summary>
+        /// Creates a new canvas through dialog window.
+        /// </summary>
         [RelayCommand]
         private void MenuNew()
         {
@@ -47,18 +57,27 @@ namespace DiagramApp.Presentation.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Closes current canvas.
+        /// </summary>
         [RelayCommand]
         private void MenuClose()
         {
             Messenger.Send(MessengerFlags.CloseCanvas);
         }
 
+        /// <summary>
+        /// Closes all canvases.
+        /// </summary>
         [RelayCommand]
         private void MenuCloseAll()
         {
             Messenger.Send(MessengerFlags.CloseCanvases);
         }
 
+        /// <summary>
+        /// Exits from program.
+        /// </summary>
         [RelayCommand]
         private void MenuExit()
         {
@@ -70,12 +89,19 @@ namespace DiagramApp.Presentation.WPF.ViewModels
 
         #endregion
         #region Edit
+
+        /// <summary>
+        /// Cancels user last actions.
+        /// </summary>
         [RelayCommand]
         private void MenuUndo()
         {
             Messenger.Send(MessengerFlags.Undo);
         }
 
+        /// <summary>
+        /// Repeats user last actions if they were undid.
+        /// </summary>
         [RelayCommand]
         private void MenuRedo()
         {
@@ -84,6 +110,9 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #endregion
         #region Canvas
 
+        /// <summary>
+        /// Changes size of the current selected canvas through dialog window.
+        /// </summary>
         [RelayCommand]
         private void MenuChangeSize()
         {
@@ -115,24 +144,36 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #endregion
         #region View
 
+        /// <summary>
+        /// Zooms in to dynamic center.
+        /// </summary>
         [RelayCommand]
         private void MenuZoomIn()
         {
             Messenger.Send(MessengerFlags.ZoomIn);
         }
 
+        /// <summary>
+        /// Zoms out from dynamic center.
+        /// </summary>
         [RelayCommand]
         private void MenuZoomOut()
         {
             Messenger.Send(MessengerFlags.ZoomOut);
         }
 
+        /// <summary>
+        /// Resets current zoom to default.
+        /// </summary>
         [RelayCommand]
         private void MenuZoomReset()
         {
             Messenger.Send(MessengerFlags.ZoomReset);
         }
 
+        /// <summary>
+        /// Enables or disables grid visual.
+        /// </summary>
         [RelayCommand]
         private void MenuEnableGrid()
         {
@@ -142,6 +183,9 @@ namespace DiagramApp.Presentation.WPF.ViewModels
         #endregion
         #region Help
 
+        /// <summary>
+        /// Opens app wiki. 
+        /// </summary>
         [RelayCommand]
         private void MenuHelp()
         {
@@ -150,6 +194,9 @@ namespace DiagramApp.Presentation.WPF.ViewModels
             UrlHelper.OpenUrl(helpUrl);
         }
 
+        /// <summary>
+        /// Opens dialog 'about' window.
+        /// </summary>
         [RelayCommand]
         private void MenuAbout()
         {
