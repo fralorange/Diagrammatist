@@ -1,7 +1,7 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels;
+﻿using Diagrammatist.Presentation.WPF.ViewModels;
 using System.Windows;
 
-namespace DiagramApp.Presentation.WPF.Views
+namespace Diagrammatist.Presentation.WPF.Views
 {
     /// <summary>
     /// A class that represents main window and derives from <see cref="Window"/>.

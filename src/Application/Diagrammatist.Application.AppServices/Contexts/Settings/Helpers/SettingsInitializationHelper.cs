@@ -1,8 +1,8 @@
-﻿using DiagramApp.Contracts.Settings;
-using DiagramApp.Domain.Settings;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
+﻿using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Domain.Settings;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
 
-namespace DiagramApp.Application.AppServices.Contexts.Settings.Helpers
+namespace Diagrammatist.Application.AppServices.Contexts.Settings.Helpers
 {
     /// <summary>
     /// Helps to initialize diagram settings in presentation layer.

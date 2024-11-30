@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DiagramApp.Contracts.Figures
+namespace Diagrammatist.Contracts.Figures
 {
     /// <summary>
     /// A base class for figure dto objects.

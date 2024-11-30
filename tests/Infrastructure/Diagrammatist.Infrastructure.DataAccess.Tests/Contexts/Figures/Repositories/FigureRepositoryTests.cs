@@ -1,8 +1,8 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
-using DiagramApp.Domain.Figures;
-using DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Repositories;
+﻿using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
+using Diagrammatist.Domain.Figures;
+using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 
-namespace DiagramApp.Infrastructure.DataAccess.Tests.Contexts.Figures.Repositories
+namespace Diagrammatist.Infrastructure.DataAccess.Tests.Contexts.Figures.Repositories
 {
     /// <summary>
     /// A figure repository tests class.

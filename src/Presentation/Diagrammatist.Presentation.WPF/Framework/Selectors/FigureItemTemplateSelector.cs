@@ -1,8 +1,8 @@
-﻿using DiagramApp.Contracts.Figures;
+﻿using Diagrammatist.Contracts.Figures;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DiagramApp.Presentation.WPF.Framework.Selectors
+namespace Diagrammatist.Presentation.WPF.Framework.Selectors
 {
     public class FigureItemTemplateSelector : DataTemplateSelector
     {

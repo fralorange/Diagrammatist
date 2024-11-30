@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Contracts.Canvas
+﻿namespace Diagrammatist.Contracts.Canvas
 {
     /// <summary>
     /// Screen offset dto.

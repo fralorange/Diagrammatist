@@ -1,7 +1,7 @@
-﻿using DiagramApp.Domain.Settings.Constants;
+﻿using Diagrammatist.Domain.Settings.Constants;
 using System.Drawing;
 
-namespace DiagramApp.Domain.Settings
+namespace Diagrammatist.Domain.Settings
 {
     /// <summary>
     /// Diagram settings.

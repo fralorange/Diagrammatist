@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Windows.Data;
 
-namespace DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection
+namespace Diagrammatist.Presentation.WPF.Framework.Extensions.ObservableCollection
 {
     /// <summary>
     /// Observable collection extensions.

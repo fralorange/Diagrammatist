@@ -1,10 +1,10 @@
-﻿using DiagramApp.Presentation.WPF.Framework.Extensions.DependencyObject;
+﻿using Diagrammatist.Presentation.WPF.Framework.Extensions.DependencyObject;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace DiagramApp.Presentation.WPF.Framework.Controls
+namespace Diagrammatist.Presentation.WPF.Framework.Controls
 {
     /// <summary>
     /// A class that derives from <see cref="Canvas"/> and represents extended canvas control.

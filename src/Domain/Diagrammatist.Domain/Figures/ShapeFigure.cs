@@ -1,6 +1,6 @@
-﻿using DiagramApp.Domain.Figures.Constants;
+﻿using Diagrammatist.Domain.Figures.Constants;
 
-namespace DiagramApp.Domain.Figures
+namespace Diagrammatist.Domain.Figures
 {
     /// <summary>
     /// A shape figure class. Derived class from <see cref="Figure"/>.

@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Serialization
+﻿namespace Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Serialization
 {
     /// <summary>
     /// A json data about figure.

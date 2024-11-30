@@ -1,10 +1,10 @@
-﻿using DiagramApp.Presentation.WPF.Views;
+﻿using Diagrammatist.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
 using ApplicationEntity = System.Windows.Application;
 
-namespace DiagramApp.Presentation.WPF
+namespace Diagrammatist.Presentation.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

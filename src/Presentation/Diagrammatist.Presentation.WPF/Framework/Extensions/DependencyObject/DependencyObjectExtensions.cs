@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using DependencyObjectEnt = System.Windows.DependencyObject;
 
-namespace DiagramApp.Presentation.WPF.Framework.Extensions.DependencyObject
+namespace Diagrammatist.Presentation.WPF.Framework.Extensions.DependencyObject
 {
     /// <summary>
     /// Extension methods for the <see cref="DependencyObjectEnt" /> type.

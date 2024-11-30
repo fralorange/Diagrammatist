@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Presentation.WPF.Framework.Commands.Undoable
+﻿namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="UndoableCommand"/> class that can undo previous execution.

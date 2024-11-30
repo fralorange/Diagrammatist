@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using DiagramApp.Contracts.Canvas;
-using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
+using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
-namespace DiagramApp.Presentation.WPF.ViewModels.Components
+namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for toolbar component.

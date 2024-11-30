@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DiagramApp.Contracts.Settings
+namespace Diagrammatist.Contracts.Settings
 {
     /// <summary>
     /// Diagram settings dto.

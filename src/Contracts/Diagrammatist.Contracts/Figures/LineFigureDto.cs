@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DiagramApp.Contracts.Figures
+namespace Diagrammatist.Contracts.Figures
 {
     /// <summary>
     /// A line figure dto. Derived class from <see cref="FigureDto"/>.

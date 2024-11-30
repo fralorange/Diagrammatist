@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DiagramApp.Application.AppServices.Contexts.Settings.Helpers;
-using DiagramApp.Contracts.Settings;
+using Diagrammatist.Application.AppServices.Contexts.Settings.Helpers;
+using Diagrammatist.Contracts.Settings;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 
-namespace DiagramApp.Presentation.WPF.ViewModels.Dialogs
+namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
     /// <summary>
     /// A view model class for creating diagram dialog window.

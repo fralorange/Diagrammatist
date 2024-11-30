@@ -1,11 +1,11 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Canvas.Helpers;
-using DiagramApp.Contracts.Canvas;
-using DiagramApp.Contracts.Settings;
-using DiagramApp.Domain.Canvas.Constants;
+﻿using Diagrammatist.Application.AppServices.Contexts.Canvas.Helpers;
+using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Domain.Canvas.Constants;
 using Moq;
 using System.Drawing;
 
-namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Helpers
+namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Helpers
 {
     /// <summary>
     /// Canvas boundary helper tests.

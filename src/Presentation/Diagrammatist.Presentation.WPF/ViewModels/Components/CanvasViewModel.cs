@@ -2,18 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using DiagramApp.Contracts.Canvas;
-using DiagramApp.Contracts.Figures;
-using DiagramApp.Contracts.Settings;
-using DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Helpers;
-using DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Manager;
-using DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection;
-using DiagramApp.Presentation.WPF.Framework.Messages;
-using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
-using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
+using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Contracts.Figures;
+using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Framework.Extensions.ObservableCollection;
+using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 
-namespace DiagramApp.Presentation.WPF.ViewModels.Components
+namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for canvas component.

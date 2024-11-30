@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Manager
+namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
 {
     /// <summary>
     /// A class that implements <see cref="IUndoableCommandManager"/>. Manages undoable commands.

@@ -1,8 +1,8 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels.Components;
+﻿using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 
-namespace DiagramApp.Presentation.WPF.Views.Components
+namespace Diagrammatist.Presentation.WPF.Views.Components
 {
     /// <summary>
     /// A class that represents a figures component and derives from <see cref="UserControl"/>.

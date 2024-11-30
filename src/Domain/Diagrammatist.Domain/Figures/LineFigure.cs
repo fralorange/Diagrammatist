@@ -1,7 +1,7 @@
-﻿using DiagramApp.Domain.Figures.Constants;
+﻿using Diagrammatist.Domain.Figures.Constants;
 using System.Drawing;
 
-namespace DiagramApp.Domain.Figures
+namespace Diagrammatist.Domain.Figures
 {
     /// <summary>
     /// A line figure class. Derived class from <see cref="Figure"/>.

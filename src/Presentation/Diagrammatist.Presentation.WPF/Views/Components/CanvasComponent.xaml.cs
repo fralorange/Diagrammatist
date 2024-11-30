@@ -1,9 +1,9 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels.Components;
+﻿using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace DiagramApp.Presentation.WPF.Views.Components
+namespace Diagrammatist.Presentation.WPF.Views.Components
 {
     /// <summary>
     /// A class that represents canvas component and derives from <see cref="UserControl"/>.

@@ -1,6 +1,6 @@
-﻿using DiagramApp.Contracts.Canvas;
+﻿using Diagrammatist.Contracts.Canvas;
 
-namespace DiagramApp.Application.AppServices.Contexts.Canvas.Helpers
+namespace Diagrammatist.Application.AppServices.Contexts.Canvas.Helpers
 {
     /// <summary>
     /// Helps to update or set up canvas bounds.

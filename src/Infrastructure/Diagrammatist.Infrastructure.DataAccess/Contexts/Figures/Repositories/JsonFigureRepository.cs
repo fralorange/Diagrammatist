@@ -1,10 +1,10 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
-using DiagramApp.Domain.Figures;
-using DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Serialization;
+﻿using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
+using Diagrammatist.Domain.Figures;
+using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Serialization;
 using Newtonsoft.Json;
 using System.Drawing;
 
-namespace DiagramApp.Infrastructure.DataAccess.Contexts.Figures.Repositories
+namespace Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories
 {
     /// <summary>
     /// A implemented class from <see cref="IFigureRepository"/>. A repository that deserializes json data about figures in toolbox.

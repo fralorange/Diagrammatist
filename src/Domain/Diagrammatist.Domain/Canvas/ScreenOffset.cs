@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Domain.Canvas
+﻿namespace Diagrammatist.Domain.Canvas
 {
     /// <summary>
     /// Screen offset axis.

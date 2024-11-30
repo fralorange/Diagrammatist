@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Domain.Settings
+﻿namespace Diagrammatist.Domain.Settings
 {
     /// <summary>
     /// Diagram type.

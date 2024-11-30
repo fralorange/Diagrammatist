@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Manager
+﻿namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
 {
     /// <summary>
     /// An interface that defines base methods to manage undoable commands.

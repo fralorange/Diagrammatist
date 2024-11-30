@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DiagramApp.Presentation.WPF.Views.Dialogs
+namespace Diagrammatist.Presentation.WPF.Views.Dialogs
 {
     /// <summary>
     /// A class that represents 'add canvas' dialog window and derives from <see cref="Window"/>.

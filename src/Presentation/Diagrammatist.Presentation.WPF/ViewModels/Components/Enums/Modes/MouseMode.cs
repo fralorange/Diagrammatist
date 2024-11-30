@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes
+﻿namespace Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes
 {
     /// <summary>
     /// Specifies the mouse mode.

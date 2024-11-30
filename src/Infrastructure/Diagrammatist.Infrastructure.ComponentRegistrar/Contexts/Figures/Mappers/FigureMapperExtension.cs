@@ -1,7 +1,7 @@
-﻿using DiagramApp.Contracts.Figures;
-using DiagramApp.Domain.Figures;
+﻿using Diagrammatist.Contracts.Figures;
+using Diagrammatist.Domain.Figures;
 
-namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
+namespace Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers
 {
     /// <summary>
     /// Extension methods for mapping figures to DTOs. 

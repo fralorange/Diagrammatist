@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace DiagramApp.Presentation.WPF.Framework.Converters
+namespace Diagrammatist.Presentation.WPF.Framework.Converters
 {
     /// <summary>
     /// A class that converts from <see cref="Enum"/> to <see cref="IEnumerable{T}"/> of <see cref="string"/>.

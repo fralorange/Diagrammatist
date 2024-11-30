@@ -1,11 +1,11 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Canvas.Helpers;
-using DiagramApp.Contracts.Canvas;
-using DiagramApp.Contracts.Settings;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
-using CanvasEntity = DiagramApp.Domain.Canvas.Canvas;
+﻿using Diagrammatist.Application.AppServices.Contexts.Canvas.Helpers;
+using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
+using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
-namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
+namespace Diagrammatist.Application.AppServices.Contexts.Canvas.Services
 {
     /// <summary>
     /// A class that implements <see cref="ICanvasManipulationService"/>. A canvas manipulation service.

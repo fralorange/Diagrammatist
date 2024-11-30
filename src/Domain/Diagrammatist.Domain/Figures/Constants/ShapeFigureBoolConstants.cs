@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Domain.Figures.Constants
+﻿namespace Diagrammatist.Domain.Figures.Constants
 {
     /// <summary>
     /// Shape figure bool constants.

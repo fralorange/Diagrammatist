@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace DiagramApp.Presentation.WPF.Framework.Converters
+namespace Diagrammatist.Presentation.WPF.Framework.Converters
 {
     /// <summary>
     /// A class that converts from <see cref="List{T}"/> of <see cref="System.Drawing.Point"/> to <see cref="PointCollection"/> class.

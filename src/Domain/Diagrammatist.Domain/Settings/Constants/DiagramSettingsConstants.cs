@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DiagramApp.Domain.Settings.Constants
+namespace Diagrammatist.Domain.Settings.Constants
 {
     /// <summary>
     /// Diagram Settings constants.

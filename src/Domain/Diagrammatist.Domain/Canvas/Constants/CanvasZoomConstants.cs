@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Domain.Canvas.Constants
+﻿namespace Diagrammatist.Domain.Canvas.Constants
 {
     /// <summary>
     /// Canvas zoom constants.

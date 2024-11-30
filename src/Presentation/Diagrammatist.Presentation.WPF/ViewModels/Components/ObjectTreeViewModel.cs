@@ -2,13 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using DiagramApp.Contracts.Figures;
-using DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Helpers;
-using DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Manager;
-using DiagramApp.Presentation.WPF.Framework.Extensions.ObservableCollection;
+using Diagrammatist.Contracts.Figures;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Framework.Extensions.ObservableCollection;
 using System.Collections.ObjectModel;
 
-namespace DiagramApp.Presentation.WPF.ViewModels.Components
+namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for object tree (explorer) component.

@@ -1,6 +1,6 @@
-﻿using DiagramApp.Contracts.Figures;
+﻿using Diagrammatist.Contracts.Figures;
 
-namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners
+namespace Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners
 {
     /// <summary>
     /// A class that contains extensions methods for cloning figure DTOs.

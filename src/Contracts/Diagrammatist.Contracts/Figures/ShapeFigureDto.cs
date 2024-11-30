@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Contracts.Figures
+﻿namespace Diagrammatist.Contracts.Figures
 {
     /// <summary>
     /// A shape figure dto. Derived class from <see cref="FigureDto"/>.

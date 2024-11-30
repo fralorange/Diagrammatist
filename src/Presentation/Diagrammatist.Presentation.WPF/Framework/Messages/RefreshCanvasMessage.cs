@@ -1,6 +1,6 @@
-﻿using DiagramApp.Contracts.Settings;
+﻿using Diagrammatist.Contracts.Settings;
 
-namespace DiagramApp.Presentation.WPF.Framework.Messages
+namespace Diagrammatist.Presentation.WPF.Framework.Messages
 {
     /// <summary>
     /// A message class that derives from <see cref="UpdatedSettingsMessage"/>.

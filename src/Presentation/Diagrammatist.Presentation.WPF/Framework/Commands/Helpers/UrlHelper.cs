@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace DiagramApp.Presentation.WPF.Framework.Commands.Helpers
+namespace Diagrammatist.Presentation.WPF.Framework.Commands.Helpers
 {
     /// <summary>
     /// A class that helps with opening urls via commands.

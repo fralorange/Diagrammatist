@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace DiagramApp.Presentation.WPF.Framework.Converters
+namespace Diagrammatist.Presentation.WPF.Framework.Converters
 {
     /// <summary>
     /// A class that converts from <see cref="bool"/> too <see cref="DoubleCollection"/>.

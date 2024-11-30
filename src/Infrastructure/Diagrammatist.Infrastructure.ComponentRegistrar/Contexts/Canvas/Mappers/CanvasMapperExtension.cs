@@ -1,9 +1,9 @@
-﻿using DiagramApp.Contracts.Canvas;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
-using CanvasEntity = DiagramApp.Domain.Canvas.Canvas;
+﻿using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
+using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
-namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
+namespace Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
 {
     /// <summary>
     /// Canvas mapper extension.

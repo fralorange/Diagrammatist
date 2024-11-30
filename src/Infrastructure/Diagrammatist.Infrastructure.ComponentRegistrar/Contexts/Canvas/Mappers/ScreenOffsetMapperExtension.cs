@@ -1,7 +1,7 @@
-﻿using DiagramApp.Contracts.Canvas;
-using DiagramApp.Domain.Canvas;
+﻿using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Domain.Canvas;
 
-namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
+namespace Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Canvas.Mappers
 {
     /// <summary>
     /// Screen offset mapper extension class.

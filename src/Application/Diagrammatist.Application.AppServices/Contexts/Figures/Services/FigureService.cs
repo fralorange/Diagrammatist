@@ -1,8 +1,8 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
-using DiagramApp.Contracts.Figures;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers;
+﻿using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
+using Diagrammatist.Contracts.Figures;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Mappers;
 
-namespace DiagramApp.Application.AppServices.Contexts.Figures.Services
+namespace Diagrammatist.Application.AppServices.Contexts.Figures.Services
 {
     /// <summary>
     /// A implemented class from <see cref="FigureService"/>. A service that gets figures data from repository.

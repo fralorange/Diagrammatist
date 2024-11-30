@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="DiagramApp.Presentation.WPF.Views.Components.FiguresComponent"
+﻿<UserControl x:Class="Diagrammatist.Presentation.WPF.Views.Components.FiguresComponent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF.Views.Components" 
-             xmlns:viewmodels="clr-namespace:DiagramApp.Presentation.WPF.ViewModels.Components"
+             xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
+             xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              d:DataContext="{d:DesignInstance Type=viewmodels:FiguresViewModel}"
              mc:Ignorable="d">
     <Grid>

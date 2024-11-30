@@ -1,8 +1,8 @@
-﻿using DiagramApp.Domain.Canvas.Constants;
-using DiagramApp.Domain.Figures;
-using DiagramSettingsEntity = DiagramApp.Domain.Settings.DiagramSettings;
+﻿using Diagrammatist.Domain.Canvas.Constants;
+using Diagrammatist.Domain.Figures;
+using DiagramSettingsEntity = Diagrammatist.Domain.Settings.DiagramSettings;
 
-namespace DiagramApp.Domain.Canvas
+namespace Diagrammatist.Domain.Canvas
 {
     /// <summary>
     /// Canvas class.

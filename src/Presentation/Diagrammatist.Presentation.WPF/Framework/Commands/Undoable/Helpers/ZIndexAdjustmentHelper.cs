@@ -1,7 +1,7 @@
-﻿using DiagramApp.Contracts.Figures;
-using DiagramApp.Presentation.WPF.Framework.Commands.Undoable;
+﻿using Diagrammatist.Contracts.Figures;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable;
 
-namespace DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Helpers
+namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers
 {
     /// <summary>
     /// Helps to create <see cref="IUndoableCommand"/> that adjusts z index.

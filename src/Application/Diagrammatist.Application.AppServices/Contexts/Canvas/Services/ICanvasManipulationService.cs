@@ -1,7 +1,7 @@
-﻿using DiagramApp.Contracts.Canvas;
-using DiagramApp.Contracts.Settings;
+﻿using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Contracts.Settings;
 
-namespace DiagramApp.Application.AppServices.Contexts.Canvas.Services
+namespace Diagrammatist.Application.AppServices.Contexts.Canvas.Services
 {
     /// <summary>
     /// An interface for canvas manipulation operations.

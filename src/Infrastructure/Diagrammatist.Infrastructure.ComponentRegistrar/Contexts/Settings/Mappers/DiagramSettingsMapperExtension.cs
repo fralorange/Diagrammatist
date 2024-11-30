@@ -1,7 +1,7 @@
-﻿using DiagramApp.Contracts.Settings;
-using DiagramApp.Domain.Settings;
+﻿using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Domain.Settings;
 
-namespace DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers
+namespace Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers
 {
     /// <summary>
     /// Diagram settings mapper extension.

@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
 using MvvmDialogs;
 using System.Reflection;
 
-namespace DiagramApp.Presentation.WPF.ViewModels.Dialogs
+namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
     public partial class AboutAppDialogViewModel : ObservableObject, IModalDialogViewModel
     {

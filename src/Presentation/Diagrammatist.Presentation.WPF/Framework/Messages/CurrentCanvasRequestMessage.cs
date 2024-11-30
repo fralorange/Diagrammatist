@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using DiagramApp.Contracts.Canvas;
+using Diagrammatist.Contracts.Canvas;
 
-namespace DiagramApp.Presentation.WPF.Framework.Messages
+namespace Diagrammatist.Presentation.WPF.Framework.Messages
 {
     /// <summary>
     /// A message class that derives from <see cref="RequestMessage{T}"/> of nullable <see cref="CanvasDto"/>.

@@ -1,6 +1,6 @@
-﻿using DiagramApp.Domain.Figures;
+﻿using Diagrammatist.Domain.Figures;
 
-namespace DiagramApp.Application.AppServices.Contexts.Figures.Repositories
+namespace Diagrammatist.Application.AppServices.Contexts.Figures.Repositories
 {
     /// <summary>
     /// An interface for figure repository.

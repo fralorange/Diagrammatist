@@ -1,7 +1,7 @@
-﻿<Application x:Class="DiagramApp.Presentation.WPF.App"
+﻿<Application x:Class="Diagrammatist.Presentation.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DiagramApp.Presentation.WPF">
+             xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

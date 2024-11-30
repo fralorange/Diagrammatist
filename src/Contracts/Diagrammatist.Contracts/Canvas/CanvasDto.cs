@@ -1,7 +1,7 @@
-﻿using DiagramApp.Contracts.Settings;
-using DiagramApp.Contracts.Figures;
+﻿using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Contracts.Figures;
 
-namespace DiagramApp.Contracts.Canvas
+namespace Diagrammatist.Contracts.Canvas
 {
     /// <summary>
     /// Canvas DTO.

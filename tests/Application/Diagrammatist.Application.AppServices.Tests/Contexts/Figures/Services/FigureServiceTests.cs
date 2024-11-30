@@ -1,10 +1,10 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Figures.Repositories;
-using DiagramApp.Application.AppServices.Contexts.Figures.Services;
-using DiagramApp.Contracts.Figures;
-using DiagramApp.Domain.Figures;
+﻿using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
+using Diagrammatist.Application.AppServices.Contexts.Figures.Services;
+using Diagrammatist.Contracts.Figures;
+using Diagrammatist.Domain.Figures;
 using Moq;
 
-namespace DiagramApp.Application.AppServices.Tests.Contexts.Figures.Services
+namespace Diagrammatist.Application.AppServices.Tests.Contexts.Figures.Services
 {
     /// <summary>
     /// A figure service tests class.

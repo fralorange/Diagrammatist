@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Presentation.WPF.Framework.Commands.Undoable.Helpers
+﻿namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers
 {
     /// <summary>
     /// Helps to create common <see cref="IUndoableCommand"/> instances.

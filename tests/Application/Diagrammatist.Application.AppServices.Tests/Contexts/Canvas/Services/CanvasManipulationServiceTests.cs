@@ -1,10 +1,10 @@
-﻿using DiagramApp.Application.AppServices.Contexts.Canvas.Services;
-using DiagramApp.Contracts.Canvas;
-using DiagramApp.Domain.Settings;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
+﻿using Diagrammatist.Application.AppServices.Contexts.Canvas.Services;
+using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Domain.Settings;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
 using FluentAssertions;
 
-namespace DiagramApp.Application.AppServices.Tests.Contexts.Canvas.Services
+namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services
 {
     /// <summary>
     /// Canvas manipulation service tests.

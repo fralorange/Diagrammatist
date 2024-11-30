@@ -1,9 +1,9 @@
-﻿using DiagramApp.Presentation.WPF.ViewModels.Components.Enums.Modes;
+﻿using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace DiagramApp.Presentation.WPF.Framework.Converters
+namespace Diagrammatist.Presentation.WPF.Framework.Converters
 {
     /// <summary>
     /// A class that converts from <see cref="MouseMode"/> enum to <see cref="Cursors"/> class.

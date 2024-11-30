@@ -1,4 +1,4 @@
-﻿namespace DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags
+﻿namespace Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags
 {
     /// <summary>
     /// A class that declares messenger flags for commands.

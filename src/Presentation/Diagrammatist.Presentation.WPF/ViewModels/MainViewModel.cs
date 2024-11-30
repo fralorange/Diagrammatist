@@ -1,14 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using DiagramApp.Contracts.Settings;
-using DiagramApp.Presentation.WPF.Framework.Commands.Helpers;
-using DiagramApp.Presentation.WPF.Framework.Messages;
-using DiagramApp.Presentation.WPF.ViewModels.Components.Consts.Flags;
-using DiagramApp.Presentation.WPF.ViewModels.Dialogs;
+using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
+using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
+using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
 
-namespace DiagramApp.Presentation.WPF.ViewModels
+namespace Diagrammatist.Presentation.WPF.ViewModels
 {
     /// <summary>
     /// A view model class for main window.

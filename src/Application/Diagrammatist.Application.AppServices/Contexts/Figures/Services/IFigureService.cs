@@ -1,6 +1,6 @@
-﻿using DiagramApp.Contracts.Figures;
+﻿using Diagrammatist.Contracts.Figures;
 
-namespace DiagramApp.Application.AppServices.Contexts.Figures.Services
+namespace Diagrammatist.Application.AppServices.Contexts.Figures.Services
 {
     /// <summary>
     /// An interface for figure service.

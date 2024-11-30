@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using DiagramApp.Application.AppServices.Contexts.Figures.Services;
-using DiagramApp.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners;
-using DiagramApp.Contracts.Figures;
+using Diagrammatist.Application.AppServices.Contexts.Figures.Services;
+using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners;
+using Diagrammatist.Contracts.Figures;
 using System.Collections.ObjectModel;
 
-namespace DiagramApp.Presentation.WPF.ViewModels.Components
+namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for figures (toolbox) component.
