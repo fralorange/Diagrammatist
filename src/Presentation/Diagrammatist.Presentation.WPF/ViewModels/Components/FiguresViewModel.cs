@@ -6,6 +6,8 @@ using Diagrammatist.Application.AppServices.Contexts.Figures.Services;
 using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners;
 using Diagrammatist.Contracts.Figures;
 using System.Collections.ObjectModel;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -15,6 +17,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<ObservableCollection<FigureDto>?>>
     {
         private IFigureService _figureService;
+        private IUndoableCommandManager _undoableCommandManager;
 
         [ObservableProperty]
         private ObservableCollection<FigureDto>? _canvasFigures;
@@ -32,9 +35,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// Initializes a new figures view model.
         /// </summary>
         /// <param name="figureService">A figure service.</param>
-        public FiguresViewModel(IFigureService figureService)
+        /// <param name="undoableCommandManager">A undoable command manager.</param>
+        public FiguresViewModel(IFigureService figureService, IUndoableCommandManager undoableCommandManager)
         {
             _figureService = figureService;
+            _undoableCommandManager = undoableCommandManager;
 
             IsActive = true;
         }
@@ -65,7 +70,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (CanvasFigures is not null && SelectedFigure is not null)
             {
-                CanvasFigures.Add(SelectedFigure.Clone());
+                var figure = SelectedFigure.Clone();
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => CanvasFigures.Add(figure),
+                    () => CanvasFigures.Remove(figure)
+                );
+
+                _undoableCommandManager.Execute(command);
             }
             SelectedFigure = null;
         }
