@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Application\Diagrammatist.Application.AppServices\Diagrammatist.Application.AppServices.csproj" />
-    <ProjectReference Include="..\..\..\src\Contracts\Diagrammatist.Contracts\Diagrammatist.Contracts.csproj" />
     <ProjectReference Include="..\..\..\src\Domain\Diagrammatist.Domain\Diagrammatist.Domain.csproj" />
   </ItemGroup>
 

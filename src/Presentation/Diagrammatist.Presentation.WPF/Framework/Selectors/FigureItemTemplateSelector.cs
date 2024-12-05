@@ -1,4 +1,4 @@
-﻿using Diagrammatist.Contracts.Figures;
+﻿using Diagrammatist.Presentation.WPF.Models.Figures;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,9 +23,9 @@ namespace Diagrammatist.Presentation.WPF.Framework.Selectors
         {
             return item switch
             {
-                ShapeFigureDto => ShapeFigureTemplate,
-                LineFigureDto => LineFigureTemplate,
-                TextFigureDto => TextFigureTemplate,
+                ShapeFigureModel => ShapeFigureTemplate,
+                LineFigureModel => LineFigureTemplate,
+                TextFigureModel => TextFigureTemplate,
                 _ => null
             };
         }

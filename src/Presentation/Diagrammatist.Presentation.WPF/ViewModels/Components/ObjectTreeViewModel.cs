@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Contracts.Figures;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Framework.Extensions.ObservableCollection;
+using Diagrammatist.Presentation.WPF.Models.Figures;
 using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -17,15 +17,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly IUndoableCommandManager _undoableCommandManager;
 
-        private ObservableCollection<FigureDto>? _figures;
+        private ObservableCollection<FigureModel>? _figures;
 
         /// <summary>
-        /// Gets collection of <see cref="FigureDto"/>
+        /// Gets collection of <see cref="FigureModel"/>
         /// </summary>
         /// <remarks>
         /// This property used to display figures in UI.
         /// </remarks>
-        public ObservableCollection<FigureDto>? Figures
+        public ObservableCollection<FigureModel>? Figures
         {
             get => _figures;
             private set => SetProperty(ref _figures, value);
@@ -39,7 +39,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
-        private FigureDto? _selectedFigure;
+        private FigureModel? _selectedFigure;
 
         public ObjectTreeViewModel(IUndoableCommandManager undoableCommandManager)
         {
@@ -56,7 +56,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         /// <param name="figure">Target figure.</param>
         [RelayCommand]
-        private void DeleteItem(FigureDto figure)
+        private void DeleteItem(FigureModel figure)
         {
             var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
 
@@ -71,12 +71,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         /// <param name="figure">Target figure.</param>
         [RelayCommand]
-        private void BringForwardItem(FigureDto figure)
+        private void BringForwardItem(FigureModel figure)
         {
             if (Figures is null)
                 return;
 
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true, refreshEvent: Figures.Refresh);
+            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true);
 
             _undoableCommandManager.Execute(command);
 
@@ -91,12 +91,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         /// <param name="figure">Target figure.</param>
         [RelayCommand]
-        private void SendBackwardItem(FigureDto figure)
+        private void SendBackwardItem(FigureModel figure)
         {
             if (Figures is null)
                 return;
 
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false, refreshEvent: Figures.Refresh);
+            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false);
 
             _undoableCommandManager.Execute(command);
 
@@ -108,12 +108,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             base.OnActivated();
 
-            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<ObservableCollection<FigureDto>?>>(this, (r, m) =>
+            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<ObservableCollection<FigureModel>?>>(this, (r, m) =>
             {
                 Figures = m?.NewValue;
             });
 
-            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<FigureDto?>>(this, (r, m) =>
+            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<FigureModel?>>(this, (r, m) =>
             {
                 SelectedFigure = m.NewValue;
             });

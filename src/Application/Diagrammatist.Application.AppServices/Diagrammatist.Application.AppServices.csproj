@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Contracts\Diagrammatist.Contracts\Diagrammatist.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\Diagrammatist.Domain\Diagrammatist.Domain.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Diagrammatist.Infrastructure.ComponentRegistrar\Diagrammatist.Infrastructure.ComponentRegistrar.csproj" />
   </ItemGroup>
 
 </Project>

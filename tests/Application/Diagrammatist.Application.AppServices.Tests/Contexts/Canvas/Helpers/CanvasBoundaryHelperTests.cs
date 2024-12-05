@@ -1,9 +1,8 @@
-﻿using Diagrammatist.Application.AppServices.Contexts.Canvas.Helpers;
-using Diagrammatist.Contracts.Canvas;
-using Diagrammatist.Contracts.Settings;
+﻿using Diagrammatist.Application.AppServices.Canvas.Helpers;
+using Diagrammatist.Domain.Canvas;
 using Diagrammatist.Domain.Canvas.Constants;
-using Moq;
 using System.Drawing;
+using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
 namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Helpers
 {
@@ -22,9 +21,9 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Helpers
             var canvasWidth = 512;
             var canvasHeight = 512;
 
-            var canvas = new CanvasDto
+            var canvas = new CanvasEntity
             {
-                Settings = new DiagramSettingsDto { Width = canvasWidth, Height = canvasHeight, FileName = string.Empty, Background = Color.DimGray, Type = default },
+                Settings = new Settings { Width = canvasWidth, Height = canvasHeight, FileName = string.Empty, Background = Color.DimGray, Type = default },
                 Zoom = zoom
             };
 

@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Diagrammatist.Contracts.Settings;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
@@ -121,7 +121,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             if (currentCanvas is null)
                 return;
 
-            var settings = new DiagramSettingsDto
+            var settings = new SettingsModel
             {
                 Width = currentCanvas.Settings.Width,
                 Height = currentCanvas.Settings.Height,

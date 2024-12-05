@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Contracts.Canvas;
+using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -10,10 +10,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     /// <summary>
     /// A view model class for toolbar component.
     /// </summary>
-    public sealed partial class ToolbarViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<CanvasDto?>>
+    public sealed partial class ToolbarViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<CanvasModel?>>
     {
-        private CanvasDto? _currentCanvas;
-        private CanvasDto? CurrentCanvas
+        private CanvasModel? _currentCanvas;
+        private CanvasModel? CurrentCanvas
         {
             get => _currentCanvas;
             set => SetProperty(ref _currentCanvas, value);
@@ -36,7 +36,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<CanvasDto?> message)
+        public void Receive(PropertyChangedMessage<CanvasModel?> message)
         {
             if (message.Sender.GetType() == typeof(CanvasViewModel) &&
                 message.PropertyName == nameof(CanvasViewModel.CurrentCanvas))

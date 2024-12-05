@@ -1,6 +1,5 @@
-﻿using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
-using Diagrammatist.Application.AppServices.Contexts.Figures.Services;
-using Diagrammatist.Contracts.Figures;
+﻿using Diagrammatist.Application.AppServices.Figures.Repositories;
+using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Domain.Figures;
 using Moq;
 
@@ -24,7 +23,7 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Figures.Services
 
             var repositoryMock = new Mock<IFigureRepository>();
             repositoryMock.Setup(r => r.GetAsync()).ReturnsAsync(dictionaryMock);
-            
+
             IFigureService service = new FigureService(repositoryMock.Object);
 
             // Act
@@ -34,7 +33,7 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Figures.Services
             Assert.Multiple(() =>
             {
                 Assert.NotEmpty(dictionaryMock);
-                Assert.IsType<Dictionary<string, List<FigureDto>>>(figures);
+                Assert.IsType<Dictionary<string, List<Figure>>>(figures);
             });
         }
     }

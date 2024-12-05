@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Diagrammatist.Application.AppServices.Contexts.Settings.Helpers;
-using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Application.AppServices.Canvas.Helpers;
+using Diagrammatist.Presentation.WPF.Mappers.Canvas;
+using Diagrammatist.Presentation.WPF.Models.Canvas;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
@@ -13,9 +14,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
     /// </summary>
     public partial class AddCanvasDialogViewModel : ObservableValidator, IModalDialogViewModel
     {
-        private DiagramSettingsDto _settings;
+        private SettingsModel _settings;
 
-        public DiagramSettingsDto? Settings => (DialogResult == true) ? _settings : null;
+        public SettingsModel? Settings => (DialogResult == true) ? _settings : null;
 
         private bool? _dialogResult;
 
@@ -63,7 +64,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
         /// <inheritdoc cref="DiagramSettingsDto.Type"/>
         [Required]
-        public DiagramTypeDto DiagramType
+        public DiagramsModel DiagramType
         {
             get => _settings.Type;
             set => SetProperty(_settings.Type, value, _settings, (s, t) => s.Type = t, true);
@@ -71,7 +72,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
         public AddCanvasDialogViewModel()
         {
-            _settings = SettingsInitializationHelper.InitializeDefaultSettings();
+            _settings = SettingsInitializationHelper.InitializeDefaultSettings().ToModel();
         }
 
         [RelayCommand]

@@ -1,12 +1,13 @@
-﻿using Diagrammatist.Domain.Canvas.Constants;
-using Diagrammatist.Domain.Figures;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Diagrammatist.Presentation.WPF.Models.Figures;
+using System.Collections.ObjectModel;
 
-namespace Diagrammatist.Domain.Canvas
+namespace Diagrammatist.Presentation.WPF.Models.Canvas
 {
     /// <summary>
-    /// Canvas class.
+    /// A canvas model.
     /// </summary>
-    public class Canvas
+    public partial class CanvasModel : ObservableObject
     {
         /// <summary>
         /// Gets or sets width of invisible border.
@@ -14,41 +15,51 @@ namespace Diagrammatist.Domain.Canvas
         /// <remarks>
         /// This property used to prevent user from scrolling by X-axis in to the abyss...
         /// </remarks>
-        public int ImaginaryWidth { get; set; }
+        [ObservableProperty]
+        private int _imaginaryWidth;
+
         /// <summary>
         /// Gets or sets height of invisible border.
         /// </summary>
         /// <remarks>
         /// This property used to prevent user from scrolling by Y-axis in to the abyss...
         /// </remarks>
-        public int ImaginaryHeight { get; set; }
+        [ObservableProperty]
+        private int _imaginaryHeight;
+
         /// <summary>
         /// Gets or sets diagram settings.
         /// </summary>
         /// <remarks>
         /// This property used to configure canvas.
         /// </remarks>
-        public required Settings Settings { get; set; }
+        [ObservableProperty]
+        private SettingsModel _settings;
+
         /// <summary>
         /// Gets or sets zoom parameter.
         /// </summary>
         /// <remarks>
         /// This property used to set canvas scale.
         /// </remarks>
-        public double Zoom { get; set; } = CanvasZoomConstants.DefaultZoom;
+        [ObservableProperty]
+        private double _zoom;
+
         /// <summary>
         /// Gets or sets screen offset.
         /// </summary>
         /// <remarks>
         /// This property used to determine canvas position in window.
         /// </remarks>
-        public Offset Offset { get; set; } = new();
+        [ObservableProperty]
+        private OffsetModel _offset;
+
         /// <summary>
         /// Gets or sets figure collection.
         /// </summary>
         /// <remarks>
         /// This property used to set drawing context for canvas.
         /// </remarks>
-        public List<Figure> Figures { get; set; } = [];
+        public ObservableCollection<FigureModel> Figures { get; set; } = [];
     }
 }

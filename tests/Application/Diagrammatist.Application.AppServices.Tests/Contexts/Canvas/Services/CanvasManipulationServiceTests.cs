@@ -1,8 +1,7 @@
-﻿using Diagrammatist.Application.AppServices.Contexts.Canvas.Services;
-using Diagrammatist.Contracts.Canvas;
-using Diagrammatist.Domain.Settings;
-using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Settings.Mappers;
+﻿using Diagrammatist.Application.AppServices.Canvas.Services;
+using Diagrammatist.Domain.Canvas;
 using FluentAssertions;
+using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
 namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services
 {
@@ -15,23 +14,22 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services
         public async void CreateCanvas_CanvasCreatedWithDefaultSettingsAndBorders()
         {
             // Arrange
-            var settings = new DiagramSettings();
-            var settingsDto = settings.ToDto();
+            var settings = new Settings();
 
             var service = new CanvasManipulationService();
 
-            var expectedCanvas = new CanvasDto
+            var expectedCanvas = new CanvasEntity
             {
                 ImaginaryWidth = 2048,
                 ImaginaryHeight = 2048,
-                Settings = settings.ToDto(),
+                Settings = settings,
                 Zoom = 1,
-                ScreenOffset = new() { X = default, Y = default },
+                Offset = new() { X = default, Y = default },
                 Figures = [],
             };
 
             // Act
-            var canvas = await service.CreateCanvasAsync(settingsDto);
+            var canvas = await service.CreateCanvasAsync(settings);
 
             // Assert
             canvas.Should().BeEquivalentTo(expectedCanvas);
@@ -41,10 +39,9 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services
         public void EditCanvas_CanvasSettingsEditedSuccessfully()
         {
             // Arrange
-            var canvas = new CanvasDto { Settings = new DiagramSettings().ToDto() };
+            var canvas = new CanvasEntity { Settings = new Settings() };
 
-            var settings = new DiagramSettings();
-            var newSettings = settings.ToDto();
+            var newSettings = new Settings();
 
             var newFileName = "New File";
             var newWidth = 1024;
@@ -57,7 +54,8 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services
             var service = new CanvasManipulationService();
 
             // Act
-            service.UpdateCanvas(canvas, newSettings);
+            service.UpdateCanvasSettings(canvas, newSettings);
+            canvas.Settings = newSettings;
 
             // Assert
             Assert.Multiple(

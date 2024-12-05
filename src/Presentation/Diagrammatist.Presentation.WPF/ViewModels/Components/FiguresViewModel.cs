@@ -2,34 +2,34 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Application.AppServices.Contexts.Figures.Services;
-using Diagrammatist.Infrastructure.ComponentRegistrar.Contexts.Figures.Cloners;
-using Diagrammatist.Contracts.Figures;
-using System.Collections.ObjectModel;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Mappers.Figures;
+using Diagrammatist.Presentation.WPF.Models.Figures;
+using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for figures (toolbox) component.
     /// </summary>
-    public sealed partial class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<ObservableCollection<FigureDto>?>>
+    public sealed partial class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<ObservableCollection<FigureModel>?>>
     {
         private IFigureService _figureService;
         private IUndoableCommandManager _undoableCommandManager;
 
         [ObservableProperty]
-        private ObservableCollection<FigureDto>? _canvasFigures;
+        private ObservableCollection<FigureModel>? _canvasFigures;
 
         [ObservableProperty]
-        private Dictionary<string, List<FigureDto>>? _figures;
+        private Dictionary<string, List<FigureModel>>? _figures;
 
         [ObservableProperty]
-        private KeyValuePair<string, List<FigureDto>> _selectedCategory;
+        private KeyValuePair<string, List<FigureModel>> _selectedCategory;
 
         [ObservableProperty]
-        private FigureDto? _selectedFigure;
+        private FigureModel? _selectedFigure;
 
         /// <summary>
         /// Initializes a new figures view model.
@@ -45,10 +45,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<ObservableCollection<FigureDto>?> message)
+        public void Receive(PropertyChangedMessage<ObservableCollection<FigureModel>?> message)
         {
             if (message.Sender.GetType() == typeof(CanvasViewModel) &&
-                message.PropertyName == nameof(CanvasViewModel.Figures))
+                message.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Figures))
             {
                 CanvasFigures = message.NewValue;
             }
@@ -59,7 +59,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         public async Task LoadFiguresAsync()
         {
-            Figures = await _figureService.GetAsync();
+            var figureDomains = await _figureService.GetAsync();
+
+            var figureModels = figureDomains.ToDictionary(
+                pair => pair.Key, 
+                pair => pair.Value.Select(figure => figure.ToModel()).ToList() 
+            );
+
+            Figures = figureModels;
         }
 
         /// <summary>

@@ -2,13 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Contracts.Canvas;
-using Diagrammatist.Contracts.Figures;
-using Diagrammatist.Contracts.Settings;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
-using Diagrammatist.Presentation.WPF.Framework.Extensions.ObservableCollection;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Models.Figures;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
@@ -44,7 +42,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         public event Action? OnRequestZoomReset;
 
-        private CanvasDto? _currentCanvas;
+        private CanvasModel? _currentCanvas;
 
         /// <summary>
         /// Gets or sets current canvas.
@@ -52,16 +50,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This property used to store current canvas values.
         /// </remarks>
-        public CanvasDto? CurrentCanvas
+        public CanvasModel? CurrentCanvas
         {
             get => _currentCanvas;
-            private set
-            {
-                if (SetProperty(ref _currentCanvas, value, true))
-                {
-                    OnPropertyChanged(nameof(Zoom));
-                }
-            }
+            private set => SetProperty(ref _currentCanvas, value, true);
         }
 
         private MouseMode _currentMouseMode;
@@ -79,104 +71,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Gets imaginary width from current canvas.
+        /// Gets or sets collection of <see cref="FigureModel"/>.
         /// </summary>
         /// <remarks>
-        /// This property used to configure ScrollViewer's X-Axis.
-        /// </remarks>
-        public int ImaginaryWidth
-        {
-            get => CurrentCanvas?.ImaginaryWidth ?? default;
-            private set
-            {
-                if (CurrentCanvas is not null)
-                {
-                    SetProperty(CurrentCanvas.ImaginaryWidth, value, CurrentCanvas, (c, w) => c.ImaginaryWidth = w);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets imaginary height from current canvas.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure ScrollViewer's Y-Axis.
-        /// </remarks>
-        public int ImaginaryHeight
-        {
-            get => CurrentCanvas?.ImaginaryWidth ?? default;
-            private set
-            {
-                if (CurrentCanvas is not null)
-                {
-                    SetProperty(CurrentCanvas.ImaginaryHeight, value, CurrentCanvas, (c, h) => c.ImaginaryHeight = h);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets diagram settings from current canvas.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure UI Canvas.
-        /// </remarks>
-        public DiagramSettingsDto Settings
-        {
-            get => CurrentCanvas?.Settings!;
-            private set
-            {
-                if (CurrentCanvas is not null)
-                {
-                    SetProperty(CurrentCanvas.Settings, value, CurrentCanvas, (c, s) => c.Settings = s);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets zoom parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure canvas scale.
-        /// </remarks>
-        public double Zoom
-        {
-            get => CurrentCanvas?.Zoom ?? 1.0;
-            set
-            {
-                if (CurrentCanvas is not null)
-                {
-                    SetProperty(CurrentCanvas.Zoom, value, CurrentCanvas, (c, z) => c.Zoom = z);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets screen offset.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure canvas position in window.
-        /// </remarks>
-        public ScreenOffsetDto ScreenOffset
-        {
-            get => CurrentCanvas?.ScreenOffset!;
-            set
-            {
-                if (CurrentCanvas is not null)
-                {
-                    SetProperty(CurrentCanvas.ScreenOffset, value, CurrentCanvas, (c, so) => c.ScreenOffset = so);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets collection of <see cref="FigureDto"/>.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figures that placed on the canvas.
+        /// This property used to send figures as message to other components that require it.
         /// </remarks>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
-        private ObservableCollection<FigureDto>? _figures;
+        private ObservableCollection<FigureModel>? _figures;
 
         /// <summary>
         /// Gets or sets selected figure.
@@ -186,7 +88,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
-        private FigureDto? _selectedFigure;
+        private FigureModel? _selectedFigure;
 
         /// <summary>
         /// Gets or sets grid visible flag.
@@ -268,9 +170,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         /// <param name="figure">Target figure.</param>
         [RelayCommand]
-        private void DeleteItem(FigureDto figure)
+        private void DeleteItem(FigureModel figure)
         {
-            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
+            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas?.Figures, figure);
 
             _undoableCommandManager.Execute(command);
         }
@@ -280,12 +182,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         /// <param name="figure">Target figure.</param>
         [RelayCommand]
-        private void BringForwardItem(FigureDto figure)
+        private void BringForwardItem(FigureModel figure)
         {
-            if (Figures is null)
+            if (CurrentCanvas?.Figures is null)
                 return;
 
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true, refreshEvent: Figures.Refresh);
+            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true);
 
             _undoableCommandManager.Execute(command);
         }
@@ -295,12 +197,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         /// <param name="figure">Target figure.</param>
         [RelayCommand]
-        private void SendBackwardItem(FigureDto figure)
+        private void SendBackwardItem(FigureModel figure)
         {
-            if (Figures is null)
+            if (CurrentCanvas?.Figures is null)
                 return;
 
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false, refreshEvent: Figures.Refresh);
+            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false);
 
             _undoableCommandManager.Execute(command);
         }
@@ -312,15 +214,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             base.OnActivated();
 
-            Messenger.Register<CanvasViewModel, PropertyChangedMessage<CanvasDto?>>(this, (r, m) =>
+            Messenger.Register<CanvasViewModel, PropertyChangedMessage<CanvasModel?>>(this, (r, m) =>
             {
                 CurrentCanvas = m.NewValue;
 
-                Figures = CurrentCanvas?.Figures is not null
-                    ? new ObservableCollection<FigureDto>(CurrentCanvas.Figures)
-                    : null;
-
-                Figures?.LinkTo(CurrentCanvas!.Figures);
+                Figures = CurrentCanvas?.Figures;
             });
 
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
@@ -328,7 +226,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 CurrentMouseMode = m.NewValue;
             });
 
-            Messenger.Register<CanvasViewModel, PropertyChangedMessage<FigureDto?>>(this, (r, m) =>
+            Messenger.Register<CanvasViewModel, PropertyChangedMessage<FigureModel?>>(this, (r, m) =>
             {
                 SelectedFigure = m.NewValue;
             });
@@ -336,14 +234,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
             {
                 m.Reply(r.CurrentCanvas);
-            });
-
-            Messenger.Register<CanvasViewModel, RefreshCanvasMessage>(this, (r, m) =>
-            {
-                if (CurrentCanvas is not null && CurrentCanvas.Settings == m.Value)
-                {
-                    OnPropertyChanged(nameof(CurrentCanvas));
-                }
             });
 
             Messenger.Register<CanvasViewModel, string>(this, (r, m) =>

@@ -21,7 +21,7 @@
                                    Focusable="False"
                                    IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
                                    Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}"
-                                   Zoom="{Binding Zoom, Mode=TwoWay}"
+                                   Zoom="{Binding CurrentCanvas.Zoom, Mode=TwoWay}"
                                    x:Name="extScrollViewer">
         <Grid Width="{Binding CurrentCanvas.ImaginaryWidth, FallbackValue=0}" 
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
@@ -61,7 +61,7 @@
                         <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
                         <Setter Property="RenderTransform">
                             <Setter.Value>
-                                <RotateTransform Angle="{Binding Rotation, TargetNullValue=0}"/>
+                                <RotateTransform Angle="{Binding Rotation}"/>
                             </Setter.Value>
                         </Setter>
                         <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}"/>
@@ -70,8 +70,8 @@
             </ListBox>
         </Grid>
         <i:Interaction.Behaviors>
-            <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.ScreenOffset.X, Mode=TwoWay, FallbackValue=0}"
-                                            HorizontalOffset="{Binding CurrentCanvas.ScreenOffset.Y, Mode=TwoWay, FallbackValue=0}"/>
+            <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
+                                            HorizontalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"/>
         </i:Interaction.Behaviors>
     </controls:ExtendedScrollViewer>
 </UserControl>

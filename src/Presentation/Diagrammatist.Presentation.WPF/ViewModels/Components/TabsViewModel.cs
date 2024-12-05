@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Diagrammatist.Application.AppServices.Contexts.Canvas.Services;
-using Diagrammatist.Contracts.Canvas;
-using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.Mappers.Canvas;
+using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
@@ -22,22 +22,22 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly IUndoableCommandManager _undoableCommandManager;
 
         /// <summary>
-        /// Gets or sets collection of <see cref="CanvasDto"/>.
+        /// Gets or sets collection of <see cref="CanvasModel"/>.
         /// </summary>
         /// <remarks>
         /// This property used to store canvases in tabs UI.
         /// </remarks>
-        public ObservableCollection<CanvasDto> Canvases { get; } = [];
+        public ObservableCollection<CanvasModel> Canvases { get; } = [];
 
         /// <summary>
-        /// Gets or sets <see cref="CanvasDto"/>.
+        /// Gets or sets <see cref="CanvasModel"/>.
         /// </summary>
         /// <remarks>
-        /// This property used to store and distribute selected <see cref="CanvasDto"/>.
+        /// This property used to store and distribute selected <see cref="CanvasModel"/>.
         /// </remarks>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
-        private CanvasDto? _selectedCanvas;
+        private CanvasModel? _selectedCanvas;
 
         public TabsViewModel(ICanvasManipulationService canvasManipulationService, IUndoableCommandManager undoableCommandManager)
         {
@@ -48,23 +48,24 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Creates new <see cref="CanvasDto"/> and adds it to <see cref="Canvases"/>
+        /// Creates new <see cref="CanvasModel"/> and adds it to <see cref="Canvases"/>
         /// </summary>
         /// <param name="settings">Diagram settings.</param>
-        private async Task CreateCanvas(DiagramSettingsDto settings)
+        private async Task CreateCanvas(SettingsModel settings)
         {
-            var canvas = await _canvasManipulationService.CreateCanvasAsync(settings);
+            var canvasDomain = await _canvasManipulationService.CreateCanvasAsync(settings.ToDomain());
+
+            var canvas = canvasDomain.ToModel();
 
             Canvases.Add(canvas);
             SelectedCanvas = canvas;
         }
 
         /// <summary>
-        /// Updates existing <see cref="CanvasDto"/> settings.
+        /// Updates existing <see cref="CanvasModel"/> settings.
         /// </summary>
-        /// <param name="target">Target canvas.</param>
         /// <param name="newSettings">New settings.</param>
-        private void UpdateCanvas(DiagramSettingsDto newSettings)
+        private void UpdateCanvas(SettingsModel newSettings)
         {
             if (SelectedCanvas is not null)
             {
@@ -74,13 +75,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 var command = CommonUndoableHelper.CreateUndoableCommand(
                     () =>
                     {
-                        _canvasManipulationService.UpdateCanvas(currentCanvas, newSettings);
-                        Messenger.Send<RefreshCanvasMessage>(new(newSettings));
+                        var settingsDomain = newSettings.ToDomain();
+
+                        _canvasManipulationService.UpdateCanvasSettings(currentCanvas.ToDomain(), settingsDomain);
+
+                        currentCanvas.Settings = settingsDomain.ToModel();
                     },
                     () =>
                     {
-                        _canvasManipulationService.UpdateCanvas(currentCanvas, oldSettings);
-                        Messenger.Send<RefreshCanvasMessage>(new(oldSettings));
+                        var settingsDomain = oldSettings.ToDomain();
+
+                        _canvasManipulationService.UpdateCanvasSettings(currentCanvas.ToDomain(), settingsDomain);
+
+                        currentCanvas.Settings = settingsDomain.ToModel();
                     }
                 );
 
@@ -89,11 +96,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Deletes existing <see cref="CanvasDto"/> from <see cref="Canvases"/>.
+        /// Deletes existing <see cref="CanvasModel"/> from <see cref="Canvases"/>.
         /// </summary>
         /// <param name="target">Target canvas.</param>
         [RelayCommand]
-        private void CloseCanvas(CanvasDto target)
+        private void CloseCanvas(CanvasModel target)
         {
             Canvases.Remove(target);
         }

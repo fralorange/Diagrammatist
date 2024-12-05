@@ -1,4 +1,4 @@
-﻿using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
+﻿using Diagrammatist.Application.AppServices.Figures.Repositories;
 using Diagrammatist.Domain.Figures;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Serialization;
 using Newtonsoft.Json;

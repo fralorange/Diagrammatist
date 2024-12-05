@@ -1,6 +1,6 @@
-﻿using Diagrammatist.Application.AppServices.Contexts.Canvas.Services;
-using Diagrammatist.Application.AppServices.Contexts.Figures.Repositories;
-using Diagrammatist.Application.AppServices.Contexts.Figures.Services;
+﻿using Diagrammatist.Application.AppServices.Canvas.Services;
+using Diagrammatist.Application.AppServices.Figures.Repositories;
+using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.ViewModels;

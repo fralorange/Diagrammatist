@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Diagrammatist.Contracts.Settings;
+using Diagrammatist.Presentation.WPF.Models.Canvas;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,9 +8,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
     public partial class ChangeCanvasSizeDialogViewModel : ObservableValidator, IModalDialogViewModel
     {
-        private DiagramSettingsDto _settings;
+        private SettingsModel _settings;
 
-        public DiagramSettingsDto? Settings => (DialogResult == true) ? _settings : null;
+        public SettingsModel? Settings => (DialogResult == true) ? _settings : null;
 
         private bool? _dialogResult;
 
@@ -38,7 +38,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             set => SetProperty(_settings.Height, value, _settings, (s, h) => s.Height = h, true);
         }
 
-        public ChangeCanvasSizeDialogViewModel(DiagramSettingsDto settings)
+        public ChangeCanvasSizeDialogViewModel(SettingsModel settings)
         {
             _settings = settings;
         }
