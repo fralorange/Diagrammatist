@@ -7,14 +7,21 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
     /// </summary>
     public partial class ShapeFigureModel : FigureModel
     {
+        private double _width;
+
         /// <summary>
         /// Gets or sets width.
         /// </summary>
         /// <remarks>
         /// This property used to store figure width.
         /// </remarks>
-        [ObservableProperty]
-        private double _width;
+        public double Width
+        {
+            get => _width;
+            set => SetProperty(ref _width, value);
+        }
+
+        private double _height;
 
         /// <summary>
         /// Gets or sets height.
@@ -22,16 +29,26 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property used to store figure height.
         /// </remarks>
-        [ObservableProperty]
-        private double _height;
+        public double Height
+        {
+            get => _height;
+            set => SetProperty(ref _height, value);
+        }
+
+        private bool _keepAspectRatio;
+
         /// <summary>
         /// Gets or sets aspect ratio keep parameter.
         /// </summary>
         /// <remarks>
         /// This property is used to determine whether or not to keep the aspect ratio.
         /// </remarks>
-        [ObservableProperty]
-        private bool _keepAspectRatio;
+        public bool KeepAspectRatio
+        {
+            get => _keepAspectRatio;
+            set => SetProperty(ref _keepAspectRatio, value);
+        }
+
         /// <summary>
         /// Gets or sets collection of data.
         /// </summary>

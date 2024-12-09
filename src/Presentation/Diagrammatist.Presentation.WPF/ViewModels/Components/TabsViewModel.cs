@@ -7,7 +7,7 @@ using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
 using Diagrammatist.Presentation.WPF.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 

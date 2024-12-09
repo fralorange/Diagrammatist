@@ -4,10 +4,11 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Framework.Controls.Args;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Figures;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 
@@ -207,35 +208,69 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _undoableCommandManager.Execute(command);
         }
 
+        /// <summary>
+        /// Archives different positions of an figure object.
+        /// </summary>
+        /// <remarks>
+        /// This commands occurs when item position change and used to implement undo/redo event command.
+        /// </remarks>
+        /// <param name="e">Position changed event arguments.</param>
+        [RelayCommand]
+        private void ItemPositionChange(PositionChangedEventArgs e)
+        {
+            if (e.DataContext is FigureModel figure)
+            {
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () =>
+                    {
+                        figure.PosX = e.NewPos.X;
+                        figure.PosY = e.NewPos.Y;
+                    },
+                    () =>
+                    {
+                        figure.PosX = e.OldPos.X;
+                        figure.PosY = e.OldPos.Y;
+                    }
+                );
+
+                _undoableCommandManager.Execute(command);
+            }
+        }
+
         #endregion
 
         /// <inheritdoc/>
         protected override void OnActivated()
         {
             base.OnActivated();
-
+            // Initialize new canvas.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<CanvasModel?>>(this, (r, m) =>
             {
                 CurrentCanvas = m.NewValue;
 
                 Figures = CurrentCanvas?.Figures;
+                // Center canvas.
+                if (OnRequestZoomReset is not null)
+                {
+                    OnRequestZoomReset();
+                }
             });
-
+            // Change mouse mode.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
             {
                 CurrentMouseMode = m.NewValue;
             });
-
+            // Change selected figure from object tree.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<FigureModel?>>(this, (r, m) =>
             {
                 SelectedFigure = m.NewValue;
             });
-
+            // Answer request fro canvas.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
             {
                 m.Reply(r.CurrentCanvas);
             });
-
+            // Register menu commands.
             Messenger.Register<CanvasViewModel, string>(this, (r, m) =>
             {
                 switch (m)

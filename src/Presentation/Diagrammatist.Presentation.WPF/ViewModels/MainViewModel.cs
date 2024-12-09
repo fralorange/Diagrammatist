@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Consts.Flags;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
 

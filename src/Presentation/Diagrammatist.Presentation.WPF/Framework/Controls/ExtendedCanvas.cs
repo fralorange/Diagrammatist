@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Framework.Extensions.DependencyObject;
+﻿using Diagrammatist.Presentation.WPF.Framework.Controls.Args;
+using Diagrammatist.Presentation.WPF.Framework.Extensions.DependencyObject;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,7 +19,13 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
     public class ExtendedCanvas : Canvas
     {
         private FrameworkElement? _selectedElement;
+        private Point? _initialElementPos;
         private Cursor? _previousCursor;
+
+        /// <summary>
+        /// Occurs when any element position changes.
+        /// </summary>
+        public event EventHandler<PositionChangedEventArgs>? ItemPositionChanged;
 
         public static readonly DependencyProperty IsGridVisibleProperty =
             DependencyProperty.Register(nameof(IsGridVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnGridChange));
@@ -31,6 +38,7 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+
 
         /// <summary>
         /// Gets or sets the grid visible parameter.
@@ -75,6 +83,18 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
             MouseLeftButtonUp += OnMouseLeftButtonUp;
         }
 
+        /// <summary>
+        /// Triggers <see cref="ItemPositionChanged"/> event when and object position changes.
+        /// </summary>
+        /// <param name="oldX">The previous X-coordinate of the object.</param>
+        /// <param name="oldY">The previous Y-coordinate of the object.</param>
+        /// <param name="newX">The new X-coordinate of the object.</param>
+        /// <param name="newY">The new Y-coordinate of the object.</param>
+        protected virtual void OnItemPositionChanged(FrameworkElement item, double oldX, double oldY, double newX, double newY)
+        {
+            ItemPositionChanged?.Invoke(null, new PositionChangedEventArgs(item.DataContext, oldX, oldY, newX, newY));
+        }
+
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsElementPanEnabled && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item)
@@ -88,6 +108,9 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
                 // Disable cursor
                 _previousCursor = Cursor;
                 Cursor = Cursors.None;
+
+                // Save item initial position
+                _initialElementPos = new(GetLeft(item), GetTop(item));
 
                 CaptureMouse();
             }
@@ -143,10 +166,17 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_selectedElement is not null)
+            if (_selectedElement is not null && _initialElementPos is not null)
             {
+                OnItemPositionChanged(_selectedElement,
+                                      _initialElementPos.Value.X,
+                                      _initialElementPos.Value.Y,
+                                      GetLeft(_selectedElement),
+                                      GetTop(_selectedElement));
+
                 _selectedElement = null;
                 Cursor = _previousCursor;
+                _initialElementPos = null;
 
                 ReleaseMouseCapture();
             }
@@ -173,12 +203,12 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
 
                 for (int x = 0, cellCount = 0; x < ActualWidth; x += GridStep, cellCount++)
                 {
-                    dc.DrawLine((cellCount % GridStep == 0) ? penBold : penLight, new Point(x, 0), new Point(x, ActualHeight));
+                    dc.DrawLine(cellCount % GridStep == 0 ? penBold : penLight, new Point(x, 0), new Point(x, ActualHeight));
                 }
 
                 for (int y = 0, cellCount = 0; y < ActualHeight; y += GridStep, cellCount++)
                 {
-                    dc.DrawLine((cellCount % GridStep == 0) ? penBold : penLight, new Point(0, y), new Point(ActualWidth, y));
+                    dc.DrawLine(cellCount % GridStep == 0 ? penBold : penLight, new Point(0, y), new Point(ActualWidth, y));
                 }
             }
         }

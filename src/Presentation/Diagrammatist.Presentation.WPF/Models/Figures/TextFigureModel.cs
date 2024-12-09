@@ -8,14 +8,21 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
     /// </summary>
     public partial class TextFigureModel : FigureModel
     {
+        private string _text;
+
         /// <summary>
         /// Gets or sets figure Text.
         /// </summary>
         /// <remarks>
         /// This property used to display text in figure UI.
         /// </remarks>
-        [ObservableProperty]
-        private string _text;
+        public string Text
+        {
+            get => _text;
+            set => SetProperty(ref _text, value);
+        }
+
+        private Color _textColor;
 
         /// <summary>
         /// Gets or sets figure text color.
@@ -23,8 +30,13 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property used to store figure text color.
         /// </remarks>
-        [ObservableProperty]
-        private Color _textColor;
+        public Color TextColor
+        {
+            get => _textColor;
+            set => SetProperty(ref _textColor, value);
+        }
+
+        private double _fontSize;
 
         /// <summary>
         /// Gets or sets font size.
@@ -32,8 +44,14 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property used to configure font size.
         /// </remarks>
-        [ObservableProperty]
-        private double _fontSize;
+        public double FontSize
+        {
+            get => _fontSize;
+            set => SetProperty(ref _fontSize, value);
+        }
+
+
+        private bool _hasOutline;
 
         /// <summary>
         /// Gets or sets figure outline condition.
@@ -41,8 +59,13 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property indicates whether figure has outline.
         /// </remarks>
-        [ObservableProperty]
-        private bool _hasOutline;
+        public bool HasOutline
+        {
+            get => _hasOutline;
+            set => SetProperty(ref _hasOutline, value);
+        }
+
+        private bool _hasBackground;
 
         /// <summary>
         /// Gets or sets figure background condition,
@@ -50,21 +73,26 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property indicates whether figure has background.
         /// </remarks>
-        [ObservableProperty]
-        private bool _hasBackground;
+        public bool HasBackground
+        {
+            get => _hasBackground;
+            set => SetProperty(ref _hasBackground, value);
+        }
 
         /// <summary>
         /// Default initializer.
         /// </summary>
 #pragma warning disable CS8618
         public TextFigureModel() { }
-#pragma warning restore CS8618 
+#pragma warning restore CS8618
 
         /// <summary>
         /// Clones all properties and initializes new instance.
         /// </summary>
         /// <param name="source">Source model.</param>
+#pragma warning disable CS8618 
         public TextFigureModel(TextFigureModel source) : base(source)
+#pragma warning restore CS8618 
         {
             Text = source.Text;
             TextColor = source.TextColor;

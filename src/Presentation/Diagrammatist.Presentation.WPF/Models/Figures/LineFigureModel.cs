@@ -17,14 +17,21 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         [ObservableProperty]
         private List<Point> _points;
 
+        private double _thickness;
+
         /// <summary>
         /// Gets or sets line thickness.
         /// </summary>
         /// <remarks>
         /// This property used to configure line thickness.
         /// </remarks>
-        [ObservableProperty]
-        private double _thickness;
+        public double Thickness
+        {
+            get => _thickness;
+            set => SetProperty(ref _thickness, value);
+        }
+
+        private bool _isDashed;
 
         /// <summary>
         /// Gets or sets line dash condition.
@@ -32,8 +39,13 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property indicates whether the line is dashed.
         /// </remarks>
-        [ObservableProperty]
-        private bool _isDashed;
+        public bool IsDashed
+        {
+            get => _isDashed;
+            set => SetProperty(ref _isDashed, value);
+        }
+
+        private bool _hasArrow;
 
         /// <summary>
         /// Gets or sets line arrow condition.
@@ -41,8 +53,11 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// <remarks>
         /// This property indicates whether the line has arrow on last point.
         /// </remarks>
-        [ObservableProperty]
-        private bool _hasArrow;
+        public bool HasArrow
+        {
+            get => _hasArrow;
+            set => SetProperty(ref _hasArrow, value);
+        }
 
         /// <summary>
         /// Default initializer.
