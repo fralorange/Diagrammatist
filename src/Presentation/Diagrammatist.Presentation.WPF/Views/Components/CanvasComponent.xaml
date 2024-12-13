@@ -29,7 +29,8 @@
                      ItemTemplateSelector="{StaticResource CanvasFiguresSelector}"
                      SelectedItem="{Binding SelectedFigure}"
                      Template="{StaticResource UnscrollableListBox}"
-                     PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
+                     PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
+                     x:Name="itemsHolder">
                 <ListBox.Resources>
                     <ContextMenu x:Key="ElementMenu">
                         <MenuItem Header="Bring Forward"

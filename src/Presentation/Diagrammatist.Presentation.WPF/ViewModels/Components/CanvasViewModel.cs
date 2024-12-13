@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Diagrammatist.Domain.Canvas.Constants;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Framework.Controls.Args;
@@ -42,6 +43,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when user initiates a zoom reset action from menu button.
         /// </remarks>
         public event Action? OnRequestZoomReset;
+        /// <summary>
+        /// Occurs when a requiest is made to export current canvas as PNG.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a export action from menu button.
+        /// </remarks>
+        public event Action? OnRequestExport;
 
         private CanvasModel? _currentCanvas;
 
@@ -164,6 +172,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private void EnableGrid()
         {
             IsGridVisible = !IsGridVisible;
+        }
+
+        /// <summary>
+        /// Exports current zoom. 
+        /// </summary>
+        private void Export()
+        {
+            if (CurrentCanvas is not null && OnRequestExport is not null)
+            {
+                OnRequestExport();
+            }
         }
 
         /// <summary>
@@ -292,6 +311,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         break;
                     case MessengerFlags.EnableGrid:
                         EnableGrid();
+                        break;
+                    case MessengerFlags.Export:
+                        Export();
                         break;
                 }
             });

@@ -1,9 +1,11 @@
 ﻿using Diagrammatist.Presentation.WPF.Framework.Controls.Args;
 using Diagrammatist.Presentation.WPF.Framework.Extensions.DependencyObject;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Diagrammatist.Presentation.WPF.Framework.Controls
 {
@@ -81,6 +83,56 @@ namespace Diagrammatist.Presentation.WPF.Framework.Controls
             PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
             MouseMove += OnMouseMove;
             MouseLeftButtonUp += OnMouseLeftButtonUp;
+        }
+
+        /// <summary>
+        /// Exports current canvas without grid visible to file path.
+        /// </summary>
+        /// <param name="filePath">Resultng file path.</param>
+        public void Export(string filePath)
+        {
+            var wasGridVisible = IsGridVisible;
+
+            // Hide grid
+            IsGridVisible = false;
+
+            // Update layout
+            UpdateLayout();
+
+            try
+            {
+                // Move to render point
+                VisualOffset = new(0, 0);
+
+                // Create bitmap
+                RenderTargetBitmap renderBitmap = new((int)ActualWidth, (int)ActualHeight, 96, 96, PixelFormats.Pbgra32);
+
+                // Create drawing context
+                DrawingVisual dv = new();
+                using (DrawingContext ctx = dv.RenderOpen())
+                {
+                    VisualBrush vb = new(this);
+                    ctx.DrawRectangle(vb, null, new Rect(new(ActualWidth, ActualHeight)));
+                }
+
+                // Render
+                renderBitmap.Render(dv);
+
+                // Encode
+                PngBitmapEncoder encoder = new();
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                // Save
+                using (FileStream fileStream = new(filePath, FileMode.Create))
+                {
+                    encoder.Save(fileStream);
+                }
+            }
+            finally
+            {
+                // Return previous grid value
+                IsGridVisible = wasGridVisible;
+            }
         }
 
         /// <summary>

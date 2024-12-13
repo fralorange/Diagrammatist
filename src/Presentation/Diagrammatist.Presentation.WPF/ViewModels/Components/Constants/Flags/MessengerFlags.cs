@@ -37,5 +37,9 @@
         /// Gets zoom reset flag.
         /// </summary>
         public const string ZoomReset = nameof(ZoomReset);  
+        /// <summary>
+        /// Gets export flag.
+        /// </summary>
+        public const string Export = nameof(Export);
     }
 }

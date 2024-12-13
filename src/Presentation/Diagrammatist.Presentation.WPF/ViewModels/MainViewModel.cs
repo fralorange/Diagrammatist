@@ -75,6 +75,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             Messenger.Send(MessengerFlags.CloseCanvases);
         }
 
+        [RelayCommand]
+        private void MenuExport()
+        {
+            Messenger.Send(MessengerFlags.Export);
+        }
+
         /// <summary>
         /// Exits from program.
         /// </summary>

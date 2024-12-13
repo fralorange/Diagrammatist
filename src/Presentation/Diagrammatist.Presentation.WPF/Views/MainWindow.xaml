@@ -40,7 +40,8 @@
                 <MenuItem Header="Save"/>
                 <MenuItem Header="Save As"/>
                 <Separator/>
-                <MenuItem Header="Export"/>
+                <MenuItem Header="Export"
+                          Command="{Binding MenuExportCommand}"/>
                 <Separator/>
                 <MenuItem Header="Exit"
                           Command="{Binding MenuExitCommand}"/>

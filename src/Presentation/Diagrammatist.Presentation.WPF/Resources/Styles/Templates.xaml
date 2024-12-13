@@ -1,27 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:figures="clr-namespace:Diagrammatist.Contracts.Figures;assembly=DiagramApp.Contracts"
+                    xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Models.Figures"
                     xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Framework.Selectors">
     <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"
-                  DataType="figures:ShapeFigureDto">
+                  DataType="figures:ShapeFigureModel">
         <Path ToolTip="{Binding Name}"
               Style="{StaticResource Shape}"
               Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="ToolboxLineFigureTemplate"
-                  DataType="figures:LineFigureDto">
+                  DataType="figures:LineFigureModel">
         <Polyline ToolTip="{Binding Name}"
                   Style="{StaticResource Line}"
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="ToolboxTextFigureTemplate"
-                  DataType="figures:TextFigureDto">
+                  DataType="figures:TextFigureModel">
         <Border ToolTip="{Binding Name}"
                 Style="{StaticResource ToolboxTextBorder}">
-            <TextBox Text="{Binding Text}"/>
+            <TextBlock Text="{Binding Text}"/>
         </Border>
     </DataTemplate>
 
@@ -32,7 +32,7 @@
     <!--#endregion-->
     <!--#region Canvas-->
     <DataTemplate x:Key="CanvasShapeFigureTemplate"
-                  DataType="figures:ShapeFigureDto">
+                  DataType="figures:ShapeFigureModel">
         <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
               Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
               Width="{Binding Width}"
@@ -51,7 +51,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasLineFigureTemplate"
-                  DataType="figures:LineFigureDto">
+                  DataType="figures:LineFigureModel">
         <Polyline Style="{StaticResource Line}"
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
@@ -60,10 +60,11 @@
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasTextFigureTemplate"
-                  DataType="figures:TextFigureDto">
-        <Border Background="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}">
+                  DataType="figures:TextFigureModel">
+        <Border>
             <Border.Style>
                 <Style TargetType="Border" BasedOn="{StaticResource TextBorder}">
+                    <Setter Property="BorderBrush" Value="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding HasOutline}"
                                      Value="False">
@@ -76,9 +77,9 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <TextBox Text="{Binding Text, Mode=TwoWay}"
-                     FontSize="{Binding FontSize}"
-                     Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"/>
+            <TextBlock Text="{Binding Text, Mode=TwoWay}"
+                       FontSize="{Binding FontSize}"
+                       Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"/>
         </Border>
     </DataTemplate>
 
@@ -89,7 +90,7 @@
     <!--#endregion-->
     <!--#region Properties-->
     <DataTemplate x:Key="BasePropertiesFigureTemplate"
-                  DataType="figures:FigureDto">
+                  DataType="figures:FigureModel">
         <UniformGrid Columns="2">
             <Label Content="Name: "/>
             <TextBox Text="{Binding Name, Mode=TwoWay}"/>
@@ -101,7 +102,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesShapeFigureTemplate"
-                  DataType="figures:ShapeFigureDto">
+                  DataType="figures:ShapeFigureModel">
         <ScrollViewer>
             <StackPanel>
                 <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
@@ -118,7 +119,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesLineFigureTemplate"
-                  DataType="figures:LineFigureDto">
+                  DataType="figures:LineFigureModel">
         <ScrollViewer>
             <StackPanel>
                 <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
@@ -137,7 +138,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesTextFigureTemplate"
-                  DataType="figures:TextFigureDto">
+                  DataType="figures:TextFigureModel">
         <ScrollViewer>
             <StackPanel>
                 <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
