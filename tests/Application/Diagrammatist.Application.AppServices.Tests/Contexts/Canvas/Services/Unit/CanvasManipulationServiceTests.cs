@@ -3,7 +3,7 @@ using Diagrammatist.Domain.Canvas;
 using FluentAssertions;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
-namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services
+namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services.Unit
 {
     /// <summary>
     /// Canvas manipulation service tests.

@@ -41,5 +41,17 @@
         /// Gets export flag.
         /// </summary>
         public const string Export = nameof(Export);
+        /// <summary>
+        /// Gets open flag.
+        /// </summary>
+        public const string Open = nameof(Open);
+        /// <summary>
+        /// Gets save flag.
+        /// </summary>
+        public const string Save = nameof(Save);
+        /// <summary>
+        /// Gets save as flag.
+        /// </summary>
+        public const string SaveAs = nameof(SaveAs);
     }
 }

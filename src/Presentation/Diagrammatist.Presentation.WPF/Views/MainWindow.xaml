@@ -30,7 +30,8 @@
             <MenuItem Header="File">
                 <MenuItem Header="New"
                           Command="{Binding MenuNewCommand}"/>
-                <MenuItem Header="Open"/>
+                <MenuItem Header="Open"
+                          Command="{Binding MenuOpenCommand}"/>
                 <Separator/>
                 <MenuItem Header="Close"
                           Command="{Binding MenuCloseCommand}"/>
@@ -38,7 +39,8 @@
                           Command="{Binding MenuCloseAllCommand}"/>
                 <Separator/>
                 <MenuItem Header="Save"/>
-                <MenuItem Header="Save As"/>
+                <MenuItem Header="Save As"
+                          Command="{Binding MenuSaveAsCommand}"/>
                 <Separator/>
                 <MenuItem Header="Export"
                           Command="{Binding MenuExportCommand}"/>

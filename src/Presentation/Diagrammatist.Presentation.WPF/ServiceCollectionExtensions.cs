@@ -1,5 +1,7 @@
-﻿using Diagrammatist.Application.AppServices.Canvas.Services;
+﻿using Diagrammatist.Application.AppServices.Canvas.Serializer;
+using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Application.AppServices.Figures.Repositories;
+using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
@@ -58,7 +60,28 @@ namespace Diagrammatist.Presentation.WPF
             #endregion
             #region Canvases
             services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
+            services.AddTransient<ICanvasSerializationService, CanvasSerializationService>();
             #endregion
+            return services;
+        }
+
+        /// <summary>
+        /// Add serializers as Singletons.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
+        public static IServiceCollection AddSerializers(this IServiceCollection services)
+        {
+            services.AddSingleton<SerializationConfigurator>();
+
+            services.AddSingleton(provider =>
+            {
+                var configurator = provider.GetRequiredService<SerializationConfigurator>();
+                return configurator.Configure();
+            });
+
+            services.AddSingleton<ICanvasSerializer, CanvasSerializer>();
+
             return services;
         }
 

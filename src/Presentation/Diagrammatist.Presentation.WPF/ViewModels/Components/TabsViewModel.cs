@@ -19,7 +19,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class TabsViewModel : ObservableRecipient
     {
         private readonly ICanvasManipulationService _canvasManipulationService;
+        private readonly ICanvasSerializationService _canvasSerializationService;
         private readonly IUndoableCommandManager _undoableCommandManager;
+
+        /// <summary>
+        /// Occurs when a request is made to open existing file.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a open action from menu button and returns file path.
+        /// </remarks>
+        public event Func<string>? OnRequestOpen;
 
         /// <summary>
         /// Gets or sets collection of <see cref="CanvasModel"/>.
@@ -39,10 +48,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private CanvasModel? _selectedCanvas;
 
-        public TabsViewModel(ICanvasManipulationService canvasManipulationService, IUndoableCommandManager undoableCommandManager)
+        public TabsViewModel(ICanvasManipulationService canvasManipulationService,
+                             IUndoableCommandManager undoableCommandManager,
+                             ICanvasSerializationService canvasSerializationService)
         {
             _canvasManipulationService = canvasManipulationService;
             _undoableCommandManager = undoableCommandManager;
+            _canvasSerializationService = canvasSerializationService;
 
             IsActive = true;
         }
@@ -57,8 +69,25 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var canvas = canvasDomain.ToModel();
 
-            Canvases.Add(canvas);
-            SelectedCanvas = canvas;
+            AddCanvas(canvas);
+        }
+
+        /// <summary>
+        /// Opens an existing canvas.
+        /// </summary>
+        private void OpenCanvas()
+        {
+            if (OnRequestOpen is null)
+            {
+                return;
+            }
+
+            var filePath = OnRequestOpen();
+
+            if (!string.IsNullOrEmpty(filePath) && _canvasSerializationService.LoadCanvas(filePath)?.ToModel() is { } loadedCanvas)
+            {
+                AddCanvas(loadedCanvas);
+            }
         }
 
         /// <summary>
@@ -93,6 +122,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 _undoableCommandManager.Execute(command);
             }
+        }
+
+        /// <summary>
+        /// Adds and select new canvas.
+        /// </summary>
+        /// <param name="canvas"></param>
+        private void AddCanvas(CanvasModel canvas)
+        {
+            Canvases.Add(canvas);
+            SelectedCanvas = canvas;
         }
 
         /// <summary>
@@ -151,6 +190,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         break;
                     case MessengerFlags.CloseCanvases:
                         CloseCanvases();
+                        break;
+                    case MessengerFlags.Open:
+                        OpenCanvas();
                         break;
                 }
             });

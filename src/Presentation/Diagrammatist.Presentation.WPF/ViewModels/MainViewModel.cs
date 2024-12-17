@@ -58,6 +58,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
+        /// Opens an existing canvas.
+        /// </summary>
+        [RelayCommand]
+        private void MenuOpen()
+        {
+            Messenger.Send(MessengerFlags.Open);
+        }
+
+        /// <summary>
         /// Closes current canvas.
         /// </summary>
         [RelayCommand]
@@ -75,6 +84,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             Messenger.Send(MessengerFlags.CloseCanvases);
         }
 
+        /// <summary>
+        /// Saves current canvas as new file.
+        /// </summary>
+        [RelayCommand]
+        private void MenuSaveAs()
+        {
+            Messenger.Send(MessengerFlags.SaveAs);
+        }
+
+        /// <summary>
+        /// Exports current canvas as bitmap file.
+        /// </summary>
         [RelayCommand]
         private void MenuExport()
         {

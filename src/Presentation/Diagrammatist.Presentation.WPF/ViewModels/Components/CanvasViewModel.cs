@@ -2,11 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Domain.Canvas.Constants;
+using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Framework.Controls.Args;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Figures;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
@@ -21,6 +22,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class CanvasViewModel : ObservableRecipient
     {
         private readonly IUndoableCommandManager _undoableCommandManager;
+        private readonly ICanvasSerializationService _canvasSerializationService;
 
         /// <summary>
         /// Occurs when a request is made to zoom current window in.
@@ -44,7 +46,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         public event Action? OnRequestZoomReset;
         /// <summary>
-        /// Occurs when a requiest is made to export current canvas as PNG.
+        /// Occurs when a request is made to save current canvas as new file.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when user initiates a save as action from menu button and returns file path.
+        /// </remarks>
+        public event Func<string>? OnRequestSaveAs;
+        /// <summary>
+        /// Occurs when a requiest is made to export current canvas as bitmap.
         /// </summary>
         /// <remarks>
         /// This event is triggered when user initiates a export action from menu button.
@@ -108,9 +117,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [ObservableProperty]
         private bool _isGridVisible = true;
 
-        public CanvasViewModel(IUndoableCommandManager undoableCommandManager)
+        public CanvasViewModel(IUndoableCommandManager undoableCommandManager,
+                               ICanvasSerializationService canvasSerializationService)
         {
             _undoableCommandManager = undoableCommandManager;
+            _canvasSerializationService = canvasSerializationService;
 
             IsActive = true;
         }
@@ -175,7 +186,25 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Exports current zoom. 
+        /// Saves current canvas as new file.
+        /// </summary>
+        private void SaveAs()
+        {
+            if (CurrentCanvas is null || OnRequestSaveAs is null)
+            {
+                return; 
+            }
+
+            string filePath = OnRequestSaveAs();
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
+            }
+        }
+
+        /// <summary>
+        /// Exports current canvas. 
         /// </summary>
         private void Export()
         {
@@ -314,6 +343,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         break;
                     case MessengerFlags.Export:
                         Export();
+                        break;
+                    case MessengerFlags.Save:
+                        break;
+                    case MessengerFlags.SaveAs:
+                        SaveAs();
                         break;
                 }
             });

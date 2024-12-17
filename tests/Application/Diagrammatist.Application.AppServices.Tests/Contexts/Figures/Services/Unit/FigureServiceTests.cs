@@ -3,7 +3,7 @@ using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Domain.Figures;
 using Moq;
 
-namespace Diagrammatist.Application.AppServices.Tests.Contexts.Figures.Services
+namespace Diagrammatist.Application.AppServices.Tests.Contexts.Figures.Services.Unit
 {
     /// <summary>
     /// A figure service tests class.

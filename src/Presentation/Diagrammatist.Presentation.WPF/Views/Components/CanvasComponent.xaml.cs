@@ -20,14 +20,20 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         {
             var viewModel = App.Current.Services.GetRequiredService<CanvasViewModel>();
 
-            viewModel.OnRequestZoomIn += ZoomIn;
-            viewModel.OnRequestZoomOut += ZoomOut;
-            viewModel.OnRequestZoomReset += ZoomReset;
-            viewModel.OnRequestExport += Export;
+            InitializeEvents(viewModel);
 
             DataContext = viewModel;
 
             InitializeComponent();
+        }
+
+        private void InitializeEvents(CanvasViewModel viewModel)
+        {
+            viewModel.OnRequestZoomIn += ZoomIn;
+            viewModel.OnRequestZoomOut += ZoomOut;
+            viewModel.OnRequestZoomReset += ZoomReset;
+            viewModel.OnRequestSaveAs += SaveAs;
+            viewModel.OnRequestExport += Export;
         }
 
         private void OnListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -57,6 +63,21 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         private void ZoomReset()
         {
             extScrollViewer.ZoomReset();
+        }
+
+        private string SaveAs()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Diagrammatist file|*.dgmf",
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                return saveFileDialog.FileName;
+            }
+
+            return string.Empty;
         }
 
         private void Export()

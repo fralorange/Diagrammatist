@@ -2,7 +2,7 @@
 using Diagrammatist.Domain.Figures;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 
-namespace Diagrammatist.Infrastructure.DataAccess.Tests.Contexts.Figures.Repositories
+namespace Diagrammatist.Infrastructure.DataAccess.Tests.Contexts.Figures.Repositories.Unit
 {
     /// <summary>
     /// A figure repository tests class.

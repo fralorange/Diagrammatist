@@ -4,7 +4,7 @@ using Diagrammatist.Domain.Canvas.Constants;
 using System.Drawing;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
-namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Helpers
+namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Helpers.Unit
 {
     /// <summary>
     /// Canvas boundary helper tests.

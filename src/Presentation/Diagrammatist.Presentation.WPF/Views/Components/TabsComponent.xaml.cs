@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
 using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.Views.Components
@@ -14,9 +15,28 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
     {
         public TabsComponent()
         {
-            InitializeComponent();
+            var viewModel = App.Current.Services.GetRequiredService<TabsViewModel>();
+
+            viewModel.OnRequestOpen += OpenCanvas;
+
+            DataContext = viewModel;
             
-            DataContext = App.Current.Services.GetService<TabsViewModel>();
+            InitializeComponent();
+        }
+
+        private string OpenCanvas()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Diagrammatist file|*.dgmf",
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                return openFileDialog.FileName; 
+            }
+
+            return string.Empty;
         }
     }
 }
