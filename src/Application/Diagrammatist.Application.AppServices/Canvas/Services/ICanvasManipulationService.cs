@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Domain.Canvas;
+using System.Drawing;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
 namespace Diagrammatist.Application.AppServices.Canvas.Services
@@ -15,10 +16,16 @@ namespace Diagrammatist.Application.AppServices.Canvas.Services
         /// <returns><see cref="CanvasEntity"/>. Canvas model.</returns>
         Task<CanvasEntity> CreateCanvasAsync(Settings settings);
         /// <summary>
-        /// Edits existing canvas settings.
+        /// Edits existing canvas settings by changing its size.
         /// </summary>
         /// <param name="canvas">Target canvas.</param>
-        /// <param name="settings">New settings.</param>
-        void UpdateCanvasSettings(CanvasEntity canvas, Settings settings);
+        /// <param name="size">New size.</param>
+        void UpdateCanvas(CanvasEntity canvas, Size size);
+        /// <summary>
+        /// Edits existing canvas settings by changing its background color.
+        /// </summary>
+        /// <param name="canvas">Target canvas.</param>
+        /// <param name="background">New background color.</param>
+        void UpdateCanvas(CanvasEntity canvas, Color background);
     }
 }

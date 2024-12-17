@@ -6,7 +6,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Canvas
     /// <summary>
     /// Diagram settings.
     /// </summary>
-    public class SettingsModel : ObservableObject
+    public partial class SettingsModel : ObservableObject
     {
         /// <summary>
         /// Gets or sets diagram file name.
@@ -14,28 +14,32 @@ namespace Diagrammatist.Presentation.WPF.Models.Canvas
         /// <remarks>
         /// This property used to set file name.
         /// </remarks>
-        public string FileName { get; set; } = string.Empty;
+        [ObservableProperty]
+        private string _fileName = string.Empty;
         /// <summary>
         /// Gets or sets diagram canvas width.
         /// </summary>
         /// <remarks>
         /// This property used to store diagram's canvas width.
         /// </remarks>
-        public int Width { get; set; }
+        [ObservableProperty]
+        private int _width;
         /// <summary>
         /// Gets or sets diagram canvas height.
         /// </summary>
         /// <remarks>
         /// This property used to store diagram's canvas height.
         /// </remarks>
-        public int Height { get; set; }
+        [ObservableProperty]
+        private int _height;
         /// <summary>
         /// Gets or sets diagram canvas background color.
         /// </summary>
         /// <remarks>
         /// This property used to store diagram background color.
         /// </remarks>
-        public Color Background { get; set; }
+        [ObservableProperty]
+        private Color _background;
         /// <summary>
         /// Gets or sets diagram type.
         /// </summary>

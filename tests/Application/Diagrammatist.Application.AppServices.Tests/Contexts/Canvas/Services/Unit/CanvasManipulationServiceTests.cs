@@ -1,6 +1,7 @@
 ﻿using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Domain.Canvas;
 using FluentAssertions;
+using System.Drawing;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
 namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services.Unit
@@ -36,33 +37,37 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services.U
         }
 
         [Fact]
-        public void EditCanvas_CanvasSettingsEditedSuccessfully()
+        public void EditCanvas_CanvasSizeChangedSuccessfully()
         {
             // Arrange
             var canvas = new CanvasEntity { Settings = new Settings() };
-
-            var newSettings = new Settings();
-
-            var newFileName = "New File";
-            var newWidth = 1024;
-            var newHeight = 512;
-
-            newSettings.FileName = newFileName;
-            newSettings.Width = newWidth;
-            newSettings.Height = newHeight;
-
             var service = new CanvasManipulationService();
 
+            var newSize = new Size(1024, 1024);
+
             // Act
-            service.UpdateCanvasSettings(canvas, newSettings);
-            canvas.Settings = newSettings;
+            service.UpdateCanvas(canvas, newSize);
 
             // Assert
             Assert.Multiple(
-                () => Assert.Equal(canvas.Settings.FileName, newFileName),
-                () => Assert.Equal(canvas.Settings.Width, newWidth),
-                () => Assert.Equal(canvas.Settings.Height, newHeight)
-            );
+                () => Assert.Equal(newSize.Width, canvas.Settings.Width),
+                () => Assert.Equal(newSize.Height, canvas.Settings.Height));
+        }
+
+        [Fact]
+        public void EditCanvas_CanvasBackgroundChangedSuccessfully()
+        {
+            // Arrange
+            var canvas = new CanvasEntity { Settings = new Settings() { Background = Color.AntiqueWhite } };
+            var service = new CanvasManipulationService();
+
+            var background = Color.Aquamarine;
+
+            // Act
+            service.UpdateCanvas(canvas, background);
+
+            // Assert
+            Assert.Equal(background, canvas.Settings.Background);
         }
     }
 }

@@ -7,6 +7,7 @@ using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
+using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels
 {
@@ -148,23 +149,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             if (currentCanvas is null)
                 return;
 
-            var settings = new SettingsModel
+            var dialogViewModel = new ChangeCanvasSizeDialogViewModel(currentCanvas.Settings.Width, currentCanvas.Settings.Height);
+
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.Size is { } size)
             {
-                Width = currentCanvas.Settings.Width,
-                Height = currentCanvas.Settings.Height,
-                FileName = currentCanvas.Settings.FileName,
-                Background = currentCanvas.Settings.Background,
-                Type = currentCanvas.Settings.Type,
-            };
-
-            var dialogViewModel = new ChangeCanvasSizeDialogViewModel(settings);
-
-            var success = _dialogService.ShowDialog(this, dialogViewModel);
-            if (success == true)
-            {
-                var newSettings = dialogViewModel.Settings!;
-
-                Messenger.Send<UpdatedSettingsMessage>(new(newSettings));
+                Messenger.Send<UpdatedSizeMessage>(new(size));
             }
         }
 

@@ -13,6 +13,7 @@ using Diagrammatist.Presentation.WPF.Models.Figures;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -51,7 +52,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user initiates a save as action from menu button and returns file path.
         /// </remarks>
-        public event Func<string>? OnRequestSaveAs;
+        public event Func<string, string>? OnRequestSaveAs;
         /// <summary>
         /// Occurs when a requiest is made to export current canvas as bitmap.
         /// </summary>
@@ -195,11 +196,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 return; 
             }
 
-            string filePath = OnRequestSaveAs();
+            var filePath = OnRequestSaveAs(CurrentCanvas.Settings.FileName);
 
             if (!string.IsNullOrEmpty(filePath))
             {
                 _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
+            }
+
+            var fileName = Path.GetFileNameWithoutExtension(filePath);
+
+            if (fileName != CurrentCanvas.Settings.FileName)
+            {
+                CurrentCanvas.Settings.FileName = fileName;
             }
         }
 

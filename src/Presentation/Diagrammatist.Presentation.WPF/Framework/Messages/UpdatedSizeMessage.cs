@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
+using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.Framework.Messages
 {
@@ -7,11 +8,11 @@ namespace Diagrammatist.Presentation.WPF.Framework.Messages
     /// A message class that derives from <see cref="ValueChangedMessage{T}"/> of <see cref="SettingsModel"/>.
     /// </summary>
     /// <remarks>
-    /// This class represents a message that sends <see cref="SettingsModel"/> from one to another instance.
+    /// This class represents a message that sends <see cref="Size"/> from one to another instance.
     /// </remarks>
-    internal class UpdatedSettingsMessage : ValueChangedMessage<SettingsModel>
+    internal class UpdatedSizeMessage : ValueChangedMessage<Size>
     {
-        public UpdatedSettingsMessage(SettingsModel value) : base(value)
+        public UpdatedSizeMessage(Size value) : base(value)
         {
         }
     }

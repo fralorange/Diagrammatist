@@ -9,6 +9,7 @@ using Diagrammatist.Presentation.WPF.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -91,32 +92,26 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Updates existing <see cref="CanvasModel"/> settings.
+        /// Updates current canvas size.
         /// </summary>
-        /// <param name="newSettings">New settings.</param>
-        private void UpdateCanvas(SettingsModel newSettings)
+        /// <param name="newSize">New size.</param>
+        private void UpdateCanvasSize(Size newSize)
         {
             if (SelectedCanvas is not null)
             {
-                var oldSettings = SelectedCanvas.Settings;
-                var currentCanvas = SelectedCanvas;
+                var oldSize = new Size(SelectedCanvas.Settings.Width, SelectedCanvas.Settings.Height);
+                var currentCanvas = SelectedCanvas.ToDomain();
 
                 var command = CommonUndoableHelper.CreateUndoableCommand(
                     () =>
                     {
-                        var settingsDomain = newSettings.ToDomain();
-
-                        _canvasManipulationService.UpdateCanvasSettings(currentCanvas.ToDomain(), settingsDomain);
-
-                        currentCanvas.Settings = settingsDomain.ToModel();
+                        _canvasManipulationService.UpdateCanvas(currentCanvas, newSize);
+                        SelectedCanvas.Settings = currentCanvas.Settings.ToModel();
                     },
                     () =>
                     {
-                        var settingsDomain = oldSettings.ToDomain();
-
-                        _canvasManipulationService.UpdateCanvasSettings(currentCanvas.ToDomain(), settingsDomain);
-
-                        currentCanvas.Settings = settingsDomain.ToModel();
+                        _canvasManipulationService.UpdateCanvas(currentCanvas, oldSize);
+                        SelectedCanvas.Settings = currentCanvas.Settings.ToModel();
                     }
                 );
 
@@ -176,9 +171,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 });
             });
 
-            Messenger.Register<TabsViewModel, UpdatedSettingsMessage>(this, (r, m) =>
+            Messenger.Register<TabsViewModel, UpdatedSizeMessage>(this, (r, m) =>
             {
-                UpdateCanvas(m.Value);
+                UpdateCanvasSize(m.Value);
             });
 
             Messenger.Register<TabsViewModel, string>(this, (r, m) =>

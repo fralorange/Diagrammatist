@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Diagrammatist.Presentation.WPF.Models.Canvas;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
     public partial class ChangeCanvasSizeDialogViewModel : ObservableValidator, IModalDialogViewModel
     {
-        private SettingsModel _settings;
+        private Size _size;
 
-        public SettingsModel? Settings => (DialogResult == true) ? _settings : null;
+        public Size? Size => (DialogResult == true) ? _size : null;
 
         private bool? _dialogResult;
 
@@ -20,27 +20,25 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             private set => SetProperty(ref _dialogResult, value);
         }
 
-        /// <inheritdoc cref="DiagramSettingsDto.Width"/>
         [Required]
         [Range(400, 2000)]
-        public int Width
-        {
-            get => _settings.Width;
-            set => SetProperty(_settings.Width, value, _settings, (s, w) => s.Width = w, true);
-        }
+        [ObservableProperty]
+        private int _width;
 
-        /// <inheritdoc cref="DiagramSettingsDto.Height"/>
         [Required]
         [Range(300, 2000)]
-        public int Height
+        [ObservableProperty]
+        private int _height;
+
+        public ChangeCanvasSizeDialogViewModel(int width, int height)
         {
-            get => _settings.Height;
-            set => SetProperty(_settings.Height, value, _settings, (s, h) => s.Height = h, true);
+            Width = width;
+            Height = height;
         }
 
-        public ChangeCanvasSizeDialogViewModel(SettingsModel settings)
+        private void ApplySize()
         {
-            _settings = settings;
+            _size = new(Width, Height);
         }
 
         [RelayCommand]
@@ -52,6 +50,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             {
                 return;
             }
+
+            ApplySize();
 
             DialogResult = true;
         }

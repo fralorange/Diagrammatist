@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Application.AppServices.Canvas.Helpers;
 using Diagrammatist.Domain.Canvas;
+using System.Drawing;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
 namespace Diagrammatist.Application.AppServices.Canvas.Services
@@ -20,9 +21,22 @@ namespace Diagrammatist.Application.AppServices.Canvas.Services
         }
 
         /// <inheritdoc/>
-        public void UpdateCanvasSettings(CanvasEntity canvas, Settings settings)
+        public void UpdateCanvas(CanvasEntity canvas, Size size)
         {
+            var settings = canvas.Settings;
+
+            settings.Width = size.Width;
+            settings.Height = size.Height;
+
             CanvasBoundaryHelper.UpdateCanvasBounds(canvas);
+        }
+
+        /// <inheritdoc/>
+        public void UpdateCanvas(CanvasEntity canvas, Color background)
+        {
+            var settings = canvas.Settings;
+
+            settings.Background = background;
         }
     }
 }

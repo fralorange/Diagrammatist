@@ -65,11 +65,12 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             extScrollViewer.ZoomReset();
         }
 
-        private string SaveAs()
+        private string SaveAs(string fileName)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Diagrammatist file|*.dgmf",
+                FileName = fileName,
             };
 
             if (saveFileDialog.ShowDialog() == true)
