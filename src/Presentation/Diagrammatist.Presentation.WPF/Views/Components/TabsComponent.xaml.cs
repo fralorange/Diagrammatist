@@ -1,6 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.Views.Components
@@ -17,11 +18,19 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         {
             var viewModel = App.Current.Services.GetRequiredService<TabsViewModel>();
 
-            viewModel.OnRequestOpen += OpenCanvas;
+            viewModel.RequestOpen += OpenCanvas;
+            viewModel.OpenFailed += OpenFail;
 
             DataContext = viewModel;
             
             InitializeComponent();
+        }
+
+        private void OpenFail()
+        {
+            // TO-DO: move into IDialogService or come up with a better idea of showing warnings to user
+            // it's still shouldn't be invoked from code-behind, i think.
+            MessageBox.Show("A canvas with that name is already open.", "PLACEHOLDER MESSAGE BOX");
         }
 
         private string OpenCanvas()

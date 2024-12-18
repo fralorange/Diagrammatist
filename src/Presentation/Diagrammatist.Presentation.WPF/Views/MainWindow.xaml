@@ -38,7 +38,8 @@
                 <MenuItem Header="Close all"
                           Command="{Binding MenuCloseAllCommand}"/>
                 <Separator/>
-                <MenuItem Header="Save"/>
+                <MenuItem Header="Save"
+                          Command="{Binding MenuSaveCommand}"/>
                 <MenuItem Header="Save As"
                           Command="{Binding MenuSaveAsCommand}"/>
                 <Separator/>

@@ -3,11 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
-using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
-using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels
 {
@@ -92,6 +90,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         private void MenuSaveAs()
         {
             Messenger.Send(MessengerFlags.SaveAs);
+        }
+
+        /// <summary>
+        /// Saves current canvas.
+        /// </summary>
+        [RelayCommand]
+        private void MenuSave()
+        {
+            Messenger.Send(MessengerFlags.Save);
         }
 
         /// <summary>

@@ -31,35 +31,35 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user initiates a zoom in action from menu button.
         /// </remarks>
-        public event Action? OnRequestZoomIn;
+        public event Action? RequestZoomIn;
         /// <summary>
         /// Occurs when a request is made to zoom current window out.
         /// </summary>
         /// <remarks>
         /// This event is triggered when user initiates a zoom out action from menu button.
         /// </remarks>
-        public event Action? OnRequestZoomOut;
+        public event Action? RequestZoomOut;
         /// <summary>
         /// Occurs when a request is made to reset current window zoom.
         /// </summary>
         /// <remarks>
         /// This event is triggered when user initiates a zoom reset action from menu button.
         /// </remarks>
-        public event Action? OnRequestZoomReset;
+        public event Action? RequestZoomReset;
         /// <summary>
         /// Occurs when a request is made to save current canvas as new file.
         /// </summary>
         /// <remarks>
         /// This event is triggered when user initiates a save as action from menu button and returns file path.
         /// </remarks>
-        public event Func<string, string>? OnRequestSaveAs;
+        public event Func<string, string>? RequestSaveAs;
         /// <summary>
         /// Occurs when a requiest is made to export current canvas as bitmap.
         /// </summary>
         /// <remarks>
         /// This event is triggered when user initiates a export action from menu button.
         /// </remarks>
-        public event Action? OnRequestExport;
+        public event Action? RequestExport;
 
         private CanvasModel? _currentCanvas;
 
@@ -88,6 +88,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             get => _currentMouseMode;
             private set => SetProperty(ref _currentMouseMode, value);
         }
+
+        /// <summary>
+        /// Gets or sets current file path to the current canvas.
+        /// </summary>
+        /// <remarks>
+        /// This property used to configure save options.
+        /// </remarks>
+        [ObservableProperty]
+        private string _filePath = string.Empty;
 
         /// <summary>
         /// Gets or sets collection of <see cref="FigureModel"/>.
@@ -150,9 +159,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void ZoomIn()
         {
-            if (OnRequestZoomIn is not null)
+            if (RequestZoomIn is not null)
             {
-                OnRequestZoomIn();
+                RequestZoomIn();
             }
         }
 
@@ -161,9 +170,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void ZoomOut()
         {
-            if (OnRequestZoomOut is not null)
+            if (RequestZoomOut is not null)
             {
-                OnRequestZoomOut();
+                RequestZoomOut();
             }
         }
 
@@ -172,9 +181,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void ZoomReset()
         {
-            if (OnRequestZoomReset is not null)
+            if (RequestZoomReset is not null)
             {
-                OnRequestZoomReset();
+                RequestZoomReset();
             }
         }
 
@@ -191,23 +200,45 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void SaveAs()
         {
-            if (CurrentCanvas is null || OnRequestSaveAs is null)
+            if (CurrentCanvas is null || RequestSaveAs is null)
             {
-                return; 
+                return;
             }
 
-            var filePath = OnRequestSaveAs(CurrentCanvas.Settings.FileName);
+            var filePath = RequestSaveAs(CurrentCanvas.Settings.FileName);
 
             if (!string.IsNullOrEmpty(filePath))
             {
                 _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
+
+                FilePath = filePath;
             }
 
             var fileName = Path.GetFileNameWithoutExtension(filePath);
 
-            if (fileName != CurrentCanvas.Settings.FileName)
+            if (!string.IsNullOrEmpty(filePath) && fileName != CurrentCanvas.Settings.FileName)
             {
                 CurrentCanvas.Settings.FileName = fileName;
+            }
+        }
+
+        /// <summary>
+        /// Saves current canvas.
+        /// </summary>
+        private void Save()
+        {
+            if (CurrentCanvas is null)
+            { 
+                return; 
+            }
+
+            if (!File.Exists(FilePath))
+            {
+                SaveAs();
+            }
+            else
+            {
+                _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), FilePath);
             }
         }
 
@@ -216,9 +247,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void Export()
         {
-            if (CurrentCanvas is not null && OnRequestExport is not null)
+            if (CurrentCanvas is not null && RequestExport is not null)
             {
-                OnRequestExport();
+                RequestExport();
             }
         }
 
@@ -306,9 +337,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 Figures = CurrentCanvas?.Figures;
                 // Center canvas.
-                if (OnRequestZoomReset is not null)
+                if (RequestZoomReset is not null)
                 {
-                    OnRequestZoomReset();
+                    RequestZoomReset();
                 }
             });
             // Change mouse mode.
@@ -321,7 +352,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 SelectedFigure = m.NewValue;
             });
-            // Answer request fro canvas.
+            // Get file path associated with current canvas.
+            Messenger.Register<CanvasViewModel, CanvasFilePathMessage>(this, (r, m) =>
+            {
+                FilePath = m.Value;
+            });
+            // Answer request from canvas.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
             {
                 m.Reply(r.CurrentCanvas);
@@ -353,6 +389,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         Export();
                         break;
                     case MessengerFlags.Save:
+                        Save();
                         break;
                     case MessengerFlags.SaveAs:
                         SaveAs();

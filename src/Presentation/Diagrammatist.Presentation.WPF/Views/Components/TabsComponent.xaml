@@ -33,10 +33,5 @@
                 <StackPanel Orientation="Horizontal"/>
             </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="SelectionChanged">
-                <i:InvokeCommandAction Command="{Binding CanvasChangedCommand}"/>
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
     </ListBox>
 </UserControl>

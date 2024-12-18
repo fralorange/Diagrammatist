@@ -29,7 +29,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user initiates a open action from menu button and returns file path.
         /// </remarks>
-        public event Func<string>? OnRequestOpen;
+        public event Func<string>? RequestOpen;
+
+        /// <summary>
+        /// Occurs when canvas can't be open.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when app can't open canvas (e.g. when canvas already open).
+        /// </remarks>
+        public event Action? OpenFailed;
 
         /// <summary>
         /// Gets or sets collection of <see cref="CanvasModel"/>.
@@ -38,6 +46,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to store canvases in tabs UI.
         /// </remarks>
         public ObservableCollection<CanvasModel> Canvases { get; } = [];
+
+        private readonly Dictionary<CanvasModel, string> _canvasFilePathes = [];
 
         /// <summary>
         /// Gets or sets <see cref="CanvasModel"/>.
@@ -78,16 +88,27 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void OpenCanvas()
         {
-            if (OnRequestOpen is null)
+            if (RequestOpen is null)
             {
                 return;
             }
 
-            var filePath = OnRequestOpen();
+            var filePath = RequestOpen();
 
-            if (!string.IsNullOrEmpty(filePath) && _canvasSerializationService.LoadCanvas(filePath)?.ToModel() is { } loadedCanvas)
+            if (string.IsNullOrEmpty(filePath))
             {
-                AddCanvas(loadedCanvas);
+                return;
+            }
+
+            if (_canvasFilePathes.ContainsValue(filePath) && OpenFailed is not null)
+            {
+                OpenFailed();
+                return;
+            }
+
+            if (_canvasSerializationService.LoadCanvas(filePath)?.ToModel() is { } loadedCanvas)
+            {
+                AddCanvas(loadedCanvas, filePath);
             }
         }
 
@@ -120,12 +141,27 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Adds and select new canvas.
+        /// Adds and selects new canvas.
         /// </summary>
         /// <param name="canvas"></param>
         private void AddCanvas(CanvasModel canvas)
         {
             Canvases.Add(canvas);
+            _canvasFilePathes.Add(canvas, string.Empty);
+
+            SelectedCanvas = canvas;
+        }
+
+        /// <summary>
+        /// Adds and selects new canvas with file path saved.
+        /// </summary>
+        /// <param name="canvas"></param>
+        /// <param name="filePath"></param>
+        private void AddCanvas(CanvasModel canvas, string filePath)
+        {
+            Canvases.Add(canvas);
+            _canvasFilePathes.Add(canvas, filePath);
+
             SelectedCanvas = canvas;
         }
 
@@ -136,6 +172,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void CloseCanvas(CanvasModel target)
         {
+            _canvasFilePathes.Remove(target);
             Canvases.Remove(target);
         }
 
@@ -150,13 +187,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        /// <summary>
-        /// Invokes when canvas changes. Updates <see cref="_undoableCommandManager"/> content.
-        /// </summary>
-        [RelayCommand]
-        private void CanvasChanged()
+        partial void OnSelectedCanvasChanged(CanvasModel? value)
         {
-            _undoableCommandManager.UpdateContent(SelectedCanvas);
+            if (value is null)
+            {
+                return;
+            }
+
+            if (_canvasFilePathes.TryGetValue(value, out var canvasFilePath))
+            {
+                Messenger.Send(new CanvasFilePathMessage(canvasFilePath));
+            }
+
+            _undoableCommandManager.UpdateContent(value);
         }
 
         protected override void OnActivated()

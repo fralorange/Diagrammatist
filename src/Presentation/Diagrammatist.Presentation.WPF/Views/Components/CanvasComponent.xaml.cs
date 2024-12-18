@@ -29,11 +29,11 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         private void InitializeEvents(CanvasViewModel viewModel)
         {
-            viewModel.OnRequestZoomIn += ZoomIn;
-            viewModel.OnRequestZoomOut += ZoomOut;
-            viewModel.OnRequestZoomReset += ZoomReset;
-            viewModel.OnRequestSaveAs += SaveAs;
-            viewModel.OnRequestExport += Export;
+            viewModel.RequestZoomIn += ZoomIn;
+            viewModel.RequestZoomOut += ZoomOut;
+            viewModel.RequestZoomReset += ZoomReset;
+            viewModel.RequestSaveAs += SaveAs;
+            viewModel.RequestExport += Export;
         }
 
         private void OnListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
