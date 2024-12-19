@@ -9,8 +9,9 @@ using Diagrammatist.Presentation.WPF.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Windows;
 using System.Windows.Threading;
+using Size = System.Drawing.Size;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -30,7 +31,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when user initiates a open action from menu button and returns file path.
         /// </remarks>
         public event Func<string>? RequestOpen;
-
         /// <summary>
         /// Occurs when canvas can't be open.
         /// </summary>
@@ -38,6 +38,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when app can't open canvas (e.g. when canvas already open).
         /// </remarks>
         public event Action? OpenFailed;
+        /// <summary>
+        /// Occurs when canvas can't be closed yet.
+        /// </summary>
+        /// <remarks>
+        /// This event is triggered when app can't close canvas (e.g. when changes haven't been saved).
+        /// </remarks>
+        public event Func<MessageBoxResult>? CloseFailed;
 
         /// <summary>
         /// Gets or sets collection of <see cref="CanvasModel"/>.
@@ -59,9 +66,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private CanvasModel? _selectedCanvas;
 
-        /// <inheritdoc cref="ITrackableCommandManager.HasChanges"/>
-        public bool HasChanges => _trackableCommandManager.HasChanges;
-
         public TabsViewModel(ICanvasManipulationService canvasManipulationService,
                              ITrackableCommandManager trackableCommandManager,
                              ICanvasSerializationService canvasSerializationService)
@@ -70,9 +74,43 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
 
-            _trackableCommandManager.StateChanged += OnStateChanged;
-
             IsActive = true;
+        }
+
+        /// <summary>
+        /// Adds and selects new canvas.
+        /// </summary>
+        /// <param name="canvas"></param>
+        private void AddCanvas(CanvasModel canvas)
+        {
+            Canvases.Add(canvas);
+            _canvasFilePathes.Add(canvas, string.Empty);
+
+            SelectedCanvas = canvas;
+        }
+
+        /// <summary>
+        /// Adds and selects new canvas with file path saved.
+        /// </summary>
+        /// <param name="canvas"></param>
+        /// <param name="filePath"></param>
+        private void AddCanvas(CanvasModel canvas, string filePath)
+        {
+            Canvases.Add(canvas);
+            _canvasFilePathes.Add(canvas, filePath);
+
+            SelectedCanvas = canvas;
+        }
+
+        /// <summary>
+        /// Removes canvas from all buffers.
+        /// </summary>
+        /// <param name="canvas"></param>
+        private void RemoveCanvas(CanvasModel canvas)
+        {
+            _canvasFilePathes.Remove(canvas);
+            Canvases.Remove(canvas);
+            _trackableCommandManager.DeleteContent(canvas);
         }
 
         /// <summary>
@@ -146,39 +184,33 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Adds and selects new canvas.
-        /// </summary>
-        /// <param name="canvas"></param>
-        private void AddCanvas(CanvasModel canvas)
-        {
-            Canvases.Add(canvas);
-            _canvasFilePathes.Add(canvas, string.Empty);
-
-            SelectedCanvas = canvas;
-        }
-
-        /// <summary>
-        /// Adds and selects new canvas with file path saved.
-        /// </summary>
-        /// <param name="canvas"></param>
-        /// <param name="filePath"></param>
-        private void AddCanvas(CanvasModel canvas, string filePath)
-        {
-            Canvases.Add(canvas);
-            _canvasFilePathes.Add(canvas, filePath);
-
-            SelectedCanvas = canvas;
-        }
-
-        /// <summary>
         /// Deletes existing <see cref="CanvasModel"/> from <see cref="Canvases"/>.
         /// </summary>
         /// <param name="target">Target canvas.</param>
         [RelayCommand]
         private void CloseCanvas(CanvasModel target)
         {
-            _canvasFilePathes.Remove(target);
-            Canvases.Remove(target);
+            if (CloseFailed is null)
+            {
+                return;
+            }
+
+            if (target.HasChanges)
+            {
+                var closeResult = CloseFailed();
+
+                switch (closeResult)
+                {
+                    case MessageBoxResult.Cancel:
+                        return;
+                    case MessageBoxResult.Yes:
+                        SelectedCanvas = target;
+                        Messenger.Send(CommandFlags.Save);
+                        break;
+                }
+            }
+
+            RemoveCanvas(target);
         }
 
         private void CloseCanvases()
@@ -192,22 +224,26 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        private void OnStateChanged(object? sender, EventArgs e)
+        private void SaveAllCanvases()
         {
-            OnPropertyChanged(nameof(HasChanges));
+            if (Canvases.Count > 0)
+            {
+                foreach (var canvas in Canvases.ToList())
+                {
+                    SelectedCanvas = canvas;
+                    Messenger.Send(CommandFlags.Save);
+                }
+            }
         }
 
         partial void OnSelectedCanvasChanged(CanvasModel? value)
         {
-            if (value is null)
-            {
-                return;
-            }
-
-            if (_canvasFilePathes.TryGetValue(value, out var canvasFilePath))
+            if (value is not null && _canvasFilePathes.TryGetValue(value, out var canvasFilePath))
             {
                 Messenger.Send(new CanvasFilePathMessage(canvasFilePath));
             }
+
+            Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCanvas, value is not null));
 
             _trackableCommandManager.UpdateContent(value);
         }
@@ -233,14 +269,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 switch (m)
                 {
-                    case MessengerFlags.CloseCanvas when SelectedCanvas is not null:
+                    case CommandFlags.CloseCanvas when SelectedCanvas is not null:
                         CloseCanvas(SelectedCanvas);
                         break;
-                    case MessengerFlags.CloseCanvases:
+                    case CommandFlags.CloseCanvases:
                         CloseCanvases();
                         break;
-                    case MessengerFlags.Open:
+                    case CommandFlags.Open:
                         OpenCanvas();
+                        break;
+                    case CommandFlags.SaveAll:
+                        SaveAllCanvases();
                         break;
                 }
             });

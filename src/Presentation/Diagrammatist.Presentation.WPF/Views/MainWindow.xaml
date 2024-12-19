@@ -34,41 +34,56 @@
                           Command="{Binding MenuOpenCommand}"/>
                 <Separator/>
                 <MenuItem Header="Close"
-                          Command="{Binding MenuCloseCommand}"/>
+                          Command="{Binding MenuCloseCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
                 <MenuItem Header="Close all"
-                          Command="{Binding MenuCloseAllCommand}"/>
+                          Command="{Binding MenuCloseAllCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
                 <MenuItem Header="Save"
-                          Command="{Binding MenuSaveCommand}"/>
+                          Command="{Binding MenuSaveCommand}"
+                          IsEnabled="{Binding HasChangesFlag}"/>
                 <MenuItem Header="Save As"
-                          Command="{Binding MenuSaveAsCommand}"/>
+                          Command="{Binding MenuSaveAsCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
+                <MenuItem Header="Save All"
+                          Command="{Binding MenuSaveAllCommand}"
+                          IsEnabled="{Binding HasGlobalChangesFlag}"/>
                 <Separator/>
                 <MenuItem Header="Export"
-                          Command="{Binding MenuExportCommand}"/>
+                          Command="{Binding MenuExportCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
                 <MenuItem Header="Exit"
                           Command="{Binding MenuExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Undo"
-                          Command="{Binding MenuUndoCommand}"/>
+                          Command="{Binding MenuUndoCommand}"
+                          IsEnabled="{Binding HasUndoFlag}"/>
                 <MenuItem Header="Redo"
-                          Command="{Binding MenuRedoCommand}"/>
+                          Command="{Binding MenuRedoCommand}"
+                          IsEnabled="{Binding HasRedoFlag}"/>
             </MenuItem>
             <MenuItem Header="Canvas">
                 <MenuItem Header="Change size"
-                          Command="{Binding MenuChangeSizeCommand}"/>
+                          Command="{Binding MenuChangeSizeCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Zoom In"
-                          Command="{Binding MenuZoomInCommand}"/>
+                          Command="{Binding MenuZoomInCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
                 <MenuItem Header="Zoom Out"
-                          Command="{Binding MenuZoomOutCommand}"/>
+                          Command="{Binding MenuZoomOutCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
                 <MenuItem Header="Reset Zoom"
-                          Command="{Binding MenuZoomResetCommand}"/>
+                          Command="{Binding MenuZoomResetCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
                 <MenuItem Header="Enable Grid"
-                          Command="{Binding MenuEnableGridCommand}"/>
+                          Command="{Binding MenuEnableGridCommand}"
+                          IsEnabled="{Binding HasCanvasFlag}"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="View Help"

@@ -133,6 +133,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
 
+            _trackableCommandManager.StateChanged += OnStateChanged;
+
             IsActive = true;
         }
 
@@ -210,6 +212,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             if (!string.IsNullOrEmpty(filePath))
             {
                 _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
+                _trackableCommandManager.MarkSaved();
 
                 FilePath = filePath;
             }
@@ -220,8 +223,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 CurrentCanvas.Settings.FileName = fileName;
             }
-
-            _trackableCommandManager.MarkSaved();
         }
 
         /// <summary>
@@ -230,8 +231,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private void Save()
         {
             if (CurrentCanvas is null)
-            { 
-                return; 
+            {
+                return;
             }
 
             if (!File.Exists(FilePath))
@@ -241,9 +242,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             else
             {
                 _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), FilePath);
+                _trackableCommandManager.MarkSaved();
             }
-
-            _trackableCommandManager.MarkSaved();
         }
 
         /// <summary>
@@ -330,6 +330,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         #endregion
 
+        private void OnStateChanged(object? sender, EventArgs e)
+        {
+            if (CurrentCanvas is not null)
+            {
+                CurrentCanvas.HasChanges = _trackableCommandManager.HasChanges;
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
@@ -371,31 +379,31 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 switch (m)
                 {
-                    case MessengerFlags.Undo:
+                    case CommandFlags.Undo:
                         Undo();
                         break;
-                    case MessengerFlags.Redo:
+                    case CommandFlags.Redo:
                         Redo();
                         break;
-                    case MessengerFlags.ZoomIn:
+                    case CommandFlags.ZoomIn:
                         ZoomIn();
                         break;
-                    case MessengerFlags.ZoomOut:
+                    case CommandFlags.ZoomOut:
                         ZoomOut();
                         break;
-                    case MessengerFlags.ZoomReset:
+                    case CommandFlags.ZoomReset:
                         ZoomReset();
                         break;
-                    case MessengerFlags.EnableGrid:
+                    case CommandFlags.EnableGrid:
                         EnableGrid();
                         break;
-                    case MessengerFlags.Export:
+                    case CommandFlags.Export:
                         Export();
                         break;
-                    case MessengerFlags.Save:
+                    case CommandFlags.Save:
                         Save();
                         break;
-                    case MessengerFlags.SaveAs:
+                    case CommandFlags.SaveAs:
                         SaveAs();
                         break;
                 }

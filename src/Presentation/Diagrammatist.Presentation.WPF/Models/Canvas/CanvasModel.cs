@@ -61,5 +61,14 @@ namespace Diagrammatist.Presentation.WPF.Models.Canvas
         /// This property used to set drawing context for canvas.
         /// </remarks>
         public ObservableCollection<FigureModel> Figures { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets 'has changes' flag.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether canvas has changes or not.
+        /// </remarks>
+        [ObservableProperty]
+        private bool _hasChanges;
     }
 }

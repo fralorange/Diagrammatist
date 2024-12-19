@@ -22,9 +22,9 @@
                      Margin="20"
                      Columns="2">
             <Label Content="Width:"/>
-            <TextBox Text="{Binding Width}"/>
+            <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Height:"/>
-            <TextBox Text="{Binding Height}"/>
+            <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </UniformGrid>
 
         <StackPanel Orientation="Horizontal"

@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Concurrent;
+
 namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
 {
     /// <summary>
@@ -8,15 +9,28 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
     {
         private readonly IUndoableCommandManager _innerManager;
 
-        /// <inheritdoc/>
-        public event EventHandler<EventArgs>? StateChanged;
+        private readonly ConcurrentDictionary<object, bool> _changesLayer = [];
+
+        private object? CurrentKey { get; set; }
 
         /// <inheritdoc/>
+        public event EventHandler<EventArgs>? StateChanged;
+        /// <inheritdoc/>
+        public event EventHandler<EventArgs>? OperationPerformed;
+
+        /// <inheritdoc/>
+        public bool HasGlobalChanges => _changesLayer.Any(kv => kv.Value);
+        /// <inheritdoc/>
         public bool HasChanges { get; private set; }
+        /// <inheritdoc/>
+        public bool CanUndo => _innerManager.CanUndo;
+        /// <inheritdoc/>
+        public bool CanRedo => _innerManager.CanRedo;
 
         public TrackableCommandManager(IUndoableCommandManager innerManager)
         {
             _innerManager = innerManager;
+            _innerManager.OperationPerformed += (sender, args) => OperationPerformed?.Invoke(this, args);
         }
 
         /// <inheritdoc/>
@@ -54,11 +68,39 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
         public void UpdateContent(object? key)
         {
             _innerManager.UpdateContent(key);
+
+            CurrentKey = key;
+
+            if (CurrentKey is not null && !_changesLayer.TryAdd(CurrentKey, false) && _changesLayer.TryGetValue(CurrentKey, out var changes))
+            {
+                HasChanges = changes;
+            } else
+            {
+                HasChanges = false;
+            }
+        }
+
+        public void DeleteContent(object? key)
+        {
+            _innerManager.DeleteContent(key);
+
+            CurrentKey = null;
+
+            if (key is not null)
+            {
+                _changesLayer.Remove(key, out var _);
+            }
         }
 
         private void ChangeState(bool state)
         {
             HasChanges = state;
+
+            if (CurrentKey is not null && _changesLayer.ContainsKey(CurrentKey))
+            {
+                _changesLayer[CurrentKey] = state;
+            }
+
             StateChanged?.Invoke(null, new());
         }
     }

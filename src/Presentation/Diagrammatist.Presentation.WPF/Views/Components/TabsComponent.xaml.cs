@@ -20,10 +20,17 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
             viewModel.RequestOpen += OpenCanvas;
             viewModel.OpenFailed += OpenFail;
+            viewModel.CloseFailed += CloseFail;
 
             DataContext = viewModel;
             
             InitializeComponent();
+        }
+
+        private MessageBoxResult CloseFail()
+        {
+            // TO-DO: move into IDialogService, the same message as when trying to exit unsaved app.
+            return MessageBoxResult.No;
         }
 
         private void OpenFail()

@@ -3,13 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
              mc:Ignorable="d">
     <ListBox ItemsSource="{Binding Canvases}"
-             SelectedItem="{Binding SelectedCanvas, Mode=TwoWay}"
+             SelectedItem="{Binding SelectedCanvas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
              SelectionMode="Single">
         <ListBox.Resources>
             <ContextMenu x:Key="CanvasMenu">
@@ -30,7 +29,7 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="Text" Value="{Binding Settings.FileName}" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DataContext.HasChanges, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                <DataTrigger Binding="{Binding HasChanges}" 
                                              Value="True">
                                     <Setter Property="Text" Value="{Binding Settings.FileName, StringFormat={}{0}*}" />
                                 </DataTrigger>

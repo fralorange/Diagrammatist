@@ -32,19 +32,34 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// </remarks>
         public event Action? OnRequestClose;
 
-        /// <inheritdoc cref="ITrackableCommandManager.H"/>
-        public bool HasChanges => _trackableCommandManager.HasChanges;
+        #region MenuFlags
+        /// <inheritdoc cref="ITrackableCommandManager.HasGlobalChanges"/>
+        public bool HasGlobalChangesFlag => _trackableCommandManager.HasGlobalChanges;
+        /// <inheritdoc cref="ITrackableCommandManager.HasChanges"/>
+        public bool HasChangesFlag => _trackableCommandManager.HasChanges;
+        /// <inheritdoc cref="IUndoableCommandManager.CanUndo"/>
+        public bool HasUndoFlag => _trackableCommandManager.CanUndo;
+        /// <inheritdoc cref="IUndoableCommandManager.CanRedo"/>
+        public bool HasRedoFlag => _trackableCommandManager.CanRedo;
+        /// <summary>
+        /// Gets or sets 'has canvas' flag.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether app has a canvas on the screen right now or not.
+        /// </remarks>
+        [ObservableProperty]
+        private bool _hasCanvasFlag;
+        #endregion
 
         public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
         {
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
-        }
 
-        /// <inheritdoc cref="MenuSave"/>
-        public void Save()
-        {
-            MenuSave();
+            _trackableCommandManager.StateChanged += OnStateChanged;
+            _trackableCommandManager.OperationPerformed += OnOperationPerformed;
+
+            IsActive = true;
         }
 
         #region Menu
@@ -74,7 +89,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuOpen()
         {
-            Messenger.Send(MessengerFlags.Open);
+            Messenger.Send(CommandFlags.Open);
         }
 
         /// <summary>
@@ -83,7 +98,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuClose()
         {
-            Messenger.Send(MessengerFlags.CloseCanvas);
+            Messenger.Send(CommandFlags.CloseCanvas);
         }
 
         /// <summary>
@@ -92,7 +107,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuCloseAll()
         {
-            Messenger.Send(MessengerFlags.CloseCanvases);
+            Messenger.Send(CommandFlags.CloseCanvases);
         }
 
         /// <summary>
@@ -101,16 +116,25 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuSaveAs()
         {
-            Messenger.Send(MessengerFlags.SaveAs);
+            Messenger.Send(CommandFlags.SaveAs);
+        }
+
+        /// <summary>
+        /// Saves all canvases.
+        /// </summary>
+        [RelayCommand]
+        public void MenuSaveAll()
+        {
+            Messenger.Send(CommandFlags.SaveAll);
         }
 
         /// <summary>
         /// Saves current canvas.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand()]
         private void MenuSave()
         {
-            Messenger.Send(MessengerFlags.Save);
+            Messenger.Send(CommandFlags.Save);
         }
 
         /// <summary>
@@ -119,7 +143,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuExport()
         {
-            Messenger.Send(MessengerFlags.Export);
+            Messenger.Send(CommandFlags.Export);
         }
 
         /// <summary>
@@ -143,7 +167,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuUndo()
         {
-            Messenger.Send(MessengerFlags.Undo);
+            Messenger.Send(CommandFlags.Undo);
         }
 
         /// <summary>
@@ -152,7 +176,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuRedo()
         {
-            Messenger.Send(MessengerFlags.Redo);
+            Messenger.Send(CommandFlags.Redo);
         }
         #endregion
         #region Canvas
@@ -185,7 +209,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuZoomIn()
         {
-            Messenger.Send(MessengerFlags.ZoomIn);
+            Messenger.Send(CommandFlags.ZoomIn);
         }
 
         /// <summary>
@@ -194,7 +218,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuZoomOut()
         {
-            Messenger.Send(MessengerFlags.ZoomOut);
+            Messenger.Send(CommandFlags.ZoomOut);
         }
 
         /// <summary>
@@ -203,7 +227,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuZoomReset()
         {
-            Messenger.Send(MessengerFlags.ZoomReset);
+            Messenger.Send(CommandFlags.ZoomReset);
         }
 
         /// <summary>
@@ -212,7 +236,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuEnableGrid()
         {
-            Messenger.Send(MessengerFlags.EnableGrid);
+            Messenger.Send(CommandFlags.EnableGrid);
         }
 
         #endregion
@@ -243,5 +267,32 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         #endregion
 
         #endregion
+
+        private void OnStateChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(HasGlobalChangesFlag));
+            OnPropertyChanged(nameof(HasChangesFlag));
+        }
+
+        private void OnOperationPerformed(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(HasUndoFlag));
+            OnPropertyChanged(nameof(HasRedoFlag));
+        }
+
+        protected override void OnActivated()
+        {
+            base.OnActivated();
+
+            Messenger.Register<MainViewModel, Tuple<string, bool>>(this, (r, m) =>
+            {
+                switch (m.Item1)
+                {
+                    case MenuFlags.HasCanvas:
+                        HasCanvasFlag = m.Item2;
+                        break;
+                }
+            });
+        }
     }
 }

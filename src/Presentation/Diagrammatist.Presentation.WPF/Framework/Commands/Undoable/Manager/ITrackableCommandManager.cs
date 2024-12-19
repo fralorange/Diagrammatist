@@ -13,10 +13,17 @@
         /// </remarks>
         event EventHandler<EventArgs>? StateChanged;
         /// <summary>
-        /// Gets or sets 'has changes' flag.
+        /// Gets or sets 'has global changes' flag.
         /// </summary>
         /// <remarks>
         /// This property used to determine whether app has changes or not.
+        /// </remarks>
+        bool HasGlobalChanges { get; }
+        /// <summary>
+        /// Gets or sets 'has changes' flag.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether current object in app has changes or not.
         /// </remarks>
         bool HasChanges { get; }
         /// <summary>

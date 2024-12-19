@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Concurrent;
 
 namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
 {
@@ -7,15 +7,15 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
     /// </summary>
     public sealed class UndoableCommandManager : IUndoableCommandManager
     {
-        private readonly ConditionalWeakTable<object, Stack<IUndoableCommand>> _undoLayer = [];
-        private readonly ConditionalWeakTable<object, Stack<IUndoableCommand>> _redoLayer = [];
-
+        private readonly ConcurrentDictionary<object, Stack<IUndoableCommand>> _undoLayer = [];
+        private readonly ConcurrentDictionary<object, Stack<IUndoableCommand>> _redoLayer = [];
         private object? CurrentKey { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether an undo operation can be performed.
-        /// </summary>
-        private bool CanUndo
+        /// <inheritdoc/>
+        public event EventHandler<EventArgs>? OperationPerformed;
+
+        /// <inheritdoc/>
+        public bool CanUndo
         {
             get
             {
@@ -27,10 +27,8 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether a redo operation can be performed.
-        /// </summary>
-        private bool CanRedo
+        /// <inheritdoc/>
+        public bool CanRedo
         {
             get
             {
@@ -53,6 +51,8 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
                 command.Execute(null);
                 undoStack.Push(command);
                 redoStack.Clear();
+
+                PerformOperation();
             }
         }
 
@@ -64,6 +64,8 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
                 var command = undoStack.Pop();
                 command.Undo();
                 redoStack.Push(command);
+
+                PerformOperation();
             }
         }
 
@@ -75,6 +77,8 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
                 var command = redoStack.Pop();
                 command.Execute(null);
                 undoStack.Push(command);
+
+                PerformOperation();
             }
         }
 
@@ -85,6 +89,8 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
             {
                 undoStack.Clear();
                 redoStack.Clear();
+
+                PerformOperation();
             }
         }
 
@@ -97,6 +103,26 @@ namespace Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager
                 _undoLayer.TryAdd(CurrentKey, []);
                 _redoLayer.TryAdd(CurrentKey, []);
             }
+
+            PerformOperation();
+        }
+
+        public void DeleteContent(object? key)
+        {
+            CurrentKey = null;
+
+            if (key is not null)
+            {
+                _undoLayer.Remove(key, out var _);
+                _redoLayer.Remove(key, out var _);
+            }
+
+            PerformOperation();
+        }
+
+        private void PerformOperation()
+        {
+            OperationPerformed?.Invoke(this, new());
         }
     }
 }

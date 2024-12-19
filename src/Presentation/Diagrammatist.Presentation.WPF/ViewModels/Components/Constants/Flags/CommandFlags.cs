@@ -3,7 +3,7 @@
     /// <summary>
     /// A class that declares messenger flags for commands.
     /// </summary>
-    public static class MessengerFlags
+    public static class CommandFlags
     {
         /// <summary>
         /// Gets undo flag.
@@ -53,5 +53,9 @@
         /// Gets save as flag.
         /// </summary>
         public const string SaveAs = nameof(SaveAs);
+        /// <summary>
+        /// Gets save all flag.
+        /// </summary>
+        public const string SaveAll = nameof(SaveAll);
     }
 }
