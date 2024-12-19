@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.ViewModels;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.Views
@@ -18,6 +19,32 @@ namespace Diagrammatist.Presentation.WPF.Views
             viewModel.OnRequestClose += CloseWindow;
 
             InitializeComponent();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            if (DataContext is MainViewModel viewModel && viewModel.HasChanges)
+            {
+                // TO-DO: same issue, avoid using message boxes and other dialog creation classes
+                // in code-behind, try to take it to the service in future.
+                var result = MessageBox.Show(
+                    "You have unsaved changed. Do you wish save and exit?",
+                    "Confirm your actions.",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // might use bool return value and check if it actually saved if not, then e.Cancel = true
+                    // can be achieved by using request messages, like request bool result of saving from canvas viewmodel and etc.
+                    viewModel.Save();
+                } else if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void CloseWindow()

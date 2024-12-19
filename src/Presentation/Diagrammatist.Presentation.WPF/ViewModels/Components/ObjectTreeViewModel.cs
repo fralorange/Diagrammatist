@@ -15,7 +15,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     /// </summary>
     public sealed partial class ObjectTreeViewModel : ObservableRecipient
     {
-        private readonly IUndoableCommandManager _undoableCommandManager;
+        private readonly ITrackableCommandManager _trackableCommandManager;
 
         private ObservableCollection<FigureModel>? _figures;
 
@@ -41,9 +41,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureModel? _selectedFigure;
 
-        public ObjectTreeViewModel(IUndoableCommandManager undoableCommandManager)
+        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager)
         {
-            _undoableCommandManager = undoableCommandManager;
+            _trackableCommandManager = trackableCommandManager;
 
             IsActive = true;
         }
@@ -60,7 +60,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
 
-            _undoableCommandManager.Execute(command);
+            _trackableCommandManager.Execute(command);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true);
 
-            _undoableCommandManager.Execute(command);
+            _trackableCommandManager.Execute(command);
 
             Figures?.Refresh();
         }
@@ -98,7 +98,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false);
 
-            _undoableCommandManager.Execute(command);
+            _trackableCommandManager.Execute(command);
 
             Figures?.Refresh();
         }

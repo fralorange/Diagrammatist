@@ -22,7 +22,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     /// </summary>
     public sealed partial class CanvasViewModel : ObservableRecipient
     {
-        private readonly IUndoableCommandManager _undoableCommandManager;
+        private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly ICanvasSerializationService _canvasSerializationService;
 
         /// <summary>
@@ -127,10 +127,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [ObservableProperty]
         private bool _isGridVisible = true;
 
-        public CanvasViewModel(IUndoableCommandManager undoableCommandManager,
+        public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
                                ICanvasSerializationService canvasSerializationService)
         {
-            _undoableCommandManager = undoableCommandManager;
+            _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
 
             IsActive = true;
@@ -143,7 +143,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void Undo()
         {
-            _undoableCommandManager.Undo();
+            _trackableCommandManager.Undo();
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void Redo()
         {
-            _undoableCommandManager.Redo();
+            _trackableCommandManager.Redo();
         }
 
         /// <summary>
@@ -220,6 +220,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 CurrentCanvas.Settings.FileName = fileName;
             }
+
+            _trackableCommandManager.MarkSaved();
         }
 
         /// <summary>
@@ -240,6 +242,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), FilePath);
             }
+
+            _trackableCommandManager.MarkSaved();
         }
 
         /// <summary>
@@ -262,7 +266,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas?.Figures, figure);
 
-            _undoableCommandManager.Execute(command);
+            _trackableCommandManager.Execute(command);
         }
 
         /// <summary>
@@ -277,7 +281,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true);
 
-            _undoableCommandManager.Execute(command);
+            _trackableCommandManager.Execute(command);
         }
 
         /// <summary>
@@ -292,7 +296,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false);
 
-            _undoableCommandManager.Execute(command);
+            _trackableCommandManager.Execute(command);
         }
 
         /// <summary>
@@ -320,7 +324,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     }
                 );
 
-                _undoableCommandManager.Execute(command);
+                _trackableCommandManager.Execute(command);
             }
         }
 

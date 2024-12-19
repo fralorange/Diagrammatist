@@ -69,7 +69,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Diagrammatist file|*.dgmf",
+                Filter = $"{App.Current.Resources["Filter"]}|*.{App.Current.Resources["Extension"]}",
                 FileName = fileName,
             };
 

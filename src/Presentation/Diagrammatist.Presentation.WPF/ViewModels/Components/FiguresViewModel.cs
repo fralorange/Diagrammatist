@@ -18,7 +18,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<ObservableCollection<FigureModel>?>>
     {
         private readonly IFigureService _figureService;
-        private readonly IUndoableCommandManager _undoableCommandManager;
+        private readonly ITrackableCommandManager _trackableCommandManager;
 
         /// <summary>
         /// Flag that determines whether figure changes in the moment or not.
@@ -65,11 +65,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// Initializes a new figures view model.
         /// </summary>
         /// <param name="figureService">A figure service.</param>
-        /// <param name="undoableCommandManager">A undoable command manager.</param>
-        public FiguresViewModel(IFigureService figureService, IUndoableCommandManager undoableCommandManager)
+        /// <param name="trackableCommandManager">A command manager.</param>
+        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager)
         {
             _figureService = figureService;
-            _undoableCommandManager = undoableCommandManager;
+            _trackableCommandManager = trackableCommandManager;
 
             IsActive = true;
         }
@@ -116,7 +116,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     () => CanvasFigures.Remove(figure)
                 );
 
-                _undoableCommandManager.Execute(command);
+                _trackableCommandManager.Execute(command);
             }
             SelectedFigure = null;
         }
@@ -130,7 +130,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     () => SetFigureProperty(figure, e.PropertyName, e.OldValue)
                 );
 
-                _undoableCommandManager.Execute(command);
+                _trackableCommandManager.Execute(command);
             }
         }
 

@@ -37,7 +37,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "Diagrammatist file|*.dgmf",
+                Filter = $"{App.Current.Resources["Filter"]}|*.{App.Current.Resources["Extension"]}",
             };
 
             if (openFileDialog.ShowDialog() == true)

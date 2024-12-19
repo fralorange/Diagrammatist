@@ -21,7 +21,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly ICanvasManipulationService _canvasManipulationService;
         private readonly ICanvasSerializationService _canvasSerializationService;
-        private readonly IUndoableCommandManager _undoableCommandManager;
+        private readonly ITrackableCommandManager _trackableCommandManager;
 
         /// <summary>
         /// Occurs when a request is made to open existing file.
@@ -59,13 +59,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private CanvasModel? _selectedCanvas;
 
+        /// <inheritdoc cref="ITrackableCommandManager.HasChanges"/>
+        public bool HasChanges => _trackableCommandManager.HasChanges;
+
         public TabsViewModel(ICanvasManipulationService canvasManipulationService,
-                             IUndoableCommandManager undoableCommandManager,
+                             ITrackableCommandManager trackableCommandManager,
                              ICanvasSerializationService canvasSerializationService)
         {
             _canvasManipulationService = canvasManipulationService;
-            _undoableCommandManager = undoableCommandManager;
+            _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
+
+            _trackableCommandManager.StateChanged += OnStateChanged;
 
             IsActive = true;
         }
@@ -136,7 +141,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     }
                 );
 
-                _undoableCommandManager.Execute(command);
+                _trackableCommandManager.Execute(command);
             }
         }
 
@@ -187,6 +192,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
+        private void OnStateChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(HasChanges));
+        }
+
         partial void OnSelectedCanvasChanged(CanvasModel? value)
         {
             if (value is null)
@@ -199,7 +209,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 Messenger.Send(new CanvasFilePathMessage(canvasFilePath));
             }
 
-            _undoableCommandManager.UpdateContent(value);
+            _trackableCommandManager.UpdateContent(value);
         }
 
         protected override void OnActivated()

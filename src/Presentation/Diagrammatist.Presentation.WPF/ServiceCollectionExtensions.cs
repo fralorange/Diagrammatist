@@ -117,6 +117,7 @@ namespace Diagrammatist.Presentation.WPF
         public static IServiceCollection AddManagers(this IServiceCollection services)
         {
             services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
+            services.AddSingleton<ITrackableCommandManager, TrackableCommandManager>();
 
             return services;
         }

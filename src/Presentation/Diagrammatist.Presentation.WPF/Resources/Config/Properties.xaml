@@ -4,4 +4,7 @@
     <sys:String x:Key="HelpUrl">https://github.com/fralorange/Diagrammatist/wiki</sys:String>
     <sys:String x:Key="HubUrl">https://github.com/fralorange/Diagrammatist</sys:String>
     <sys:String x:Key="Author">(c) Alexei `fralorange` Rodionov.</sys:String>
+    
+    <sys:String x:Key="Filter">Diagrammatist file</sys:String>
+    <sys:String x:Key="Extension">dgmf</sys:String>
 </ResourceDictionary>

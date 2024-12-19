@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
+using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Framework.Messages;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
@@ -21,6 +22,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
     public sealed partial class MainViewModel : ObservableRecipient
     {
         private readonly IDialogService _dialogService;
+        private readonly ITrackableCommandManager _trackableCommandManager;
 
         /// <summary>
         /// Occurs when a request is made to close the current canvas.
@@ -30,9 +32,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// </remarks>
         public event Action? OnRequestClose;
 
-        public MainViewModel(IDialogService dialogService)
+        /// <inheritdoc cref="ITrackableCommandManager.H"/>
+        public bool HasChanges => _trackableCommandManager.HasChanges;
+
+        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
         {
             _dialogService = dialogService;
+            _trackableCommandManager = trackableCommandManager;
+        }
+
+        /// <inheritdoc cref="MenuSave"/>
+        public void Save()
+        {
+            MenuSave();
         }
 
         #region Menu
