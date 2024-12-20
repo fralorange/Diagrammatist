@@ -93,11 +93,11 @@
                   DataType="figures:FigureModel">
         <UniformGrid Columns="2">
             <Label Content="Name: "/>
-            <TextBox Text="{Binding Name, Mode=TwoWay}"/>
+            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Rotation: "/>
-            <TextBox Text="{Binding Rotation, Mode=TwoWay}"/>
+            <TextBox Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Color: "/>
-            <TextBox Text="{Binding BackgroundColor, Mode=TwoWay}"/>
+            <TextBox Text="{Binding BackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </UniformGrid>
     </DataTemplate>
 
@@ -108,9 +108,9 @@
                 <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
                 <UniformGrid Columns="2">
                     <Label Content="Width: "/>
-                    <TextBox Text="{Binding Width, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Height: "/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </UniformGrid>
                 <CheckBox Content="Keep aspect ratio"
                           IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
@@ -144,11 +144,11 @@
                 <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
                 <UniformGrid Columns="2">
                     <Label Content="Text: "/>
-                    <TextBox Text="{Binding Text, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Font size: "/>
-                    <TextBox Text="{Binding FontSize, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Text color: "/>
-                    <TextBox Text="{Binding TextColor, Mode=TwoWay}"/>
+                    <TextBox Text="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </UniformGrid>
                 <CheckBox Content="Has Outline"
                           IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
