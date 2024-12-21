@@ -9,59 +9,23 @@ namespace Diagrammatist.Presentation.WPF.Models.Canvas
     /// </summary>
     public partial class CanvasModel : ObservableObject
     {
-        /// <summary>
-        /// Gets or sets width of invisible border.
-        /// </summary>
-        /// <remarks>
-        /// This property used to prevent user from scrolling by X-axis in to the abyss...
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="ImaginaryWidth"]/*'/>
         [ObservableProperty]
         private int _imaginaryWidth;
-
-        /// <summary>
-        /// Gets or sets height of invisible border.
-        /// </summary>
-        /// <remarks>
-        /// This property used to prevent user from scrolling by Y-axis in to the abyss...
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="ImaginaryHeight"]/*'/>
         [ObservableProperty]
         private int _imaginaryHeight;
-
-        /// <summary>
-        /// Gets or sets diagram settings.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure canvas.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Settings"]/*'/>
         [ObservableProperty]
         private SettingsModel _settings;
-
-        /// <summary>
-        /// Gets or sets zoom parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set canvas scale.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Zoom"]/*'/>
         [ObservableProperty]
         private double _zoom;
-
-        /// <summary>
-        /// Gets or sets screen offset.
-        /// </summary>
-        /// <remarks>
-        /// This property used to determine canvas position in window.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Offset"]/*'/>
         [ObservableProperty]
         private OffsetModel _offset;
-
-        /// <summary>
-        /// Gets or sets figure collection.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set drawing context for canvas.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Figures"]/*'/>
         public ObservableCollection<FigureModel> Figures { get; set; } = [];
-
         /// <summary>
         /// Gets or sets 'has changes' flag.
         /// </summary>

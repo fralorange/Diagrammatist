@@ -5,13 +5,9 @@
     /// </summary>
     public enum Diagrams
     {
-        /// <summary>
-        /// Custom diagram.
-        /// </summary>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Custom"]/*'/>
         Custom,
-        /// <summary>
-        /// Flowchart diagram.
-        /// </summary>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Flowchart"]/*'/>
         Flowchart,
     }
 }

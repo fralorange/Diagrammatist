@@ -77,12 +77,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private MouseMode _currentMouseMode;
 
-        /// <summary>
-        /// Gets or sets current mouse mode.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure current mouse mode.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CurrentMouseMode"]/*'/>
         public MouseMode CurrentMouseMode
         {
             get => _currentMouseMode;
@@ -98,9 +93,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [ObservableProperty]
         private string _filePath = string.Empty;
 
-        /// <summary>
-        /// Gets or sets collection of <see cref="FigureModel"/>.
-        /// </summary>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="ViewModelFigures"]/*'/>
         /// <remarks>
         /// This property used to send figures as message to other components that require it.
         /// </remarks>
@@ -257,10 +250,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        /// <summary>
-        /// Deletes item from canvas.
-        /// </summary>
-        /// <param name="figure">Target figure.</param>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="DeleteItem"]/*'/>
         [RelayCommand]
         private void DeleteItem(FigureModel figure)
         {
@@ -269,10 +259,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _trackableCommandManager.Execute(command);
         }
 
-        /// <summary>
-        /// Brings item forward on canvas.
-        /// </summary>
-        /// <param name="figure">Target figure.</param>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="BringForwardItem"]/*'/>
         [RelayCommand]
         private void BringForwardItem(FigureModel figure)
         {
@@ -284,10 +271,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _trackableCommandManager.Execute(command);
         }
 
-        /// <summary>
-        /// Sends item backward on canvas.
-        /// </summary>
-        /// <param name="figure">Target figure.</param>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="SendBackwardItem"]/*'/>
         [RelayCommand]
         private void SendBackwardItem(FigureModel figure)
         {

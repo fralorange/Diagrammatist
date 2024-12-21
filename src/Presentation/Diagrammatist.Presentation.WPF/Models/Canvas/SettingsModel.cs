@@ -8,44 +8,19 @@ namespace Diagrammatist.Presentation.WPF.Models.Canvas
     /// </summary>
     public partial class SettingsModel : ObservableObject
     {
-        /// <summary>
-        /// Gets or sets diagram file name.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set file name.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FileName"]/*'/>
         [ObservableProperty]
         private string _fileName = string.Empty;
-        /// <summary>
-        /// Gets or sets diagram canvas width.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram's canvas width.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Width"]/*'/>
         [ObservableProperty]
         private int _width;
-        /// <summary>
-        /// Gets or sets diagram canvas height.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram's canvas height.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Height"]/*'/>
         [ObservableProperty]
         private int _height;
-        /// <summary>
-        /// Gets or sets diagram canvas background color.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram background color.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Background"]/*'/>
         [ObservableProperty]
         private Color _background;
-        /// <summary>
-        /// Gets or sets diagram type.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram type.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DiagramType"]/*'/>
         public DiagramsModel Type { get; set; }
     }
 }

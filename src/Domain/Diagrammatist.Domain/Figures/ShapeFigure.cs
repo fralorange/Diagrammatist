@@ -7,33 +7,13 @@ namespace Diagrammatist.Domain.Figures
     /// </summary>
     public class ShapeFigure : Figure
     {
-        /// <summary>
-        /// Gets or sets width.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure width.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeWidth"]/*'/>
         public double Width { get; set; } = FigureManipulationConstants.DefaultWidth;
-        /// <summary>
-        /// Gets or sets height.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure height.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeHeight"]/*'/>
         public double Height { get; set; } = FigureManipulationConstants.DefaultHeight;
-        /// <summary>
-        /// Gets or sets aspect ratio keep parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property is used to determine whether or not to keep the aspect ratio.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeKeepAspectRatio"]/*'/>
         public bool KeepAspectRatio { get; set; } = ShapeFigureBoolConstants.DefaultAspectRatioParameter;
-        /// <summary>
-        /// Gets or sets collection of data.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store data.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeData"]/*'/>
         public List<string> Data { get; set; } = [];
     }
 }

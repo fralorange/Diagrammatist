@@ -5,19 +5,9 @@
     /// </summary>
     public class OffsetModel
     {
-        /// <summary>
-        /// Gets or sets X-axis.
-        /// </summary>
-        /// <remarks>
-        /// This property used to determine screen offset position by X-axis.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="OffsetX"]/*'/>
         public double X { get; set; } = 0;
-        /// <summary>
-        /// Gets or sets Y-axis.
-        /// </summary>
-        /// <remarks>
-        /// This property used to determine screen offset position by Y-axis.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="OffsetY"]/*'/>
         public double Y { get; set; } = 0;
     }
 }

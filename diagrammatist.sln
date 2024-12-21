@@ -16,9 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F965C9D-07A9-46D9-8277-30A909E9CC0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{416DD9AF-C437-4FFB-9F51-F45F98A9C45B}"
-	ProjectSection(SolutionItems) = preProject
-		docs\assets\assets.md = docs\assets\assets.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diagrammatist.Application.AppServices", "src\Application\Diagrammatist.Application.AppServices\Diagrammatist.Application.AppServices.csproj", "{5941A5DA-A3B9-4D85-B899-6E0CFF8C73E6}"
 EndProject
@@ -37,6 +34,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{895EB5E3-AB43-43AC-8175-DE60847090B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diagrammatist.Infrastructure.DataAccess.Tests", "tests\Infrastructure\Diagrammatist.Infrastructure.DataAccess.Tests\Diagrammatist.Infrastructure.DataAccess.Tests.csproj", "{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{3BC05702-0A27-4914-BB31-2A28AF6F2E96}"
+	ProjectSection(SolutionItems) = preProject
+		docs\common\CommonXmlDocComments.xml = docs\common\CommonXmlDocComments.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{55F53E49-E189-4C6A-860B-3E88BC271127}"
+	ProjectSection(SolutionItems) = preProject
+		docs\assets\assets.md = docs\assets\assets.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +97,8 @@ Global
 		{59C48E0D-5E08-4888-A5CC-C570048DFF86} = {1837172F-D393-4518-95D4-FEA626BE2294}
 		{895EB5E3-AB43-43AC-8175-DE60847090B4} = {4F965C9D-07A9-46D9-8277-30A909E9CC0B}
 		{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56} = {895EB5E3-AB43-43AC-8175-DE60847090B4}
+		{3BC05702-0A27-4914-BB31-2A28AF6F2E96} = {416DD9AF-C437-4FFB-9F51-F45F98A9C45B}
+		{55F53E49-E189-4C6A-860B-3E88BC271127} = {416DD9AF-C437-4FFB-9F51-F45F98A9C45B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F0DF37D-74DA-4F7B-831E-E3C2B2B50437}

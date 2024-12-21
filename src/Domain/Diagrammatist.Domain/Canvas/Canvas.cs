@@ -8,47 +8,17 @@ namespace Diagrammatist.Domain.Canvas
     /// </summary>
     public class Canvas
     {
-        /// <summary>
-        /// Gets or sets width of invisible border.
-        /// </summary>
-        /// <remarks>
-        /// This property used to prevent user from scrolling by X-axis in to the abyss...
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="ImaginaryWidth"]/*'/>
         public int ImaginaryWidth { get; set; }
-        /// <summary>
-        /// Gets or sets height of invisible border.
-        /// </summary>
-        /// <remarks>
-        /// This property used to prevent user from scrolling by Y-axis in to the abyss...
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="ImaginaryHeight"]/*'/>
         public int ImaginaryHeight { get; set; }
-        /// <summary>
-        /// Gets or sets diagram settings.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure canvas.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Settings"]/*'/>
         public required Settings Settings { get; set; }
-        /// <summary>
-        /// Gets or sets zoom parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set canvas scale.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Zoom"]/*'/>
         public double Zoom { get; set; } = CanvasZoomConstants.DefaultZoom;
-        /// <summary>
-        /// Gets or sets screen offset.
-        /// </summary>
-        /// <remarks>
-        /// This property used to determine canvas position in window.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Offset"]/*'/>
         public Offset Offset { get; set; } = new();
-        /// <summary>
-        /// Gets or sets figure collection.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set drawing context for canvas.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Figures"]/*'/>
         public List<Figure> Figures { get; set; } = [];
     }
 }

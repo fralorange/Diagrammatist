@@ -8,40 +8,15 @@ namespace Diagrammatist.Domain.Figures
     /// </summary>
     public class TextFigure : Figure
     {
-        /// <summary>
-        /// Gets or sets figure Text.
-        /// </summary>
-        /// <remarks>
-        /// This property used to display text in figure UI.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextContent"]/*'/>
         public string Text { get; set; } = FigureTextConstants.DefaultText;
-        /// <summary>
-        /// Gets or sets figure text color.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure text color.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextColor"]/*'/>
         public Color TextColor { get; set; } = Color.Black;
-        /// <summary>
-        /// Gets or sets font size.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure font size.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextFontSize"]/*'/>
         public double FontSize { get; set; } = TextFigureManipulationConstants.DefaultFontSize;
-        /// <summary>
-        /// Gets or sets figure outline condition.
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether figure has outline.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextHasOutline"]/*'/>
         public bool HasOutline { get; set; } = TextFigureBoolConstants.DefaultOutlineParameter;
-        /// <summary>
-        /// Gets or sets figure background condition,
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether figure has background.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextHasBackground"]/*'/>
         public bool HasBackground { get; set; } = TextFigureBoolConstants.DefaultBackgroundParameter;
     }
 }

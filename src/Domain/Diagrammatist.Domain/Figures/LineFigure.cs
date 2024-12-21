@@ -8,33 +8,13 @@ namespace Diagrammatist.Domain.Figures
     /// </summary>
     public class LineFigure : Figure
     {
-        /// <summary>
-        /// Gets or sets collection of points.
-        /// </summary>
-        /// <remarks>
-        /// This property used to draw line by points.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLinePoints"]/*'/>
         public List<Point> Points { get; set; } = [];
-        /// <summary>
-        /// Gets or sets line thickness.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure line thickness.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineThickness"]/*'/>
         public double Thickness { get; set; } = LineFigureManipulationConstants.DefaultThickness;
-        /// <summary>
-        /// Gets or sets line dash condition.
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether the line is dashed.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineIsDashed"]/*'/>
         public bool IsDashed { get; set; } = LineFigureBoolConstants.DefaultDashedParameter;
-        /// <summary>
-        /// Gets or sets line arrow condition.
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether the line has arrow on last point.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineHasArrow"]/*'/>
         public bool HasArrow { get; set; } = LineFigureBoolConstants.DefaultArrowParameter;
     }
 }

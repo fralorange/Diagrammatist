@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace Diagrammatist.Presentation.WPF.Models.Figures
+﻿namespace Diagrammatist.Presentation.WPF.Models.Figures
 {
     /// <summary>
     /// A shape figure model. Derived class from <see cref="FigureModel"/>.
@@ -9,12 +7,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
     {
         private double _width;
 
-        /// <summary>
-        /// Gets or sets width.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure width.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeWidth"]/*'/>
         public double Width
         {
             get => _width;
@@ -23,12 +16,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private double _height;
 
-        /// <summary>
-        /// Gets or sets height.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure height.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeHeight"]/*'/>
         public double Height
         {
             get => _height;
@@ -37,24 +25,14 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private bool _keepAspectRatio;
 
-        /// <summary>
-        /// Gets or sets aspect ratio keep parameter.
-        /// </summary>
-        /// <remarks>
-        /// This property is used to determine whether or not to keep the aspect ratio.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeKeepAspectRatio"]/*'/>
         public bool KeepAspectRatio
         {
             get => _keepAspectRatio;
             set => SetProperty(ref _keepAspectRatio, value);
         }
 
-        /// <summary>
-        /// Gets or sets collection of data.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store data.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeData"]/*'/>
         public List<string> Data { get; set; } = [];
 
         /// <summary>

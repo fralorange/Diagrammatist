@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommonXmlDocComments>
+	<Sources> <!--i.e. Data objects-->
+		<Member name="ImaginaryWidth">
+			<summary>
+				Gets or sets width of invisible border.
+			</summary>
+			<remarks>
+				This property used to prevent user from scrolling by X-axis in to the abyss...
+			</remarks>
+		</Member>
+		<Member name="ImaginaryHeight">
+			<summary>
+				Gets or sets height of invisible border.
+			</summary>
+			<remarks>
+				This property used to prevent user from scrolling by Y-axis in to the abyss...
+			</remarks>
+		</Member>
+		<Member name="Settings">
+			<summary>
+				Gets or sets diagram settings.
+			</summary>
+			<remarks>
+				This property used to configure canvas.
+			</remarks>
+		</Member>
+		<Member name="Zoom">
+			<summary>
+				Gets or sets zoom parameter.
+			</summary>
+			<remarks>
+				This property used to set canvas scale.
+			</remarks>
+		</Member>
+		<Member name="Offset">
+			<summary>
+				Gets or sets screen offset.
+			</summary>
+			<remarks>
+				This property used to determine canvas position in window.
+			</remarks>
+		</Member>
+		<Member name="Figures">
+			<summary>
+				Gets or sets figure collection.
+			</summary>
+			<remarks>
+				This property used to set drawing context for canvas.
+			</remarks>
+		</Member>
+
+		<Member name="Custom">
+			<summary>
+				Custom diagram.
+			</summary>
+		</Member>
+		<Member name="Flowchart">
+			<summary>
+				Flowchart diagram.
+			</summary>
+		</Member>
+
+		<Member name="OffsetX">
+			<summary>
+				Gets or sets X-axis.
+			</summary>
+			<remarks>
+				This property used to determine screen offset position by X-axis.
+			</remarks>
+		</Member>		
+		<Member name="OffsetY">
+			<summary>
+				Gets or sets Y-axis.
+			</summary>
+			<remarks>
+				This property used to determine screen offset position by Y-axis.
+			</remarks>
+		</Member>
+
+		<Member name="FileName">
+			<summary>
+				Gets or sets diagram file name.
+			</summary>
+			<remarks>
+				This property used to set file name.
+			</remarks>
+		</Member>
+		<Member name="Width">
+			<summary>
+				Gets or sets diagram canvas width.
+			</summary>
+			<remarks>
+				This property used to store diagram's canvas width.
+			</remarks>
+		</Member>
+		<Member name="Height">
+			<summary>
+				Gets or sets diagram canvas height.
+			</summary>
+			<remarks>
+				This property used to store diagram's canvas height.
+			</remarks>
+		</Member>
+		<Member name="Background">
+			<summary>
+				Gets or sets diagram canvas background color.
+			</summary>
+			<remarks>
+				This property used to store diagram background color.
+			</remarks>
+		</Member>
+		<Member name="DiagramType">
+			<summary>
+				Gets or sets diagram type.
+			</summary>
+			<remarks>
+				This property used to store diagram type.
+			</remarks>
+		</Member>
+
+		<Member name="FigureName">
+			<summary>
+				Gets or sets figure name.
+			</summary>
+			<remarks>
+				This property used to store figure name.
+			</remarks>
+		</Member>
+		<Member name="FigurePosX">
+			<summary>
+				Gets or sets figure position by X-axis.
+			</summary>
+			<remarks>
+				This property used to determine figure position by X-axis.
+			</remarks>
+		</Member>
+		<Member name="FigurePosY">
+			<summary>
+				Gets or sets figure position by Y-axis.
+			</summary>
+			<remarks>
+				This property used to determine figure position by Y-axis.
+			</remarks>
+		</Member>
+		<Member name="FigureRotation">
+			<summary>
+				Gets or sets figure rotation.
+			</summary>
+			<remarks>
+				This property used to configure figure rotation.
+			</remarks>
+		</Member>
+		<Member name="FigureZIndex">
+			<summary>
+				Gets or sets figure Z index.
+			</summary>
+			<remarks>
+				This property used to configure overlap order between figures.
+			</remarks>
+		</Member>
+		<Member name="FigureBackgroundColor">
+			<summary>
+				Gets or sets figure background color.
+			</summary>
+			<remarks>
+				This property used to store figure background color.
+			</remarks>
+		</Member>
+
+		<Member name="FigureLinePoints">
+			<summary>
+				Gets or sets collection of points.
+			</summary>
+			<remarks>
+				This property used to draw line by points.
+			</remarks>
+		</Member>
+		<Member name="FigureLineThickness">
+			<summary>
+				Gets or sets line thickness.
+			</summary>
+			<remarks>
+				This property used to configure line thickness.
+			</remarks>
+		</Member>
+		<Member name="FigureLineIsDashed">
+			<summary>
+				Gets or sets line dash condition.
+			</summary>
+			<remarks>
+				This property indicates whether the line is dashed.
+			</remarks>
+		</Member>
+		<Member name="FigureLineHasArrow">
+			<summary>
+				Gets or sets line arrow condition.
+			</summary>
+			<remarks>
+				This property indicates whether the line has arrow on last point.
+			</remarks>
+		</Member>
+
+		<Member name="FigureShapeWidth">
+			<summary>
+				Gets or sets width.
+			</summary>
+			<remarks>
+				This property used to store figure width.
+			</remarks>
+		</Member>
+		<Member name="FigureShapeHeight">
+			<summary>
+				Gets or sets height.
+			</summary>
+			<remarks>
+				This property used to store figure height.
+			</remarks>
+		</Member>
+		<Member name="FigureShapeKeepAspectRatio">
+			<summary>
+				Gets or sets aspect ratio keep parameter.
+			</summary>
+			<remarks>
+				This property is used to determine whether or not to keep the aspect ratio.
+			</remarks>
+		</Member>
+		<Member name="FigureShapeData">
+			<summary>
+				Gets or sets collection of data.
+			</summary>
+			<remarks>
+				This property used to store data.
+			</remarks>
+		</Member>
+
+		<Member name="FigureTextContent">
+			<summary>
+				Gets or sets figure text.
+			</summary>
+			<remarks>
+				This property used to display text in figure UI.
+			</remarks>
+		</Member>
+		<Member name="FigureTextColor">
+			<summary>
+				Gets or sets figure text color.
+			</summary>
+			<remarks>
+				This property used to store figure text color.
+			</remarks>
+		</Member>
+		<Member name="FigureTextFontSize">
+			<summary>
+				Gets or sets font size.
+			</summary>
+			<remarks>
+				This property used to configure font size.
+			</remarks>
+		</Member>
+		<Member name="FigureTextHasOutline">
+			<summary>
+				Gets or sets figure outline condition.
+			</summary>
+			<remarks>
+				This property indicates whether figure has outline.
+			</remarks>
+		</Member>
+		<Member name="FigureTextHasBackground">
+			<summary>
+				Gets or sets figure background condition.
+			</summary>
+			<remarks>
+				This property indicates whether figure has background.
+			</remarks>
+		</Member>
+	</Sources>
+	<Behaviors>
+		<Member name="CurrentMouseMode">
+			<summary>
+				Gets or sets current mouse mode.
+			</summary>
+			<remarks>
+				This property used to configure current mouse mode. 
+				For details see <see cref="Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes.MouseMode"/>
+			</remarks>
+		</Member>
+
+		<Member name="ViewModelFigures">
+			<summary>
+				Gets collection of <see cref="Diagrammatist.Presentation.WPF.Models.Figures.FigureModel"/>
+			</summary>
+		</Member>
+
+		<Member name="DeleteItem">
+			<summary>
+				Deletes item from canvas and object tree.
+			</summary>
+			<param name="figure">Target figure.</param>
+		</Member>
+		<Member name="BringForwardItem">
+			<summary>
+				Brings item forward on canvas.
+			</summary>
+			<param name="figure">Target figure.</param>
+		</Member>
+		<Member name="SendBackwardItem">
+			<summary>
+				Sends item backward on canvas.
+			</summary>
+			<param name="figure">Target figure.</param>
+		</Member>
+	</Behaviors>
+</CommonXmlDocComments>

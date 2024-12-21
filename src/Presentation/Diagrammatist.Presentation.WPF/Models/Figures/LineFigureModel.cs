@@ -8,23 +8,13 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
     /// </summary>
     public partial class LineFigureModel : FigureModel
     {
-        /// <summary>
-        /// Gets or sets collection of points.
-        /// </summary>
-        /// <remarks>
-        /// This property used to draw line by points.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLinePoints"]/*'/>
         [ObservableProperty]
         private List<Point> _points;
 
         private double _thickness;
 
-        /// <summary>
-        /// Gets or sets line thickness.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure line thickness.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineThickness"]/*'/>
         public double Thickness
         {
             get => _thickness;
@@ -33,12 +23,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private bool _isDashed;
 
-        /// <summary>
-        /// Gets or sets line dash condition.
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether the line is dashed.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineIsDashed"]/*'/>
         public bool IsDashed
         {
             get => _isDashed;
@@ -47,12 +32,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private bool _hasArrow;
 
-        /// <summary>
-        /// Gets or sets line arrow condition.
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether the line has arrow on last point.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineHasArrow"]/*'/>
         public bool HasArrow
         {
             get => _hasArrow;

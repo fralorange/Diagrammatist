@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.Models.Figures
 {
@@ -10,12 +9,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
     {
         private string _text;
 
-        /// <summary>
-        /// Gets or sets figure Text.
-        /// </summary>
-        /// <remarks>
-        /// This property used to display text in figure UI.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextContent"]/*'/>
         public string Text
         {
             get => _text;
@@ -24,12 +18,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private Color _textColor;
 
-        /// <summary>
-        /// Gets or sets figure text color.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure text color.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextColor"]/*'/>
         public Color TextColor
         {
             get => _textColor;
@@ -38,12 +27,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private double _fontSize;
 
-        /// <summary>
-        /// Gets or sets font size.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure font size.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextFontSize"]/*'/>
         public double FontSize
         {
             get => _fontSize;
@@ -53,12 +37,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private bool _hasOutline;
 
-        /// <summary>
-        /// Gets or sets figure outline condition.
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether figure has outline.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextHasOutline"]/*'/>
         public bool HasOutline
         {
             get => _hasOutline;
@@ -67,12 +46,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private bool _hasBackground;
 
-        /// <summary>
-        /// Gets or sets figure background condition,
-        /// </summary>
-        /// <remarks>
-        /// This property indicates whether figure has background.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureTextHasBackground"]/*'/>
         public bool HasBackground
         {
             get => _hasBackground;
@@ -90,7 +64,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
         /// Clones all properties and initializes new instance.
         /// </summary>
         /// <param name="source">Source model.</param>
-#pragma warning disable CS8618 
+#pragma warning disable CS8618
         public TextFigureModel(TextFigureModel source) : base(source)
 #pragma warning restore CS8618 
         {

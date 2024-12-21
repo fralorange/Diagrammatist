@@ -11,44 +11,24 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
     {
         private string _name;
 
-        /// <summary>
-        /// Gets or sets figure name.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure name.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureName"]/*'/>
         public string Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
         }
 
-        /// <summary>
-        /// Gets or sets figure position by X-axis.
-        /// </summary>
-        /// <remarks>
-        /// This property used to determine figure position by x-axis.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigurePosX"]/*'/>
         [ObservableProperty]
         private double _posX;
 
-        /// <summary>
-        /// Gets or sets figure position by Y-axis.
-        /// </summary>
-        /// <remarks>
-        /// This property used to determine figure position by y-axis.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigurePosY"]/*'/>
         [ObservableProperty]
         private double _posY;
 
         private double _rotation;
 
-        /// <summary>
-        /// Gets or sets figure rotation.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure figure rotation.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureRotation"]/*'/>
         public double Rotation
         {
             get => _rotation;
@@ -58,12 +38,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private double _zIndex;
 
-        /// <summary>
-        /// Gets or sets figure Z index.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure overlap order between figures.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureZIndex"]/*'/>
         public double ZIndex
         {
             get => _zIndex;
@@ -72,12 +47,7 @@ namespace Diagrammatist.Presentation.WPF.Models.Figures
 
         private Color _backgroundColor;
 
-        /// <summary>
-        /// Gets or sets figure background color.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store figure background color.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureBackgroundColor"]/*'/>
         public Color BackgroundColor
         {
             get => _backgroundColor;

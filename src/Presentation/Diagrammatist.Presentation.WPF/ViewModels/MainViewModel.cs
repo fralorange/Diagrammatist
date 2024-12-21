@@ -67,7 +67,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         #region File
 
         /// <summary>
-        /// Creates a new canvas through dialog window.
+        /// Creates a new canvas through dialog window from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuNew()
@@ -84,7 +84,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Opens an existing canvas.
+        /// Opens an existing canvas from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuOpen()
@@ -93,7 +93,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Closes current canvas.
+        /// Closes current canvas from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuClose()
@@ -102,7 +102,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Closes all canvases.
+        /// Closes all canvases from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuCloseAll()
@@ -111,7 +111,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Saves current canvas as new file.
+        /// Saves current canvas as new file from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuSaveAs()
@@ -120,7 +120,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Saves all canvases.
+        /// Saves all canvases from menu button.
         /// </summary>
         [RelayCommand]
         public void MenuSaveAll()
@@ -129,7 +129,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Saves current canvas.
+        /// Saves current canvas from menu button.
         /// </summary>
         [RelayCommand()]
         private void MenuSave()
@@ -138,7 +138,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Exports current canvas as bitmap file.
+        /// Exports current canvas as bitmap file from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuExport()
@@ -147,7 +147,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Exits from program.
+        /// Exits from program from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuExit()
@@ -162,7 +162,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         #region Edit
 
         /// <summary>
-        /// Cancels user last actions.
+        /// Cancels user last actions from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuUndo()
@@ -171,7 +171,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Repeats user last actions if they were undid.
+        /// Repeats user last actions if they were undid from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuRedo()
@@ -182,7 +182,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         #region Canvas
 
         /// <summary>
-        /// Changes size of the current selected canvas through dialog window.
+        /// Changes size of the current selected canvas through dialog window from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuChangeSize()
@@ -204,7 +204,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         #region View
 
         /// <summary>
-        /// Zooms in to dynamic center.
+        /// Zooms in to dynamic center from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuZoomIn()
@@ -213,7 +213,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Zoms out from dynamic center.
+        /// Zoms out from dynamic center from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuZoomOut()
@@ -222,7 +222,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Resets current zoom to default.
+        /// Resets current zoom to default from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuZoomReset()
@@ -231,7 +231,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Enables or disables grid visual.
+        /// Enables or disables grid visual from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuEnableGrid()
@@ -243,7 +243,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         #region Help
 
         /// <summary>
-        /// Opens app wiki. 
+        /// Opens app wiki from menu button. 
         /// </summary>
         [RelayCommand]
         private void MenuHelp()
@@ -254,7 +254,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         /// <summary>
-        /// Opens dialog 'about' window.
+        /// Opens dialog 'about' window from menu button.
         /// </summary>
         [RelayCommand]
         private void MenuAbout()

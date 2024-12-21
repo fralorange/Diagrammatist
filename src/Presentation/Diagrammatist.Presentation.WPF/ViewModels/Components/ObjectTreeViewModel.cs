@@ -19,9 +19,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private ObservableCollection<FigureModel>? _figures;
 
-        /// <summary>
-        /// Gets collection of <see cref="FigureModel"/>
-        /// </summary>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="ViewModelFigures"]/*'/>
         /// <remarks>
         /// This property used to display figures in UI.
         /// </remarks>
@@ -48,13 +46,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
-        /// <summary>
-        /// Deletes item from object tree.
-        /// </summary>
-        /// <remarks>
-        /// Also deletes item from canvas.
-        /// </remarks>
-        /// <param name="figure">Target figure.</param>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="DeleteItem"]/*'/>
         [RelayCommand]
         private void DeleteItem(FigureModel figure)
         {
@@ -63,13 +55,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _trackableCommandManager.Execute(command);
         }
 
-        /// <summary>
-        /// Brings item forward on canvas.
-        /// </summary>
-        /// <remarks>
-        /// Also brings item forward on canvas.
-        /// </remarks>
-        /// <param name="figure">Target figure.</param>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="BringForwardItem"]/*'/>
         [RelayCommand]
         private void BringForwardItem(FigureModel figure)
         {
@@ -83,13 +69,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             Figures?.Refresh();
         }
 
-        /// <summary>
-        /// Sends item backward on canvas.
-        /// </summary>
-        /// <remarks>
-        /// Also sends item backward on canvas.
-        /// </remarks>
-        /// <param name="figure">Target figure.</param>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="SendBackwardItem"]/*'/>
         [RelayCommand]
         private void SendBackwardItem(FigureModel figure)
         {

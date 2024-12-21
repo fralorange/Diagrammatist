@@ -19,13 +19,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             set => SetProperty(ref _currentCanvas, value);
         }
 
-        /// <summary>
-        /// Gets or sets current mouse mode.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure current mouse mode. <br/>
-        /// For details see <see cref="MouseMode"/>
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CurrentMouseMode"]/*'/>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
         private MouseMode _currentMouseMode;

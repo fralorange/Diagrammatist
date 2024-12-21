@@ -8,40 +8,15 @@ namespace Diagrammatist.Domain.Canvas
     /// </summary>
     public class Settings
     {
-        /// <summary>
-        /// Gets or sets diagram file name.
-        /// </summary>
-        /// <remarks>
-        /// This property used to set file name.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FileName"]/*'/>
         public string FileName { get; set; } = SettingsConstants.DefaultFileName;
-        /// <summary>
-        /// Gets or sets diagram canvas width.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram's canvas width.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Width"]/*'/>
         public int Width { get; set; } = SettingsConstants.DefaultWidth;
-        /// <summary>
-        /// Gets or sets diagram canvas height.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram's canvas height.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Height"]/*'/>
         public int Height { get; set; } = SettingsConstants.DefaultHeight;
-        /// <summary>
-        /// Gets or sets diagram canvas background color.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram background color.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Background"]/*'/>
         public Color Background { get; set; } = SettingsConstants.DefaultBackground;
-        /// <summary>
-        /// Gets or sets diagram type.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store diagram type.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DiagramType"]/*'/>
         public Diagrams Type { get; set; } = SettingsConstants.DefaultType;
     }
 }
