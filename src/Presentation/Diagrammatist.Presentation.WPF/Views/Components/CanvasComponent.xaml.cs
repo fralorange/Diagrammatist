@@ -1,5 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Framework.Controls;
-using Diagrammatist.Presentation.WPF.Framework.Extensions.DependencyObject;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.DependencyObject;
+using Diagrammatist.Presentation.WPF.Core.Controls;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;

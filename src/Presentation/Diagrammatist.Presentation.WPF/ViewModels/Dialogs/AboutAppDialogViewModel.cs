@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers;
 using MvvmDialogs;
 using System.Reflection;
 

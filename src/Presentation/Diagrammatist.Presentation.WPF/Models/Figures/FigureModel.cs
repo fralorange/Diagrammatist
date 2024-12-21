@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Diagrammatist.Presentation.WPF.Framework.BaseClasses.ObservableObject;
+using Diagrammatist.Presentation.WPF.Core.Foundation.BaseClasses.ObservableObject;
 using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.Models.Figures

@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Application.AppServices.Canvas.Services;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
-using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Core.Messages;
 using Diagrammatist.Presentation.WPF.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;

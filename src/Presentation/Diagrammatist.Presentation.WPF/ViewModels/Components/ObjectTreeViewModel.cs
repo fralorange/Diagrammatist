@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Helpers;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
-using Diagrammatist.Presentation.WPF.Framework.Extensions.ObservableCollection;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.ObservableCollection;
+using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Models.Figures;
 using System.Collections.ObjectModel;
 

@@ -4,7 +4,7 @@ using Diagrammatist.Application.AppServices.Figures.Repositories;
 using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.Views;

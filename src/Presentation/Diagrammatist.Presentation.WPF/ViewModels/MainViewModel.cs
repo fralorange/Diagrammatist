@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Helpers;
-using Diagrammatist.Presentation.WPF.Framework.Commands.Undoable.Manager;
-using Diagrammatist.Presentation.WPF.Framework.Messages;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Core.Messages;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
