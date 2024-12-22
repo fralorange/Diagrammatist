@@ -310,5 +310,25 @@
 			</summary>
 			<param name="figure">Target figure.</param>
 		</Member>
+		<Member name="Paste">
+			<summary>
+				Pastes object from clipboard if there's any.
+			</summary>
+		</Member>
+		<Member name="Copy">
+			<summary>
+				Copies valid object to clipboard.
+			</summary>
+		</Member>
+		<Member name="Cut">
+			<summary>
+				Copies valid object to clipboard and deletes it from canvas.
+			</summary>
+		</Member>
+		<Member name="Duplicate">
+			<summary>
+				Duplicates valid object on canvas.
+			</summary>
+		</Member>
 	</Behaviors>
 </CommonXmlDocComments>

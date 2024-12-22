@@ -1,10 +1,13 @@
 ﻿using Diagrammatist.Application.AppServices.Canvas.Serializer;
 using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Application.AppServices.Figures.Repositories;
+using Diagrammatist.Application.AppServices.Figures.Serializer;
 using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Managers.Clipboard;
+using Diagrammatist.Presentation.WPF.Models.Figures;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.Views;
@@ -57,6 +60,7 @@ namespace Diagrammatist.Presentation.WPF
         {
             #region Figures
             services.AddTransient<IFigureService, FigureService>();
+            services.AddTransient<IFigureSerializationService, FigureSerializationService>();
             #endregion
             #region Canvases
             services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
@@ -80,8 +84,12 @@ namespace Diagrammatist.Presentation.WPF
                 return configurator.Configure();
             });
 
-            services.AddSingleton<ICanvasSerializer, CanvasSerializer>();
-
+            #region Canvases
+            services.AddTransient<ICanvasSerializer, CanvasSerializer>();
+            #endregion
+            #region Figures
+            services.AddTransient<IFigureSerializer, FigureSerializer>();
+            #endregion
             return services;
         }
 
@@ -110,7 +118,7 @@ namespace Diagrammatist.Presentation.WPF
         }
 
         /// <summary>
-        /// Add managers as singleton.
+        /// Add managers.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -118,6 +126,8 @@ namespace Diagrammatist.Presentation.WPF
         {
             services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
             services.AddSingleton<ITrackableCommandManager, TrackableCommandManager>();
+
+            services.AddTransient<IClipboardManager<FigureModel>, FigureClipboardManager>();
 
             return services;
         }

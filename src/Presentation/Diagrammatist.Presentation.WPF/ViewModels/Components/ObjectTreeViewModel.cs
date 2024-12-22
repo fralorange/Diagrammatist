@@ -2,9 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.ObservableCollection;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.ObservableCollection;
+using Diagrammatist.Presentation.WPF.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Models.Figures;
 using System.Collections.ObjectModel;
 
@@ -16,6 +18,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class ObjectTreeViewModel : ObservableRecipient
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly IClipboardManager<FigureModel> _clipboardManager;
 
         private ObservableCollection<FigureModel>? _figures;
 
@@ -39,9 +42,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureModel? _selectedFigure;
 
-        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager)
+        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager, IClipboardManager<FigureModel> clipboardManager)
         {
             _trackableCommandManager = trackableCommandManager;
+            _clipboardManager = clipboardManager;
 
             IsActive = true;
         }
@@ -53,6 +57,48 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
 
             _trackableCommandManager.Execute(command);
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Copy"]/*'/>
+        [RelayCommand]
+        private void Copy()
+        {
+            if (SelectedFigure is not null)
+            {
+                CopyHelper.Copy(_clipboardManager, SelectedFigure);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Cut"]/*'/>
+        [RelayCommand]
+        private void Cut()
+        {
+            if (SelectedFigure is not null)
+            {
+                var command = CutHelper.CreateCutCommand(
+                    _clipboardManager,
+                    Figures!,
+                    () => SelectedFigure,
+                    figure => SelectedFigure = figure);
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Duplicate"]/*'/>
+        [RelayCommand]
+        private void Duplicate()
+        {
+            if (SelectedFigure is not null)
+            {
+                var command = DuplicateCommandHelper.CreateDuplicateCommand(
+                    Figures!,
+                    () => SelectedFigure,
+                    figure => SelectedFigure = figure,
+                    figure => figure.Clone());
+
+                _trackableCommandManager.Execute(command);
+            }
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="BringForwardItem"]/*'/>

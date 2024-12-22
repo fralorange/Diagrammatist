@@ -22,6 +22,16 @@
                  SelectedItem="{Binding SelectedFigure}">
             <ListBox.Resources>
                 <ContextMenu x:Key="ElementMenu">
+                    <MenuItem Header="Copy"
+                              Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                    <MenuItem Header="Cut"
+                              Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                    <MenuItem Header="Duplicate"
+                              Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                    <Separator/>
                     <MenuItem Header="Bring Forward"
                               Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>

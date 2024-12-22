@@ -44,6 +44,19 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             }
         }
 
+        private void OnExtendedCanvasPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source is ExtendedCanvas itemsPanel)
+            {
+                var mousePos = e.GetPosition(itemsPanel);
+
+                if (itemsPanel.ContextMenu is not null)
+                {
+                    itemsPanel.ContextMenu.Tag = mousePos;
+                }
+            }
+        }
+
         private void ClearSelection()
         {
             itemsHolder.UnselectAll();

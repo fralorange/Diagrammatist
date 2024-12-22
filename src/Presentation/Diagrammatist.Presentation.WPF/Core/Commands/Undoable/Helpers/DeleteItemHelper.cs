@@ -1,6 +1,4 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Commands.Undoable;
-
-namespace Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers
+﻿namespace Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers
 {
     /// <summary>
     /// Helps to create <see cref="IUndoableCommand"/> in different code spots.

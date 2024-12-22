@@ -29,11 +29,19 @@
     <ToolBar ToolBarTray.IsLocked="True">
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="Clipboard">
             <StackPanel Orientation="Horizontal">
-                <Button Content="Clipboard button 1"/>
+                <Button Content="Paste"
+                        Command="{Binding PasteCommand}"
+                        IsEnabled="{Binding HasCanvas}"/>
                 <StackPanel Orientation="Vertical">
-                    <Button Content="Clipboard button 2"/>
-                    <Button Content="Clipboard button 3"/>
-                    <Button Content="Clipboard button 4"/>
+                    <Button Content="Copy"
+                            Command="{Binding CopyCommand}"
+                            IsEnabled="{Binding HasSelectedFigure}"/>
+                    <Button Content="Cut"
+                            Command="{Binding CutCommand}"
+                            IsEnabled="{Binding HasSelectedFigure}"/>
+                    <Button Content="Duplicate"
+                            Command="{Binding DuplicateCommand}"
+                            IsEnabled="{Binding HasSelectedFigure}"/>
                 </StackPanel>
             </StackPanel>
         </ContentControl>

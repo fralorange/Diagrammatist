@@ -3,10 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Canvas.Services;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Messages;
+using Diagrammatist.Presentation.WPF.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Models.Figures;
@@ -14,6 +16,7 @@ using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -24,6 +27,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly ICanvasSerializationService _canvasSerializationService;
+        private readonly IClipboardManager<FigureModel> _clipboardManager;
 
         /// <summary>
         /// Occurs when a request is made to zoom current window in.
@@ -121,10 +125,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private bool _isGridVisible = true;
 
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
-                               ICanvasSerializationService canvasSerializationService)
+                               ICanvasSerializationService canvasSerializationService,
+                               IClipboardManager<FigureModel> clipboardManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
+            _clipboardManager = clipboardManager;
 
             _trackableCommandManager.StateChanged += OnStateChanged;
 
@@ -257,6 +263,70 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas?.Figures, figure);
 
             _trackableCommandManager.Execute(command);
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Paste"]/*'/>
+        [RelayCommand]
+        private void Paste(object position)
+        {
+            if (CurrentCanvas is not null && _clipboardManager.PasteFromClipboard() is { } pastedFigure && position is Point destination)
+            {
+                var command = PasteHelper.CreatePasteCommand(
+                    CurrentCanvas.Figures,
+                    pastedFigure,
+                    () => SelectedFigure,
+                    figure => SelectedFigure = figure,
+                    (figure, x, y) =>
+                    {
+                        figure.PosX = x;
+                        figure.PosY = y;
+                    },
+                    new(destination.X, destination.Y));
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Copy"]/*'/>
+        [RelayCommand]
+        private void Copy()
+        {
+            if (SelectedFigure is not null)
+            {
+                CopyHelper.Copy(_clipboardManager, SelectedFigure);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Cut"]/*'/>
+        [RelayCommand]
+        private void Cut()
+        {
+            if (SelectedFigure is not null)
+            {
+                var command = CutHelper.CreateCutCommand(
+                    _clipboardManager,
+                    CurrentCanvas!.Figures,
+                    () => SelectedFigure,
+                    figure => SelectedFigure = figure);
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Duplicate"]/*'/>
+        [RelayCommand]
+        private void Duplicate()
+        {
+            if (SelectedFigure is not null)
+            {
+                var command = DuplicateCommandHelper.CreateDuplicateCommand(
+                    CurrentCanvas!.Figures,
+                    () => SelectedFigure,
+                    figure => SelectedFigure = figure,
+                    figure => figure.Clone());
+
+                _trackableCommandManager.Execute(command);
+            }
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="BringForwardItem"]/*'/>

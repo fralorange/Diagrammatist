@@ -33,6 +33,16 @@
                      x:Name="itemsHolder">
                 <ListBox.Resources>
                     <ContextMenu x:Key="ElementMenu">
+                        <MenuItem Header="Copy"
+                                  Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                        <MenuItem Header="Cut"
+                                  Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                        <MenuItem Header="Duplicate"
+                                  Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                        <Separator/>
                         <MenuItem Header="Bring Forward"
                                   Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
@@ -51,7 +61,15 @@
                                                  Height="{Binding DataContext.CurrentCanvas.Settings.Height, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=0}"
                                                  Background="{Binding DataContext.CurrentCanvas.Settings.Background, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}"
                                                  IsElementPanEnabled="{Binding DataContext.CurrentMouseMode, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Select', FallbackValue=False}"
-                                                 IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}">
+                                                 IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
+                                                 PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown">
+                            <controls:ExtendedCanvas.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Paste"
+                                              Command="{Binding PlacementTarget.DataContext.PasteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                              CommandParameter="{Binding PlacementTarget.ContextMenu.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                </ContextMenu>
+                            </controls:ExtendedCanvas.ContextMenu>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="ItemPositionChanged">
                                     <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
