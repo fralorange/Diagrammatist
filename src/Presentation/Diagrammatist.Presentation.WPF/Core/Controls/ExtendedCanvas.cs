@@ -1,11 +1,12 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.DependencyObject;
-using Diagrammatist.Presentation.WPF.Core.Controls.Args;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls.Args;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.DependencyObject;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.Core.Controls
 {
@@ -134,7 +135,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 IsGridVisible = wasGridVisible;
             }
         }
-
+        #region Event invokers
         /// <summary>
         /// Triggers <see cref="ItemPositionChanged"/> event when and object position changes.
         /// </summary>
@@ -146,7 +147,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             ItemPositionChanged?.Invoke(null, new PositionChangedEventArgs(item.DataContext, oldX, oldY, newX, newY));
         }
-
+        #endregion
+        #region Mouse event handlers
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsElementPanEnabled && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item)
@@ -175,45 +177,12 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 double newX = e.GetPosition(this).X;
                 double newY = e.GetPosition(this).Y;
 
-                var selBorder = GetSelectedElementSelectionBorder();
+                var selBorder = GetElementSelectionBorder(_selectedElement!);
 
                 CenterSelectedElement(selBorder, ref newX, ref newY);
                 SnapCoordinatesToGrid(selBorder, ref newX, ref newY);
-                EnsureElementInsideCanvas(selBorder, ref newX, ref newY);
-
-                SetLeft(_selectedElement, newX);
-                SetTop(_selectedElement, newY);
+                ValidateAndSetElementPosition(_selectedElement!, selBorder, newX, newY);
             }
-        }
-
-        private Thickness GetSelectedElementSelectionBorder()
-        {
-            if (_selectedElement is Control control)
-            {
-                var pad = control.Padding;
-                var border = control.BorderThickness;
-                return new Thickness(pad.Left + border.Left, pad.Top + border.Top, pad.Right + border.Top, pad.Bottom + border.Bottom);
-            }
-
-            return new Thickness();
-        }
-
-        private void CenterSelectedElement(Thickness selBorder, ref double x, ref double y)
-        {
-            x -= (_selectedElement!.ActualWidth - selBorder.Left - selBorder.Right) / 2;
-            y -= (_selectedElement!.ActualHeight - selBorder.Top - selBorder.Bottom) / 2;
-        }
-
-        private void SnapCoordinatesToGrid(Thickness selBorder, ref double x, ref double y)
-        {
-            x = Math.Round(x / GridStep) * GridStep - selBorder.Left;
-            y = Math.Round(y / GridStep) * GridStep - selBorder.Top;
-        }
-
-        private void EnsureElementInsideCanvas(Thickness selBorder, ref double x, ref double y)
-        {
-            x = Math.Max(0 - selBorder.Left, Math.Min(x, ActualWidth - _selectedElement!.ActualWidth + selBorder.Right));
-            y = Math.Max(0 - selBorder.Top, Math.Min(y, ActualHeight - _selectedElement!.ActualHeight + selBorder.Bottom));
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -233,12 +202,73 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 ReleaseMouseCapture();
             }
         }
+        #endregion
+        #region Element position handlers
+        private void ValidateAndSetElementPosition(FrameworkElement element, Thickness? border = null, double? x = null, double? y = null)
+        {
+            double left = x ?? GetLeft(element);
+            double top = y ?? GetTop(element);
 
+            var selBorder = border ?? GetElementSelectionBorder(element);
+
+            EnsureElementInsideCanvas(selBorder, ref left, ref top, element);
+
+            SetLeft(element, left);
+            SetTop(element, top);
+        }
+        private void CenterSelectedElement(Thickness selBorder, ref double x, ref double y)
+        {
+            x -= (_selectedElement!.ActualWidth - selBorder.Left - selBorder.Right) / 2;
+            y -= (_selectedElement!.ActualHeight - selBorder.Top - selBorder.Bottom) / 2;
+        }
+
+        private void SnapCoordinatesToGrid(Thickness selBorder, ref double x, ref double y)
+        {
+            x = Math.Round(x / GridStep) * GridStep - selBorder.Left;
+            y = Math.Round(y / GridStep) * GridStep - selBorder.Top;
+        }
+
+        private Thickness GetElementSelectionBorder(FrameworkElement? elem = null)
+        {
+            elem ??= _selectedElement;
+
+            if (elem is Control control)
+            {
+                var pad = control.Padding;
+                var border = control.BorderThickness;
+                return new Thickness(pad.Left + border.Left, pad.Top + border.Top, pad.Right + border.Top, pad.Bottom + border.Bottom);
+            }
+
+            return new Thickness();
+        }
+
+        private void EnsureElementInsideCanvas(Thickness selBorder, ref double x, ref double y, FrameworkElement? elem = null)
+        {
+            elem ??= _selectedElement;
+
+            x = Math.Max(0 - selBorder.Left, Math.Min(x, ActualWidth - elem!.ActualWidth + selBorder.Right));
+            y = Math.Max(0 - selBorder.Top, Math.Min(y, ActualHeight - elem!.ActualHeight + selBorder.Bottom));
+        }
+        #endregion
+        #region Event handlers
         private static void OnGridChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ExtendedCanvas canvas)
             {
                 canvas.InvalidateVisual();
+            }
+        }
+
+        protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
+        {
+            base.OnVisualChildrenChanged(visualAdded, visualRemoved);
+
+            if (visualAdded is FrameworkElement elem)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Render, () =>
+                {
+                    ValidateAndSetElementPosition(elem);
+                });
             }
         }
 
@@ -264,5 +294,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 }
             }
         }
+        #endregion
     }
 }
