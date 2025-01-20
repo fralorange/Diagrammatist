@@ -3,15 +3,15 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Canvas.Services;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
+using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
-using Diagrammatist.Presentation.WPF.Core.Messages;
-using Diagrammatist.Presentation.WPF.Managers.Clipboard;
-using Diagrammatist.Presentation.WPF.Mappers.Canvas;
-using Diagrammatist.Presentation.WPF.Models.Canvas;
-using Diagrammatist.Presentation.WPF.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Messaging;
+using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
@@ -319,7 +319,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (SelectedFigure is not null)
             {
-                var command = DuplicateCommandHelper.CreateDuplicateCommand(
+                var command = DuplicateHelper.CreateDuplicateCommand(
                     CurrentCanvas!.Figures,
                     () => SelectedFigure,
                     figure => SelectedFigure = figure,

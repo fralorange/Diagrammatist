@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Models.Figures"
-                    xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Selectors">
+                    xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Figures;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core">
     <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"
                   DataType="figures:ShapeFigureModel">

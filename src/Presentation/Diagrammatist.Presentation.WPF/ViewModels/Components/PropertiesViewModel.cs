@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {

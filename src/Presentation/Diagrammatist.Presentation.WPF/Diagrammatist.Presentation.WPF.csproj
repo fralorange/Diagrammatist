@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
     <PackageReference Include="MvvmDialogs" Version="9.1.2" />
@@ -26,8 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Application\Diagrammatist.Application.AppServices\Diagrammatist.Application.AppServices.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Diagrammatist.Infrastructure.DataAccess\Diagrammatist.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\Diagrammatist.Presentation.WPF.Core\Diagrammatist.Presentation.WPF.Core.csproj" />
   </ItemGroup>
 
 </Project>

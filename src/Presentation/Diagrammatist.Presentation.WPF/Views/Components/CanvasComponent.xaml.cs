@@ -1,10 +1,10 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.DependencyObject;
-using Diagrammatist.Presentation.WPF.Core.Controls;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 
 namespace Diagrammatist.Presentation.WPF.Views.Components
 {

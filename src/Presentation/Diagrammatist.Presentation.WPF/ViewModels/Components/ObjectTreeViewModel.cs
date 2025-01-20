@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions.ObservableCollection;
-using Diagrammatist.Presentation.WPF.Managers.Clipboard;
-using Diagrammatist.Presentation.WPF.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
+using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -91,7 +91,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (SelectedFigure is not null)
             {
-                var command = DuplicateCommandHelper.CreateDuplicateCommand(
+                var command = DuplicateHelper.CreateDuplicateCommand(
                     Figures!,
                     () => SelectedFigure,
                     figure => SelectedFigure = figure,

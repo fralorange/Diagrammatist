@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Diagrammatist.Application.AppServices.Canvas.Helpers;
-using Diagrammatist.Presentation.WPF.Mappers.Canvas;
-using Diagrammatist.Presentation.WPF.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;

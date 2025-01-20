@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{55F53E
 		docs\assets\assets.md = docs\assets\assets.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diagrammatist.Presentation.WPF.Core", "src\Presentation\Diagrammatist.Presentation.WPF.Core\Diagrammatist.Presentation.WPF.Core.csproj", "{F167AD39-BB8D-42BF-87CA-21D5F931B51C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F167AD39-BB8D-42BF-87CA-21D5F931B51C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F167AD39-BB8D-42BF-87CA-21D5F931B51C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F167AD39-BB8D-42BF-87CA-21D5F931B51C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F167AD39-BB8D-42BF-87CA-21D5F931B51C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{FAA45AD3-B078-47F2-B7DF-5BD64C4AAF56} = {895EB5E3-AB43-43AC-8175-DE60847090B4}
 		{3BC05702-0A27-4914-BB31-2A28AF6F2E96} = {416DD9AF-C437-4FFB-9F51-F45F98A9C45B}
 		{55F53E49-E189-4C6A-860B-3E88BC271127} = {416DD9AF-C437-4FFB-9F51-F45F98A9C45B}
+		{F167AD39-BB8D-42BF-87CA-21D5F931B51C} = {DB478693-0571-4D79-8290-C5E87B44C895}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F0DF37D-74DA-4F7B-831E-E3C2B2B50437}

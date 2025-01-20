@@ -3,12 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Figures.Services;
-using Diagrammatist.Presentation.WPF.Core.Foundation.BaseClasses.ObservableObject.Args;
-using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Helpers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Undoable.Manager;
-using Diagrammatist.Presentation.WPF.Mappers.Figures;
-using Diagrammatist.Presentation.WPF.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
+using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
+using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
