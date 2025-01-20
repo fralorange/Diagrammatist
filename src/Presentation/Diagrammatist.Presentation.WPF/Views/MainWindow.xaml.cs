@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.ViewModels;
+﻿using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.ViewModels;
 using System.ComponentModel;
 using System.Windows;
 
@@ -12,9 +13,12 @@ namespace Diagrammatist.Presentation.WPF.Views
     /// </remarks>
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel viewModel)
+        private readonly IAlertService _alertService;
+
+        public MainWindow(MainViewModel viewModel, IAlertService alertService)
         {
             DataContext = viewModel;
+            _alertService = alertService;
 
             viewModel.OnRequestClose += CloseWindow;
 
@@ -27,20 +31,10 @@ namespace Diagrammatist.Presentation.WPF.Views
 
             if (DataContext is MainViewModel viewModel && viewModel.HasGlobalChangesFlag)
             {
-                // TO-DO: same issue, avoid using message boxes and other dialog creation classes
-                // in code-behind, try to take it to the service in future.
-                var result = MessageBox.Show(
-                    "You have unsaved changes. Do you wish to save all and exit?",
-                    "Confirm your actions",
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Warning);
+                var result = _alertService.RequestConfirmation("You have unsaved changes. Do you wish to save all and exit?",
+                     "Confirm your actions");
 
-                if (result == MessageBoxResult.Yes)
-                {
-                    // might use bool return value and check if it actually saved if not, then e.Cancel = true
-                    // can be achieved by using request messages, like request bool result of saving from canvas viewmodel and etc.
-                    viewModel.MenuSaveAll();
-                } else if (result == MessageBoxResult.Cancel)
+                if (result == MessageBoxResult.Yes && !viewModel.SaveAll() || result == MessageBoxResult.Cancel)
                 {
                     e.Cancel = true;
                 }

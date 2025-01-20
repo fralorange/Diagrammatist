@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.ViewModels.Components;
+﻿using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System.Windows;
@@ -14,9 +15,12 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
     /// </remarks>
     public partial class TabsComponent : UserControl
     {
+        private readonly IAlertService _alertService;
+
         public TabsComponent()
         {
             var viewModel = App.Current.Services.GetRequiredService<TabsViewModel>();
+            _alertService = App.Current.Services.GetRequiredService<IAlertService>();
 
             viewModel.RequestOpen += OpenCanvas;
             viewModel.OpenFailed += OpenFail;
@@ -29,15 +33,14 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         private MessageBoxResult CloseFail()
         {
-            // TO-DO: move into IDialogService, the same message as when trying to exit unsaved app.
-            return MessageBoxResult.No;
+            return _alertService.RequestConfirmation("You have unsaved changes. Do you wish to save and close this canvas?",
+                "Confirm Your Actions");
         }
 
         private void OpenFail()
         {
-            // TO-DO: move into IDialogService or come up with a better idea of showing warnings to user
-            // it's still shouldn't be invoked from code-behind, i think.
-            MessageBox.Show("A canvas with that name is already open.", "PLACEHOLDER MESSAGE BOX");
+            _alertService.ShowError("A canvas with this name is already open. Please select a different file or switch to the open canvas.", 
+                "Canvas Already Open");
         }
 
         private string OpenCanvas()

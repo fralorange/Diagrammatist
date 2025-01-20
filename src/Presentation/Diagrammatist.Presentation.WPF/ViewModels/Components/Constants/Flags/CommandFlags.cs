@@ -46,16 +46,8 @@
         /// </summary>
         public const string Open = nameof(Open);
         /// <summary>
-        /// Gets save flag.
-        /// </summary>
-        public const string Save = nameof(Save);
-        /// <summary>
         /// Gets save as flag.
         /// </summary>
         public const string SaveAs = nameof(SaveAs);
-        /// <summary>
-        /// Gets save all flag.
-        /// </summary>
-        public const string SaveAll = nameof(SaveAll);
     }
 }

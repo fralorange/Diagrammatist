@@ -3,7 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Messaging;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
@@ -123,9 +124,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// Saves all canvases from menu button.
         /// </summary>
         [RelayCommand]
-        public void MenuSaveAll()
+        private void MenuSaveAll()
         {
-            Messenger.Send(CommandFlags.SaveAll);
+            SaveAll();
+        }
+
+        /// <summary>
+        /// Saves all canvases from indirect call.
+        /// </summary>
+        /// <returns>Saving operation result.</returns>
+        public bool SaveAll()
+        {
+            return Messenger.Send(new SaveAllRequestMessage());
         }
 
         /// <summary>
@@ -134,7 +144,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand()]
         private void MenuSave()
         {
-            Messenger.Send(CommandFlags.Save);
+            Messenger.Send(new SaveRequestMessage());
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard.Figure;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.Views;
@@ -66,6 +67,10 @@ namespace Diagrammatist.Presentation.WPF
             #region Canvases
             services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
             services.AddTransient<ICanvasSerializationService, CanvasSerializationService>();
+            #endregion
+
+            #region Presentation
+            services.AddTransient<IAlertService, AlertService>();
             #endregion
             return services;
         }

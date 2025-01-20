@@ -7,7 +7,6 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
-using Diagrammatist.Presentation.WPF.Core.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
@@ -17,6 +16,8 @@ using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -198,50 +199,50 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         /// <summary>
         /// Saves current canvas as new file.
-        /// </summary>
-        private void SaveAs()
+        /// summary>
+        private bool SaveAs()
         {
-            if (CurrentCanvas is null || RequestSaveAs is null)
-            {
-                return;
-            }
+            if (CurrentCanvas == null || RequestSaveAs == null)
+                return false;
 
-            var filePath = RequestSaveAs(CurrentCanvas.Settings.FileName);
+            string filePath = RequestSaveAs(CurrentCanvas.Settings.FileName);
 
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
-                _trackableCommandManager.MarkSaved();
+            if (string.IsNullOrEmpty(filePath))
+                return false;
 
-                FilePath = filePath;
-            }
+            _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
+            _trackableCommandManager.MarkSaved();
 
-            var fileName = Path.GetFileNameWithoutExtension(filePath);
+            FilePath = filePath;
+            Messenger.Send(new UpdatedCanvasFilePathMessage(filePath));
 
-            if (!string.IsNullOrEmpty(filePath) && fileName != CurrentCanvas.Settings.FileName)
-            {
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
+            if (fileName != CurrentCanvas.Settings.FileName)
                 CurrentCanvas.Settings.FileName = fileName;
-            }
+
+            return true;
         }
 
         /// <summary>
         /// Saves current canvas.
         /// </summary>
-        private void Save()
+        private bool Save()
         {
             if (CurrentCanvas is null)
             {
-                return;
+                return false;
             }
 
             if (!File.Exists(FilePath))
             {
-                SaveAs();
+                return SaveAs();
             }
             else
             {
                 _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), FilePath);
                 _trackableCommandManager.MarkSaved();
+
+                return true;
             }
         }
 
@@ -428,6 +429,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 m.Reply(r.CurrentCanvas);
             });
+            // Save and return result.
+            Messenger.Register<CanvasViewModel, SaveRequestMessage>(this, (r, m) =>
+            {
+                m.Reply(Save());
+            });
             // Register menu commands.
             Messenger.Register<CanvasViewModel, string>(this, (r, m) =>
             {
@@ -453,9 +459,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         break;
                     case CommandFlags.Export:
                         Export();
-                        break;
-                    case CommandFlags.Save:
-                        Save();
                         break;
                     case CommandFlags.SaveAs:
                         SaveAs();

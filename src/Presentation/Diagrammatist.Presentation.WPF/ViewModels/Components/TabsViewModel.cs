@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
-using Diagrammatist.Presentation.WPF.Core.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
@@ -12,6 +11,8 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 using Size = System.Drawing.Size;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -195,18 +196,25 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 return;
             }
 
-            if (target.HasChanges)
+            if (!target.HasChanges)
             {
-                var closeResult = CloseFailed();
+                RemoveCanvas(target);
+                return;
+            }
 
-                switch (closeResult)
+            var closeResult = CloseFailed();
+
+            if (closeResult == MessageBoxResult.Cancel)
+            {
+                return;
+            }
+            else if (closeResult == MessageBoxResult.Yes)
+            {
+                SelectedCanvas = target;
+
+                if (!Messenger.Send(new SaveRequestMessage()))
                 {
-                    case MessageBoxResult.Cancel:
-                        return;
-                    case MessageBoxResult.Yes:
-                        SelectedCanvas = target;
-                        Messenger.Send(CommandFlags.Save);
-                        break;
+                    return;
                 }
             }
 
@@ -224,16 +232,29 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        private void SaveAllCanvases()
+        private void UpdateCanvasFilePath(string filePath)
         {
-            if (Canvases.Count > 0)
+            if (SelectedCanvas is not null && _canvasFilePathes.ContainsKey(SelectedCanvas))
             {
-                foreach (var canvas in Canvases.ToList())
-                {
-                    SelectedCanvas = canvas;
-                    Messenger.Send(CommandFlags.Save);
-                }
+                _canvasFilePathes[SelectedCanvas] = filePath;
             }
+        }
+
+        private bool SaveAllCanvases()
+        {
+            if (Canvases.Count == 0)
+            {
+                return false;
+            }
+
+            foreach (var canvas in Canvases.ToList())
+            {
+                SelectedCanvas = canvas;
+                if (!Messenger.Send(new SaveRequestMessage()))
+                    return false;
+            }
+
+            return true;
         }
 
         partial void OnSelectedCanvasChanged(CanvasModel? value)
@@ -265,6 +286,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 UpdateCanvasSize(m.Value);
             });
 
+            Messenger.Register<TabsViewModel, UpdatedCanvasFilePathMessage>(this, (r, m) =>
+            {
+                UpdateCanvasFilePath(m.Value);
+            });
+
+            Messenger.Register<TabsViewModel, SaveAllRequestMessage>(this, (r, m) =>
+            {
+                m.Reply(SaveAllCanvases());
+            });
+
             Messenger.Register<TabsViewModel, string>(this, (r, m) =>
             {
                 switch (m)
@@ -277,9 +308,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         break;
                     case CommandFlags.Open:
                         OpenCanvas();
-                        break;
-                    case CommandFlags.SaveAll:
-                        SaveAllCanvases();
                         break;
                 }
             });
