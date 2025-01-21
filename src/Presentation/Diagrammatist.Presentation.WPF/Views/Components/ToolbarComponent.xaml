@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Toolbar.ToolbarResources"
              d:DataContext="{d:DesignInstance Type=viewmodels:ToolbarViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -27,34 +29,34 @@
         </ControlTemplate>
     </UserControl.Resources>
     <ToolBar ToolBarTray.IsLocked="True">
-        <ContentControl Template="{StaticResource ToolTemplate}" Tag="Clipboard">
+        <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Clipboard}">
             <StackPanel Orientation="Horizontal">
-                <Button Content="Paste"
+                <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Paste}"
                         Command="{Binding PasteCommand}"
                         IsEnabled="{Binding HasCanvas}"/>
                 <StackPanel Orientation="Vertical">
-                    <Button Content="Copy"
+                    <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Copy}"
                             Command="{Binding CopyCommand}"
                             IsEnabled="{Binding HasSelectedFigure}"/>
-                    <Button Content="Cut"
+                    <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Cut}"
                             Command="{Binding CutCommand}"
                             IsEnabled="{Binding HasSelectedFigure}"/>
-                    <Button Content="Duplicate"
+                    <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Duplicate}"
                             Command="{Binding DuplicateCommand}"
                             IsEnabled="{Binding HasSelectedFigure}"/>
                 </StackPanel>
             </StackPanel>
         </ContentControl>
         <Separator/>
-        <ContentControl Template="{StaticResource ToolTemplate}" Tag="Controls">
+        <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Controls}">
             <StackPanel Orientation="Horizontal">
-                <Button Content="Selection Mode" 
+                <Button Content="{lex:Loc SelectionMode}" 
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Select"/>
-                <Button Content="Pan Mode" 
+                <Button Content="{lex:Loc PanMode}" 
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Pan"/>
-                <Button Content="Transform Mode" 
+                <Button Content="{lex:Loc TransformMode}" 
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Transform"/>
             </StackPanel>

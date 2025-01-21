@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -32,25 +33,26 @@
                      PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
                      x:Name="itemsHolder">
                 <ListBox.Resources>
-                    <ContextMenu x:Key="ElementMenu">
-                        <MenuItem Header="Copy"
+                    <ContextMenu x:Key="ElementMenu"
+                                 lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
+                        <MenuItem Header="{lex:Loc Copy}"
                                   Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <MenuItem Header="Cut"
+                        <MenuItem Header="{lex:Loc Cut}"
                                   Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <MenuItem Header="Duplicate"
+                        <MenuItem Header="{lex:Loc Duplicate}"
                                   Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                         <Separator/>
-                        <MenuItem Header="Bring Forward"
+                        <MenuItem Header="{lex:Loc BringForward}"
                                   Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <MenuItem Header="Send Backward"
+                        <MenuItem Header="{lex:Loc SendBackward}"
                                   Command="{Binding DataContext.SendBackwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                         <Separator/>
-                        <MenuItem Header="Delete"
+                        <MenuItem Header="{lex:Loc Delete}"
                                   Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                     </ContextMenu>
@@ -64,8 +66,8 @@
                                                  IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
                                                  PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown">
                             <controls:ExtendedCanvas.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Paste"
+                                <ContextMenu lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
+                                    <MenuItem Header="{lex:Loc Paste}"
                                               Command="{Binding PlacementTarget.DataContext.PasteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                               CommandParameter="{Binding PlacementTarget.ContextMenu.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                 </ContextMenu>

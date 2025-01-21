@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
         xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
         mc:Ignorable="d"
         Height="450" 
         Width="450"
@@ -21,9 +23,9 @@
         <UniformGrid Grid.Row="0"
                      Margin="20"
                      Columns="2">
-            <Label Content="Width:"/>
+            <Label Content="{lex:Loc Width}"/>
             <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="Height:"/>
+            <Label Content="{lex:Loc Height}"/>
             <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </UniformGrid>
 
@@ -37,11 +39,11 @@
                 </Style>
             </StackPanel.Resources>
 
-            <Button Content="OK"
+            <Button Content="{lex:Loc OK}"
                 Command="{Binding OkCommand}"
                 IsDefault="True"/>
 
-            <Button Content="Cancel"
+            <Button Content="{lex:Loc Cancel}"
                 IsCancel="True"/>
         </StackPanel>
     </Grid>

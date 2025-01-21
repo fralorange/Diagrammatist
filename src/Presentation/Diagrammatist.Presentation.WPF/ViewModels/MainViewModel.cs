@@ -250,6 +250,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         #endregion
+        #region Preferences
+        /// <summary>
+        /// Opens dialog 'general preferences' window from menu button.
+        /// </summary>
+        [RelayCommand]
+        private void MenuGeneralPreferences()
+        {
+            var dialogViewModel = new SettingsDialogViewModel();
+
+            _dialogService.ShowDialog(this, dialogViewModel);
+        }
+        #endregion
         #region Help
 
         /// <summary>

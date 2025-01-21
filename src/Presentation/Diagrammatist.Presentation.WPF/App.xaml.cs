@@ -1,7 +1,8 @@
 ﻿using Diagrammatist.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 using System.Windows;
-
+using WPFLocalizeExtension.Engine;
 using ApplicationEntity = System.Windows.Application;
 
 namespace Diagrammatist.Presentation.WPF
@@ -24,6 +25,8 @@ namespace Diagrammatist.Presentation.WPF
         public App()
         {
             Services = ConfigureServices();
+
+            ConfigureCulture();
         }
 
         private static ServiceProvider ConfigureServices()
@@ -42,6 +45,19 @@ namespace Diagrammatist.Presentation.WPF
             services.AddManagers();
 
             return services.BuildServiceProvider();
+        }
+
+        private static void ConfigureCulture()
+        {
+            var culture = new CultureInfo(WPF.Properties.Settings.Default.Culture);
+
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.CurrentCulture = culture;
+
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            CultureInfo.CurrentUICulture = culture;
+
+            LocalizeDictionary.Instance.SetCultureCommand.Execute(culture.ToString());
         }
 
         protected override void OnStartup(StartupEventArgs e)

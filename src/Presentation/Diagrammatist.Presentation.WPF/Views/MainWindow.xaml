@@ -7,6 +7,10 @@
         xmlns:vm="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels"
         xmlns:components="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components"
         xmlns:md="clr-namespace:MvvmDialogs;assembly=MvvmDialogs"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="en"
+        lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+        lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.MainResources"
         md:DialogServiceViews.IsRegistered="True"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
@@ -27,69 +31,73 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="New"
+            <MenuItem Header="{lex:Loc File}">
+                <MenuItem Header="{lex:Loc New}"
                           Command="{Binding MenuNewCommand}"/>
-                <MenuItem Header="Open"
+                <MenuItem Header="{lex:Loc Open}"
                           Command="{Binding MenuOpenCommand}"/>
                 <Separator/>
-                <MenuItem Header="Close"
+                <MenuItem Header="{lex:Loc Close}"
                           Command="{Binding MenuCloseCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
-                <MenuItem Header="Close all"
+                <MenuItem Header="{lex:Loc CloseAll}"
                           Command="{Binding MenuCloseAllCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
-                <MenuItem Header="Save"
+                <MenuItem Header="{lex:Loc Save}"
                           Command="{Binding MenuSaveCommand}"
                           IsEnabled="{Binding HasChangesFlag}"/>
-                <MenuItem Header="Save As"
+                <MenuItem Header="{lex:Loc SaveAs}"
                           Command="{Binding MenuSaveAsCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
-                <MenuItem Header="Save All"
+                <MenuItem Header="{lex:Loc SaveAll}"
                           Command="{Binding MenuSaveAllCommand}"
                           IsEnabled="{Binding HasGlobalChangesFlag}"/>
                 <Separator/>
-                <MenuItem Header="Export"
+                <MenuItem Header="{lex:Loc Export}"
                           Command="{Binding MenuExportCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
-                <MenuItem Header="Exit"
+                <MenuItem Header="{lex:Loc Exit}"
                           Command="{Binding MenuExitCommand}"/>
             </MenuItem>
-            <MenuItem Header="Edit">
-                <MenuItem Header="Undo"
+            <MenuItem Header="{lex:Loc Edit}">
+                <MenuItem Header="{lex:Loc Undo}"
                           Command="{Binding MenuUndoCommand}"
                           IsEnabled="{Binding HasUndoFlag}"/>
-                <MenuItem Header="Redo"
+                <MenuItem Header="{lex:Loc Redo}"
                           Command="{Binding MenuRedoCommand}"
                           IsEnabled="{Binding HasRedoFlag}"/>
             </MenuItem>
-            <MenuItem Header="Canvas">
-                <MenuItem Header="Change size"
+            <MenuItem Header="{lex:Loc Canvas}">
+                <MenuItem Header="{lex:Loc ChangeSize}"
                           Command="{Binding MenuChangeSizeCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
             </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Header="Zoom In"
+            <MenuItem Header="{lex:Loc View}">
+                <MenuItem Header="{lex:Loc ZoomIn}"
                           Command="{Binding MenuZoomInCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
-                <MenuItem Header="Zoom Out"
+                <MenuItem Header="{lex:Loc ZoomOut}"
                           Command="{Binding MenuZoomOutCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
-                <MenuItem Header="Reset Zoom"
+                <MenuItem Header="{lex:Loc ResetZoom}"
                           Command="{Binding MenuZoomResetCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
-                <MenuItem Header="Enable Grid"
+                <MenuItem Header="{lex:Loc Grid}"
                           Command="{Binding MenuEnableGridCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
             </MenuItem>
-            <MenuItem Header="Help">
-                <MenuItem Header="View Help"
+            <MenuItem Header="{lex:Loc Preferences}">
+                <MenuItem Header="{lex:Loc General}"
+                          Command="{Binding MenuGeneralPreferencesCommand}"/>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc Help}">
+                <MenuItem Header="{lex:Loc ViewHelp}"
                           Command="{Binding MenuHelpCommand}"/>
                 <Separator/>
-                <MenuItem Header="About App"
+                <MenuItem Header="{lex:Loc AboutApp}"
                           Command="{Binding MenuAboutCommand}"/>
             </MenuItem>
         </Menu>
