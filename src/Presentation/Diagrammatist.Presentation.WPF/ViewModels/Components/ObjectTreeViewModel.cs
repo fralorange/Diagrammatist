@@ -54,6 +54,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void DeleteItem(FigureModel figure)
         {
+            if (Figures is null)
+                return;
+
             var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
 
             _trackableCommandManager.Execute(command);

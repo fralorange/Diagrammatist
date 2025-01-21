@@ -8,6 +8,18 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              d:DataContext="{d:DesignInstance Type=viewmodels:ObjectTreeViewModel}"
              mc:Ignorable="d">
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+C" 
+                Command="{Binding CopyCommand}"/>
+        <KeyBinding Gesture="Ctrl+D" 
+                Command="{Binding DuplicateCommand}"/>
+        <KeyBinding Gesture="Ctrl+X" 
+                Command="{Binding CutCommand}"/>
+        <KeyBinding Gesture="Delete" 
+                Command="{Binding DeleteItemCommand}"
+                CommandParameter="{Binding SelectedFigure}"/>
+    </UserControl.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -25,14 +37,14 @@
                 <ContextMenu x:Key="ElementMenu"
                              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                     <MenuItem Header="{lex:Loc Copy}"
-                              Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                              InputGestureText="Ctrl+C"
+                              Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                     <MenuItem Header="{lex:Loc Cut}"
-                              Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                              InputGestureText="Ctrl+X"
+                              Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                     <MenuItem Header="{lex:Loc Duplicate}"
-                              Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                              InputGestureText="Ctrl+D"
+                              Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                     <Separator/>
                     <MenuItem Header="{lex:Loc BringForward}"
                               Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
@@ -42,6 +54,7 @@
                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                     <Separator/>
                     <MenuItem Header="{lex:Loc Delete}"
+                              InputGestureText="Del"
                               Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                 </ContextMenu>

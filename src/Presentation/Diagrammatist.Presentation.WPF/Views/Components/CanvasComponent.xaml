@@ -17,6 +17,22 @@
             <ItemsPresenter/>
         </ControlTemplate>
     </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+C" 
+                    Command="{Binding CopyCommand}"/>
+        <KeyBinding Gesture="Ctrl+V" 
+                    Command="{Binding PasteCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Tag}"/>
+        <KeyBinding Gesture="Ctrl+D" 
+                    Command="{Binding DuplicateCommand}"/>
+        <KeyBinding Gesture="Ctrl+X" 
+                    Command="{Binding CutCommand}"/>
+        <KeyBinding Gesture="Delete" 
+                    Command="{Binding DeleteItemCommand}"
+                    CommandParameter="{Binding SelectedFigure}"/>
+    </UserControl.InputBindings>
+
     <controls:ExtendedScrollViewer HorizontalScrollBarVisibility="Visible"
                                    VerticalScrollBarVisibility="Visible"
                                    Focusable="False"
@@ -36,14 +52,14 @@
                     <ContextMenu x:Key="ElementMenu"
                                  lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                         <MenuItem Header="{lex:Loc Copy}"
-                                  Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                                  InputGestureText="Ctrl+C"
+                                  Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                         <MenuItem Header="{lex:Loc Cut}"
-                                  Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                                  InputGestureText="Ctrl+X"
+                                  Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                         <MenuItem Header="{lex:Loc Duplicate}"
-                                  Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+                                  InputGestureText="Ctrl+D"
+                                  Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc BringForward}"
                                   Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
@@ -53,6 +69,7 @@
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Delete}"
+                                  InputGestureText="Del"
                                   Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
                     </ContextMenu>
@@ -64,10 +81,13 @@
                                                  Background="{Binding DataContext.CurrentCanvas.Settings.Background, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}"
                                                  IsElementPanEnabled="{Binding DataContext.CurrentMouseMode, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Select', FallbackValue=False}"
                                                  IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
-                                                 PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown">
+                                                 PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown"
+                                                 PreviewKeyDown="OnExtendedCanvasPreviewKeyDown"
+                                                 Focusable="True">
                             <controls:ExtendedCanvas.ContextMenu>
                                 <ContextMenu lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                                     <MenuItem Header="{lex:Loc Paste}"
+                                              InputGestureText="Ctrl+V"
                                               Command="{Binding PlacementTarget.DataContext.PasteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                               CommandParameter="{Binding PlacementTarget.ContextMenu.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                 </ContextMenu>

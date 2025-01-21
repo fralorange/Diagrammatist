@@ -145,6 +145,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void Undo()
         {
+            if (CurrentCanvas is null)
+                return;
+
             _trackableCommandManager.Undo();
         }
 
@@ -153,6 +156,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void Redo()
         {
+            if (CurrentCanvas is null)
+                return;
+
             _trackableCommandManager.Redo();
         }
 
@@ -161,7 +167,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void ZoomIn()
         {
-            if (RequestZoomIn is not null)
+            if (RequestZoomIn is not null && CurrentCanvas is not null)
             {
                 RequestZoomIn();
             }
@@ -172,7 +178,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void ZoomOut()
         {
-            if (RequestZoomOut is not null)
+            if (RequestZoomOut is not null && CurrentCanvas is not null)
             {
                 RequestZoomOut();
             }
@@ -194,6 +200,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void EnableGrid()
         {
+            if (CurrentCanvas is null)
+                return;
+
             IsGridVisible = !IsGridVisible;
         }
 
@@ -261,7 +270,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void DeleteItem(FigureModel figure)
         {
-            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas?.Figures, figure);
+            if (CurrentCanvas?.Figures is null)
+                return;
+
+            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas.Figures, figure);
 
             _trackableCommandManager.Execute(command);
         }
@@ -292,7 +304,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void Copy()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && CurrentCanvas is not null)
             {
                 CopyHelper.Copy(_clipboardManager, SelectedFigure);
             }
@@ -302,7 +314,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void Cut()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && CurrentCanvas is not null)
             {
                 var command = CutHelper.CreateCutCommand(
                     _clipboardManager,
@@ -318,7 +330,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void Duplicate()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && CurrentCanvas is not null)
             {
                 var command = DuplicateHelper.CreateDuplicateCommand(
                     CurrentCanvas!.Figures,

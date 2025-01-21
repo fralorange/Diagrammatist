@@ -29,12 +29,41 @@
             <Setter Property="Height" Value="3" />
         </Style>
     </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+N" 
+                    Command="{Binding MenuNewCommand}"/>
+        <KeyBinding Gesture="Ctrl+O" 
+                    Command="{Binding MenuOpenCommand}"/>
+        <KeyBinding Gesture="Ctrl+S" 
+                    Command="{Binding MenuSaveCommand}"/>
+        <KeyBinding Gesture="Ctrl+Shift+S" 
+                    Command="{Binding MenuSaveAsCommand}"/>
+
+        <KeyBinding Gesture="Ctrl+Z" 
+                    Command="{Binding MenuUndoCommand}"/>
+        <KeyBinding Gesture="Ctrl+Y" 
+                    Command="{Binding MenuRedoCommand}"/>
+
+        <KeyBinding Gesture="Ctrl+Add" 
+                    Command="{Binding MenuZoomInCommand}"/>
+        <KeyBinding Gesture="Ctrl+Subtract" 
+                    Command="{Binding MenuZoomOutCommand}"/>
+        <KeyBinding Gesture="Ctrl+0" 
+                    Command="{Binding MenuZoomResetCommand}"/>
+
+        <KeyBinding Gesture="Ctrl+F1" 
+                    Command="{Binding MenuHelpCommand}"/>
+    </Window.InputBindings>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{lex:Loc File}">
                 <MenuItem Header="{lex:Loc New}"
+                          InputGestureText="Ctrl+N"
                           Command="{Binding MenuNewCommand}"/>
                 <MenuItem Header="{lex:Loc Open}"
+                          InputGestureText="Ctrl+O"
                           Command="{Binding MenuOpenCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Close}"
@@ -45,9 +74,11 @@
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Save}"
+                          InputGestureText="Ctrl+S"
                           Command="{Binding MenuSaveCommand}"
                           IsEnabled="{Binding HasChangesFlag}"/>
                 <MenuItem Header="{lex:Loc SaveAs}"
+                          InputGestureText="Ctrl+Shift+S"
                           Command="{Binding MenuSaveAsCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <MenuItem Header="{lex:Loc SaveAll}"
@@ -59,13 +90,16 @@
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Exit}"
+                          InputGestureText="Alt+F4"
                           Command="{Binding MenuExitCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc Edit}">
                 <MenuItem Header="{lex:Loc Undo}"
+                          InputGestureText="Ctrl+Z"
                           Command="{Binding MenuUndoCommand}"
                           IsEnabled="{Binding HasUndoFlag}"/>
                 <MenuItem Header="{lex:Loc Redo}"
+                          InputGestureText="Ctrl+Y"
                           Command="{Binding MenuRedoCommand}"
                           IsEnabled="{Binding HasRedoFlag}"/>
             </MenuItem>
@@ -76,12 +110,15 @@
             </MenuItem>
             <MenuItem Header="{lex:Loc View}">
                 <MenuItem Header="{lex:Loc ZoomIn}"
+                          InputGestureText="Ctrl++"
                           Command="{Binding MenuZoomInCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <MenuItem Header="{lex:Loc ZoomOut}"
+                          InputGestureText="Ctrl+-"
                           Command="{Binding MenuZoomOutCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <MenuItem Header="{lex:Loc ResetZoom}"
+                          InputGestureText="Ctrl+0"
                           Command="{Binding MenuZoomResetCommand}"
                           IsEnabled="{Binding HasCanvasFlag}"/>
                 <Separator/>
@@ -95,6 +132,7 @@
             </MenuItem>
             <MenuItem Header="{lex:Loc Help}">
                 <MenuItem Header="{lex:Loc ViewHelp}"
+                          InputGestureText="Ctrl+F1"
                           Command="{Binding MenuHelpCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc AboutApp}"
