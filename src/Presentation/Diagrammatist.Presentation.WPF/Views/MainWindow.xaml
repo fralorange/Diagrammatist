@@ -45,9 +45,9 @@
         <KeyBinding Gesture="Ctrl+Y" 
                     Command="{Binding MenuRedoCommand}"/>
 
-        <KeyBinding Gesture="Ctrl+Add" 
+        <KeyBinding Gesture="Ctrl+Plus" 
                     Command="{Binding MenuZoomInCommand}"/>
-        <KeyBinding Gesture="Ctrl+Subtract" 
+        <KeyBinding Gesture="Ctrl+Minus" 
                     Command="{Binding MenuZoomOutCommand}"/>
         <KeyBinding Gesture="Ctrl+0" 
                     Command="{Binding MenuZoomResetCommand}"/>
