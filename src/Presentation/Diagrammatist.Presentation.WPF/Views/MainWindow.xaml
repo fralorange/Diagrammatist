@@ -173,7 +173,8 @@
                         <Separator/>
                         <MenuItem Header="{lex:Loc Grid}"
                                   Command="{Binding MenuEnableGridCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  IsEnabled="{Binding HasCanvasFlag}"
+                                  IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc Canvas}">
                         <MenuItem Header="{lex:Loc ChangeSize}"

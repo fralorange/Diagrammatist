@@ -34,5 +34,17 @@ namespace Diagrammatist.Presentation.WPF.Properties {
                 this["Culture"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GridVisible {
+            get {
+                return ((bool)(this["GridVisible"]));
+            }
+            set {
+                this["GridVisible"] = value;
+            }
+        }
     }
 }

@@ -2,13 +2,11 @@
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using System.ComponentModel;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using WPFLocalizeExtension.Extensions;
 
 namespace Diagrammatist.Presentation.WPF.Views
 {
@@ -98,8 +96,8 @@ namespace Diagrammatist.Presentation.WPF.Views
 
             if (DataContext is MainViewModel viewModel && viewModel.HasGlobalChangesFlag)
             {
-                var result = _alertService.RequestConfirmation("You have unsaved changes. Do you wish to save all and exit?",
-                     "Confirm your actions");
+                var result = _alertService.RequestConfirmation(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppMessage"),
+                    LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppCaption"));
 
                 if (result == MessageBoxResult.Yes && !viewModel.SaveAll() || result == MessageBoxResult.Cancel)
                 {

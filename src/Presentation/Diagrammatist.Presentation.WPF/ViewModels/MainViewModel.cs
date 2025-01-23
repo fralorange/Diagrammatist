@@ -8,6 +8,7 @@ using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
+using System.Configuration;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels
 {
@@ -43,6 +44,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <inheritdoc cref="IUndoableCommandManager.CanRedo"/>
         public bool HasRedoFlag => _trackableCommandManager.CanRedo;
         /// <summary>
+        /// Gets 'has grid flag' from client-prefs (be default: True)
+        /// </summary>
+        /// <remarks>
+        /// This property used to show checkmarks in front of grid menu item, for visual sake..
+        /// </remarks>
+        public bool HasGridFlag => Properties.Settings.Default.GridVisible;
+        /// <summary>
         /// Gets or sets 'has canvas' flag.
         /// </summary>
         /// <remarks>
@@ -57,10 +65,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
 
+            ConfigureEvents();
+
+            IsActive = true;
+        }
+
+        private void ConfigureEvents()
+        {
             _trackableCommandManager.StateChanged += OnStateChanged;
             _trackableCommandManager.OperationPerformed += OnOperationPerformed;
 
-            IsActive = true;
+            Properties.Settings.Default.SettingChanging += OnSettingsChanged;
         }
 
         #region Menu
@@ -302,10 +317,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             OnPropertyChanged(nameof(HasRedoFlag));
         }
 
+        private void OnSettingsChanged(object? sender, SettingChangingEventArgs e)
+        {
+            if (e.SettingName == nameof(Properties.Settings.Default.GridVisible))
+            {
+                OnPropertyChanged(nameof(HasGridFlag));
+            }
+        }
+
         protected override void OnActivated()
         {
             base.OnActivated();
 
+            // Configures menuflag - bool values.
             Messenger.Register<MainViewModel, Tuple<string, bool>>(this, (r, m) =>
             {
                 switch (m.Item1)

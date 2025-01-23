@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
@@ -27,20 +28,20 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             viewModel.CloseFailed += CloseFail;
 
             DataContext = viewModel;
-            
+
             InitializeComponent();
         }
 
         private MessageBoxResult CloseFail()
         {
-            return _alertService.RequestConfirmation("You have unsaved changes. Do you wish to save and close this canvas?",
-                "Confirm Your Actions");
+            return _alertService.RequestConfirmation(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasMessage"),
+                LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasCaption"));
         }
 
         private void OpenFail()
         {
-            _alertService.ShowError("A canvas with this name is already open. Please select a different file or switch to the open canvas.", 
-                "Canvas Already Open");
+            _alertService.ShowError(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenMessage"),
+                LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenCaption"));
         }
 
         private string OpenCanvas()
@@ -52,7 +53,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
             if (openFileDialog.ShowDialog() == true)
             {
-                return openFileDialog.FileName; 
+                return openFileDialog.FileName;
             }
 
             return string.Empty;

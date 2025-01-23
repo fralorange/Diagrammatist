@@ -18,6 +18,7 @@ using System.IO;
 using System.Windows;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Newtonsoft.Json.Linq;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -204,6 +205,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 return;
 
             IsGridVisible = !IsGridVisible;
+            // Save client-prefs.
+            Properties.Settings.Default.GridVisible = IsGridVisible;
+            Properties.Settings.Default.Save();
         }
 
         /// <summary>
