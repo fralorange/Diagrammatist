@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
+             xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Toolbar.ToolbarResources"
+             behaviors:InputBindingBehavior.PropagateInputBindingsToWindow="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:ToolbarViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -28,6 +30,19 @@
             </Grid>
         </ControlTemplate>
     </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+1" 
+                    Command="{Binding ChangeModeCommand}"
+                    CommandParameter="Select"/>
+        <KeyBinding Gesture="Ctrl+2" 
+                    Command="{Binding ChangeModeCommand}"
+                    CommandParameter="Pan"/>
+        <KeyBinding Gesture="Ctrl+3" 
+                    Command="{Binding ChangeModeCommand}"
+                    CommandParameter="Transform"/>
+    </UserControl.InputBindings>
+    
     <ToolBar ToolBarTray.IsLocked="True">
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Clipboard}">
             <StackPanel Orientation="Horizontal">
@@ -51,12 +66,15 @@
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Controls}">
             <StackPanel Orientation="Horizontal">
                 <Button Content="{lex:Loc SelectionMode}" 
+                        ToolTip="Ctrl + 1"
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Select"/>
-                <Button Content="{lex:Loc PanMode}" 
+                <Button Content="{lex:Loc PanMode}"
+                        ToolTip="Ctrl + 2"
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Pan"/>
-                <Button Content="{lex:Loc TransformMode}" 
+                <Button Content="{lex:Loc TransformMode}"
+                        ToolTip="Ctrl + 3"
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Transform"/>
             </StackPanel>

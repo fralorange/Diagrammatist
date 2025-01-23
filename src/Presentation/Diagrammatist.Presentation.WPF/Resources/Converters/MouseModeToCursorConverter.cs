@@ -19,6 +19,7 @@ namespace Diagrammatist.Presentation.WPF.Resources.Converters
             {
                 MouseMode.Select => Cursors.Arrow,
                 MouseMode.Pan => Cursors.SizeAll,
+                MouseMode.Transform => Cursors.Cross,
                 _ => Cursors.Arrow,
             };
         }
