@@ -8,4 +8,7 @@
     <local:DataToGeometryGroupConverter x:Key="DataToGeometryGroupConverter"/>
     <local:DataToPointCollectionConverter x:Key="DataToPointCollectionConverter"/>
     <local:BoolToStrokeDashArrayConverter x:Key="BoolToStrokeDashArrayConverter"/>
+    <local:CaptionHeightMultiConverter x:Key="CaptionHeightMultiConverter"/>
+    <local:WindowStateToPathConverter x:Key="WindowStateToPathConverter"/>
+    <local:WindowStateToThicknessConverter x:Key="WindowStateToThicknessConverter"/>
 </ResourceDictionary>

@@ -169,6 +169,24 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Maximize.
+        /// </summary>
+        internal static string Maximize {
+            get {
+                return ResourceManager.GetString("Maximize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minimize.
+        /// </summary>
+        internal static string Minimize {
+            get {
+                return ResourceManager.GetString("Minimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New.
         /// </summary>
         internal static string New {
@@ -210,6 +228,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         internal static string ResetZoom {
             get {
                 return ResourceManager.GetString("ResetZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Restore.
+        /// </summary>
+        internal static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
             }
         }
         
