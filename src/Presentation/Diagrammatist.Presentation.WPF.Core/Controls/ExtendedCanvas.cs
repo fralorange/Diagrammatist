@@ -95,7 +95,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             var wasGridVisible = IsGridVisible;
 
             // Hide grid
-            IsGridVisible = false;
+            SetCurrentValue(IsGridVisibleProperty, false);
 
             // Update layout
             UpdateLayout();
@@ -132,7 +132,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             finally
             {
                 // Return previous grid value
-                IsGridVisible = wasGridVisible;
+                SetCurrentValue(IsGridVisibleProperty, wasGridVisible);
             }
         }
         #region Event invokers

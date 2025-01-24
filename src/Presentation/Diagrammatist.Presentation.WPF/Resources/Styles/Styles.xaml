@@ -81,21 +81,17 @@
     
     <Style TargetType="UserControl" x:Key="Component">
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="MediumPurple" />
+        <Setter Property="BorderBrush" Value="{StaticResource FrameStroke}" />
+        <Setter Property="Background" Value="{StaticResource FrameBackground}"/>
         <Setter Property="Margin" Value="2.5" />
     </Style>
-    
+
     <Style TargetType="ItemsControl" x:Key="BaseItemsControls">
         <Setter Property="BorderThickness" Value="0" />
     </Style>
-
-    <Style TargetType="ListBox" BasedOn="{StaticResource BaseItemsControls}">
-        
-    </Style>
-
-    <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}">
-        
-    </Style>
+    
+    <Style TargetType="ListBox" BasedOn="{StaticResource BaseItemsControls}"/>
+    <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 
     <Style TargetType="ToolBar">
         <Style.Resources>
@@ -103,7 +99,7 @@
                 <Setter Property="Margin" Value="5 5 5 0"/>
             </Style>
             <Style x:Key="{x:Static ToolBar.SeparatorStyleKey}" TargetType="{x:Type Separator}">
-                <Setter Property="Background" Value="MediumPurple" />
+                <Setter Property="Background" Value="{StaticResource FrameStroke}" />
                 <Setter Property="Margin" Value="0" />
                 <Setter Property="Focusable" Value="false"/>
                 <Setter Property="Template">
@@ -119,17 +115,17 @@
             </Style>
         </Style.Resources>
 
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="{StaticResource ToolbarBackground}" />
     </Style>
 
     <Style TargetType="Shape" x:Key="BaseGeometry">
-        <Setter Property="Stroke" Value="MediumPurple" />
+        <Setter Property="Stroke" Value="{StaticResource ShapeDefaultStroke}" />
         <Setter Property="StrokeThickness" Value="2" />
         <Setter Property="Stretch" Value="Uniform" />
     </Style>
 
     <Style TargetType="Path" x:Key="Shape" BasedOn="{StaticResource BaseGeometry}">
-        <Setter Property="Fill" Value="GhostWhite" />
+        <Setter Property="Fill" Value="{StaticResource ShapeDefaultBackground}" />
     </Style>
 
     <Style TargetType="Polyline" x:Key="Line" BasedOn="{StaticResource BaseGeometry}">
@@ -137,9 +133,9 @@
     </Style>
 
     <Style TargetType="Border" x:Key="TextBorder">
-        <Setter Property="BorderBrush" Value="MediumPurple" />
+        <Setter Property="BorderBrush" Value="{StaticResource ShapeDefaultStroke}" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="Background" Value="GhostWhite" />
+        <Setter Property="Background" Value="{StaticResource ShapeDefaultBackground}" />
         <Setter Property="Padding" Value="5" />
     </Style>
 

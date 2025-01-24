@@ -27,6 +27,20 @@
             <UniformGrid Grid.Row="0"
                          Margin="20"
                          Columns="2">
+                <UniformGrid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="Margin" Value="0,0,10,10" />
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="10,10,0,0" />
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Margin" Value="10,10,0,0" />
+                    </Style>
+                    <Style TargetType="colorpicker:PortableColorPicker">
+                        <Setter Property="Margin" Value="10,10,0,0" />
+                    </Style>
+                </UniformGrid.Resources>
                 <Label Content="{lex:Loc FileName}"/>
                 <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Content="{lex:Loc Width}"/>

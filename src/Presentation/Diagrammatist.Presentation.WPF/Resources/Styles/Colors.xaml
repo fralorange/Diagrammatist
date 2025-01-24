@@ -14,4 +14,14 @@
     <SolidColorBrush x:Key="TitleBarCloseButtonHoverForeground" Color="White" />
     <SolidColorBrush x:Key="TitleBarCloseButtonPressedBackground" Color="#C84031" />
     <SolidColorBrush x:Key="TitleBarCloseButtonPressedForeground" Color="White" />
+
+    <Color x:Key="AppThemeColor">#FF9370DB</Color> <!--Purple-->
+
+    <SolidColorBrush x:Key="FrameStroke" Color="{StaticResource AppThemeColor}"/>
+    <SolidColorBrush x:Key="FrameBackground" Color="White"/>
+
+    <SolidColorBrush x:Key="ShapeDefaultStroke" Color="{StaticResource AppThemeColor}"/>
+    <SolidColorBrush x:Key="ShapeDefaultBackground" Color="GhostWhite"/>
+
+    <SolidColorBrush x:Key="ToolbarBackground" Color="Transparent"/>
 </ResourceDictionary>
