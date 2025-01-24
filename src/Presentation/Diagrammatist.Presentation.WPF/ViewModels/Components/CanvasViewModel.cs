@@ -4,11 +4,13 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Canvas.Services;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
+using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
@@ -16,9 +18,6 @@ using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
-using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
-using Newtonsoft.Json.Linq;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -124,7 +123,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to determine whether grid is visible for user or not.
         /// </remarks>
         [ObservableProperty]
-        private bool _isGridVisible = true;
+        private bool _isGridVisible = Properties.Settings.Default.GridVisible;
 
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
                                ICanvasSerializationService canvasSerializationService,
@@ -419,11 +418,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 CurrentCanvas = m.NewValue;
 
                 Figures = CurrentCanvas?.Figures;
-                // Center canvas.
-                if (RequestZoomReset is not null)
-                {
-                    RequestZoomReset();
-                }
             });
             // Change mouse mode.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>

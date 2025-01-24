@@ -44,13 +44,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <inheritdoc cref="IUndoableCommandManager.CanRedo"/>
         public bool HasRedoFlag => _trackableCommandManager.CanRedo;
         /// <summary>
-        /// Gets 'has grid flag' from client-prefs (be default: True)
-        /// </summary>
-        /// <remarks>
-        /// This property used to show checkmarks in front of grid menu item, for visual sake..
-        /// </remarks>
-        public bool HasGridFlag => Properties.Settings.Default.GridVisible;
-        /// <summary>
         /// Gets or sets 'has canvas' flag.
         /// </summary>
         /// <remarks>
@@ -58,6 +51,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// </remarks>
         [ObservableProperty]
         private bool _hasCanvasFlag;
+        /// <summary>
+        /// Gets 'has grid flag' from client-prefs (be default: True)
+        /// </summary>
+        /// <remarks>
+        /// This property used to show checkmarks in front of grid menu item, for visual sake..
+        /// </remarks>
+        [ObservableProperty]
+        private bool _hasGridFlag = Properties.Settings.Default.GridVisible;
         #endregion
 
         public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
@@ -319,9 +320,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
 
         private void OnSettingsChanged(object? sender, SettingChangingEventArgs e)
         {
-            if (e.SettingName == nameof(Properties.Settings.Default.GridVisible))
+            if (e.SettingName == nameof(Properties.Settings.Default.GridVisible) && e.NewValue is bool gridVisible)
             {
-                OnPropertyChanged(nameof(HasGridFlag));
+                HasGridFlag = gridVisible;
             }
         }
 

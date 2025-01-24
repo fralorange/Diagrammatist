@@ -15,8 +15,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
     /// </remarks>
     public class ExtendedScrollViewer : ScrollViewer
     {
-        private Point initialMousePos;
-        private bool isDragging;
+        private Point _initialMousePos;
+        private bool _isDragging;
 
         public static readonly DependencyProperty ZoomProperty =
             DependencyProperty.Register(nameof(Zoom), typeof(float), typeof(ExtendedScrollViewer), new PropertyMetadata(1f, OnZoomChanged));
@@ -96,6 +96,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             MouseMove += ExtendedScrollViewer_MouseMove;
             MouseLeftButtonUp += ExtendedScrollViewer_MouseLeftButtonUp;
             PreviewMouseWheel += ExtendedScrollViewer_MouseWheel;
+            SizeChanged += ExtendedScrollViewer_SizeChanged;
 
             LayoutTransform = new ScaleTransform();
         }
@@ -143,8 +144,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             if (IsPanEnabled && e.OriginalSource is not Rectangle { TemplatedParent: Thumb })
             {
-                initialMousePos = e.GetPosition(this);
-                isDragging = true;
+                _initialMousePos = e.GetPosition(this);
+                _isDragging = true;
 
                 CaptureMouse();
             }
@@ -152,25 +153,25 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         private void ExtendedScrollViewer_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDragging)
+            if (_isDragging)
             {
                 var currentMousePos = e.GetPosition(this);
 
-                var deltaX = currentMousePos.X - initialMousePos.X;
-                var deltaY = currentMousePos.Y - initialMousePos.Y;
+                var deltaX = currentMousePos.X - _initialMousePos.X;
+                var deltaY = currentMousePos.Y - _initialMousePos.Y;
 
                 ScrollToHorizontalOffset(HorizontalOffset - deltaX);
                 ScrollToVerticalOffset(VerticalOffset - deltaY);
 
-                initialMousePos = currentMousePos;
+                _initialMousePos = currentMousePos;
             }
         }
 
         private void ExtendedScrollViewer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (isDragging)
+            if (_isDragging)
             {
-                isDragging = false;
+                _isDragging = false;
 
                 ReleaseMouseCapture();
             }
@@ -191,6 +192,23 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 ScrollToVerticalOffset(newOffset.Y);
 
                 Zoom = CalculateZoom(scaleFactor);
+            }
+        }
+
+        private void ExtendedScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.PreviousSize != Size.Empty && e.PreviousSize.Width > 0 && e.PreviousSize.Height > 0 && Keyboard.Modifiers != ZoomModifier)
+            {
+                var horizontalRatio = HorizontalOffset / (ExtentWidth - ViewportWidth);
+                var verticalRatio = VerticalOffset / (ExtentHeight - ViewportHeight);
+
+                UpdateLayout();
+
+                var newHorizontalOffset = horizontalRatio * (ExtentWidth - ViewportWidth);
+                var newVerticalOffset = verticalRatio * (ExtentHeight - ViewportHeight);
+
+                ScrollToHorizontalOffset(newHorizontalOffset);
+                ScrollToVerticalOffset(newVerticalOffset);
             }
         }
 

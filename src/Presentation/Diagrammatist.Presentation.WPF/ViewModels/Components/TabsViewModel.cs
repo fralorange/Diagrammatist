@@ -125,6 +125,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             var canvas = canvasDomain.ToModel();
 
             AddCanvas(canvas);
+
+            Messenger.Send(CommandFlags.ZoomReset);
         }
 
         /// <summary>

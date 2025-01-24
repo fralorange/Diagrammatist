@@ -24,7 +24,7 @@
                      Margin="20"
                      Columns="2">
             <Label Content="{lex:Loc FileName}"/>
-            <TextBox Text="{Binding FileName}"/>
+            <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="{lex:Loc Width}"/>
             <TextBox Text="{Binding Width}"/>
             <Label Content="{lex:Loc Height}"/>
