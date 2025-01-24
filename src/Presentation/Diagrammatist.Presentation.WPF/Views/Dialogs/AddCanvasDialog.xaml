@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
         xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
         mc:Ignorable="d"
         Height="450" 
@@ -20,21 +21,28 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <UniformGrid Grid.Row="0"
-                     Margin="20"
-                     Columns="2">
-            <Label Content="{lex:Loc FileName}"/>
-            <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="{lex:Loc Width}"/>
-            <TextBox Text="{Binding Width}"/>
-            <Label Content="{lex:Loc Height}"/>
-            <TextBox Text="{Binding Height}"/>
-            <Label Content="{lex:Loc Background}"/>
-            <Button Content="Placeholder"/>
-            <Label Content="{lex:Loc DiagramType}"/>
-            <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
-                      SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </UniformGrid>
+
+        <StackPanel Orientation="Vertical">
+
+            <UniformGrid Grid.Row="0"
+                         Margin="20"
+                         Columns="2">
+                <Label Content="{lex:Loc FileName}"/>
+                <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="{lex:Loc Width}"/>
+                <TextBox Text="{Binding Width}"/>
+                <Label Content="{lex:Loc Height}"/>
+                <TextBox Text="{Binding Height}"/>
+                <Label Content="{lex:Loc DiagramType}"/>
+                <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                          SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="{lex:Loc Background}"/>
+                <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay}"
+                                                 ShowAlpha="False"
+                                                 ShowFractionalPart="False"/>
+
+            </UniformGrid>
+        </StackPanel>
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"

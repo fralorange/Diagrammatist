@@ -11,4 +11,5 @@
     <local:CaptionHeightMultiConverter x:Key="CaptionHeightMultiConverter"/>
     <local:WindowStateToPathConverter x:Key="WindowStateToPathConverter"/>
     <local:WindowStateToThicknessConverter x:Key="WindowStateToThicknessConverter"/>
+    <local:ColorToMediaColorConverter x:Key="ColorToMediaColorConverter"/>
 </ResourceDictionary>
