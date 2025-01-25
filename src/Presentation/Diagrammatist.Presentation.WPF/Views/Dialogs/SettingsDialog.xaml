@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
         xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:schemes="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.ColorScheme;assembly=Diagrammatist.Presentation.WPF.Core"
+        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.Settings.SettingsResources"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
@@ -14,10 +16,9 @@
         d:DataContext="{d:DesignInstance {x:Type vmd:SettingsDialogViewModel}}">
     <Window.Resources>
         <Style TargetType="Border">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Background" Value="{StaticResource FrameBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource FrameStroke}" />
             <Setter Property="BorderThickness" Value="0.5" />
-            <Setter Property="Margin" Value="0.3" />
         </Style>
     </Window.Resources>
     <Grid Width="650"
@@ -29,7 +30,7 @@
         
         <TabControl Grid.Row="0" 
                     TabStripPlacement="Left"
-                    Background="LightGray">
+                    Background="{StaticResource SettingsTabsBackground}">
             <TabItem Header="{lex:Loc System}">
                 <Border>
                     <Grid Margin="10">
@@ -60,8 +61,60 @@
                     </Grid>
                 </Border>
             </TabItem>
-            <TabItem Header="{lex:Loc Styles}">
-                
+            <TabItem Header="{lex:Loc Schemes}">
+                <Border>
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ListView Grid.Column="0" 
+                                  Margin="0,0,5,0">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="{lex:Loc ColorScheme}" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}" Margin="5"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn x:Name="column"
+                                                    Header="{lex:Loc ColorValue}" 
+                                                    Width="120">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <colorpicker:PortableColorPicker Style="{StaticResource PortableColorSlider}"
+                                                                                 SelectedColor="{Binding Hex, Converter={StaticResource HexToMediaColorConverter}}"
+                                                                                 MinWidth="30"
+                                                                                 MinHeight="30"
+                                                                                 ShowAlpha="True"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+
+                            <ListView.Items>
+                                <schemes:ColorSchemeEntry Name="Main Theme" Hex="#FF9370DB"/>
+                                <schemes:ColorSchemeEntry Name="Background" Hex="#FFFFFFFF"/>
+                                <schemes:ColorSchemeEntry Name="Text Color" Hex="#FF000000"/>
+                            </ListView.Items>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+
+                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top">
+                            <Button Content="{lex:Loc Import}" Margin="0,0,0,5" Padding="10,3"/>
+                            <Button Content="{lex:Loc Export}" Padding="10,3"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </TabItem>
         </TabControl>
 

@@ -37,7 +37,7 @@
                     <Style TargetType="ComboBox">
                         <Setter Property="Margin" Value="10,10,0,0" />
                     </Style>
-                    <Style TargetType="colorpicker:PortableColorPicker">
+                    <Style TargetType="colorpicker:PortableColorPicker" BasedOn="{StaticResource CustomPortableColorPicker}">
                         <Setter Property="Margin" Value="10,10,0,0" />
                     </Style>
                 </UniformGrid.Resources>

@@ -37,7 +37,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             DependencyProperty.Register(nameof(GridStep), typeof(int), typeof(ExtendedCanvas), new PropertyMetadata(10, OnGridChange));
 
         public static readonly DependencyProperty GridLineColorProperty =
-            DependencyProperty.Register(nameof(GridLineColor), typeof(Color), typeof(ExtendedCanvas), new PropertyMetadata(Colors.MediumPurple, OnGridChange));
+            DependencyProperty.Register(nameof(GridLineColor), typeof(Brush), typeof(ExtendedCanvas), new PropertyMetadata(Brushes.MediumPurple, OnGridChange));
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
@@ -64,9 +64,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         /// <summary>
         /// Gets or sets grid line color.
         /// </summary>
-        public Color GridLineColor
+        public Brush GridLineColor
         {
-            get { return (Color)GetValue(GridLineColorProperty); }
+            get { return (Brush)GetValue(GridLineColorProperty); }
             set { SetValue(GridLineColorProperty, value); }
         }
 
@@ -278,10 +278,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
             if (IsGridVisible)
             {
-                var brush = new SolidColorBrush(GridLineColor);
-
-                var penLight = new Pen(brush, 0.5);
-                var penBold = new Pen(brush, 1);
+                var penLight = new Pen(GridLineColor, 0.5);
+                var penBold = new Pen(GridLineColor, 1);
 
                 for (int x = 0, cellCount = 0; x < ActualWidth; x += GridStep, cellCount++)
                 {

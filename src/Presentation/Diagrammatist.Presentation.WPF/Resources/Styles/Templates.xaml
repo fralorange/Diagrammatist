@@ -103,9 +103,10 @@
             <Label Content="{lex:Loc Rotation}"/>
             <TextBox Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="{lex:Loc Color}"/>
-            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              ShowAlpha="False"
-                                             ShowFractionalPart="False"/>
+                                             ShowFractionalPart="False"
+                                             Style="{StaticResource CustomPortableColorPicker}"/>
         </UniformGrid>
     </DataTemplate>
 
@@ -156,9 +157,10 @@
                     <Label Content="{lex:Loc FontSize}"/>
                     <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="{lex:Loc TextColor}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      ShowAlpha="False"
-                                                     ShowFractionalPart="False"/>
+                                                     ShowFractionalPart="False"
+                                                     Style="{StaticResource CustomPortableColorPicker}"/>
                 </UniformGrid>
                 <CheckBox Content="{lex:Loc HasOutline}"
                           IsChecked="{Binding HasOutline, Mode=TwoWay}"/>

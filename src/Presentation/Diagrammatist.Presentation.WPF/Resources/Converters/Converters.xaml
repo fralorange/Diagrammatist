@@ -12,4 +12,5 @@
     <local:WindowStateToPathConverter x:Key="WindowStateToPathConverter"/>
     <local:WindowStateToThicknessConverter x:Key="WindowStateToThicknessConverter"/>
     <local:ColorToMediaColorConverter x:Key="ColorToMediaColorConverter"/>
+    <local:HexToMediaColorConverter x:Key="HexToMediaColorConverter"/>
 </ResourceDictionary>
