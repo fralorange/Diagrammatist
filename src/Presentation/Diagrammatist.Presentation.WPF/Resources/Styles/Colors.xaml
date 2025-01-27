@@ -2,9 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="AppThemeColor">#FF9370DB</Color>
     <Color x:Key="AppBackground">#FFFFFFFF</Color>
-    <Color x:Key="AppSecondaryBackground">#FFD3D3D3</Color>
-    <Color x:Key="AppDialogStroke">#FFB4B4B4</Color>
+    <Color x:Key="AppSecondaryBackground">#FFFFFFFF</Color>
 
+    <Color x:Key="DialogStroke">#FFB4B4B4</Color>
+    <Color x:Key="DialogSecondaryBackground">#FFD3D3D3</Color>
+    
     <Color x:Key="TitleBarBG">#FFFFFFFF</Color>
     <Color x:Key="TitleBarButtonBG">#00FFFFFF</Color>
     <Color x:Key="TitleBarButtonFG">#FF000000</Color>
@@ -35,6 +37,8 @@
     <SolidColorBrush x:Key="FrameStroke" Color="{DynamicResource AppThemeColor}"/>
     <SolidColorBrush x:Key="FrameBackground" Color="{DynamicResource AppBackground}"/>
 
+    <SolidColorBrush x:Key="WindowBackground" Color="{DynamicResource AppSecondaryBackground}"/>
+    
     <SolidColorBrush x:Key="DialogFrameStroke" Color="{DynamicResource AppDialogStroke}"/>
 
     <SolidColorBrush x:Key="ShapeDefaultStroke" Color="{DynamicResource AppThemeColor}"/>
@@ -42,5 +46,5 @@
 
     <SolidColorBrush x:Key="ToolbarBackground" Color="Transparent"/>
 
-    <SolidColorBrush x:Key="SettingsTabsBackground" Color="{DynamicResource AppSecondaryBackground}"/>
+    <SolidColorBrush x:Key="SettingsTabsBackground" Color="{DynamicResource DialogSecondaryBackground}"/>
 </ResourceDictionary>

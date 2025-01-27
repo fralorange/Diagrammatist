@@ -242,7 +242,7 @@
         
         <!--#endregion-->
         
-        <Grid>
+        <Grid Style="{StaticResource Window}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

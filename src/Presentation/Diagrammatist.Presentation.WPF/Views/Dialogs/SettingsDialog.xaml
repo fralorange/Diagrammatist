@@ -70,7 +70,8 @@
                         </Grid.ColumnDefinitions>
 
                         <ListView Grid.Column="0" 
-                                  Margin="0,0,5,0">
+                                  Margin="0,0,5,0"
+                                  ItemsSource="{Binding SelectedColorScheme.ColorSchemeEntries}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="{lex:Loc ColorScheme}" Width="150">
@@ -86,7 +87,7 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <colorpicker:PortableColorPicker Style="{StaticResource PortableColorSlider}"
-                                                                                 SelectedColor="{Binding Hex, Converter={StaticResource HexToMediaColorConverter}}"
+                                                                                 SelectedColor="{Binding Hex, Converter={StaticResource HexToMediaColorConverter}, Mode=TwoWay}"
                                                                                  MinWidth="30"
                                                                                  MinHeight="30"
                                                                                  ShowAlpha="True"/>
@@ -95,12 +96,6 @@
                                     </GridViewColumn>
                                 </GridView>
                             </ListView.View>
-
-                            <ListView.Items>
-                                <schemes:ColorSchemeEntry Name="Main Theme" Hex="#FF9370DB"/>
-                                <schemes:ColorSchemeEntry Name="Background" Hex="#FFFFFFFF"/>
-                                <schemes:ColorSchemeEntry Name="Text Color" Hex="#FF000000"/>
-                            </ListView.Items>
 
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">

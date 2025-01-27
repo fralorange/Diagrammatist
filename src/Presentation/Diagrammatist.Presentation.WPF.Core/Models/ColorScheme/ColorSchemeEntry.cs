@@ -14,9 +14,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.ColorScheme
 #pragma warning disable CS8618
         private string _hex;
         /// <summary>
-        /// Gets or sets color scheme entry name.
+        /// Gets color scheme entry name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; init; }
 #pragma warning restore CS8618 
     }
 }

@@ -80,21 +80,33 @@
         <Setter Property="FontWeight" Value="Regular" />
     </Style>
 
+    <Style TargetType="Grid" x:Key="Window">
+        <Setter Property="Background" Value="{StaticResource WindowBackground}" />
+    </Style>
+
     <Style TargetType="UserControl" x:Key="Component">
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{StaticResource FrameStroke}" />
+        <Setter Property="BorderBrush" >
+            <Setter.Value>
+                <RadialGradientBrush>
+                    <GradientStop Color="{DynamicResource AppThemeColor}"/>
+                    <GradientStop Color="{DynamicResource AppThemeColor}"/>
+                </RadialGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Background" Value="{StaticResource FrameBackground}"/>
         <Setter Property="Margin" Value="2.5" />
     </Style>
 
     <Style TargetType="ItemsControl" x:Key="BaseItemsControls">
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{StaticResource FrameBackground}" />
     </Style>
 
     <Style TargetType="ListBox" BasedOn="{StaticResource BaseItemsControls}"/>
     <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 
-    <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}">
+    <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseItemsControls}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -105,9 +117,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Border Name="Border"
-                            BorderThickness="1"
-                            BorderBrush="{StaticResource DialogFrameStroke}"
-                            Background="{StaticResource FrameBackground}">
+                            BorderThickness="1">
+                        <Border.BorderBrush>
+                            <RadialGradientBrush>
+                                <GradientStop Color="{DynamicResource DialogStroke}"/>
+                                <GradientStop Color="{DynamicResource DialogStroke}"/>
+                            </RadialGradientBrush>
+                        </Border.BorderBrush>
                         <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
                             <ItemsPresenter />
                         </ScrollViewer>
@@ -117,12 +133,6 @@
                                  Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll"
                                     Value="false"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled"
-                                 Value="false">
-                            <Setter TargetName="Border"
-                                    Property="Background"
-                                    Value="{StaticResource DialogFrameStroke}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
