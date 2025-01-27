@@ -62,56 +62,29 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Color scheme.
+        ///   Ищет локализованную строку, похожую на Dark.
         /// </summary>
-        internal static string ColorScheme {
+        internal static string Dark {
             get {
-                return ResourceManager.GetString("ColorScheme", resourceCulture);
+                return ResourceManager.GetString("Dark", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Color value.
+        ///   Ищет локализованную строку, похожую на Language: .
         /// </summary>
-        internal static string ColorValue {
+        internal static string Language {
             get {
-                return ResourceManager.GetString("ColorValue", resourceCulture);
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Export.
+        ///   Ищет локализованную строку, похожую на Light.
         /// </summary>
-        internal static string Export {
+        internal static string Light {
             get {
-                return ResourceManager.GetString("Export", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Import.
-        /// </summary>
-        internal static string Import {
-            get {
-                return ResourceManager.GetString("Import", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Languages: .
-        /// </summary>
-        internal static string Languages {
-            get {
-                return ResourceManager.GetString("Languages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Schemes.
-        /// </summary>
-        internal static string Schemes {
-            get {
-                return ResourceManager.GetString("Schemes", resourceCulture);
+                return ResourceManager.GetString("Light", resourceCulture);
             }
         }
         
@@ -121,6 +94,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         internal static string System {
             get {
                 return ResourceManager.GetString("System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme:.
+        /// </summary>
+        internal static string Theme {
+            get {
+                return ResourceManager.GetString("Theme", resourceCulture);
             }
         }
     }

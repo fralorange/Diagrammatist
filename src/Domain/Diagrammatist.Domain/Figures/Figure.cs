@@ -19,6 +19,6 @@ namespace Diagrammatist.Domain.Figures
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureZIndex"]/*'/>
         public double ZIndex { get; set; } = FigureManipulationConstants.DefaultZIndex;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureBackgroundColor"]/*'/>
-        public Color BackgroundColor { get; set; } = Color.MediumPurple;
+        public Color BackgroundColor { get; set; }
     }
 }

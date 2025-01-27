@@ -79,7 +79,7 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Toolbar {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Pan Mode.
+        ///   Ищет локализованную строку, похожую на Pan.
         /// </summary>
         internal static string PanMode {
             get {
@@ -88,7 +88,7 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Toolbar {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Selection Mode.
+        ///   Ищет локализованную строку, похожую на Select.
         /// </summary>
         internal static string SelectionMode {
             get {

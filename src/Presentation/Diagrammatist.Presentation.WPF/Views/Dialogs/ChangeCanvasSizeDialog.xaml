@@ -7,6 +7,8 @@
         xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
+        Icon="../../Resources/Icon/appIcon.ico"
+        Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeSize}"
         mc:Ignorable="d"
         Height="450" 
         Width="450"

@@ -124,10 +124,10 @@
     <value>Controls</value>
   </data>
   <data name="PanMode" xml:space="preserve">
-    <value>Pan Mode</value>
+    <value>Pan</value>
   </data>
   <data name="SelectionMode" xml:space="preserve">
-    <value>Selection Mode</value>
+    <value>Select</value>
   </data>
   <data name="TransformMode" xml:space="preserve">
     <value>Transform Mode</value>

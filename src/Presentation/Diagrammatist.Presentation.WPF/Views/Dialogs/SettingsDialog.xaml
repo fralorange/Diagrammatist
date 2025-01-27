@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
         xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:schemes="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.ColorScheme;assembly=Diagrammatist.Presentation.WPF.Core"
         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.Settings.SettingsResources"
+        Icon="../../Resources/Icon/appIcon.ico"
+        Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Preferences}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight"
@@ -34,7 +35,18 @@
             <TabItem Header="{lex:Loc System}">
                 <Border>
                     <Grid Margin="10">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="5" />
+                            </Style>
+
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Margin" Value="5"/>
+                            </Style>
+                        </Grid.Resources>
+                        
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -46,8 +58,8 @@
 
                         <TextBlock Grid.Row="0" 
                                    Grid.Column="0" 
-                                   Text="{lex:Loc Languages}"/>
-                        
+                                   Text="{lex:Loc Language}"/>
+
                         <ComboBox Grid.Row="0" 
                                   Grid.Column="1"
                                   ItemsSource="{Binding AvailableLanguages}"
@@ -58,56 +70,21 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </Grid>
-                </Border>
-            </TabItem>
-            <TabItem Header="{lex:Loc Schemes}">
-                <Border>
-                    <Grid Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
 
-                        <ListView Grid.Column="0" 
-                                  Margin="0,0,5,0"
-                                  ItemsSource="{Binding SelectedColorScheme.ColorSchemeEntries}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="{lex:Loc ColorScheme}" Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" Margin="5"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn x:Name="column"
-                                                    Header="{lex:Loc ColorValue}" 
-                                                    Width="120">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <colorpicker:PortableColorPicker Style="{StaticResource PortableColorSlider}"
-                                                                                 SelectedColor="{Binding Hex, Converter={StaticResource HexToMediaColorConverter}, Mode=TwoWay}"
-                                                                                 MinWidth="30"
-                                                                                 MinHeight="30"
-                                                                                 ShowAlpha="True"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="{lex:Loc Theme}"/>
 
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListViewItem}">
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                        </ListView>
-
-                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top">
-                            <Button Content="{lex:Loc Import}" Margin="0,0,0,5" Padding="10,3"/>
-                            <Button Content="{lex:Loc Export}" Padding="10,3"/>
-                        </StackPanel>
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding AvailableThemes}"
+                                  SelectedItem="{Binding SelectedTheme}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{lex:Loc {Binding}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
                 </Border>
             </TabItem>

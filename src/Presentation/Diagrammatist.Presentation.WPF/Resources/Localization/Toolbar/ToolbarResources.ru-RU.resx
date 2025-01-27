@@ -124,10 +124,10 @@
     <value>Элементы управления</value>
   </data>
   <data name="PanMode" xml:space="preserve">
-    <value>Режим панорамирования</value>
+    <value>Панорамирование</value>
   </data>
   <data name="SelectionMode" xml:space="preserve">
-    <value>Режим выделения</value>
+    <value>Выделение</value>
   </data>
   <data name="TransformMode" xml:space="preserve">
     <value>Режим трансформирования</value>

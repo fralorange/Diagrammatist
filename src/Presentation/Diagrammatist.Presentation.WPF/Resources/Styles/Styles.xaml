@@ -234,6 +234,66 @@
         </Style.Resources>
     </Style>
 
+    <Style TargetType="Button" x:Key="ToolBase">
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Margin" Value="3" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource ButtonHoverBackground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource ButtonPressedBackground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="MiniToolBase" BasedOn="{StaticResource ToolBase}">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <Style TargetType="Image" x:Key="Tool">
+        <Setter Property="MinWidth" Value="50" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MaxWidth" Value="60" />
+        <Setter Property="MaxHeight" Value="60" />
+    </Style>
+
+    <Style TargetType="Image" x:Key="MiniTool">
+        <Setter Property="MinWidth" Value="25" />
+        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="MaxWidth" Value="30" />
+        <Setter Property="MaxHeight" Value="30" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ToolLabel">
+        <Setter Property="Margin" Value="0,5,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="MiniToolLabel">
+        <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
     <Style TargetType="colorpicker:PortableColorPicker" x:Key="CustomPortableColorPicker">
         <Style.Resources>
             <Style TargetType="colorpicker:ColorDisplay">

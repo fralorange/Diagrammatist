@@ -41,6 +41,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsBorderVisibleProperty =
+            DependencyProperty.Register(nameof(IsBorderVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnBorderChange));
 
 
         /// <summary>
@@ -79,6 +81,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             set { SetValue(IsElementPanEnabledProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the border visible parameter.
+        /// </summary>
+        public bool IsBorderVisible
+        {
+            get => (bool)GetValue(IsBorderVisibleProperty);
+            set => SetValue(IsBorderVisibleProperty, value);
+        }
+
         public ExtendedCanvas()
         {
             PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
@@ -93,9 +104,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         public void Export(string filePath)
         {
             var wasGridVisible = IsGridVisible;
+            var wasBorderVisible = IsBorderVisible;
 
-            // Hide grid
+            // Hide grid and border
             SetCurrentValue(IsGridVisibleProperty, false);
+            SetCurrentValue(IsBorderVisibleProperty, false);
 
             // Update layout
             UpdateLayout();
@@ -131,8 +144,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             }
             finally
             {
-                // Return previous grid value
+                // Return previous grid and border values
                 SetCurrentValue(IsGridVisibleProperty, wasGridVisible);
+                SetCurrentValue(IsBorderVisibleProperty, wasBorderVisible);
             }
         }
         #region Event invokers
@@ -258,6 +272,13 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 canvas.InvalidateVisual();
             }
         }
+        private static void OnBorderChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ExtendedCanvas canvas)
+            {
+                canvas.InvalidateVisual();
+            }
+        }
 
         protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
         {
@@ -290,6 +311,12 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 {
                     dc.DrawLine(cellCount % GridStep == 0 ? penBold : penLight, new Point(0, y), new Point(ActualWidth, y));
                 }
+            }
+
+            if (IsBorderVisible)
+            {
+                var borderPen = new Pen(GridLineColor, 1);
+                dc.DrawRectangle(null, borderPen, new Rect(0, 0, ActualWidth, ActualHeight));
             }
         }
         #endregion

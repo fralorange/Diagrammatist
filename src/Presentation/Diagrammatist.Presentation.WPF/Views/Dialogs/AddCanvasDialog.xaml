@@ -8,6 +8,8 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
+        Icon="../../Resources/Icon/appIcon.ico"
+        Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:New}"
         mc:Ignorable="d"
         Height="450" 
         Width="450"

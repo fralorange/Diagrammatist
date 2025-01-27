@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Diagrammatist.Presentation.WPF.Core.Models.ColorScheme;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using MvvmDialogs;
 using System.Globalization;
 using WPFLocalizeExtension.Engine;
-using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
@@ -16,7 +13,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
     {
         // if project grows then use snapshot pattern.
         private CultureInfo _initialLanguage;
-        private ColorScheme _initialColorScheme;
+        private string _initialTheme;
 
         private readonly List<CultureInfo> _supportedCultures = new()
         {
@@ -24,8 +21,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             new CultureInfo("ru-RU"),
         };
 
+        private readonly List<string> _supportedThemes = new()
+        {
+            "Light",
+            "Dark"
+        };
+
         [ObservableProperty]
         private CultureInfo[] _availableLanguages;
+
+        [ObservableProperty]
+        private string[] _availableThemes;
 
         private CultureInfo _selectedLanguage;
 
@@ -47,16 +53,22 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             }
         }
 
-        private ColorScheme _selectedColorScheme;
+        private string _selectedTheme;
 
-        public ColorScheme SelectedColorScheme
+        /// <summary>
+        /// Gets or sets selected theme.
+        /// </summary>
+        /// <remarks>
+        /// This property used to define current app theme.
+        /// </remarks>
+        public string SelectedTheme
         {
-            get => _selectedColorScheme;
+            get => _selectedTheme;
             set
             {
-                if (SetProperty(ref _selectedColorScheme, value) && value is not null)
+                if (SetProperty(ref _selectedTheme, value) && value is not null)
                 {
-                    ApplyColorScheme(value);
+                    ApplyTheme(value);
                 }
             }
         }
@@ -74,11 +86,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 #pragma warning restore CS8618 
         {
             AvailableLanguages = _supportedCultures.ToArray();
+            AvailableThemes = _supportedThemes.ToArray();
+
             SelectedLanguage = CultureInfo.CurrentUICulture;
-            SelectedColorScheme = new(App.Current.GetCurrentColorScheme()!);
+            SelectedTheme = Properties.Settings.Default.Theme;
 
             _initialLanguage = CultureInfo.CurrentUICulture;
-            _initialColorScheme = new(App.Current.GetCurrentColorScheme()!);
+            _initialTheme = Properties.Settings.Default.Theme;
         }
 
         private void ApplyLanguage(CultureInfo culture)
@@ -88,25 +102,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             LocalizeDictionary.Instance.SetCultureCommand.Execute(culture.ToString());
         }
 
-        private void ApplyColorScheme(ColorScheme scheme)
+        private void ApplyTheme(string theme)
         {
-            foreach (var entry in scheme.ColorSchemeEntries)
-            {
-                UpdateResourceFromEntry(entry);
 
-                entry.PropertyChanged += (s, e) =>
-                {
-                    if (e.PropertyName == nameof(ColorSchemeEntry.Hex))
-                    {
-                        UpdateResourceFromEntry(entry);
-                    }
-                };
-            }
-        }
-
-        private void UpdateResourceFromEntry(ColorSchemeEntry entry)
-        {
-            App.Current.Resources[entry.Name] = ColorConverter.ConvertFromString(entry.Hex);
         }
 
         [RelayCommand]
@@ -129,7 +127,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private void Cancel()
         {
             SelectedLanguage = _initialLanguage;
-            SelectedColorScheme = _initialColorScheme;
 
             DialogResult = true;
         }

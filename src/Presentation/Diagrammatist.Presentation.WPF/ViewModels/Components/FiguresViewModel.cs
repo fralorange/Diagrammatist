@@ -93,7 +93,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var figureModels = figureDomains.ToDictionary(
                 pair => pair.Key,
-                pair => pair.Value.Select(figure => figure.ToModel()).ToList()
+                pair => pair.Value.Select(figure =>
+                {
+                    var model = figure.ToModel();
+                    var color = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
+                    model.BackgroundColor = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+
+                    return model;
+                }).ToList()
             );
 
             Figures = figureModels;

@@ -46,34 +46,80 @@
     <ToolBar ToolBarTray.IsLocked="True">
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Clipboard}">
             <StackPanel Orientation="Horizontal">
-                <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Paste}"
-                        Command="{Binding PasteCommand}"
-                        IsEnabled="{Binding HasCanvas}"/>
+                <Button Command="{Binding PasteCommand}"
+                        Style="{StaticResource ToolBase}"
+                        IsEnabled="{Binding HasCanvas}">
+                    <StackPanel>
+                        <Image Source="{StaticResource pasteDrawingImage}"
+                               Style="{StaticResource Tool}"/>
+                        <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Paste}"
+                                   Style="{StaticResource ToolLabel}"/>
+                    </StackPanel>
+                </Button>
                 <StackPanel Orientation="Vertical">
-                    <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Copy}"
-                            Command="{Binding CopyCommand}"
-                            IsEnabled="{Binding HasSelectedFigure}"/>
-                    <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Cut}"
-                            Command="{Binding CutCommand}"
-                            IsEnabled="{Binding HasSelectedFigure}"/>
-                    <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Duplicate}"
-                            Command="{Binding DuplicateCommand}"
-                            IsEnabled="{Binding HasSelectedFigure}"/>
+                    <Button Command="{Binding CopyCommand}"
+                            Style="{StaticResource MiniToolBase}"
+                            IsEnabled="{Binding HasSelectedFigure}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource copyDrawingImage}"
+                                   Style="{StaticResource MiniTool}"/>
+                            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Copy}"
+                                       Style="{StaticResource MiniToolLabel}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding CutCommand}"
+                            Style="{StaticResource MiniToolBase}"
+                            IsEnabled="{Binding HasSelectedFigure}">
+                        <DockPanel>
+                            <Image Source="{StaticResource cutDrawingImage}"
+                                   Style="{StaticResource MiniTool}"
+                                   DockPanel.Dock="Left"/>
+                            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Cut}"
+                                       Style="{StaticResource MiniToolLabel}"
+                                       DockPanel.Dock="Left"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Command="{Binding DuplicateCommand}"
+                            Style="{StaticResource MiniToolBase}"
+                            IsEnabled="{Binding HasSelectedFigure}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource duplicateDrawingImage}"
+                                   Style="{StaticResource MiniTool}"/>
+                            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Duplicate}"
+                                       Style="{StaticResource MiniToolLabel}"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </ContentControl>
         <Separator/>
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Controls}">
             <StackPanel Orientation="Horizontal">
-                <Button Content="{lex:Loc SelectionMode}" 
-                        ToolTip="Ctrl + 1"
+                <Button ToolTip="Ctrl + 1"
+                        Style="{StaticResource ToolBase}"
                         Command="{Binding ChangeModeCommand}"
-                        CommandParameter="Select"/>
-                <Button Content="{lex:Loc PanMode}"
-                        ToolTip="Ctrl + 2"
+                        CommandParameter="Select">
+                    <StackPanel>
+                        <Image Source="{StaticResource selectDrawingImage}"
+                               Style="{StaticResource Tool}"/>
+                        <TextBlock Text="{lex:Loc SelectionMode}"
+                                   Style="{StaticResource ToolLabel}"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Ctrl + 2"
+                        Style="{StaticResource ToolBase}"
                         Command="{Binding ChangeModeCommand}"
-                        CommandParameter="Pan"/>
+                        CommandParameter="Pan">
+                    <StackPanel>
+                        <Image Source="{StaticResource dragDrawingImage}"
+                               Style="{StaticResource Tool}"/>
+                        <TextBlock Text="{lex:Loc PanMode}"
+                                   Style="{StaticResource ToolLabel}"/>
+                    </StackPanel>
+                </Button>
                 <Button Content="{lex:Loc TransformMode}"
+                        Visibility="Collapsed"
+                        Style="{StaticResource ToolBase}"
                         ToolTip="Ctrl + 3"
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Transform"/>
