@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using MvvmDialogs;
 using System.Globalization;
 using WPFLocalizeExtension.Engine;
@@ -104,7 +105,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
         private void ApplyTheme(string theme)
         {
-
+            App.Current.ChangeTheme(theme);
         }
 
         [RelayCommand]
@@ -118,6 +119,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             }
 
             Properties.Settings.Default.Culture = SelectedLanguage.Name;
+            Properties.Settings.Default.Theme = SelectedTheme;
             Properties.Settings.Default.Save();
 
             DialogResult = true;
@@ -127,6 +129,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private void Cancel()
         {
             SelectedLanguage = _initialLanguage;
+            SelectedTheme = _initialTheme;
 
             DialogResult = true;
         }

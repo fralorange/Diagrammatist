@@ -271,17 +271,17 @@
     </Style>
 
     <Style TargetType="Image" x:Key="Tool">
-        <Setter Property="MinWidth" Value="50" />
-        <Setter Property="MinHeight" Value="50" />
-        <Setter Property="MaxWidth" Value="60" />
-        <Setter Property="MaxHeight" Value="60" />
+        <Setter Property="MinWidth" Value="35" />
+        <Setter Property="MinHeight" Value="35" />
+        <Setter Property="MaxWidth" Value="45" />
+        <Setter Property="MaxHeight" Value="45" />
     </Style>
 
     <Style TargetType="Image" x:Key="MiniTool">
-        <Setter Property="MinWidth" Value="25" />
-        <Setter Property="MinHeight" Value="25" />
-        <Setter Property="MaxWidth" Value="30" />
-        <Setter Property="MaxHeight" Value="30" />
+        <Setter Property="MinWidth" Value="15" />
+        <Setter Property="MinHeight" Value="15" />
+        <Setter Property="MaxWidth" Value="20" />
+        <Setter Property="MaxHeight" Value="20" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="ToolLabel">

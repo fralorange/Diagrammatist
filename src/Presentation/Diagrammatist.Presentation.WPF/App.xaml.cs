@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Views;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using System.Windows;
@@ -62,6 +63,8 @@ namespace Diagrammatist.Presentation.WPF
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            Current.ChangeTheme(WPF.Properties.Settings.Default.Theme);
+
             Services.GetService<MainWindow>()?.Show();
 
             base.OnStartup(e);
