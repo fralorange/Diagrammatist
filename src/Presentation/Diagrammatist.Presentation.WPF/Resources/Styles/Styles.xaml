@@ -461,20 +461,42 @@
             <Style TargetType="colorpicker:ColorDisplay">
                 <Setter Property="Visibility" Value="Collapsed" />
             </Style>
-        </Style.Resources>
-    </Style>
-
-    <Style TargetType="colorpicker:PortableColorPicker" x:Key="PortableColorSlider" BasedOn="{StaticResource CustomPortableColorPicker}">
-        <Style.Resources>
-            <Style TargetType="colorpicker:SquarePicker">
-                <Setter Property="Visibility" Value="Collapsed" />
-            </Style>
 
             <Style TargetType="ComboBox">
                 <Setter Property="Visibility" Value="Collapsed" />
             </Style>
 
             <Style TargetType="colorpicker:StandardColorPicker">
+                <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
+            </Style>
+
+            <Style TargetType="colorpicker:ColorSliders">
+                <Setter Property="Margin" Value="0 10 0 0" />
+                <Style.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+                        <Setter Property="MinHeight" Value="18" />
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+            <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+                <Setter Property="Margin" Value="0 0 0 10" />
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="colorpicker:PortableColorPicker" x:Key="PortableColorSlider" BasedOn="{StaticResource CustomPortableColorPicker}">
+        <Style.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="0 0 0 0" />
+            </Style>
+
+            <Style TargetType="colorpicker:SquarePicker">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+
+            <Style TargetType="colorpicker:StandardColorPicker">
+                <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
                 <Setter Property="MinHeight" Value="190"/>
                 <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
                 <Setter Property="Margin" Value="0,-210,0,0"/>

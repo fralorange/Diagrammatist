@@ -3,14 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Figures.Services;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
+using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
-using System.Diagnostics;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -174,7 +173,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             Messenger.Register<FiguresViewModel, PropertyChangedMessage<ObservableCollection<FigureModel>?>>(this, (r, m) =>
             {
-                if (m.Sender.GetType() == typeof(CanvasViewModel) && 
+                if (m.Sender.GetType() == typeof(CanvasViewModel) &&
                     m.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Figures))
                 {
                     CanvasFigures = m.NewValue;

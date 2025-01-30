@@ -106,7 +106,7 @@
             <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              ShowAlpha="False"
                                              ShowFractionalPart="False"
-                                             Style="{StaticResource CustomPortableColorPicker}"/>
+                                             Style="{StaticResource PortableColorSlider}"/>
         </UniformGrid>
     </DataTemplate>
 
@@ -160,7 +160,7 @@
                     <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      ShowAlpha="False"
                                                      ShowFractionalPart="False"
-                                                     Style="{StaticResource CustomPortableColorPicker}"/>
+                                                     Style="{StaticResource PortableColorSlider}"/>
                 </UniformGrid>
                 <CheckBox Content="{lex:Loc HasOutline}"
                           IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
