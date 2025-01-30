@@ -85,7 +85,7 @@
         <Grid DockPanel.Dock="Top"
               x:Name="titleBar"
               MinHeight="{StaticResource TitleBarHeight}"
-              Background="{StaticResource TitleBarBackground}">
+              Background="{DynamicResource TitleBarBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" 

@@ -9,13 +9,15 @@ using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using System.Diagnostics;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
     /// <summary>
     /// A view model class for figures (toolbox) component.
     /// </summary>
-    public sealed partial class FiguresViewModel : ObservableRecipient, IRecipient<PropertyChangedMessage<ObservableCollection<FigureModel>?>>
+    public sealed partial class FiguresViewModel : ObservableRecipient
     {
         private readonly IFigureService _figureService;
         private readonly ITrackableCommandManager _trackableCommandManager;
@@ -74,16 +76,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
-        /// <inheritdoc/>
-        public void Receive(PropertyChangedMessage<ObservableCollection<FigureModel>?> message)
-        {
-            if (message.Sender.GetType() == typeof(CanvasViewModel) &&
-                message.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Figures))
-            {
-                CanvasFigures = message.NewValue;
-            }
-        }
-
         /// <summary>
         /// Loads figures in <see cref="Figures"/> externally and asynchronously.
         /// </summary>
@@ -104,6 +96,23 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             );
 
             Figures = figureModels;
+        }
+
+        private void UpdateFigureColors()
+        {
+            if (Figures is null)
+                return;
+
+            var newColor = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
+            var updatedColor = System.Drawing.Color.FromArgb(newColor.A, newColor.R, newColor.G, newColor.B);
+
+            foreach (var category in Figures.Values)
+            {
+                foreach (var figure in category)
+                {
+                    figure.BackgroundColor = updatedColor;
+                }
+            }
         }
 
         /// <summary>
@@ -154,6 +163,23 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 _figureChanges = false;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnActivated()
+        {
+            base.OnActivated();
+
+            Messenger.Register<FiguresViewModel, ThemeChangedMessage>(this, (r, m) => UpdateFigureColors());
+
+            Messenger.Register<FiguresViewModel, PropertyChangedMessage<ObservableCollection<FigureModel>?>>(this, (r, m) =>
+            {
+                if (m.Sender.GetType() == typeof(CanvasViewModel) && 
+                    m.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Figures))
+                {
+                    CanvasFigures = m.NewValue;
+                }
+            });
         }
     }
 }

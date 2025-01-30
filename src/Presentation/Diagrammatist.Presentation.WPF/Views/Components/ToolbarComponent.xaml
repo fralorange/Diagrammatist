@@ -50,7 +50,7 @@
                         Style="{StaticResource ToolBase}"
                         IsEnabled="{Binding HasCanvas}">
                     <StackPanel>
-                        <Image Source="{StaticResource pasteDrawingImage}"
+                        <Image Source="{DynamicResource pasteDrawingImage}"
                                Style="{StaticResource Tool}"/>
                         <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Paste}"
                                    Style="{StaticResource ToolLabel}"/>
@@ -61,7 +61,7 @@
                             Style="{StaticResource MiniToolBase}"
                             IsEnabled="{Binding HasSelectedFigure}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{StaticResource copyDrawingImage}"
+                            <Image Source="{DynamicResource copyDrawingImage}"
                                    Style="{StaticResource MiniTool}"/>
                             <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Copy}"
                                        Style="{StaticResource MiniToolLabel}"/>
@@ -71,7 +71,7 @@
                             Style="{StaticResource MiniToolBase}"
                             IsEnabled="{Binding HasSelectedFigure}">
                         <DockPanel>
-                            <Image Source="{StaticResource cutDrawingImage}"
+                            <Image Source="{DynamicResource cutDrawingImage}"
                                    Style="{StaticResource MiniTool}"
                                    DockPanel.Dock="Left"/>
                             <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Cut}"
@@ -83,7 +83,7 @@
                             Style="{StaticResource MiniToolBase}"
                             IsEnabled="{Binding HasSelectedFigure}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{StaticResource duplicateDrawingImage}"
+                            <Image Source="{DynamicResource duplicateDrawingImage}"
                                    Style="{StaticResource MiniTool}"/>
                             <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Duplicate}"
                                        Style="{StaticResource MiniToolLabel}"/>
@@ -100,7 +100,7 @@
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Select">
                     <StackPanel>
-                        <Image Source="{StaticResource selectDrawingImage}"
+                        <Image Source="{DynamicResource selectDrawingImage}"
                                Style="{StaticResource Tool}"/>
                         <TextBlock Text="{lex:Loc SelectionMode}"
                                    Style="{StaticResource ToolLabel}"/>
@@ -111,7 +111,7 @@
                         Command="{Binding ChangeModeCommand}"
                         CommandParameter="Pan">
                     <StackPanel>
-                        <Image Source="{StaticResource dragDrawingImage}"
+                        <Image Source="{DynamicResource dragDrawingImage}"
                                Style="{StaticResource Tool}"/>
                         <TextBlock Text="{lex:Loc PanMode}"
                                    Style="{StaticResource ToolLabel}"/>

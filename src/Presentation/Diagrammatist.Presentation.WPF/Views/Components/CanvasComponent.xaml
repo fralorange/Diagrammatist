@@ -82,7 +82,7 @@
                                                  IsElementPanEnabled="{Binding DataContext.CurrentMouseMode, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Select', FallbackValue=False}"
                                                  IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
                                                  IsBorderVisible="{Binding DataContext.CurrentCanvas, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource NullToBooleanConverter}, FallbackValue=False}"
-                                                 GridLineColor="{StaticResource FrameStroke}"
+                                                 GridLineColor="{DynamicResource FrameStroke}"
                                                  PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown"
                                                  PreviewKeyDown="OnExtendedCanvasPreviewKeyDown"
                                                  Focusable="True">

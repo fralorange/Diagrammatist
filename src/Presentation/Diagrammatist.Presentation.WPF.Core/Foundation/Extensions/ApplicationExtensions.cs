@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using System.Collections.ObjectModel;
+using System.Windows;
 using ApplicationEnt = System.Windows.Application;
 
 namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
@@ -9,23 +12,40 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
     public static class ApplicationExtensions
     {
         /// <summary>
-        /// Changes current app theme.
+        /// Changes the current application theme.
         /// </summary>
-        /// <param name="application"></param>
-        /// <param name="themeName">Theme name.</param>
+        /// <param name="application">The application instance.</param>
+        /// <param name="themeName">The name of the theme.</param>
         public static void ChangeTheme(this ApplicationEnt application, string themeName)
         {
-            var currentTheme = ApplicationEnt.Current.Resources.MergedDictionaries
-                .FirstOrDefault(dict => dict.Source != null && dict.Source.ToString().Contains("Colors"));
+            var mergedDictionaries = ApplicationEnt.Current.Resources.MergedDictionaries;
 
-            if (currentTheme is not null && currentTheme.Source.ToString().Contains(themeName))
+            var currentTheme = mergedDictionaries
+                .FirstOrDefault(dict => dict.Source?.ToString().Contains("Colors") == true);
+            var currentBrushes = mergedDictionaries
+                .FirstOrDefault(dict => dict.Source?.ToString().Contains("Brushes") == true);
+            var currentVectors = mergedDictionaries
+                .FirstOrDefault(dict => dict.Source?.ToString().Contains("Vectors") == true);
+
+            if (currentTheme?.Source?.ToString().Contains(themeName) == true || currentTheme is null || currentBrushes is null || currentVectors is null)
                 return;
 
-            ApplicationEnt.Current.Resources.MergedDictionaries.Remove(currentTheme);
+            ReplaceResource(mergedDictionaries, currentTheme, $"Resources/Styles/Colors/{themeName}.xaml");
+            ReplaceResource(mergedDictionaries, currentBrushes, "Resources/Styles/Brushes.xaml");
+            ReplaceResource(mergedDictionaries, currentVectors, "Resources/Styles/Vectors.xaml");
 
-            var newTheme = new ResourceDictionary { Source = new Uri($"Resources/Styles/Colors/{themeName}.xaml", UriKind.Relative) };
+            WeakReferenceMessenger.Default.Send(new ThemeChangedMessage(themeName));
+        }
 
-            ApplicationEnt.Current.Resources.MergedDictionaries.Insert(0, newTheme);
+        private static void ReplaceResource(Collection<ResourceDictionary> mergedDictionaries, ResourceDictionary oldResource, string newResourcePath)
+        {
+            var index = mergedDictionaries.IndexOf(oldResource);
+
+            if (index < 0) 
+                return;
+
+            mergedDictionaries.RemoveAt(index);
+            mergedDictionaries.Insert(index, new ResourceDictionary { Source = new Uri(newResourcePath, UriKind.Relative) });
         }
     }
 }

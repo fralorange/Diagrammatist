@@ -29,12 +29,20 @@
     <SolidColorBrush x:Key="ButtonPressedBackground" Color="{DynamicResource ButtonPressedBG}"/>
 
     <SolidColorBrush x:Key="FrameStroke" Color="{DynamicResource AppThemeColor}"/>
+    <RadialGradientBrush x:Key="FrameStrokeRadial">
+        <GradientStop Color="{DynamicResource AppThemeColor}"/>
+        <GradientStop Color="{DynamicResource AppThemeColor}"/>
+    </RadialGradientBrush>
     <SolidColorBrush x:Key="FrameBackground" Color="{DynamicResource AppBackground}"/>
     <SolidColorBrush x:Key="FrameForeground" Color="{DynamicResource AppTextColor}"/>
 
     <SolidColorBrush x:Key="WindowBackground" Color="{DynamicResource AppSecondaryBackground}"/>
 
     <SolidColorBrush x:Key="DialogFrameStroke" Color="{DynamicResource AppDialogStroke}"/>
+    <RadialGradientBrush x:Key="DialogFrameStrokeRadial">
+        <GradientStop Color="{DynamicResource DialogStroke}"/>
+        <GradientStop Color="{DynamicResource DialogStroke}"/>
+    </RadialGradientBrush>
 
     <SolidColorBrush x:Key="ShapeDefaultStroke" Color="{DynamicResource AppThemeColor}"/>
     <SolidColorBrush x:Key="ShapeDefaultBackground" Color="{DynamicResource AppBackground}"/>
@@ -50,4 +58,28 @@
     <SolidColorBrush x:Key="ControlHoverBrush" Color="{DynamicResource ControlHover}"/>
     <SolidColorBrush x:Key="ControlPressedBrush" Color="{DynamicResource ControlPressed}"/>
     <SolidColorBrush x:Key="ControlFocusedBrush" Color="{DynamicResource ControlFocused}"/>
+
+    <LinearGradientBrush x:Key="ScrollBarStroke"
+                         StartPoint="0,0" 
+                         EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource ControlBorder}"
+                              Offset="0.0" />
+                <GradientStop Color="{DynamicResource AppThemeColor}"
+                              Offset="1.0" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ScrollBarBackground" 
+                         StartPoint="0,0"
+                         EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource ControlBackground}"/>
+                <GradientStop Color="{DynamicResource ControlHighlight}"
+                              Offset="1.0" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
 </ResourceDictionary>
