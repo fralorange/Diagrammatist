@@ -14,4 +14,5 @@
     <local:ColorToMediaColorConverter x:Key="ColorToMediaColorConverter"/>
     <local:HexToMediaColorConverter x:Key="HexToMediaColorConverter"/>
     <local:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
+    <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 </ResourceDictionary>

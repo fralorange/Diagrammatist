@@ -50,10 +50,4 @@
     <SolidColorBrush x:Key="ControlHoverBrush" Color="{DynamicResource ControlHover}"/>
     <SolidColorBrush x:Key="ControlPressedBrush" Color="{DynamicResource ControlPressed}"/>
     <SolidColorBrush x:Key="ControlFocusedBrush" Color="{DynamicResource ControlFocused}"/>
-
-    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="{DynamicResource ScrollBarThumb}"/>
-    <SolidColorBrush x:Key="ScrollBarTrackBrush" Color="{DynamicResource ScrollBarTrack}"/>
-    <SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="{DynamicResource ScrollBarThumbHover}"/>
-    <SolidColorBrush x:Key="ScrollBarThumbPressedBrush" Color="{DynamicResource ScrollBarThumbPressed}"/>
-
 </ResourceDictionary>

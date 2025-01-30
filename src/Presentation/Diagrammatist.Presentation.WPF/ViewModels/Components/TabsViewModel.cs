@@ -58,6 +58,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly Dictionary<CanvasModel, string> _canvasFilePathes = [];
 
         /// <summary>
+        /// Gets or sets 'has canvases' flag.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether content has any canvases or not.
+        /// </remarks>
+        [ObservableProperty]
+        private bool _hasCanvases;
+
+        /// <summary>
         /// Gets or sets <see cref="CanvasModel"/>.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _canvasManipulationService = canvasManipulationService;
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
+
+            Canvases.CollectionChanged += OnCanvasesCollectionChanged;
 
             IsActive = true;
         }
@@ -257,6 +268,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
 
             return true;
+        }
+
+        private void OnCanvasesCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            HasCanvases = Canvases.Count > 0;
         }
 
         partial void OnSelectedCanvasChanged(CanvasModel? value)

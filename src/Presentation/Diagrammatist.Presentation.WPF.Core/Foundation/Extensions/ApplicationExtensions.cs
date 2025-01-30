@@ -18,10 +18,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
             var currentTheme = ApplicationEnt.Current.Resources.MergedDictionaries
                 .FirstOrDefault(dict => dict.Source != null && dict.Source.ToString().Contains("Colors"));
 
-            if (currentTheme != null)
-            {
-                ApplicationEnt.Current.Resources.MergedDictionaries.Remove(currentTheme);
-            }
+            if (currentTheme is not null && currentTheme.Source.ToString().Contains(themeName))
+                return;
+
+            ApplicationEnt.Current.Resources.MergedDictionaries.Remove(currentTheme);
 
             var newTheme = new ResourceDictionary { Source = new Uri($"Resources/Styles/Colors/{themeName}.xaml", UriKind.Relative) };
 

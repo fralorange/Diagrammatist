@@ -33,17 +33,11 @@
     <Color x:Key="TitleBarCloseButtonHoverBG">#FFC42B1C</Color>
     <Color x:Key="TitleBarCloseButtonPressedFG">#FFC84031</Color>
 
-    <Color x:Key="ControlBackground">#FFFFFFFF</Color>
+    <Color x:Key="ControlBackground">#FFEEEEEE</Color>
     <Color x:Key="ControlBorder">#FFB4B4B4</Color>
     <Color x:Key="ControlHighlight">#FF512BD4</Color>
     <Color x:Key="ControlDisabled">#FFE0E0E0</Color>
     <Color x:Key="ControlHover">#FFF0F0F0</Color>
     <Color x:Key="ControlPressed">#FFE0E0E0</Color>
     <Color x:Key="ControlFocused">#FFD0D0FF</Color>
-
-    <Color x:Key="ScrollBarThumb">#FFC0C0C0</Color>
-    <Color x:Key="ScrollBarTrack">#FFE9E9E9</Color>
-    <Color x:Key="ScrollBarThumbHover">#FFAAAAAA</Color>
-    <Color x:Key="ScrollBarThumbPressed">#FF888888</Color>
-
 </ResourceDictionary>

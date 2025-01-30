@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             Visibility="{Binding HasCanvases, Converter={StaticResource BoolToVisibilityConverter}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
              mc:Ignorable="d">
     <ListBox ItemsSource="{Binding Canvases}"

@@ -40,10 +40,4 @@
     <Color x:Key="ControlHover">#FF444444</Color>
     <Color x:Key="ControlPressed">#FF555555</Color>
     <Color x:Key="ControlFocused">#FF7766CC</Color>
-
-    <Color x:Key="ScrollBarThumb">#FF888888</Color>
-    <Color x:Key="ScrollBarTrack">#FF2D2D2D</Color>
-    <Color x:Key="ScrollBarThumbHover">#FFAAAAAA</Color>
-    <Color x:Key="ScrollBarThumbPressed">#FFBBBBBB</Color>
-
 </ResourceDictionary>
