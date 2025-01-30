@@ -13,4 +13,5 @@
     <local:WindowStateToThicknessConverter x:Key="WindowStateToThicknessConverter"/>
     <local:ColorToMediaColorConverter x:Key="ColorToMediaColorConverter"/>
     <local:HexToMediaColorConverter x:Key="HexToMediaColorConverter"/>
+    <local:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
 </ResourceDictionary>

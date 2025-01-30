@@ -17,7 +17,7 @@
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance {x:Type vmd:AddCanvasDialogViewModel}}">
-    <Grid>
+    <Grid Style="{StaticResource Window}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -30,13 +30,13 @@
                          Margin="20"
                          Columns="2">
                 <UniformGrid.Resources>
-                    <Style TargetType="Label">
+                    <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}">
                         <Setter Property="Margin" Value="0,0,10,10" />
                     </Style>
-                    <Style TargetType="TextBox">
+                    <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
                         <Setter Property="Margin" Value="10,10,0,0" />
                     </Style>
-                    <Style TargetType="ComboBox">
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}">
                         <Setter Property="Margin" Value="10,10,0,0" />
                     </Style>
                     <Style TargetType="colorpicker:PortableColorPicker" BasedOn="{StaticResource CustomPortableColorPicker}">
@@ -64,7 +64,7 @@
                     HorizontalAlignment="Right"
                     Grid.Row="1">
             <StackPanel.Resources>
-                <Style TargetType="Button">
+                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
                     <Setter Property="Margin" Value="10" />
                     <Setter Property="Padding" Value="5" />
                 </Style>

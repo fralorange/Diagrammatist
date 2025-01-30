@@ -14,7 +14,8 @@
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance {x:Type vmd:AboutAppDialogViewModel}}">
     <Grid Width="450"
-          Height="450">
+          Height="450"
+          Style="{StaticResource Window}">
         <Grid.Resources>
             <Style TargetType="StackPanel">
                 <Setter Property="Margin" Value="5" />

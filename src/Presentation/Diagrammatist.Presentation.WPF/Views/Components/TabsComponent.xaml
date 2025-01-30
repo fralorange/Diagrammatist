@@ -28,7 +28,7 @@
             <DataTemplate>
                 <TextBlock>
                     <TextBlock.Style>
-                        <Style TargetType="TextBlock">
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
                             <Setter Property="Text" Value="{Binding Settings.FileName}" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding HasChanges}" 

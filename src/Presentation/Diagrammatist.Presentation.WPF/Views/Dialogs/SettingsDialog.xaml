@@ -15,32 +15,25 @@
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance {x:Type vmd:SettingsDialogViewModel}}">
-    <Window.Resources>
-        <Style TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource FrameBackground}" />
-            <Setter Property="BorderBrush" Value="{StaticResource FrameStroke}" />
-            <Setter Property="BorderThickness" Value="0.5" />
-        </Style>
-    </Window.Resources>
     <Grid Width="650"
-          Height="750">
+          Height="750"
+          Style="{StaticResource Window}">
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <TabControl Grid.Row="0" 
-                    TabStripPlacement="Left"
-                    Background="{StaticResource SettingsTabsBackground}">
+                    TabStripPlacement="Left">
             <TabItem Header="{lex:Loc System}">
-                <Border>
+                <Border Style="{StaticResource TabBorder}">
                     <Grid Margin="10">
                         <Grid.Resources>
-                            <Style TargetType="TextBlock">
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
                                 <Setter Property="Margin" Value="5" />
                             </Style>
 
-                            <Style TargetType="ComboBox">
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}">
                                 <Setter Property="Margin" Value="5"/>
                             </Style>
                         </Grid.Resources>
@@ -58,7 +51,8 @@
 
                         <TextBlock Grid.Row="0" 
                                    Grid.Column="0" 
-                                   Text="{lex:Loc Language}"/>
+                                   Text="{lex:Loc Language}"
+                                   Style="{StaticResource BaseBlock}"/>
 
                         <ComboBox Grid.Row="0" 
                                   Grid.Column="1"
@@ -73,7 +67,8 @@
 
                         <TextBlock Grid.Row="1"
                                    Grid.Column="0"
-                                   Text="{lex:Loc Theme}"/>
+                                   Text="{lex:Loc Theme}"
+                                   Style="{StaticResource BaseBlock}"/>
 
                         <ComboBox Grid.Row="1"
                                   Grid.Column="1"
@@ -94,8 +89,8 @@
                     HorizontalAlignment="Right"
                     Grid.Row="1">
             <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="5" />
+                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                    <Setter Property="Margin" Value="3" />
                     <Setter Property="Padding" Value="5" />
                 </Style>
             </StackPanel.Resources>

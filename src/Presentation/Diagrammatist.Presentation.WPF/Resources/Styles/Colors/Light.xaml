@@ -10,7 +10,17 @@
 
     <Color x:Key="DialogStroke">#FFB4B4B4</Color>
     <Color x:Key="DialogSecondaryBackground">#FFD3D3D3</Color>
-    
+
+    <Color x:Key="MenuBackground">#FFFFFFFF</Color>
+    <Color x:Key="MenuBorder">#FFD3D3D3</Color>
+    <Color x:Key="MenuItemHoverBG">#FFE9E9E9</Color>
+    <Color x:Key="MenuItemPressedBG">#FFD9D9D9</Color>
+    <Color x:Key="MenuSeparator">#FFB4B4B4</Color>
+    <Color x:Key="MenuText">#FF242424</Color>
+    <Color x:Key="MenuDisabledText">#FF808080</Color>
+    <Color x:Key="MenuDisabledBG">#CCD8D8D8</Color>
+    <Color x:Key="MenuDisabledBorder">#CCD3D3D3</Color>
+
     <Color x:Key="TitleBarBG">#FFFFFFFF</Color>
     <Color x:Key="TitleBarButtonBG">#00FFFFFF</Color>
     <Color x:Key="TitleBarButtonFG">#FF000000</Color>
@@ -22,4 +32,18 @@
     <Color x:Key="TitleBarCloseButtonHoverPressedFG">#FFFFFFFF</Color>
     <Color x:Key="TitleBarCloseButtonHoverBG">#FFC42B1C</Color>
     <Color x:Key="TitleBarCloseButtonPressedFG">#FFC84031</Color>
+
+    <Color x:Key="ControlBackground">#FFFFFFFF</Color>
+    <Color x:Key="ControlBorder">#FFB4B4B4</Color>
+    <Color x:Key="ControlHighlight">#FF512BD4</Color>
+    <Color x:Key="ControlDisabled">#FFE0E0E0</Color>
+    <Color x:Key="ControlHover">#FFF0F0F0</Color>
+    <Color x:Key="ControlPressed">#FFE0E0E0</Color>
+    <Color x:Key="ControlFocused">#FFD0D0FF</Color>
+
+    <Color x:Key="ScrollBarThumb">#FFC0C0C0</Color>
+    <Color x:Key="ScrollBarTrack">#FFE9E9E9</Color>
+    <Color x:Key="ScrollBarThumbHover">#FFAAAAAA</Color>
+    <Color x:Key="ScrollBarThumbPressed">#FF888888</Color>
+
 </ResourceDictionary>

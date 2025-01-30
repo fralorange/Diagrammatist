@@ -273,7 +273,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             }
         }
         private static void OnBorderChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        { 
             if (d is ExtendedCanvas canvas)
             {
                 canvas.InvalidateVisual();
