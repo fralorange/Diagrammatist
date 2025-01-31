@@ -17,65 +17,112 @@
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance {x:Type vmd:AddCanvasDialogViewModel}}">
-    <Grid Style="{StaticResource Window}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
+                  GlassFrameThickness="1,0,1,1"
+                  NonClientFrameEdges="Left,Right,Bottom"
+                  ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                  UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top"
+              x:Name="titleBar"
+              Background="{DynamicResource TitleBarBackground}"
+              Height="{StaticResource TitleBarHeight}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
+            <Image x:Name="icon"
+                   Grid.Column="0"
+                   Width="24"
+                   Height="24"
+                   Margin="5,0,0,0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   MouseDown="OnIconMouseDown"
+                   Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
+                   WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-        <StackPanel Orientation="Vertical">
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Foreground="{DynamicResource FrameForeground}" />
 
-            <UniformGrid Grid.Row="0"
-                         Margin="20"
-                         Columns="2">
-                <UniformGrid.Resources>
-                    <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}">
-                        <Setter Property="Margin" Value="0,0,10,10" />
+            <Button Grid.Column="2"
+                    Click="OnCloseButtonClick"
+                    Style="{StaticResource TitleBarCloseButtonStyle}"
+                    ToolTip="{lex:Loc Close}"
+                    HorizontalAlignment="Right">
+                <Path Width="36"
+                      Height="32"
+                      Data="M 13,11 22,20 M 13,20 22,11"
+                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
+                      StrokeThickness="1"/>
+            </Button>
+        </Grid>
+        <Grid Style="{StaticResource Window}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical">
+
+                <UniformGrid Grid.Row="0"
+                             Margin="20"
+                             Columns="2">
+                    <UniformGrid.Resources>
+                        <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+                            <Setter Property="Margin" Value="0,0,10,10" />
+                        </Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+                            <Setter Property="Margin" Value="10,10,0,0" />
+                        </Style>
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}">
+                            <Setter Property="Margin" Value="10,10,0,0" />
+                        </Style>
+                        <Style TargetType="colorpicker:PortableColorPicker" BasedOn="{StaticResource CustomPortableColorPicker}">
+                            <Setter Property="Margin" Value="10,10,0,0" />
+                        </Style>
+                    </UniformGrid.Resources>
+                    <Label Content="{lex:Loc FileName}"/>
+                    <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc Width}"/>
+                    <TextBox Text="{Binding Width}"/>
+                    <Label Content="{lex:Loc Height}"/>
+                    <TextBox Text="{Binding Height}"/>
+                    <Label Content="{lex:Loc DiagramType}"/>
+                    <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
+                              SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc Background}"/>
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay}"
+                                                     ShowAlpha="False"
+                                                     ShowFractionalPart="False"/>
+
+                </UniformGrid>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Grid.Row="1">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                        <Setter Property="Margin" Value="10" />
+                        <Setter Property="Padding" Value="5" />
                     </Style>
-                    <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
-                        <Setter Property="Margin" Value="10,10,0,0" />
-                    </Style>
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}">
-                        <Setter Property="Margin" Value="10,10,0,0" />
-                    </Style>
-                    <Style TargetType="colorpicker:PortableColorPicker" BasedOn="{StaticResource CustomPortableColorPicker}">
-                        <Setter Property="Margin" Value="10,10,0,0" />
-                    </Style>
-                </UniformGrid.Resources>
-                <Label Content="{lex:Loc FileName}"/>
-                <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Content="{lex:Loc Width}"/>
-                <TextBox Text="{Binding Width}"/>
-                <Label Content="{lex:Loc Height}"/>
-                <TextBox Text="{Binding Height}"/>
-                <Label Content="{lex:Loc DiagramType}"/>
-                <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
-                          SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Content="{lex:Loc Background}"/>
-                <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay}"
-                                                 ShowAlpha="False"
-                                                 ShowFractionalPart="False"/>
+                </StackPanel.Resources>
 
-            </UniformGrid>
-        </StackPanel>
+                <Button Content="{lex:Loc OK}"
+                        Command="{Binding OkCommand}"
+                        IsDefault="True"/>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Grid.Row="1">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
-                    <Setter Property="Margin" Value="10" />
-                    <Setter Property="Padding" Value="5" />
-                </Style>
-            </StackPanel.Resources>
-
-            <Button Content="{lex:Loc OK}"
-                    Command="{Binding OkCommand}"
-                    IsDefault="True"/>
-
-            <Button Content="{lex:Loc Cancel}"
-                    IsCancel="True"/>
-        </StackPanel>
-    </Grid>
+                <Button Content="{lex:Loc Cancel}"
+                        IsCancel="True"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>

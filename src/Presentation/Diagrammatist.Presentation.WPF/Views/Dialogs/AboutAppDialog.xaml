@@ -13,57 +13,105 @@
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance {x:Type vmd:AboutAppDialogViewModel}}">
-    <Grid Width="450"
-          Height="450"
-          Style="{StaticResource Window}">
-        <Grid.Resources>
-            <Style TargetType="StackPanel">
-                <Setter Property="Margin" Value="5" />
-            </Style>
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
+                      GlassFrameThickness="1,0,1,1"
+                      NonClientFrameEdges="Left,Right,Bottom"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top"
+              x:Name="titleBar"
+              Background="{DynamicResource TitleBarBackground}"
+              Height="{StaticResource TitleBarHeight}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="4">
-            <TextBlock Style="{StaticResource Heading}"
-                       Text="{Binding AppTitle}"
-                       HorizontalAlignment="Center"/>
+            <Image x:Name="icon"
+                   Grid.Column="0"
+                   Width="24"
+                   Height="24"
+                   Margin="5,0,0,0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   MouseDown="OnIconMouseDown"
+                   Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
+                   WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-            <TextBlock Style="{StaticResource Heading}"
-                       Text="{Binding AppVersion}"
-                       HorizontalAlignment="Center"/>
-        </StackPanel>
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Foreground="{DynamicResource FrameForeground}" />
 
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="3"
-                    VerticalAlignment="Bottom">
-            <Label Content="{Binding AppAuthor}"/>
-            <TextBlock Text="GitHub" 
-                       TextDecorations="Underline"
-                       Cursor="Hand">
-                <TextBlock.InputBindings>
-                    <MouseBinding Command="{Binding OpenLinkCommand}" 
-                      MouseAction="LeftClick"/>
-                </TextBlock.InputBindings>
-            </TextBlock>
-        </StackPanel>
+            <Button Grid.Column="2"
+                    Click="OnCloseButtonClick"
+                    Style="{StaticResource TitleBarCloseButtonStyle}"
+                    ToolTip="{lex:Loc Close}"
+                    HorizontalAlignment="Right">
+                <Path Width="36"
+                      Height="32"
+                      Data="M 13,11 22,20 M 13,20 22,11"
+                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
+                      StrokeThickness="1"/>
+            </Button>
+        </Grid>
+        <Grid Width="450"
+              Height="450"
+              Style="{StaticResource Window}">
+            <Grid.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="3"
-                    Grid.Column="3"
-                    VerticalAlignment="Bottom">
-            <Button Content="OK" 
-                    IsDefault="True" 
-                    IsCancel="True"/>
-        </StackPanel>
-    </Grid>
+            <StackPanel Grid.Row="0"
+                        Grid.ColumnSpan="4">
+                <TextBlock Style="{StaticResource Heading}"
+                           Text="{Binding AppTitle}"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Style="{StaticResource Heading}"
+                           Text="{Binding AppVersion}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        VerticalAlignment="Bottom">
+                <Label Content="{Binding AppAuthor}"/>
+                <TextBlock Text="GitHub" 
+                           TextDecorations="Underline"
+                           Cursor="Hand">
+                    <TextBlock.InputBindings>
+                        <MouseBinding Command="{Binding OpenLinkCommand}" 
+                          MouseAction="LeftClick"/>
+                    </TextBlock.InputBindings>
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Grid.Column="3"
+                        VerticalAlignment="Bottom">
+                <Button Content="OK" 
+                        IsDefault="True" 
+                        IsCancel="True"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>
