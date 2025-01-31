@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Diagrammatist.Infrastructure\Data\FiguresData.json" Link="Contexts\Figures\Data\FiguresData.json">
+    <EmbeddedResource Include="..\Diagrammatist.Infrastructure\Data\FiguresData.json" Link="Contexts\Figures\Data\FiguresData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
