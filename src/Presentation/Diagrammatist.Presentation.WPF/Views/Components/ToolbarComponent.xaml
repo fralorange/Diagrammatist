@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="Diagrammatist.Presentation.WPF.Views.Components.ToolbarComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
+             xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
+             xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Toolbar.ToolbarResources"
+             behaviors:InputBindingBehavior.PropagateInputBindingsToWindow="True"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ToolbarViewModel}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ToolTemplate" TargetType="ContentControl">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <ContentPresenter Grid.Row="0"/>
+                <Label Grid.Row="1" 
+                       HorizontalContentAlignment="Center" 
+                       VerticalContentAlignment="Bottom"
+                       Content="{TemplateBinding Tag}"/>
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+1" 
+                    Command="{Binding ChangeModeCommand}"
+                    CommandParameter="Select"/>
+        <KeyBinding Gesture="Ctrl+2" 
+                    Command="{Binding ChangeModeCommand}"
+                    CommandParameter="Pan"/>
+        <KeyBinding Gesture="Ctrl+3" 
+                    Command="{Binding ChangeModeCommand}"
+                    CommandParameter="Transform"/>
+    </UserControl.InputBindings>
+    
+    <ToolBar ToolBarTray.IsLocked="True">
+        <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Clipboard}">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding PasteCommand}"
+                        Style="{StaticResource ToolBase}"
+                        IsEnabled="{Binding HasCanvas}">
+                    <StackPanel>
+                        <Image Source="{DynamicResource pasteDrawingImage}"
+                               Style="{StaticResource Tool}"/>
+                        <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Paste}"
+                                   Style="{StaticResource ToolLabel}"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding CopyCommand}"
+                            Style="{StaticResource MiniToolBase}"
+                            IsEnabled="{Binding HasSelectedFigure}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{DynamicResource copyDrawingImage}"
+                                   Style="{StaticResource MiniTool}"/>
+                            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Copy}"
+                                       Style="{StaticResource MiniToolLabel}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding CutCommand}"
+                            Style="{StaticResource MiniToolBase}"
+                            IsEnabled="{Binding HasSelectedFigure}">
+                        <DockPanel>
+                            <Image Source="{DynamicResource cutDrawingImage}"
+                                   Style="{StaticResource MiniTool}"
+                                   DockPanel.Dock="Left"/>
+                            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Cut}"
+                                       Style="{StaticResource MiniToolLabel}"
+                                       DockPanel.Dock="Left"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Command="{Binding DuplicateCommand}"
+                            Style="{StaticResource MiniToolBase}"
+                            IsEnabled="{Binding HasSelectedFigure}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{DynamicResource duplicateDrawingImage}"
+                                   Style="{StaticResource MiniTool}"/>
+                            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Commands.CommandsResources:Duplicate}"
+                                       Style="{StaticResource MiniToolLabel}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </ContentControl>
+        <Separator/>
+        <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Controls}">
+            <StackPanel Orientation="Horizontal">
+                <Button ToolTip="Ctrl + 1"
+                        Style="{StaticResource ToolBase}"
+                        Command="{Binding ChangeModeCommand}"
+                        CommandParameter="Select">
+                    <StackPanel>
+                        <Image Source="{DynamicResource selectDrawingImage}"
+                               Style="{StaticResource Tool}"/>
+                        <TextBlock Text="{lex:Loc SelectionMode}"
+                                   Style="{StaticResource ToolLabel}"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Ctrl + 2"
+                        Style="{StaticResource ToolBase}"
+                        Command="{Binding ChangeModeCommand}"
+                        CommandParameter="Pan">
+                    <StackPanel>
+                        <Image Source="{DynamicResource dragDrawingImage}"
+                               Style="{StaticResource Tool}"/>
+                        <TextBlock Text="{lex:Loc PanMode}"
+                                   Style="{StaticResource ToolLabel}"/>
+                    </StackPanel>
+                </Button>
+                <Button Content="{lex:Loc TransformMode}"
+                        Visibility="Collapsed"
+                        Style="{StaticResource ToolBase}"
+                        ToolTip="Ctrl + 3"
+                        Command="{Binding ChangeModeCommand}"
+                        CommandParameter="Transform"/>
+            </StackPanel>
+        </ContentControl>
+        <Separator/>
+    </ToolBar>
+</UserControl>

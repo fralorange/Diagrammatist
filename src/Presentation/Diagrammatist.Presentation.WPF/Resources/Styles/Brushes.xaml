@@ -1,0 +1,85 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="MenuBackgroundBrush" Color="{DynamicResource MenuBackground}"/>
+    <SolidColorBrush x:Key="MenuBorderBrush" Color="{DynamicResource MenuBorder}"/>
+    <SolidColorBrush x:Key="MenuItemHoverBackgroundBrush" Color="{DynamicResource MenuItemHoverBG}"/>
+    <SolidColorBrush x:Key="MenuItemPressedBackgroundBrush" Color="{DynamicResource MenuItemPressedBG}"/>
+    <SolidColorBrush x:Key="MenuSeparatorBrush" Color="{DynamicResource MenuSeparator}"/>
+    <SolidColorBrush x:Key="MenuTextBrush" Color="{DynamicResource MenuText}"/>
+    <SolidColorBrush x:Key="MenuDisabledTextBrush" Color="{DynamicResource MenuDisabledText}"/>
+    <SolidColorBrush x:Key="MenuDisabledBackgroundBrush" Color="{DynamicResource MenuDisabledBG}"/>
+    <SolidColorBrush x:Key="MenuDisabledBorderBrush" Color="{DynamicResource MenuDisabledBorder}"/>
+
+    <SolidColorBrush x:Key="TitleBarBackground" Color="{DynamicResource TitleBarBG}" />
+    <SolidColorBrush x:Key="TitleBarButtonBackground" Color="{DynamicResource TitleBarButtonBG}" />
+    <SolidColorBrush x:Key="TitleBarButtonForeground" Color="{DynamicResource TitleBarButtonFG}" />
+    <SolidColorBrush x:Key="TitleBarButtonHoverBackground" Color="{DynamicResource TitleBarButtonHoverBG}" />
+    <SolidColorBrush x:Key="TitleBarButtonHoverForeground" Color="{DynamicResource TitleBarButtonFG}" />
+    <SolidColorBrush x:Key="TitleBarButtonPressedBackground" Color="{DynamicResource TitleBarButtonPressedBG}" />
+    <SolidColorBrush x:Key="TitleBarButtonPressedForeground" Color="{DynamicResource TitleBarButtonFG}" />
+
+    <SolidColorBrush x:Key="TitleBarCloseButtonBackground" Color="{DynamicResource TitleBarCloseButtonBG}" />
+    <SolidColorBrush x:Key="TitleBarCloseButtonForeground" Color="{DynamicResource TitleBarCloseButtonFG}" />
+    <SolidColorBrush x:Key="TitleBarCloseButtonHoverBackground" Color="{DynamicResource TitleBarCloseButtonHoverBG}" />
+    <SolidColorBrush x:Key="TitleBarCloseButtonHoverForeground" Color="{DynamicResource TitleBarCloseButtonHoverPressedFG}" />
+    <SolidColorBrush x:Key="TitleBarCloseButtonPressedBackground" Color="{DynamicResource TitleBarCloseButtonPressedFG}" />
+    <SolidColorBrush x:Key="TitleBarCloseButtonPressedForeground" Color="{DynamicResource TitleBarCloseButtonHoverPressedFG}" />
+
+    <SolidColorBrush x:Key="ButtonHoverBackground" Color="{DynamicResource ButtonHoverBG}"/>
+    <SolidColorBrush x:Key="ButtonPressedBackground" Color="{DynamicResource ButtonPressedBG}"/>
+
+    <SolidColorBrush x:Key="FrameStroke" Color="{DynamicResource AppThemeColor}"/>
+    <RadialGradientBrush x:Key="FrameStrokeRadial">
+        <GradientStop Color="{DynamicResource AppThemeColor}"/>
+        <GradientStop Color="{DynamicResource AppThemeColor}"/>
+    </RadialGradientBrush>
+    <SolidColorBrush x:Key="FrameBackground" Color="{DynamicResource AppBackground}"/>
+    <SolidColorBrush x:Key="FrameForeground" Color="{DynamicResource AppTextColor}"/>
+
+    <SolidColorBrush x:Key="WindowBackground" Color="{DynamicResource AppSecondaryBackground}"/>
+
+    <SolidColorBrush x:Key="DialogFrameStroke" Color="{DynamicResource AppDialogStroke}"/>
+    <RadialGradientBrush x:Key="DialogFrameStrokeRadial">
+        <GradientStop Color="{DynamicResource DialogStroke}"/>
+        <GradientStop Color="{DynamicResource DialogStroke}"/>
+    </RadialGradientBrush>
+
+    <SolidColorBrush x:Key="ShapeDefaultStroke" Color="{DynamicResource AppThemeColor}"/>
+    <SolidColorBrush x:Key="ShapeDefaultBackground" Color="{DynamicResource AppBackground}"/>
+
+    <SolidColorBrush x:Key="ToolbarBackground" Color="Transparent"/>
+
+    <SolidColorBrush x:Key="SettingsTabsBackground" Color="{DynamicResource DialogSecondaryBackground}"/>
+
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{DynamicResource ControlBackground}"/>
+    <SolidColorBrush x:Key="ControlBorderBrush" Color="{DynamicResource ControlBorder}"/>
+    <SolidColorBrush x:Key="ControlHighlightBrush" Color="{DynamicResource ControlHighlight}"/>
+    <SolidColorBrush x:Key="ControlDisabledBrush" Color="{DynamicResource ControlDisabled}"/>
+    <SolidColorBrush x:Key="ControlHoverBrush" Color="{DynamicResource ControlHover}"/>
+    <SolidColorBrush x:Key="ControlPressedBrush" Color="{DynamicResource ControlPressed}"/>
+    <SolidColorBrush x:Key="ControlFocusedBrush" Color="{DynamicResource ControlFocused}"/>
+
+    <LinearGradientBrush x:Key="ScrollBarStroke"
+                         StartPoint="0,0" 
+                         EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource ControlBorder}"
+                              Offset="0.0" />
+                <GradientStop Color="{DynamicResource AppThemeColor}"
+                              Offset="1.0" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ScrollBarBackground" 
+                         StartPoint="0,0"
+                         EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource ControlBackground}"/>
+                <GradientStop Color="{DynamicResource ControlHighlight}"
+                              Offset="1.0" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+</ResourceDictionary>

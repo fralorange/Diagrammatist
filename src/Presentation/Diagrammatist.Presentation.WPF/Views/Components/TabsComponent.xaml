@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Diagrammatist.Presentation.WPF.Views.Components.TabsComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
+             xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             Visibility="{Binding HasCanvases, Converter={StaticResource BoolToVisibilityConverter}}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
+             mc:Ignorable="d">
+    <ListBox ItemsSource="{Binding Canvases}"
+             SelectedItem="{Binding SelectedCanvas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+             SelectionMode="Single">
+        <ListBox.Resources>
+            <ContextMenu x:Key="CanvasMenu"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
+                <MenuItem Header="{lex:Loc Close}"
+                          Command="{Binding DataContext.CloseCanvasCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+            </ContextMenu>
+        </ListBox.Resources>
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="ContextMenu" Value="{StaticResource CanvasMenu}" />
+            </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
+                            <Setter Property="Text" Value="{Binding Settings.FileName}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasChanges}" 
+                                             Value="True">
+                                    <Setter Property="Text" Value="{Binding Settings.FileName, StringFormat={}{0}*}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
+</UserControl>
