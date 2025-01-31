@@ -1,0 +1,178 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Figures;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
+    <!--#region Toolbox-->
+    <DataTemplate x:Key="ToolboxShapeFigureTemplate"
+                  DataType="figures:ShapeFigureModel">
+        <Path lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
+              ToolTip="{lex:Loc {Binding Name}}"
+              Style="{StaticResource Shape}"
+              Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ToolboxLineFigureTemplate"
+                  DataType="figures:LineFigureModel">
+        <Polyline lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
+                  ToolTip="{lex:Loc {Binding Name}}"
+                  Style="{StaticResource Line}"
+                  Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ToolboxTextFigureTemplate"
+                  DataType="figures:TextFigureModel">
+        <Border lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
+                ToolTip="{lex:Loc {Binding Name}}"
+                Style="{StaticResource ToolboxTextBorder}">
+            <TextBlock Text="{Binding Text}"/>
+        </Border>
+    </DataTemplate>
+
+    <selector:FigureItemTemplateSelector x:Key="ToolboxFiguresSelector"
+                                         ShapeFigureTemplate="{StaticResource ToolboxShapeFigureTemplate}"
+                                         LineFigureTemplate="{StaticResource ToolboxLineFigureTemplate}"
+                                         TextFigureTemplate="{StaticResource ToolboxTextFigureTemplate}"/>
+    <!--#endregion-->
+    <!--#region Canvas-->
+    <DataTemplate x:Key="CanvasShapeFigureTemplate"
+                  DataType="figures:ShapeFigureModel">
+        <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
+              Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+              Width="{Binding Width}"
+              Height="{Binding Height}">
+            <Path.Style>
+                <Style TargetType="Path" BasedOn="{StaticResource Shape}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding KeepAspectRatio}"
+                                     Value="False">
+                            <Setter Property="Stretch" Value="Fill" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CanvasLineFigureTemplate"
+                  DataType="figures:LineFigureModel">
+        <Polyline Style="{StaticResource Line}"
+                  Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
+                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                  StrokeThickness="{Binding Thickness}"
+                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CanvasTextFigureTemplate"
+                  DataType="figures:TextFigureModel">
+        <Border>
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource TextBorder}">
+                    <Setter Property="BorderBrush" Value="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasOutline}"
+                                     Value="False">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HasBackground}"
+                                     Value="False">
+                            <Setter Property="Background" Value="Transparent"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <TextBlock Text="{Binding Text, Mode=TwoWay}"
+                       FontSize="{Binding FontSize}"
+                       Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"/>
+        </Border>
+    </DataTemplate>
+
+    <selector:FigureItemTemplateSelector x:Key="CanvasFiguresSelector"
+                                         ShapeFigureTemplate="{StaticResource CanvasShapeFigureTemplate}"
+                                         LineFigureTemplate="{StaticResource CanvasLineFigureTemplate}"
+                                         TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"/>
+    <!--#endregion-->
+    <!--#region Properties-->
+    <DataTemplate x:Key="BasePropertiesFigureTemplate"
+                  DataType="figures:FigureModel">
+        <UniformGrid Columns="2"
+                     lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
+            <Label Content="{lex:Loc Name}"/>
+            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="{lex:Loc Rotation}"/>
+            <TextBox Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="{lex:Loc Color}"/>
+            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             ShowAlpha="False"
+                                             ShowFractionalPart="False"
+                                             Style="{StaticResource PortableColorSlider}"/>
+        </UniformGrid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PropertiesShapeFigureTemplate"
+                  DataType="figures:ShapeFigureModel">
+        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="{lex:Loc Width}"/>
+                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc Height}"/>
+                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </UniformGrid>
+                <CheckBox Content="{lex:Loc KeepAspectRatio}"
+                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PropertiesLineFigureTemplate"
+                  DataType="figures:LineFigureModel">
+        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="{lex:Loc Thickness}"/>
+                    <Slider Value="{Binding Thickness, Mode=TwoWay}" 
+                            Minimum="1" 
+                            Maximum="10"/>
+                </UniformGrid>
+                <CheckBox Content="{lex:Loc IsDashed}"
+                          IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
+                <CheckBox Content="{lex:Loc HasArrow}"
+                          IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PropertiesTextFigureTemplate"
+                  DataType="figures:TextFigureModel">
+        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="{lex:Loc Text}"/>
+                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc FontSize}"/>
+                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc TextColor}"/>
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     ShowAlpha="False"
+                                                     ShowFractionalPart="False"
+                                                     Style="{StaticResource PortableColorSlider}"/>
+                </UniformGrid>
+                <CheckBox Content="{lex:Loc HasOutline}"
+                          IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
+                <CheckBox Content="{lex:Loc HasBackground}"
+                          IsChecked="{Binding HasBackground, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <selector:FigureItemTemplateSelector x:Key="PropertiesFigureSelector"
+                                         ShapeFigureTemplate="{StaticResource PropertiesShapeFigureTemplate}"
+                                         LineFigureTemplate="{StaticResource PropertiesLineFigureTemplate}"
+                                         TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"/>
+    <!--#endregion-->
+</ResourceDictionary>
