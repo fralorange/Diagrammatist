@@ -24,6 +24,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
         private readonly List<string> _supportedThemes = new()
         {
+            "System",
             "Light",
             "Dark"
         };
