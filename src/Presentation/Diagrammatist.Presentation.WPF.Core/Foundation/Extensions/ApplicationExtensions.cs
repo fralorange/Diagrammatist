@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
 using ApplicationEnt = System.Windows.Application;
@@ -18,6 +19,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
         /// <param name="themeName">The name of the theme.</param>
         public static void ChangeTheme(this ApplicationEnt application, string themeName)
         {
+            if (themeName == "System")
+            {
+                themeName = GetSystemTheme();
+            }
+
             var mergedDictionaries = ApplicationEnt.Current.Resources.MergedDictionaries;
 
             var currentTheme = mergedDictionaries
@@ -46,6 +52,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
 
             mergedDictionaries.RemoveAt(index);
             mergedDictionaries.Insert(index, new ResourceDictionary { Source = new Uri(newResourcePath, UriKind.Relative) });
+        }
+
+        private static string GetSystemTheme()
+        {
+            const string registryPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            const string keyName = "AppsUseLightTheme";
+
+            var value = Registry.GetValue(registryPath, keyName, null);
+
+            return value is int intValue && intValue == 0 ? "Dark" : "Light";
         }
     }
 }
