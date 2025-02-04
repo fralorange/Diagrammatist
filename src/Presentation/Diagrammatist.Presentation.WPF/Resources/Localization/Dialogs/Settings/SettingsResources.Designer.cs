@@ -98,6 +98,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на System.
+        /// </summary>
+        internal static string SystemTab {
+            get {
+                return ResourceManager.GetString("SystemTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Theme:.
         /// </summary>
         internal static string Theme {

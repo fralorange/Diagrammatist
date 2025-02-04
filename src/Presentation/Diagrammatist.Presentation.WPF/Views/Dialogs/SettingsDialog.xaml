@@ -73,7 +73,7 @@
         
             <TabControl Grid.Row="0" 
                         TabStripPlacement="Left">
-                <TabItem Header="{lex:Loc System}">
+                <TabItem Header="{lex:Loc SystemTab}">
                     <Border Style="{StaticResource TabBorder}">
                         <Grid Margin="10">
                             <Grid.Resources>

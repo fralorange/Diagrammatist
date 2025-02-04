@@ -129,6 +129,9 @@
   <data name="System" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="SystemTab" xml:space="preserve">
+    <value>System</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>Theme:</value>
   </data>

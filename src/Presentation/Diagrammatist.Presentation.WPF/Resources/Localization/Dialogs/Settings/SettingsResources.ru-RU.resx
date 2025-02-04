@@ -127,6 +127,9 @@
     <value>Светлая</value>
   </data>
   <data name="System" xml:space="preserve">
+    <value>Системная</value>
+  </data>
+  <data name="SystemTab" xml:space="preserve">
     <value>Система</value>
   </data>
   <data name="Theme" xml:space="preserve">
