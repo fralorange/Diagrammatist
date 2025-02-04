@@ -132,6 +132,9 @@
   <data name="Data flow" xml:space="preserve">
     <value>Data flow</value>
   </data>
+  <data name="Database" xml:space="preserve">
+    <value>Database</value>
+  </data>
   <data name="Decision" xml:space="preserve">
     <value>Decision</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="Pentagon" xml:space="preserve">
     <value>Pentagon</value>
+  </data>
+  <data name="PredefinedProcess" xml:space="preserve">
+    <value>Predefined Process</value>
   </data>
   <data name="Preparation" xml:space="preserve">
     <value>Preparation</value>
