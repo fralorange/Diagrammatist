@@ -128,11 +128,27 @@
     }
   },
   {
+    "Name": "PredefinedProcess",
+    "Category": "Blocks",
+    "Data": {
+      "Type": "Path",
+      "Value": "M0,0 L125,0 L125,50 L0,50 Z M25,0 L25,50 M100,0 L100,50"
+    }
+  },
+  {
     "Name": "Document",
     "Category": "Blocks",
     "Data": {
       "Type": "Path",
       "Value": "M100,0 L0,0 L0,50 Q15,65 50,50 T100,40 Z"
+    }
+  },
+  {
+    "Name": "Database",
+    "Category": "Blocks",
+    "Data": {
+      "Type": "Path",
+      "Value": "M0,0 A50,15 0 0 0 100,0 A50,15 0 0 0 0,0 M100,0 L100,75 A50,15 0 0 1 0,75 L0,0 A50,15 0 0 0 100,0"
     }
   }
 ]

@@ -373,6 +373,7 @@
 
     <Style TargetType="Path" x:Key="Shape" BasedOn="{StaticResource BaseGeometry}">
         <Setter Property="Fill" Value="{StaticResource ShapeDefaultBackground}" />
+        <Setter Property="StrokeLineJoin" Value="Bevel" />
     </Style>
 
     <Style TargetType="Polyline" x:Key="Line" BasedOn="{StaticResource BaseGeometry}">
