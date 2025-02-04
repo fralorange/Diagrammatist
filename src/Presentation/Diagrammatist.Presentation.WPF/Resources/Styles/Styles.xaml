@@ -887,4 +887,8 @@
         </Style.Resources>
     </Style>
     <!--#endregion-->
+
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
+    </Style>
 </ResourceDictionary>
