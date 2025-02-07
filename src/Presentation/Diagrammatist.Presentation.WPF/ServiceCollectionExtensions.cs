@@ -49,6 +49,7 @@ namespace Diagrammatist.Presentation.WPF
             services.AddSingleton<PropertiesViewModel>();
             services.AddSingleton<TabsViewModel>();
             services.AddSingleton<ToolbarViewModel>();
+            services.AddSingleton<ActionViewModel>();
 
             return services;
         }

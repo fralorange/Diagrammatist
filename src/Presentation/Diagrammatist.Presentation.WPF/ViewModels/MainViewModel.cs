@@ -59,6 +59,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// </remarks>
         [ObservableProperty]
         private bool _hasGridFlag = Properties.Settings.Default.GridVisible;
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsBlocked"]/*'/>
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
+        private bool _isBlocked;
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
+        public bool IsNotBlocked => !IsBlocked;
         #endregion
 
         public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
@@ -337,6 +343,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
                 {
                     case MenuFlags.HasCanvas:
                         HasCanvasFlag = m.Item2;
+                        break;
+                    case MenuFlags.IsBlocked:
+                        IsBlocked = m.Item2;
                         break;
                 }
             });

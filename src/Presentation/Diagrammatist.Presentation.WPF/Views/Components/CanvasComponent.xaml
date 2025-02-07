@@ -50,7 +50,8 @@
                      x:Name="itemsHolder">
                 <ListBox.Resources>
                     <ContextMenu x:Key="ElementMenu"
-                                 lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
+                                 lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources"
+                                 IsEnabled="{Binding DataContext.IsNotBlocked, RelativeSource={RelativeSource AncestorType=ListBox}}">
                         <MenuItem Header="{lex:Loc Copy}"
                                   InputGestureText="Ctrl+C"
                                   Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
@@ -83,13 +84,17 @@
                                                  IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
                                                  IsBorderVisible="{Binding DataContext.CurrentCanvas, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource NullToBooleanConverter}, FallbackValue=False}"
                                                  GridLineColor="{DynamicResource FrameStroke}"
+                                                 PreviewMouseLeftButtonDown="OnExtendedCanvasPreviewMouseLeftButtonDown"
+                                                 PreviewMouseMove="OnExtendedCanvasPreviewMouseMove"
                                                  PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown"
                                                  PreviewKeyDown="OnExtendedCanvasPreviewKeyDown"
+                                                 Loaded="OnExtendedCanvasLoaded"
                                                  Focusable="True">
                             <controls:ExtendedCanvas.ContextMenu>
                                 <ContextMenu lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                                     <MenuItem Header="{lex:Loc Paste}"
                                               InputGestureText="Ctrl+V"
+                                              IsEnabled="{Binding PlacementTarget.DataContext.IsNotBlocked, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                               Command="{Binding PlacementTarget.DataContext.PasteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                               CommandParameter="{Binding PlacementTarget.ContextMenu.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                 </ContextMenu>
@@ -118,6 +123,13 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+
+            <Canvas x:Name="drawingCanvas"
+                    Width="{Binding CurrentCanvas.Settings.Width}"
+                    Height="{Binding CurrentCanvas.Settings.Height}"
+                    Background="Transparent"
+                    ClipToBounds="True"
+                    IsHitTestVisible="False"/>
         </Grid>
         <i:Interaction.Behaviors>
             <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"

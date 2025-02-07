@@ -8,6 +8,7 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -71,7 +72,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void ChangeMode(string mode)
         {
-            CurrentMouseMode = (MouseMode)Enum.Parse(typeof(MouseMode), mode);
+            CurrentMouseMode = MouseModeHelper.GetParsedMode<MouseMode>(mode);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Paste"]/*'/>
@@ -132,10 +133,32 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
+        /// <summary>
+        /// Changes parameters that depend on specific mouse mode.
+        /// </summary>
+        /// <param name="oldValue">Old mouse mode.</param>
+        /// <param name="newValue">New mouse mode.</param>
+        partial void OnCurrentMouseModeChanged(MouseMode oldValue, MouseMode newValue)
+        {
+            if (newValue is MouseMode.Line)
+            {
+                Messenger.Send(new Tuple<string, bool>(MenuFlags.IsBlocked, true));
+            }
+            else if (oldValue is MouseMode.Line)
+            {
+                Messenger.Send(new Tuple<string, bool>(MenuFlags.IsBlocked, false));
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
             base.OnActivated();
+
+            Messenger.Register<ToolbarViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
+            {
+                CurrentMouseMode = m.NewValue;
+            });
 
             Messenger.Register<ToolbarViewModel, PropertyChangedMessage<CanvasModel?>>(this, (r, m) =>
             {
