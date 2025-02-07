@@ -125,6 +125,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [ObservableProperty]
         private bool _isGridVisible = Properties.Settings.Default.GridVisible;
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsBlocked"]/*'/>
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
+        private bool _isBlocked;
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
+        public bool IsNotBlocked => !IsBlocked;
+
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
                                ICanvasSerializationService canvasSerializationService,
                                IClipboardManager<FigureModel> clipboardManager)
@@ -443,6 +451,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             Messenger.Register<CanvasViewModel, SaveRequestMessage>(this, (r, m) =>
             {
                 m.Reply(Save());
+            });
+            // Register menu flags.
+            Messenger.Register<CanvasViewModel, Tuple<string, bool>>(this, (r, m) =>
+            {
+                switch (m.Item1)
+                {
+                    case MenuFlags.IsBlocked:
+                        IsBlocked = m.Item2;
+                        break;
+                }
             });
             // Register menu commands.
             Messenger.Register<CanvasViewModel, string>(this, (r, m) =>

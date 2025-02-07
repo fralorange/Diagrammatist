@@ -112,7 +112,8 @@
                       Background="Transparent"
                       DockPanel.Dock="Left"
                       WindowChrome.IsHitTestVisibleInChrome="True">
-                    <MenuItem Header="{lex:Loc File}">
+                    <MenuItem Header="{lex:Loc File}"
+                              IsEnabled="{Binding IsNotBlocked}">
                         <MenuItem Header="{lex:Loc New}"
                                   InputGestureText="Ctrl+N"
                                   Command="{Binding MenuNewCommand}"/>
@@ -147,7 +148,8 @@
                                   InputGestureText="Alt+F4"
                                   Command="{Binding MenuExitCommand}"/>
                     </MenuItem>
-                    <MenuItem Header="{lex:Loc Edit}">
+                    <MenuItem Header="{lex:Loc Edit}"
+                              IsEnabled="{Binding IsNotBlocked}">
                         <MenuItem Header="{lex:Loc Undo}"
                                   InputGestureText="Ctrl+Z"
                                   Command="{Binding MenuUndoCommand}"
@@ -176,7 +178,8 @@
                                   IsEnabled="{Binding HasCanvasFlag}"
                                   IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
                     </MenuItem>
-                    <MenuItem Header="{lex:Loc Canvas}">
+                    <MenuItem Header="{lex:Loc Canvas}"
+                              IsEnabled="{Binding IsNotBlocked}">
                         <MenuItem Header="{lex:Loc ChangeSize}"
                                   Command="{Binding MenuChangeSizeCommand}"
                                   IsEnabled="{Binding HasCanvasFlag}"/>
@@ -262,11 +265,13 @@
 
             <components:ToolbarComponent Grid.Row="0"
                                          Grid.ColumnSpan="3"
-                                         Style="{StaticResource Component}"/>
+                                         Style="{StaticResource Component}"
+                                         IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             <components:FiguresComponent Grid.Row="1"
                                          Grid.RowSpan="2"
                                          Grid.Column="0"
-                                         Style="{StaticResource Component}"/>
+                                         Style="{StaticResource Component}"
+                                         IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             
             <!--Splits FiguresComponent from CanvasComponent-->
             <GridSplitter Grid.Row="1" 
@@ -279,14 +284,19 @@
                   Grid.RowSpan="2" 
                   Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
-                <components:CanvasComponent Grid.Row="0"
+
+                <components:ActionComponent Grid.Row="0"
+                                            Style="{StaticResource Component}"
+                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsBlocked}"/>
+                <components:CanvasComponent Grid.Row="1"
                                             Style="{StaticResource Component}"/>
-                <components:TabsComponent Grid.Row="1"
-                                          Style="{StaticResource Component}"/>
+                <components:TabsComponent Grid.Row="2"
+                                          Style="{StaticResource Component}"
+                                          IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             </Grid>
 
             <!--Splits ObjectTreeComponent and PropertiesComponent from CanvasComponent-->
@@ -298,7 +308,8 @@
 
             <components:ObjectTreeComponent Grid.Row="1"
                                             Grid.Column="2"
-                                            Style="{StaticResource Component}"/>
+                                            Style="{StaticResource Component}"
+                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             
             <!--Splits PropertiesComponent from ObjectTreeComponent-->
             <GridSplitter Grid.Row="2" 
@@ -308,7 +319,8 @@
             
             <components:PropertiesComponent Grid.Row="2"
                                             Grid.Column="2"
-                                            Style="{StaticResource Component}"/>
+                                            Style="{StaticResource Component}"
+                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
         </Grid>
     </DockPanel>
 </Window>

@@ -9,5 +9,9 @@
         /// Gets 'has canvas' flag.
         /// </summary>
         public const string HasCanvas = nameof(HasCanvas);
+        /// <summary>
+        /// Gets 'blocked' flag.
+        /// </summary>
+        public const string IsBlocked = nameof(IsBlocked);
     }
 }

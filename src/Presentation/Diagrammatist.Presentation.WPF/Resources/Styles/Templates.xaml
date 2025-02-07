@@ -59,7 +59,8 @@
                   DataType="figures:LineFigureModel">
         <Polyline Style="{StaticResource Line}"
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
-                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                  Fill="Transparent"
+                  Stroke="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   StrokeThickness="{Binding Thickness}"
                   StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
     </DataTemplate>

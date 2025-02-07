@@ -286,6 +286,21 @@
 			</remarks>
 		</Member>
 
+		<Member name="IsBlocked">
+			<summary>
+				Gets or sets 'blocked' flag.
+			</summary>
+			<remarks>
+				This property used to block other controls.
+			</remarks>
+		</Member>
+
+		<Member name="IsNotBlocked">
+			<summary>
+				Gets inverted <see cref="IsBlocked"/> flag.
+			</summary>
+		</Member>
+
 		<Member name="ViewModelFigures">
 			<summary>
 				Gets collection of <see cref="Diagrammatist.Presentation.WPF.Models.Figures.FigureModel"/>
