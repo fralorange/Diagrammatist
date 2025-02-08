@@ -101,6 +101,27 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
+        private void LoadFigureColors(FigureModel figure)
+        {
+            var bgColor = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
+            var textColor = (System.Windows.Media.Color)App.Current.Resources["AppTextColor"];
+            var themeColor = (System.Windows.Media.Color)App.Current.Resources["AppThemeColor"];
+
+            switch (figure)
+            {
+                case LineFigureModel line:
+                    line.BackgroundColor = Color.FromArgb(themeColor.A, themeColor.R, themeColor.G, themeColor.B);
+                    break;
+                case TextFigureModel textFigure:
+                    textFigure.TextColor = Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B);
+                    textFigure.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                    break;
+                default:
+                    figure.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                    break;
+            }
+        }
+
         /// <summary>
         /// Loads figures in <see cref="Figures"/> externally and asynchronously.
         /// </summary>
@@ -113,18 +134,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 pair => pair.Value.Select(figure =>
                 {
                     var model = figure.ToModel();
-                    var bgColor = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
-                    var themeColor = (System.Windows.Media.Color)App.Current.Resources["AppThemeColor"];
 
-                    switch (model)
-                    {
-                        case LineFigureModel line:
-                            line.BackgroundColor = Color.FromArgb(themeColor.A, themeColor.R, themeColor.G, themeColor.B);
-                            break;
-                        default:
-                            model.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
-                            break;
-                    }
+                    LoadFigureColors(model);
 
                     return model;
                 }).ToList()
@@ -145,15 +156,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 foreach (var figure in category)
                 {
-                    switch (figure)
-                    {
-                        case LineFigureModel line:
-                            line.BackgroundColor = Color.FromArgb(updateThemeColor.A, updateThemeColor.R, updateThemeColor.G, updateThemeColor.B);
-                            break;
-                        default:
-                            figure.BackgroundColor = Color.FromArgb(updateBgColor.A, updateBgColor.R, updateBgColor.G, updateBgColor.B);
-                            break;
-                    }
+                    LoadFigureColors(figure);
                 }
             }
         }
