@@ -20,7 +20,8 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer
         /// <inheritdoc/>
         public byte[] Serialize(Figure figure)
         {
-            return _serializer.Serialize<Figure, FigureWitness>(figure);
+            var data = _serializer.Serialize<Figure, FigureWitness>(figure);
+            return data;
         }
 
         /// <inheritdoc/>

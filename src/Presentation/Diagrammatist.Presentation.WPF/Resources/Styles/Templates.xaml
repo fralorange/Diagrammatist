@@ -70,7 +70,7 @@
         <Border>
             <Border.Style>
                 <Style TargetType="Border" BasedOn="{StaticResource TextBorder}">
-                    <Setter Property="BorderBrush" Value="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}" />
+                    <Setter Property="Background" Value="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding HasOutline}"
                                      Value="False">

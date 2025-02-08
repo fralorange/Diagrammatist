@@ -35,8 +35,8 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services.I
                 },
                 Figures =
                 [
-                    new ShapeFigure() { Name = "Shape1", PosX = 50, PosY = 100, Data = ["M 10,100 C 10,300 300,-200 300,100"]},
-                    new TextFigure() { Name = "Text1", PosX = 100, PosY = 100, Text = "Lorem", TextColor = Color.Black },
+                    new ShapeFigure() { Name = "Shape1", PosX = 50, PosY = 100, Data = ["M 10,100 C 10,300 300,-200 300,100"], KeepAspectRatio = false},
+                    new TextFigure() { Name = "Text1", PosX = 100, PosY = 100, Text = "Lorem", TextColor = Color.Black, HasBackground = false, HasOutline = true },
                     new LineFigure { Name = "Line1", PosX = 70, PosY = 80, IsDashed = true, BackgroundColor = Color.Aqua, Points = [new(1,1), new(2,2), new(3,3)]}
                 ]
             };
@@ -52,7 +52,9 @@ namespace Diagrammatist.Application.AppServices.Tests.Contexts.Canvas.Services.I
                 // Assert
                 loadedCanvas.Should().BeEquivalentTo(canvas, opt => opt
                     .Using<Color>(ctx => ctx.Subject.ToArgb().Should().Be(ctx.Expectation.ToArgb()))
-                    .WhenTypeIs<Color>());
+                    .WhenTypeIs<Color>()
+                    .IncludingAllRuntimeProperties()
+                );
             }
             finally
             {

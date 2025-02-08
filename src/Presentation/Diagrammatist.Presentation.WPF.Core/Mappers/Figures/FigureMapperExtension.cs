@@ -39,8 +39,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
             {
                 Width = figure.Width,
                 Height = figure.Height,
-                KeepAspectRatio = figure.KeepAspectRatio,
                 Data = figure.Data,
+                KeepAspectRatio = figure.KeepAspectRatio,
             };
 
             MapCommonProperties(model, figure);
@@ -59,6 +59,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
                 Width = model.Width,
                 Height = model.Height,
                 Data = model.Data,
+                KeepAspectRatio = model.KeepAspectRatio,
             };
 
             MapCommonProperties(domain, model);
