@@ -112,8 +112,7 @@
                       Background="Transparent"
                       DockPanel.Dock="Left"
                       WindowChrome.IsHitTestVisibleInChrome="True">
-                    <MenuItem Header="{lex:Loc File}"
-                              IsEnabled="{Binding IsNotBlocked}">
+                    <MenuItem Header="{lex:Loc File}">
                         <MenuItem Header="{lex:Loc New}"
                                   InputGestureText="Ctrl+N"
                                   Command="{Binding MenuNewCommand}"/>
@@ -122,67 +121,52 @@
                                   Command="{Binding MenuOpenCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Close}"
-                                  Command="{Binding MenuCloseCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuCloseCommand}"/>
                         <MenuItem Header="{lex:Loc CloseAll}"
-                                  Command="{Binding MenuCloseAllCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuCloseAllCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Save}"
                                   InputGestureText="Ctrl+S"
-                                  Command="{Binding MenuSaveCommand}"
-                                  IsEnabled="{Binding HasChangesFlag}"/>
+                                  Command="{Binding MenuSaveCommand}"/>
                         <MenuItem Header="{lex:Loc SaveAs}"
                                   InputGestureText="Ctrl+Shift+S"
-                                  Command="{Binding MenuSaveAsCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuSaveAsCommand}"/>
                         <MenuItem Header="{lex:Loc SaveAll}"
-                                  Command="{Binding MenuSaveAllCommand}"
-                                  IsEnabled="{Binding HasGlobalChangesFlag}"/>
+                                  Command="{Binding MenuSaveAllCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Export}"
-                                  Command="{Binding MenuExportCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuExportCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Exit}"
                                   InputGestureText="Alt+F4"
                                   Command="{Binding MenuExitCommand}"/>
                     </MenuItem>
-                    <MenuItem Header="{lex:Loc Edit}"
-                              IsEnabled="{Binding IsNotBlocked}">
+                    <MenuItem Header="{lex:Loc Edit}">
                         <MenuItem Header="{lex:Loc Undo}"
                                   InputGestureText="Ctrl+Z"
-                                  Command="{Binding MenuUndoCommand}"
-                                  IsEnabled="{Binding HasUndoFlag}"/>
+                                  Command="{Binding MenuUndoCommand}"/>
                         <MenuItem Header="{lex:Loc Redo}"
                                   InputGestureText="Ctrl+Y"
-                                  Command="{Binding MenuRedoCommand}"
-                                  IsEnabled="{Binding HasRedoFlag}"/>
+                                  Command="{Binding MenuRedoCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc View}">
                         <MenuItem Header="{lex:Loc ZoomIn}"
                                   InputGestureText="Ctrl++"
-                                  Command="{Binding MenuZoomInCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuZoomInCommand}"/>
                         <MenuItem Header="{lex:Loc ZoomOut}"
                                   InputGestureText="Ctrl+-"
-                                  Command="{Binding MenuZoomOutCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuZoomOutCommand}"/>
                         <MenuItem Header="{lex:Loc ResetZoom}"
                                   InputGestureText="Ctrl+0"
-                                  Command="{Binding MenuZoomResetCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuZoomResetCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Grid}"
                                   Command="{Binding MenuEnableGridCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"
                                   IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
                     </MenuItem>
-                    <MenuItem Header="{lex:Loc Canvas}"
-                              IsEnabled="{Binding IsNotBlocked}">
+                    <MenuItem Header="{lex:Loc Canvas}">
                         <MenuItem Header="{lex:Loc ChangeSize}"
-                                  Command="{Binding MenuChangeSizeCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuChangeSizeCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc Preferences}">
                         <MenuItem Header="{lex:Loc General}"

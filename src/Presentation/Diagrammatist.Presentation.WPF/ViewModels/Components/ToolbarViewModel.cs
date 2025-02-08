@@ -42,6 +42,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to enable or disable clipboard buttons (copy, cut and duplicate).
         /// </remarks>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(
+            nameof(CopyCommand),
+            nameof(CutCommand),
+            nameof(DuplicateCommand))]
         private bool _hasSelectedFigure;
         /// <summary>
         /// Gets or sets 'has canvas' flag.
@@ -50,11 +54,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to enable or disable clipboard buttons (paste).
         /// </remarks>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(PasteCommand))]
         private bool _hasCanvas;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CurrentMouseMode"]/*'/>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
+        [NotifyCanExecuteChangedFor(nameof(ChangeModeCommand))]
         private MouseMode _currentMouseMode;
 
         public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IClipboardManager<FigureModel> clipboardManager)
@@ -65,18 +71,39 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
+        #region Commands Can Execute
+
+        private bool CanvasCanExecute()
+        {
+            return HasCanvas;
+        }
+
+        private bool FigureCanExecute()
+        {
+            return HasSelectedFigure;
+        }
+
+        private bool LineModeCanExecute()
+        {
+            return CurrentMouseMode is not MouseMode.Line;
+        }
+
+        #endregion
+
+        #region Commands
+
         /// <summary>
         /// Changes mouse mode.
         /// </summary>
         /// <param name="mode">A new mouse mode.</param>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(LineModeCanExecute))]
         private void ChangeMode(string mode)
         {
             CurrentMouseMode = MouseModeHelper.GetParsedMode<MouseMode>(mode);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Paste"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanvasCanExecute))]
         private void Paste()
         {
             if (CurrentCanvas is not null && _clipboardManager.PasteFromClipboard() is { } pastedFigure)
@@ -92,7 +119,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Copy"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Copy()
         {
             if (SelectedFigure is not null)
@@ -102,7 +129,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Cut"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Cut()
         {
             if (SelectedFigure is not null)
@@ -118,7 +145,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Duplicate"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Duplicate()
         {
             if (SelectedFigure is not null)
@@ -132,6 +159,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 _trackableCommandManager.Execute(command);
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Changes parameters that depend on specific mouse mode.

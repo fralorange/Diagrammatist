@@ -47,8 +47,7 @@
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Clipboard}">
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding PasteCommand}"
-                        Style="{StaticResource ToolBase}"
-                        IsEnabled="{Binding HasCanvas}">
+                        Style="{StaticResource ToolBase}">
                     <StackPanel>
                         <Image Source="{DynamicResource pasteDrawingImage}"
                                Style="{StaticResource Tool}"/>
@@ -58,8 +57,7 @@
                 </Button>
                 <StackPanel Orientation="Vertical">
                     <Button Command="{Binding CopyCommand}"
-                            Style="{StaticResource MiniToolBase}"
-                            IsEnabled="{Binding HasSelectedFigure}">
+                            Style="{StaticResource MiniToolBase}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource copyDrawingImage}"
                                    Style="{StaticResource MiniTool}"/>
@@ -68,8 +66,7 @@
                         </StackPanel>
                     </Button>
                     <Button Command="{Binding CutCommand}"
-                            Style="{StaticResource MiniToolBase}"
-                            IsEnabled="{Binding HasSelectedFigure}">
+                            Style="{StaticResource MiniToolBase}">
                         <DockPanel>
                             <Image Source="{DynamicResource cutDrawingImage}"
                                    Style="{StaticResource MiniTool}"
@@ -80,8 +77,7 @@
                         </DockPanel>
                     </Button>
                     <Button Command="{Binding DuplicateCommand}"
-                            Style="{StaticResource MiniToolBase}"
-                            IsEnabled="{Binding HasSelectedFigure}">
+                            Style="{StaticResource MiniToolBase}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource duplicateDrawingImage}"
                                    Style="{StaticResource MiniTool}"/>
