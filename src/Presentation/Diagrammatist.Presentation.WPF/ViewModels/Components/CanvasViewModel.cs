@@ -128,6 +128,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsBlocked"]/*'/>
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
+        [NotifyCanExecuteChangedFor(
+            nameof(CopyCommand),
+            nameof(CutCommand),
+            nameof(DuplicateCommand),
+            nameof(BringForwardItemCommand),
+            nameof(SendBackwardItemCommand),
+            nameof(DeleteItemCommand),
+            nameof(PasteCommand))]
         private bool _isBlocked;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
@@ -145,6 +153,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             IsActive = true;
         }
+
+        #region Commands Can Execute
+        private bool MenuIsNotBlocked()
+        {
+            return IsNotBlocked;
+        }
+        #endregion
 
         #region Commands
 
@@ -278,7 +293,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="DeleteItem"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void DeleteItem(FigureModel figure)
         {
             if (CurrentCanvas?.Figures is null)
@@ -290,7 +305,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Paste"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Paste(object position)
         {
             if (CurrentCanvas is not null && _clipboardManager.PasteFromClipboard() is { } pastedFigure && position is Point destination)
@@ -312,7 +327,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Copy"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Copy()
         {
             if (SelectedFigure is not null && CurrentCanvas is not null)
@@ -322,7 +337,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Cut"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Cut()
         {
             if (SelectedFigure is not null && CurrentCanvas is not null)
@@ -338,7 +353,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Duplicate"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Duplicate()
         {
             if (SelectedFigure is not null && CurrentCanvas is not null)
@@ -354,7 +369,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="BringForwardItem"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void BringForwardItem(FigureModel figure)
         {
             if (CurrentCanvas?.Figures is null)
@@ -366,7 +381,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="SendBackwardItem"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void SendBackwardItem(FigureModel figure)
         {
             if (CurrentCanvas?.Figures is null)
