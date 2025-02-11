@@ -97,7 +97,13 @@
                     <TextBox Text="{Binding Height}"/>
                     <Label Content="{lex:Loc DiagramType}"/>
                     <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
-                              SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{lex:Loc {Binding}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Label Content="{lex:Loc Background}"/>
                     <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay}"
                                                      ShowAlpha="False"

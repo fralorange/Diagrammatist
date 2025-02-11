@@ -1,0 +1,42 @@
+﻿<Window x:Class="Diagrammatist.Presentation.WPF.Simulator.Views.SimulatorWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Views"
+             xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:SimulatorWindowViewModel}"
+             mc:Ignorable="d"
+             WindowStartupLocation="CenterOwner"
+             SizeToContent="WidthAndHeight"
+             ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+
+        <Grid Grid.Column="0">
+            
+        </Grid>
+
+        <Button Content="OK"
+                Grid.Row="1"
+                Grid.Column="1"
+                IsDefault="True"
+                IsCancel="True"/>
+    </Grid>
+</Window>

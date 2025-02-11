@@ -68,12 +68,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private CanvasModel? _currentCanvas;
 
-        /// <summary>
-        /// Gets or sets current canvas.
-        /// </summary>
-        /// <remarks>
-        /// This property used to store current canvas values.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CurrentCanvas"]/*'/>
         public CanvasModel? CurrentCanvas
         {
             get => _currentCanvas;

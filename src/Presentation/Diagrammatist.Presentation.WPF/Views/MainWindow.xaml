@@ -168,9 +168,12 @@
                         <MenuItem Header="{lex:Loc ChangeSize}"
                                   Command="{Binding MenuChangeSizeCommand}"/>
                     </MenuItem>
-                    <MenuItem Header="{lex:Loc Preferences}">
-                        <MenuItem Header="{lex:Loc General}"
-                                  Command="{Binding MenuGeneralPreferencesCommand}"/>
+                    <MenuItem Header="{lex:Loc Tools}">
+                        <MenuItem Header="{lex:Loc Simulator}"
+                                  Command="{Binding MenuSimulatorCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="{lex:Loc Preferences}"
+                                  Command="{Binding MenuPreferencesCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc Help}">
                         <MenuItem Header="{lex:Loc ViewHelp}"

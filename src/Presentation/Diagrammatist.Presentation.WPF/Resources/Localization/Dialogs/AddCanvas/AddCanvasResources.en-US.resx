@@ -123,11 +123,17 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
   <data name="DiagramType" xml:space="preserve">
     <value>Diagram type:</value>
   </data>
   <data name="FileName" xml:space="preserve">
     <value>FIle name: </value>
+  </data>
+  <data name="Flowchart" xml:space="preserve">
+    <value>Flowchart</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>Height: </value>

@@ -286,6 +286,15 @@
 			</remarks>
 		</Member>
 
+		<Member name="CurrentCanvas">
+			<summary>
+				Gets or sets current canvas.
+			</summary>
+			<remarks>
+				This property used to store current canvas value.
+			</remarks>
+		</Member>
+
 		<Member name="IsBlocked">
 			<summary>
 				Gets or sets 'blocked' flag.

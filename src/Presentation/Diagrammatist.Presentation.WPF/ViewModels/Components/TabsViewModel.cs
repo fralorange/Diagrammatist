@@ -283,6 +283,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
 
             Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCanvas, value is not null));
+            Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCustomCanvas, value?.Settings.Type is DiagramsModel.Custom));
 
             _trackableCommandManager.UpdateContent(value);
         }

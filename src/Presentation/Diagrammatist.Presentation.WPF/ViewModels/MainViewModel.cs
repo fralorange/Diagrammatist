@@ -5,6 +5,7 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
@@ -59,8 +60,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuZoomOutCommand),
             nameof(MenuZoomResetCommand),
             nameof(MenuEnableGridCommand),
+            nameof(MenuSimulatorCommand),
             nameof(MenuChangeSizeCommand))]
         private bool _hasCanvasFlag;
+        /// <summary>
+        /// Gets or sets 'has custom canvas' flag.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether app current canvas is custom or not.
+        /// </remarks>
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(MenuSimulatorCommand))]
+        private bool _hasCustomCanvasFlag;
         /// <summary>
         /// Gets 'has grid flag' from client-prefs (be default: True)
         /// </summary>
@@ -87,6 +98,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuZoomInCommand),
             nameof(MenuZoomOutCommand),
             nameof(MenuZoomResetCommand),
+            nameof(MenuSimulatorCommand),
             nameof(MenuChangeSizeCommand))]
         private bool _isBlocked;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
@@ -126,6 +138,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         private bool MenuWithCanvasCanExecute()
         {
             return MenuCanExecute() && CanvasCanExecute();
+        }
+
+        private bool MenuWithNotCustomCanvasCanExecute()
+        {
+            return MenuCanExecute() && CanvasCanExecute() && !HasCustomCanvasFlag;
         }
 
         private bool MenuWithCanvasChangesCanExecute()
@@ -333,12 +350,23 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         #endregion
-        #region Preferences
+        #region Tools
         /// <summary>
-        /// Opens dialog 'general preferences' window from menu button.
+        /// Opens dialog 'simulator' window from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithNotCustomCanvasCanExecute))]
+        private void MenuSimulator()
+        {
+            var dialogViewModel = new SimulatorWindowViewModel();
+
+            _dialogService.ShowDialog(this, dialogViewModel);
+        }
+
+        /// <summary>
+        /// Opens dialog 'preferences' window from menu button.
         /// </summary>
         [RelayCommand]
-        private void MenuGeneralPreferences()
+        private void MenuPreferences()
         {
             var dialogViewModel = new SettingsDialogViewModel();
 
@@ -410,6 +438,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
                 {
                     case MenuFlags.HasCanvas:
                         HasCanvasFlag = m.Item2;
+                        break;
+                    case MenuFlags.HasCustomCanvas:
+                        HasCustomCanvasFlag = m.Item2;
                         break;
                     case MenuFlags.IsBlocked:
                         IsBlocked = m.Item2;

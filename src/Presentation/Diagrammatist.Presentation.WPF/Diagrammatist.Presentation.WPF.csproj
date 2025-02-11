@@ -34,13 +34,13 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="MvvmDialogs" Version="9.1.2" />
     <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Diagrammatist.Presentation.WPF.Core\Diagrammatist.Presentation.WPF.Core.csproj" />
+    <ProjectReference Include="..\Diagrammatist.Presentation.WPF.Simulator\Diagrammatist.Presentation.WPF.Simulator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
