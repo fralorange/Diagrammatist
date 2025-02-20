@@ -1,9 +1,16 @@
-﻿namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Interfaces;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
+using System.Windows;
+using System.Windows.Media;
+
+namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
 {
     /// <summary>
     /// A shape figure model. Derived class from <see cref="FigureModel"/>.
     /// </summary>
-    public partial class ShapeFigureModel : FigureModel
+    public partial class ShapeFigureModel : FigureModel, IMagneticSupport
     {
         private double _width;
 
@@ -11,7 +18,13 @@
         public double Width
         {
             get => _width;
-            set => SetProperty(ref _width, value);
+            set
+            {
+                if (SetProperty(ref _width, value))
+                {
+                    UpdateMagneticPoints();
+                }
+            }
         }
 
         private double _height;
@@ -20,7 +33,13 @@
         public double Height
         {
             get => _height;
-            set => SetProperty(ref _height, value);
+            set
+            {
+                if (SetProperty(ref _height, value))
+                {
+                    UpdateMagneticPoints();
+                }
+            }
         }
 
         private bool _keepAspectRatio;
@@ -29,11 +48,21 @@
         public bool KeepAspectRatio
         {
             get => _keepAspectRatio;
-            set => SetProperty(ref _keepAspectRatio, value);
+            set
+            {
+                if (SetProperty(ref _keepAspectRatio, value))
+                {
+                    UpdateMagneticPoints();
+                }
+            }
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeData"]/*'/>
         public List<string> Data { get; set; } = [];
+
+        /// <inheritdoc cref="IMagneticSupport.MagneticPoints"/>
+        [ObservableProperty]
+        private List<MagneticPointModel> _magneticPoints = [];
 
         /// <summary>
         /// Default initializer.
@@ -56,6 +85,32 @@
         public override FigureModel Clone()
         {
             return new ShapeFigureModel(this);
+        }
+
+        /// <inheritdoc/>
+        public void UpdateMagneticPoints()
+        {
+            if (Data.Any(string.IsNullOrEmpty))
+                return;
+
+            MagneticPoints.Clear();
+
+            var geometryGroup = new GeometryGroup();
+
+            foreach (var pathData in Data)
+            {
+                var geometry = Geometry.Parse(pathData);
+                geometryGroup.Children.Add(geometry);
+            }
+
+            var combinedGeometry = geometryGroup.GetOutlinedPathGeometry();
+
+            var points = FigureSnapHelper.GetMagneticPoints(combinedGeometry, Width, Height, KeepAspectRatio);
+
+            foreach (var point in points)
+            {
+                MagneticPoints.Add(new() { Position = point, Owner = this });
+            }
         }
     }
 }

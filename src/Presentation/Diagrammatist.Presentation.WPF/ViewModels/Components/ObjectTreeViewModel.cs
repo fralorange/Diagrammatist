@@ -6,9 +6,10 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -18,7 +19,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class ObjectTreeViewModel : ObservableRecipient
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IClipboardManager<FigureModel> _clipboardManager;
+        private readonly IClipboardService<FigureModel> _clipboardManager;
+        private readonly IConnectionManager _connectionManager;
 
         private ObservableCollection<FigureModel>? _figures;
 
@@ -42,10 +44,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureModel? _selectedFigure;
 
-        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager, IClipboardManager<FigureModel> clipboardManager)
+        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager, IConnectionManager connectionManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _clipboardManager = clipboardManager;
+            _connectionManager = connectionManager;
 
             IsActive = true;
         }
@@ -57,7 +60,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             if (Figures is null)
                 return;
 
-            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure);
+            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure, _connectionManager);
 
             _trackableCommandManager.Execute(command);
         }

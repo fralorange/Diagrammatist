@@ -1,22 +1,21 @@
 ﻿using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.Resources.Converters
 {
     /// <summary>
-    /// A class that converts from <see cref="IEnumerable{T}{T}"/> of <see cref="Point"/> to <see cref="PointCollection"/> class.
+    /// A class that fixes ellipse offset.
     /// </summary>
-    [ValueConversion(typeof(IEnumerable<Point>), typeof(PointCollection))]
-    public class DataToPointCollectionConverter : IValueConverter
+    [ValueConversion(typeof(double), typeof(double))]
+    public class OffsetHalfEllipseConverter : IValueConverter
     {
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is IEnumerable<Point> points)
+            if (value is double coordinate)
             {
-                return new PointCollection(points);
+                double ellipseSize = 5;
+                return coordinate - ellipseSize / 2;
             }
             return value;
         }
@@ -24,7 +23,8 @@ namespace Diagrammatist.Presentation.WPF.Resources.Converters
         /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
+
 }

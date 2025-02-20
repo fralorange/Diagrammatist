@@ -1,24 +1,24 @@
-﻿using System.Globalization;
+﻿using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.Resources.Converters
 {
     /// <summary>
-    /// A class that converts from <see cref="IEnumerable{T}{T}"/> of <see cref="Point"/> to <see cref="PointCollection"/> class.
+    /// A class that converts from <see cref="MouseMode"/> to <see cref="Visibility"/>.
     /// </summary>
-    [ValueConversion(typeof(IEnumerable<Point>), typeof(PointCollection))]
-    public class DataToPointCollectionConverter : IValueConverter
+    [ValueConversion(typeof(MouseMode), typeof(Visibility))]
+    public class MouseModeToVisibilityConverter : IValueConverter
     {
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is IEnumerable<Point> points)
+            if (value is MouseMode mode && mode is MouseMode.Line)
             {
-                return new PointCollection(points);
+                return Visibility.Visible;
             }
-            return value;
+            return Visibility.Collapsed;
         }
 
         /// <inheritdoc/>

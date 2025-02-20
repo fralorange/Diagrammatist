@@ -19,10 +19,10 @@
         d:DataContext="{d:DesignInstance {x:Type vmd:AddCanvasDialogViewModel}}">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
-                  GlassFrameThickness="1,0,1,1"
-                  NonClientFrameEdges="Left,Right,Bottom"
-                  ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                  UseAeroCaptionButtons="False"/>
+                      GlassFrameThickness="1,0,1,1"
+                      NonClientFrameEdges="Left,Right,Bottom"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                      UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>
     <DockPanel>
         <Grid DockPanel.Dock="Top"
@@ -105,7 +105,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:Loc Background}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay}"
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Mode=TwoWay}"
                                                      ShowAlpha="False"
                                                      ShowFractionalPart="False"/>
 

@@ -7,12 +7,14 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
@@ -28,7 +30,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly ICanvasSerializationService _canvasSerializationService;
-        private readonly IClipboardManager<FigureModel> _clipboardManager;
+        private readonly IClipboardService<FigureModel> _clipboardManager;
+        private readonly IConnectionManager _connectionManager;
 
         /// <summary>
         /// Occurs when a request is made to zoom current window in.
@@ -138,11 +141,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
                                ICanvasSerializationService canvasSerializationService,
-                               IClipboardManager<FigureModel> clipboardManager)
+                               IClipboardService<FigureModel> clipboardManager,
+                               IConnectionManager connectionManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
             _clipboardManager = clipboardManager;
+            _connectionManager = connectionManager;
 
             _trackableCommandManager.StateChanged += OnStateChanged;
 
@@ -294,7 +299,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             if (CurrentCanvas?.Figures is null)
                 return;
 
-            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas.Figures, figure);
+            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas.Figures, figure, _connectionManager);
 
             _trackableCommandManager.Execute(command);
         }
@@ -399,22 +404,100 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (e.DataContext is FigureModel figure)
             {
+                var lineUpdater = UpdateLineIfExists(figure);
+
                 var command = CommonUndoableHelper.CreateUndoableCommand(
                     () =>
                     {
-                        figure.PosX = e.NewPos.X;
-                        figure.PosY = e.NewPos.Y;
+                        UpdatePositions(figure, e.NewPos);
+                        ValidateConnections(e.DataContext, e.NewPos, e.OldPos);
+                        lineUpdater?.Invoke(false);
                     },
                     () =>
                     {
-                        figure.PosX = e.OldPos.X;
-                        figure.PosY = e.OldPos.Y;
+                        UpdatePositions(figure, e.OldPos);
+                        ValidateConnections(e.DataContext, e.OldPos, e.NewPos);
+                        lineUpdater?.Invoke(true);
                     }
                 );
 
                 _trackableCommandManager.Execute(command);
             }
         }
+
+        #region ItemPositionChange sub operations
+
+        private void UpdatePositions(FigureModel figure, Point newPos)
+        {
+            figure.PosX = newPos.X;
+            figure.PosY = newPos.Y;
+        }
+
+        private void UpdateConnections(ConnectionModel connection, Point newPos, bool isSource)
+        {
+            if (isSource)
+            {
+                connection.SourceMagneticPoint!.Position = newPos;
+                connection.Line.Points[0] = newPos;
+            }
+            else
+            {
+                connection.DestinationMagneticPoint!.Position = newPos;
+                connection.Line.Points[^1] = newPos;
+            }
+        }
+
+        private void ValidateConnections(object? dataContext, Point newPos, Point oldPos)
+        {
+            if (dataContext is ShapeFigureModel shapeFigure)
+            {
+                var connections = _connectionManager.GetConnections(shapeFigure);
+
+                foreach (var connection in connections)
+                {
+                    var source = connection.SourceMagneticPoint;
+                    var dest = connection.DestinationMagneticPoint;
+
+                    var deltaX = newPos.X - oldPos.X;
+                    var deltaY = newPos.Y - oldPos.Y;
+
+                    var isSource = source?.Owner == shapeFigure;
+
+                    var currentPoint = isSource ? source!.Position : dest!.Position;
+                    var nextPos = new Point(currentPoint.X + deltaX, currentPoint.Y + deltaY);
+
+                    UpdateConnections(connection, nextPos, isSource);
+                }
+            }
+        }
+
+        private ConnectionModel? GetConnection(FigureModel figure)
+        {
+            if (figure is LineFigureModel lineFigure)
+            {
+                return _connectionManager.GetConnection(lineFigure);
+            }
+
+            return null;
+        }
+
+        private Action<bool>? UpdateLineIfExists(FigureModel figure)
+        {
+            if (figure is LineFigureModel lineFigure && _connectionManager.GetConnection(lineFigure) is { } connection)
+            {
+                return new Action<bool>((revert) =>
+                {
+                    if (revert)
+                        _connectionManager.AddConnection(connection);
+                    else
+                        _connectionManager.RemoveConnection(connection);
+                });
+            }
+
+            return null;
+        }
+
+        #endregion
 
         #endregion
 

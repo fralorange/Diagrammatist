@@ -52,7 +52,7 @@ namespace Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories
             return splittedInput.Skip(1).Select(s => "M" + s).ToList();
         }
 
-        private List<Point> SplitJsonPointsData(string input)
+        private List<PointF> SplitJsonPointsData(string input)
         {
             var splittedInput = input.Split(' ');
 
@@ -60,7 +60,7 @@ namespace Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories
                 .Select(s =>
                 {
                     var coords = s.Split(',');
-                    return new Point
+                    return new PointF
                     {
                         X = int.TryParse(coords[0], out int x) ? x : default,
                         Y = int.TryParse(coords[1], out int y) ? y : default,

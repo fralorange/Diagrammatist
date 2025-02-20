@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject;
-using System.Drawing;
+using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
 {
@@ -57,7 +57,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         /// <summary>
         /// Default initializer.
         /// </summary>
-#pragma warning disable CS8618 
+#pragma warning disable CS8618
         public FigureModel() { }
 #pragma warning restore CS8618
 
@@ -65,7 +65,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         /// Clones common properties of an abstract class.
         /// </summary>
         /// <param name="source">Source model.</param>
-#pragma warning disable CS8618 
+#pragma warning disable CS8618
         protected FigureModel(FigureModel source)
 #pragma warning restore CS8618 
         {

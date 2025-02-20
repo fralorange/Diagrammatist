@@ -5,9 +5,9 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
@@ -19,7 +19,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class ToolbarViewModel : ObservableRecipient
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IClipboardManager<FigureModel> _clipboardManager;
+        private readonly IClipboardService<FigureModel> _clipboardManager;
 
         private CanvasModel? _currentCanvas;
         private CanvasModel? CurrentCanvas
@@ -63,7 +63,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyCanExecuteChangedFor(nameof(ChangeModeCommand))]
         private MouseMode _currentMouseMode;
 
-        public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IClipboardManager<FigureModel> clipboardManager)
+        public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _clipboardManager = clipboardManager;

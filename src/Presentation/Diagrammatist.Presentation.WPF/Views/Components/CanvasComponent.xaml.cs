@@ -1,5 +1,8 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Controls;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Interfaces;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.Core.Renderers.Line;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
@@ -74,6 +77,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 {
                     _lineDrawer = new LineDrawer(drawingCanvas, canvas.GridStep);
 
+                    _lineDrawer.RequestEarlyExit += actionViewModel.EarlyConfirm;
                     actionViewModel.RequestEndDrawing += _lineDrawer.EndDrawing;
                 }), DispatcherPriority.Loaded);
             }
@@ -86,11 +90,13 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         /// <param name="e"></param>
         private void OnExtendedCanvasPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is ExtendedCanvas itemsPanel && ModeIsLine())
+            if (sender is ExtendedCanvas itemsPanel && EnsureModeIsLineFromViewModel())
             {
                 var startPoint = e.GetPosition(itemsPanel);
 
-                _lineDrawer.AddPoint(startPoint);
+                var magneticPoints = GetMagneticPointsFromViewModel();
+
+                _lineDrawer.AddPoint(startPoint, magneticPoints);
             }
         }
 
@@ -101,13 +107,16 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         /// <param name="e"></param>
         private void OnExtendedCanvasPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (sender is ExtendedCanvas itemsPanel && _lineDrawer.IsDrawing && ModeIsLine())
+            if (sender is ExtendedCanvas itemsPanel && _lineDrawer.IsDrawing && EnsureModeIsLineFromViewModel())
             {
                 var movePoint = e.GetPosition(itemsPanel);
 
                 var isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift);
+                var isCtrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl);
 
-                _lineDrawer.UpdateLine(movePoint, isShiftPressed);
+                var magneticPoints = GetMagneticPointsFromViewModel();
+
+                _lineDrawer.UpdateLine(movePoint, isShiftPressed, isCtrlPressed, magneticPoints);
             }
         }
 
@@ -145,10 +154,44 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         #endregion
 
-        private bool ModeIsLine()
+        #region Data context handlers
+
+        private IEnumerable<MagneticPointModel> GetMagneticPointsFromViewModel()
+        {
+            if (DataContext is CanvasViewModel viewModel && viewModel.Figures?.OfType<ShapeFigureModel>() is { } figures)
+            {
+                var points = new List<MagneticPointModel>();
+
+                // TO-DO: Delete this parameters when selection box will not be accounted in calculating element position on canvas.
+                var selectionBoxX = 5; 
+                var selectionBoxY = 2;
+                //
+                foreach (var figure in figures)
+                {
+                    var figurePosition = new Point(figure.PosX, figure.PosY);
+
+                    foreach (var magneticPoint in figure.MagneticPoints)
+                    {
+                        var globalPoint = new Point(
+                            figurePosition.X + magneticPoint.Position.X + selectionBoxX,
+                            figurePosition.Y + magneticPoint.Position.Y + selectionBoxY);
+
+                        points.Add(new MagneticPointModel() { Owner = magneticPoint.Owner, Position = globalPoint});
+                    }
+                }
+
+                return points;
+            }
+
+            return Enumerable.Empty<MagneticPointModel>();
+        }
+
+        private bool EnsureModeIsLineFromViewModel()
         {
             return DataContext is CanvasViewModel viewModel && viewModel.CurrentMouseMode is MouseMode.Line;
         }
+
+        #endregion
 
         private void ClearSelection(IInputElement? focus = null)
         {

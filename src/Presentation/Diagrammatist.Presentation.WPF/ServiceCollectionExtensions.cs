@@ -6,10 +6,11 @@ using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard.Figure;
+using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.Views;
@@ -72,6 +73,7 @@ namespace Diagrammatist.Presentation.WPF
 
             #region Presentation
             services.AddTransient<IAlertService, AlertService>();
+            services.AddTransient<IClipboardService<FigureModel>, FigureClipboardService>();
             #endregion
             return services;
         }
@@ -134,7 +136,7 @@ namespace Diagrammatist.Presentation.WPF
             services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
             services.AddSingleton<ITrackableCommandManager, TrackableCommandManager>();
 
-            services.AddTransient<IClipboardManager<FigureModel>, FigureClipboardManager>();
+            services.AddSingleton<IConnectionManager, ConnectionManager>();
 
             return services;
         }

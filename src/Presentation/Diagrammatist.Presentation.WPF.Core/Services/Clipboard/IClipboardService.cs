@@ -1,10 +1,10 @@
-﻿namespace Diagrammatist.Presentation.WPF.Core.Managers.Clipboard
+﻿namespace Diagrammatist.Presentation.WPF.Core.Services.Clipboard
 {
     /// <summary>
     /// A base interface for managing clipboard operations of different objects
     /// </summary>
     /// <typeparam name="TObject">Specified object for clipboard operations.</typeparam>
-    public interface IClipboardManager<TObject> where TObject : class
+    public interface IClipboardService<TObject> where TObject : class
     {
         /// <summary>
         /// Copies object to clipboard.

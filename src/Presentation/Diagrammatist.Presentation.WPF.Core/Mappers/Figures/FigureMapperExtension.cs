@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Domain.Figures;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 
 namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
@@ -15,7 +16,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
             target.PosY = source.PosY;
             target.Rotation = source.Rotation;
             target.ZIndex = source.ZIndex;
-            target.BackgroundColor = source.BackgroundColor;
+            target.BackgroundColor = System.Windows.Media.Color
+                .FromArgb(source.BackgroundColor.A, source.BackgroundColor.R, source.BackgroundColor.G, source.BackgroundColor.B);
         }
 
         private static void MapCommonProperties(Figure target, FigureModel source)
@@ -25,7 +27,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
             target.PosY = source.PosY;
             target.Rotation = source.Rotation;
             target.ZIndex = source.ZIndex;
-            target.BackgroundColor = source.BackgroundColor;
+            target.BackgroundColor = System.Drawing.Color
+                .FromArgb(source.BackgroundColor.A, source.BackgroundColor.R, source.BackgroundColor.G, source.BackgroundColor.B);
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         {
             var model = new LineFigureModel
             {
-                Points = figure.Points,
+                Points = figure.Points.Select(p => new System.Windows.Point(p.X, p.Y)).ToObservableCollection(),
                 Thickness = figure.Thickness,
                 IsDashed = figure.IsDashed,
                 HasArrow = figure.HasArrow,
@@ -94,7 +97,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         {
             var domain = new LineFigure
             {
-                Points = model.Points,
+                Points = model.Points.Select(p => new System.Drawing.PointF((float)p.X, (float)p.Y)).ToList(),
                 Thickness = model.Thickness,
                 IsDashed = model.IsDashed,
                 HasArrow = model.HasArrow,
@@ -114,7 +117,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
             var model = new TextFigureModel
             {
                 Text = figure.Text,
-                TextColor = figure.TextColor,
+                TextColor = System.Windows.Media.Color
+                    .FromArgb(figure.TextColor.A, figure.TextColor.R, figure.TextColor.G, figure.TextColor.B),
                 FontSize = figure.FontSize,
                 HasBackground = figure.HasBackground,
                 HasOutline = figure.HasOutline,
@@ -134,7 +138,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
             var domain = new TextFigure
             {
                 Text = figure.Text,
-                TextColor = figure.TextColor,
+                TextColor = System.Drawing.Color
+                    .FromArgb(figure.TextColor.A, figure.TextColor.R, figure.TextColor.G, figure.TextColor.B),
                 FontSize = figure.FontSize,
                 HasBackground = figure.HasBackground,
                 HasOutline = figure.HasOutline,

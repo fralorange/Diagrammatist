@@ -1,4 +1,4 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
+﻿using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 
 namespace Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General
 {
@@ -15,7 +15,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General
         /// <param name="figure">Target figure.</param>
         /// <returns>Undoable command for cutting the item.</returns>
         public static void Copy<T>(
-            IClipboardManager<T> manager,
+            IClipboardService<T> manager,
             T figure) where T : class
         {
             manager.CopyToClipboard(figure);

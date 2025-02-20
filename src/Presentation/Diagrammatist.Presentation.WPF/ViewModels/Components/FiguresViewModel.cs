@@ -6,12 +6,18 @@ using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Interfaces;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Diagnostics;
+using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -22,6 +28,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly IFigureService _figureService;
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly IConnectionManager _connectionManager;
 
         /// <summary>
         /// Occurs when a requested user input confirmed.
@@ -29,7 +36,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user presses "checkmark" button and passes line figure data.
         /// </remarks>
-        public event Action<(List<Point> points, Point point)?>? LineInputConfirmed;
+        public event Action<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?>? LineInputConfirmed;
         /// <summary>
         /// Occurs when a requested user input cancelled.
         /// </summary>
@@ -93,10 +100,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         /// <param name="figureService">A figure service.</param>
         /// <param name="trackableCommandManager">A command manager.</param>
-        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager)
+        /// <param name="connectionManager">A connection manager.</param>
+        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager, IConnectionManager connectionManager)
         {
             _figureService = figureService;
             _trackableCommandManager = trackableCommandManager;
+            _connectionManager = connectionManager;
 
             IsActive = true;
         }
@@ -110,14 +119,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             switch (figure)
             {
                 case LineFigureModel line:
-                    line.BackgroundColor = Color.FromArgb(themeColor.A, themeColor.R, themeColor.G, themeColor.B);
+                    line.BackgroundColor = themeColor;
                     break;
                 case TextFigureModel textFigure:
-                    textFigure.TextColor = Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B);
-                    textFigure.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                    textFigure.TextColor = textColor;
+                    textFigure.BackgroundColor = bgColor;
                     break;
                 default:
-                    figure.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                    figure.BackgroundColor = bgColor;
                     break;
             }
         }
@@ -192,11 +201,32 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     return;
                 }
 
+                var mStart = result.Value.start;
+                var mEnd = result.Value.end;
+
                 var figure = (figureTemplate.Clone() as LineFigureModel)!;
 
-                figure.PosX = result.Value.point.X;
-                figure.PosY = result.Value.point.Y;
-                figure.Points = result.Value.points;
+                figure.Points = result.Value.points.ToObservableCollection();
+
+                if (mStart is not null || mEnd is not null)
+                {
+                    var connection = new ConnectionModel() 
+                    { 
+                        SourceMagneticPoint = mStart, 
+                        DestinationMagneticPoint = mEnd,
+                        Line = figure, 
+                    };
+
+                    _connectionManager.AddConnection(connection);
+                }
+
+                AddTrackedFigure(figure);
+            }
+            else if (figureTemplate is ShapeFigureModel figureModel)
+            {
+                var figure = figureModel.Clone() as ShapeFigureModel;
+
+                figure!.UpdateMagneticPoints();
 
                 AddTrackedFigure(figure);
             }
@@ -250,11 +280,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        private Task<(List<Point> points, Point point)?> WaitForUserInputAsync()
+        private Task<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?> WaitForUserInputAsync()
         {
-            var tcs = new TaskCompletionSource<(List<Point> points, Point point)?>();
+            var tcs = new TaskCompletionSource<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?>();
 
-            void OnUserConfirmed((List<Point> points, Point point)? lineData)
+            void OnUserConfirmed((List<Point> points, MagneticPointModel? start, MagneticPointModel? end)? lineData)
             {
                 tcs.TrySetResult(lineData);
 
@@ -296,20 +326,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 else
                 {
                     var points = m.Value.Value.points;
-                    var position = m.Value.Value.point;
 
-                    var positionX = Convert.ToInt32(position.X);
-                    var positionY = Convert.ToInt32(position.Y);
+                    var mStart = m.Value.Value.start;
+                    var mEnd = m.Value.Value.end;
 
-                    var drawingPosition = new Point(positionX, positionY);
-
-                    LineInputConfirmed?.Invoke((points.Select(point =>
-                    {
-                        int x = Convert.ToInt32(point.X);
-                        int y = Convert.ToInt32(point.Y);
-
-                        return new Point(x, y);
-                    }).ToList(), drawingPosition));
+                    LineInputConfirmed?.Invoke((points, mStart, mEnd));
                 }
             });
 

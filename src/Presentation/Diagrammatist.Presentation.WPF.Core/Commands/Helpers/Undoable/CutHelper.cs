@@ -1,6 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Commands.Base;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 
 namespace Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable
 {
@@ -19,7 +19,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable
         /// <param name="setSelected">Action to set the current selection.</param>
         /// <returns>Undoable command for cutting the item.</returns>
         public static IUndoableCommand CreateCutCommand<T>(
-            IClipboardManager<T> manager,
+            IClipboardService<T> manager,
             ICollection<T> collection,
             Func<T> getSelected,
             Action<T?> setSelected) where T : class
