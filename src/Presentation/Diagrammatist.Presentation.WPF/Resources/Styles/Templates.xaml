@@ -56,7 +56,7 @@
                 </Path.Style>
             </Path>
             <ItemsControl ItemsSource="{Binding MagneticPoints}"
-                          Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.CurrentMouseMode, Converter={StaticResource MouseModeToVisibilityConverter}, FallbackValue=0}">
+                          Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.CurrentMouseMode, Converter={StaticResource MouseModeToVisibilityConverter}, FallbackValue=Collapsed}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas/>

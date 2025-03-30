@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Views
 {
@@ -10,6 +12,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Views
         public SimulatorWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnCloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            TitleBarHelper.CloseWindow(this);
+        }
+
+        private void OnIconMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TitleBarHelper.DoubleClickProcess(this, e);
         }
     }
 }

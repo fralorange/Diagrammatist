@@ -152,6 +152,14 @@
 
     <!--#endregion-->
     <!--#region TitleBar-->
+    <Style TargetType="Image" x:Key="IconImage">
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="5 0 0 0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    
     <Style x:Key="TitleBarButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource TitleBarButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TitleBarButtonForeground}" />
@@ -255,6 +263,22 @@
 
     <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}"/>
 
+    <Style TargetType="Window" x:Key="BaseWindow">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="{StaticResource FrameStroke}" 
+                                BorderThickness="3 0 3 3"
+                                Background="{TemplateBinding Background}">
+                        <AdornerDecorator>
+                            <ContentPresenter/>
+                        </AdornerDecorator>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="Grid" x:Key="Window">
         <Setter Property="Background" Value="{StaticResource WindowBackground}" />
     </Style>
@@ -352,7 +376,23 @@
     </Style>
 
     <!--#endregion-->
-    
+
+    <Style TargetType="Rectangle" x:Key="VerticalCustomSeparator">
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Width" Value="1" />
+        <Setter Property="Stroke" Value="{StaticResource FrameStroke}" />
+        <Setter Property="Margin" Value="5 0" />
+        <Setter Property="StrokeThickness" Value="5" />
+    </Style>
+
+    <Style TargetType="Rectangle" x:Key="HorizontalCustomSeparator">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="1" />
+        <Setter Property="Stroke" Value="{StaticResource FrameStroke}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="StrokeThickness" Value="5" />
+    </Style>
+
     <Style TargetType="ToolBar">
         <Style.Resources>
             <Style TargetType="Button">
@@ -417,6 +457,10 @@
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Background" Value="{StaticResource ShapeDefaultBackground}" />
         <Setter Property="Padding" Value="5" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="InternalBorder" BasedOn="{StaticResource TextBorder}">
+        <Setter Property="Margin" Value="10" />
     </Style>
 
     <Style TargetType="Border" x:Key="ToolboxTextBorder" BasedOn="{StaticResource TextBorder}">
@@ -681,6 +725,12 @@
                 <Setter Property="Opacity" Value="0.3" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource ActionButton}" x:Key="MediaButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="8"/>
     </Style>
 
     <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>

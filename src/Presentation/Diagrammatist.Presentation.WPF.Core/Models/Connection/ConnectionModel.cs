@@ -1,6 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
-using System.Drawing;
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Connection
 {

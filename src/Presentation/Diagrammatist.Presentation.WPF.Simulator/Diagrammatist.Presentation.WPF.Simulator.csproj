@@ -17,6 +17,29 @@
 
   <ItemGroup>
     <Folder Include="Models\Node\Flowchart\" />
+    <Folder Include="Resources\Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Localization\SimulatorResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SimulatorResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localization\SimulatorResources.en-US.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\SimulatorResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SimulatorResources.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\SimulatorResources.ru-RU.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
