@@ -20,5 +20,7 @@ namespace Diagrammatist.Domain.Canvas
         public Offset Offset { get; set; } = new();
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Figures"]/*'/>
         public List<Figure> Figures { get; set; } = [];
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Connections"]/*'/>
+        public List<Domain.Connection.Connection> Connections { get; set; } = [];
     }
 }

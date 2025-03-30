@@ -7,16 +7,14 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
-using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using Diagrammatist.Presentation.WPF.Core.Models.Figures.Interfaces;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -28,7 +26,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly IFigureService _figureService;
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IConnectionManager _connectionManager;
+        private readonly IConnectionService _connectionService;
 
         /// <summary>
         /// Occurs when a requested user input confirmed.
@@ -58,6 +56,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         [ObservableProperty]
         private ObservableCollection<FigureModel>? _canvasFigures;
+
+        /// <summary>
+        /// Gets or sets <see cref="ObservableCollection{T}"/> of <see cref="ConnectionModel"/>.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store connections that placed on canvas.
+        /// </remarks>
+        [ObservableProperty]
+        private ObservableCollection<ConnectionModel>? _canvasConnections;
 
         /// <summary>
         /// Gets or sets dictionary with string keys and <see cref="List{T}"/> of <see cref="FigureModel"/> pairs.
@@ -101,11 +108,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <param name="figureService">A figure service.</param>
         /// <param name="trackableCommandManager">A command manager.</param>
         /// <param name="connectionManager">A connection manager.</param>
-        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager, IConnectionManager connectionManager)
+        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager, IConnectionService connectionManager)
         {
             _figureService = figureService;
             _trackableCommandManager = trackableCommandManager;
-            _connectionManager = connectionManager;
+            _connectionService = connectionManager;
 
             IsActive = true;
         }
@@ -179,7 +186,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             var figureTemplate = SelectedFigure;
             SelectedFigure = null;
 
-            if (CanvasFigures is null || figureTemplate is null)
+            if (CanvasFigures is null || CanvasConnections is null || figureTemplate is null)
             {
                 return;
             }
@@ -210,14 +217,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 if (mStart is not null || mEnd is not null)
                 {
-                    var connection = new ConnectionModel() 
-                    { 
-                        SourceMagneticPoint = mStart, 
+                    var connection = new ConnectionModel()
+                    {
+                        SourceMagneticPoint = mStart,
                         DestinationMagneticPoint = mEnd,
-                        Line = figure, 
+                        Line = figure,
                     };
 
-                    _connectionManager.AddConnection(connection);
+                    _connectionService.AddConnection(CanvasConnections, connection);
                 }
 
                 AddTrackedFigure(figure);
@@ -345,6 +352,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     m.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Figures))
                 {
                     CanvasFigures = m.NewValue;
+                }
+            });
+
+            Messenger.Register<FiguresViewModel, PropertyChangedMessage<ObservableCollection<ConnectionModel>?>>(this, (r, m) =>
+            {
+                if (m.Sender.GetType() == typeof(CanvasViewModel) &&
+                    m.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Connections))
+                {
+                    CanvasConnections = m.NewValue;
                 }
             });
         }

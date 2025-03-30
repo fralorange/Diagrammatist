@@ -2,18 +2,12 @@
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic
 {
-    /// <summary>
-    /// A class that describes magnetic point.
-    /// </summary>
+    /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="MagneticPoint"]/*'/>
     public class MagneticPointModel
     {
-        /// <summary>
-        /// Gets or sets current magnetic point position.
-        /// </summary>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Position"]/*'/>
         public Point Position { get; set; }
-        /// <summary>
-        /// Gets or sets current magnetic point owner.
-        /// </summary>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Owner"]/*'/>
         public required ShapeFigureModel Owner { get ; set; }
     }
 }

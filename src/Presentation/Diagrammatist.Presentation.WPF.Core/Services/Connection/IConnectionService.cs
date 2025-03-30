@@ -1,38 +1,35 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 
-namespace Diagrammatist.Presentation.WPF.Core.Managers.Connection
+namespace Diagrammatist.Presentation.WPF.Core.Services.Connection
 {
     /// <summary>
     /// An interface for managing connections.
     /// </summary>
-    public interface IConnectionManager
+    public interface IConnectionService
     {
-        /// <summary>
-        /// Gets read-only connections list.
-        /// </summary>
-        public IReadOnlyList<ConnectionModel> Connections { get; }
         /// <summary>
         /// Adds a new connection.
         /// </summary>
+        /// <param name="connections">Connections.</param>
         /// <param name="connection">Target connection.</param>
-        public void AddConnection(ConnectionModel connection);
+        public void AddConnection(ICollection<ConnectionModel> connections, ConnectionModel connection);
         /// <summary>
         /// Removes existing connection.
         /// </summary>
         /// <param name="connection">Target connection.</param>
-        public void RemoveConnection(ConnectionModel connection);
+        public void RemoveConnection(ICollection<ConnectionModel> connections, ConnectionModel connection);
         /// <summary>
         /// Gets connection by line.
         /// </summary>
         /// <param name="line">Connection line.</param>
         /// <returns><see cref="ConnectionModel"/>.</returns>
-        public ConnectionModel? GetConnection(LineFigureModel line);
+        public ConnectionModel? GetConnection(ICollection<ConnectionModel> connections, LineFigureModel line);
         /// <summary>
         /// Gets all connections that target figure has.
         /// </summary>
         /// <param name="figure">Target figure.</param>
-        /// <returns>All <see cref="ConnectionModel"/> that figure has, packed in <see cref="List{T}"/>.</returns>
-        public List<ConnectionModel> GetConnections(ShapeFigureModel figure);
+        /// <returns>All <see cref="ConnectionModel"/> that figure has, packed in <see cref="ICollection{T}{T}"/>.</returns>
+        public List<ConnectionModel> GetConnections(ICollection<ConnectionModel> connections, ShapeFigureModel figure);
     }
 }

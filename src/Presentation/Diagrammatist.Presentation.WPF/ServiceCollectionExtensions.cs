@@ -6,7 +6,7 @@ using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
@@ -74,6 +74,7 @@ namespace Diagrammatist.Presentation.WPF
             #region Presentation
             services.AddTransient<IAlertService, AlertService>();
             services.AddTransient<IClipboardService<FigureModel>, FigureClipboardService>();
+            services.AddTransient<IConnectionService, ConnectionService>();
             #endregion
             return services;
         }
@@ -135,8 +136,6 @@ namespace Diagrammatist.Presentation.WPF
         {
             services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
             services.AddSingleton<ITrackableCommandManager, TrackableCommandManager>();
-
-            services.AddSingleton<IConnectionManager, ConnectionManager>();
 
             return services;
         }

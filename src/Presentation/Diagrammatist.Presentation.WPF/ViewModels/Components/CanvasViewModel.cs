@@ -7,7 +7,7 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
-using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
@@ -31,7 +31,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly ICanvasSerializationService _canvasSerializationService;
         private readonly IClipboardService<FigureModel> _clipboardManager;
-        private readonly IConnectionManager _connectionManager;
+        private readonly IConnectionService _connectionService;
 
         /// <summary>
         /// Occurs when a request is made to zoom current window in.
@@ -104,6 +104,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private ObservableCollection<FigureModel>? _figures;
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="ViewModelConnections"]/*'/>
+        /// <remarks>
+        /// This property used to send connections as message to other components that require it.
+        /// </remarks>
+        [ObservableProperty]
+        [NotifyPropertyChangedRecipients]
+        private ObservableCollection<ConnectionModel>? _connections;
+
         /// <summary>
         /// Gets or sets selected figure.
         /// </summary>
@@ -142,12 +150,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
                                ICanvasSerializationService canvasSerializationService,
                                IClipboardService<FigureModel> clipboardManager,
-                               IConnectionManager connectionManager)
+                               IConnectionService connectionManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
             _clipboardManager = clipboardManager;
-            _connectionManager = connectionManager;
+            _connectionService = connectionManager;
 
             _trackableCommandManager.StateChanged += OnStateChanged;
 
@@ -299,7 +307,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             if (CurrentCanvas?.Figures is null)
                 return;
 
-            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas.Figures, figure, _connectionManager);
+            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas.Figures, figure, _connectionService, CurrentCanvas.Connections);
 
             _trackableCommandManager.Execute(command);
         }
@@ -449,9 +457,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private void ValidateConnections(object? dataContext, Point newPos, Point oldPos)
         {
-            if (dataContext is ShapeFigureModel shapeFigure)
+            if (dataContext is ShapeFigureModel shapeFigure && Connections is not null)
             {
-                var connections = _connectionManager.GetConnections(shapeFigure);
+                var connections = _connectionService.GetConnections(Connections, shapeFigure);
 
                 foreach (var connection in connections)
                 {
@@ -473,9 +481,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private ConnectionModel? GetConnection(FigureModel figure)
         {
-            if (figure is LineFigureModel lineFigure)
+            if (figure is LineFigureModel lineFigure && CurrentCanvas?.Connections is { } connections)
             {
-                return _connectionManager.GetConnection(lineFigure);
+                return _connectionService.GetConnection(connections, lineFigure);
             }
 
             return null;
@@ -483,14 +491,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private Action<bool>? UpdateLineIfExists(FigureModel figure)
         {
-            if (figure is LineFigureModel lineFigure && _connectionManager.GetConnection(lineFigure) is { } connection)
+            if (figure is LineFigureModel lineFigure && CurrentCanvas?.Connections is { } connections && _connectionService.GetConnection(connections, lineFigure) is { } connection)
             {
                 return new Action<bool>((revert) =>
                 {
                     if (revert)
-                        _connectionManager.AddConnection(connection);
+                        _connectionService.AddConnection(connections, connection);
                     else
-                        _connectionManager.RemoveConnection(connection);
+                        _connectionService.RemoveConnection(connections, connection);
                 });
             }
 
@@ -519,6 +527,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 CurrentCanvas = m.NewValue;
 
                 Figures = CurrentCanvas?.Figures;
+
+                Connections = CurrentCanvas?.Connections;
             });
             // Change mouse mode.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>

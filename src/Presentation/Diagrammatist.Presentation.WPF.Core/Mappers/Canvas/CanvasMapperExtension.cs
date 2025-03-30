@@ -1,5 +1,7 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
+﻿using Diagrammatist.Presentation.WPF.Core.Mappers.Connection;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
@@ -26,6 +28,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
                 Zoom = canvas.Zoom,
                 Offset = canvas.Offset.ToModel(),
                 Figures = new ObservableCollection<FigureModel>(canvas.Figures.Select(figure => figure.ToModel())),
+                Connections = new ObservableCollection<ConnectionModel>(canvas.Connections.Select(connection => connection.ToModel()))
             };
         }
 
@@ -44,6 +47,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
                 Zoom = canvas.Zoom,
                 Offset = canvas.Offset.ToDomain(),
                 Figures = canvas.Figures.Select(figure => figure.ToDomain()).ToList(),
+                Connections = canvas.Connections.Select(connection => connection.ToDomain()).ToList()
             };
         }
     }

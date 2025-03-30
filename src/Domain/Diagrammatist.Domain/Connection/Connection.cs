@@ -1,16 +1,16 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
+﻿using Diagrammatist.Domain.Figures;
+using Diagrammatist.Domain.Figures.Magnetic;
 
-namespace Diagrammatist.Presentation.WPF.Core.Models.Connection
+namespace Diagrammatist.Domain.Connection
 {
     /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Connection"]/*'/>
-    public class ConnectionModel
+    public class Connection
     {
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="SourceMagneticPoint"]/*'/>
-        public MagneticPointModel? SourceMagneticPoint { get; set; }
+        public MagneticPoint? SourceMagneticPoint { get; set; }
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DestinationMagneticPoint"]/*'/>
-        public MagneticPointModel? DestinationMagneticPoint { get; set; }
+        public MagneticPoint? DestinationMagneticPoint { get; set; }
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Line"]/*'/>
-        public required LineFigureModel Line { get; set; }
+        public required LineFigure Line { get; set; }
     }
 }

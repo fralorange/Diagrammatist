@@ -1,5 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Commands.Base;
-using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 
@@ -17,30 +17,30 @@ namespace Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable
         /// <param name="collection">Target collection.</param>
         /// <param name="target">Target item.</param>
         /// <returns><see cref="IUndoableCommand"/> instance.</returns>
-        public static IUndoableCommand CreateDeleteItemCommand<T>(ICollection<T> collection, T target, IConnectionManager connectionManager)
+        public static IUndoableCommand CreateDeleteItemCommand<T>(ICollection<T> collection, T target, IConnectionService connectionService, ICollection<ConnectionModel> connections)
             where T : FigureModel
         {
-            var connection = GetConnection(target, connectionManager);
+            var connection = GetConnection(connections, target, connectionService);
 
             return CommonUndoableHelper.CreateUndoableCommand(
                 () =>
                 {
                     collection.Remove(target);
-                    if (connection is not null) connectionManager.RemoveConnection(connection); 
+                    if (connection is not null) connectionService.RemoveConnection(connections, connection); 
                 },
                 () =>
                 {
                     collection.Add(target);
-                    if (connection is not null) connectionManager.AddConnection(connection);
+                    if (connection is not null) connectionService.AddConnection(connections, connection);
                 }
             );
         }
 
-        private static ConnectionModel? GetConnection<T>(T target, IConnectionManager connectionManager)
+        private static ConnectionModel? GetConnection<T>(ICollection<ConnectionModel> connections, T target, IConnectionService connectionService)
         {
             if (target is LineFigureModel line)
             {
-                return connectionManager.GetConnection(line);
+                return connectionService.GetConnection(connections, line);
             }
 
             return null;

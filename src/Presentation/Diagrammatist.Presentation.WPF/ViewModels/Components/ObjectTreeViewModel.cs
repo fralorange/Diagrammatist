@@ -9,7 +9,8 @@ using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
 using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
-using Diagrammatist.Presentation.WPF.Core.Managers.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -20,7 +21,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly IClipboardService<FigureModel> _clipboardManager;
-        private readonly IConnectionManager _connectionManager;
+        private readonly IConnectionService _connectionService;
 
         private ObservableCollection<FigureModel>? _figures;
 
@@ -34,6 +35,21 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             private set => SetProperty(ref _figures, value);
         }
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="ViewModelConnections"]/*'/>
+        /// <remarks>
+        /// This property used to provide logic for connections in UI.
+        /// </remarks>e
+        private ObservableCollection<ConnectionModel>? _connections;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<ConnectionModel>? Connections
+        {
+            get => _connections;
+            private set => SetProperty(ref _connections, value);
+        }
+
         /// <summary>
         /// Gets selected figure from collection <see cref="Figures"/>
         /// </summary>
@@ -44,11 +60,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureModel? _selectedFigure;
 
-        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager, IConnectionManager connectionManager)
+        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager, IConnectionService connectionManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _clipboardManager = clipboardManager;
-            _connectionManager = connectionManager;
+            _connectionService = connectionManager;
 
             IsActive = true;
         }
@@ -57,10 +73,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void DeleteItem(FigureModel figure)
         {
-            if (Figures is null)
+            if (Figures is null || Connections is null)
                 return;
 
-            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure, _connectionManager);
+            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure, _connectionService, Connections);
 
             _trackableCommandManager.Execute(command);
         }
@@ -143,6 +159,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<ObservableCollection<FigureModel>?>>(this, (r, m) =>
             {
                 Figures = m?.NewValue;
+            });
+
+            Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<ObservableCollection<ConnectionModel>?>>(this, (r, m) =>
+            {
+                Connections = m?.NewValue;
             });
 
             Messenger.Register<ObjectTreeViewModel, PropertyChangedMessage<FigureModel?>>(this, (r, m) =>
