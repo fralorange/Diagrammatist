@@ -16,6 +16,8 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 using System.Windows;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
+using Diagrammatist.Domain.Figures;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -128,7 +130,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 case LineFigureModel line:
                     line.BackgroundColor = themeColor;
                     break;
-                case TextFigureModel textFigure:
+                case ContainerFigureModel containerFigure:
+                    containerFigure.TextColor = textColor;
+                    containerFigure.BackgroundColor = bgColor;
+                    break;
+                case TextFigureModel textFigure :
                     textFigure.TextColor = textColor;
                     textFigure.BackgroundColor = bgColor;
                     break;

@@ -327,6 +327,25 @@
 				This property indicates whether figure has background.
 			</remarks>
 		</Member>
+
+		<Member name="FigureContainer">
+			<remarks>
+				Provides both shape and text flexibility.
+			</remarks>
+		</Member>
+		<Member name="FigureFlowchart">
+			<remarks>
+				Provides subtype definition.
+			</remarks>
+		</Member>
+		<Member name="FigureFlowchartSubtype">
+			<summary>
+				Gets or sets flowchart subtype.
+			</summary>
+			<remarks>
+				This property used to store flowchart figure subtype, e.g. <see cref="FlowchartSubtype.Process"/>.
+			</remarks>
+		</Member>
 	</Sources>
 	<Behaviors>
 		<Member name="CurrentMouseMode">

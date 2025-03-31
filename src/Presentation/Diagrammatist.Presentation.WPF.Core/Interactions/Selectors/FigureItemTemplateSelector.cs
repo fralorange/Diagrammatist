@@ -1,4 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,11 +20,22 @@ namespace Diagrammatist.Presentation.WPF.Core.Interactions.Selectors
         /// Gets or sets text figure template.
         /// </summary>
         public DataTemplate? TextFigureTemplate { get; set; }
+        /// <summary>
+        /// Gets or sets container figure template.
+        /// </summary>
+        public DataTemplate? ContainerFigureTemplate { get; set; }
+        /// <summary>
+        /// Gets or sets flowchart figure template.
+        /// </summary>
+        public DataTemplate? FlowchartFigureTemplate { get; set; }
 
+        /// <inheritdoc/>
         public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
             return item switch
             {
+                FlowchartFigureModel => FlowchartFigureTemplate,
+                ContainerFigureModel => ContainerFigureTemplate,
                 ShapeFigureModel => ShapeFigureTemplate,
                 LineFigureModel => LineFigureTemplate,
                 TextFigureModel => TextFigureTemplate,
