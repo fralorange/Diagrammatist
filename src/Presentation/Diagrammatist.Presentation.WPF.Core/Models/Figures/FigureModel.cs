@@ -9,6 +9,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
     /// </summary>
     public abstract partial class FigureModel : ExtendedObservableObject
     {
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureId"]/*'/>
+        public Guid Id { get; set; }
+
         private string _name;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureName"]/*'/>
@@ -69,6 +72,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         protected FigureModel(FigureModel source)
 #pragma warning restore CS8618 
         {
+            Id = Guid.NewGuid();
             Name = source.Name;
             PosX = source.PosX;
             PosY = source.PosY;

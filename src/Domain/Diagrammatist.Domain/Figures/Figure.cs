@@ -8,6 +8,8 @@ namespace Diagrammatist.Domain.Figures
     /// </summary>
     public abstract class Figure
     {
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureId"]/*'/>
+        public Guid Id { get; set; }
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureName"]/*'/>
         public string Name { get; set; } = FigureTextConstants.DefaultName;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigurePosX"]/*'/>

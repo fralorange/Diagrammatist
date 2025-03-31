@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Mappers.Connection;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
@@ -20,6 +21,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
         /// <returns><see cref="CanvasModel"/></returns>
         public static CanvasModel ToModel(this CanvasEntity canvas)
         {
+            var figureModels = canvas.Figures
+                .Select(figure => figure.ToModel())
+                .ToObservableCollection();
+
+            var connectionModels = canvas.Connections
+                .Select(connection => connection.ToModel(figureModels))
+                .ToObservableCollection();
+
             return new CanvasModel
             {
                 ImaginaryWidth = canvas.ImaginaryWidth,
@@ -27,8 +36,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
                 Settings = canvas.Settings.ToModel(),
                 Zoom = canvas.Zoom,
                 Offset = canvas.Offset.ToModel(),
-                Figures = new ObservableCollection<FigureModel>(canvas.Figures.Select(figure => figure.ToModel())),
-                Connections = new ObservableCollection<ConnectionModel>(canvas.Connections.Select(connection => connection.ToModel()))
+                Figures = figureModels,
+                Connections = connectionModels,
             };
         }
 
@@ -39,6 +48,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
         /// <returns><see cref="CanvasEntity"/></returns>
         public static CanvasEntity ToDomain(this CanvasModel canvas)
         {
+            var figureDomains = canvas.Figures
+                .Select(figure => figure.ToDomain())
+                .ToList();
+
+            var connectionDomains = canvas.Connections
+                .Select(connection => connection.ToDomain(figureDomains))
+                .ToList();
+
             return new CanvasEntity
             {
                 ImaginaryWidth = canvas.ImaginaryWidth,
@@ -46,8 +63,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
                 Settings = canvas.Settings.ToDomain(),
                 Zoom = canvas.Zoom,
                 Offset = canvas.Offset.ToDomain(),
-                Figures = canvas.Figures.Select(figure => figure.ToDomain()).ToList(),
-                Connections = canvas.Connections.Select(connection => connection.ToDomain()).ToList()
+                Figures = figureDomains,
+                Connections = connectionDomains,
             };
         }
     }

@@ -164,6 +164,14 @@
 			</remarks>
 		</Member>
 
+		<Member name="FigureId">
+			<summary>
+				Gets or sets figure id.
+			</summary>
+			<remarks>
+				This property used to store figure id.
+			</remarks>
+		</Member>
 		<Member name="FigureName">
 			<summary>
 				Gets or sets figure name.

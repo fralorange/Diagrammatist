@@ -11,6 +11,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
     {
         private static void MapCommonProperties(FigureModel target, Figure source)
         {
+            target.Id = source.Id;
             target.Name = source.Name;
             target.PosX = source.PosX;
             target.PosY = source.PosY;
@@ -22,6 +23,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
 
         private static void MapCommonProperties(Figure target, FigureModel source)
         {
+            target.Id = source.Id;
             target.Name = source.Name;
             target.PosX = source.PosX;
             target.PosY = source.PosY;
