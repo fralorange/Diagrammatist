@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
 using Diagrammatist.Domain.Figures;
+using Diagrammatist.Domain.Connection;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -256,13 +257,34 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             // Track changes in figure properties.
             figure.ExtendedPropertyChanged += OnPropertyChanged;
 
+            var connection = GetConnection(CanvasConnections!, figure, _connectionService);
+
             // Track addition to canvas.
             var command = CommonUndoableHelper.CreateUndoableCommand(
-                () => CanvasFigures!.Add(figure),
-                () => CanvasFigures!.Remove(figure)
+                () =>
+                {
+                    CanvasFigures!.Add(figure);
+                    if (connection is not null && !CanvasConnections!.Any(c => c == connection)) _connectionService.AddConnection(CanvasConnections!, connection);
+                },
+                () =>
+                {
+                    CanvasFigures!.Remove(figure);
+                    if (connection is not null && CanvasConnections!.Any(c => c == connection)) _connectionService.RemoveConnection(CanvasConnections!, connection);
+                }
             );
 
             _trackableCommandManager.Execute(command);
+        }
+
+        // TO-DO move this somewhere else.
+        private static ConnectionModel? GetConnection<T>(ICollection<ConnectionModel> connections, T target, IConnectionService connectionService)
+        {
+            if (target is LineFigureModel line)
+            {
+                return connectionService.GetConnection(connections, line);
+            }
+
+            return null;
         }
 
         private void OnPropertyChanged(object? sender, ExtendedPropertyChangedEventArgs e)

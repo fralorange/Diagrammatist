@@ -10,5 +10,19 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart
     {
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureFlowchartSubtype"]/*'/>
         public FlowchartSubtypeModel Subtype { get; set; }
+
+        /// <inheritdoc/>
+        public FlowchartFigureModel() { }
+
+        public FlowchartFigureModel(FlowchartFigureModel source) : base(source)
+        {
+            Subtype = source.Subtype;
+        }
+
+        /// <inheritdoc/>
+        public override FigureModel Clone()
+        {
+            return new FlowchartFigureModel(this);
+        }
     }
 }

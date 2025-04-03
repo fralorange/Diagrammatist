@@ -156,10 +156,10 @@
             <Border>
                 <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Text}"
-           FontSize="{Binding FontSize}"
-           Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"
-           HorizontalAlignment="Center"
-           VerticalAlignment="Center"/>
+                               FontSize="{Binding FontSize}"
+                               Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
                 </Viewbox>
             </Border>
 

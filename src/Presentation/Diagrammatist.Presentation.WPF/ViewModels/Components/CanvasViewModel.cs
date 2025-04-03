@@ -479,16 +479,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        private ConnectionModel? GetConnection(FigureModel figure)
-        {
-            if (figure is LineFigureModel lineFigure && CurrentCanvas?.Connections is { } connections)
-            {
-                return _connectionService.GetConnection(connections, lineFigure);
-            }
-
-            return null;
-        }
-
         private Action<bool>? UpdateLineIfExists(FigureModel figure)
         {
             if (figure is LineFigureModel lineFigure && CurrentCanvas?.Connections is { } connections && _connectionService.GetConnection(connections, lineFigure) is { } connection)

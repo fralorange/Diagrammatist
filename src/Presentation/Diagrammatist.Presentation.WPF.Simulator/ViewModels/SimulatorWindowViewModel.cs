@@ -36,7 +36,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
 
             _simulationEngine = currentCanvas.Settings.Type switch
             {
-                DiagramsModel.Flowchart => new FlowchartSimulationEngine(),
+                DiagramsModel.Flowchart => new FlowchartSimulationEngine(currentCanvas),
                 _ => throw new ArgumentException("Unsupported type"),
             };
 
