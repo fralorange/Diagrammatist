@@ -6,6 +6,9 @@ using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.Core.Interactions.Selectors
 {
+    /// <summary>
+    /// A class that derives from <see cref="DataTemplateSelector"/>. Selects template based on figure's type.
+    /// </summary>
     public class FigureItemTemplateSelector : DataTemplateSelector
     {
         /// <summary>

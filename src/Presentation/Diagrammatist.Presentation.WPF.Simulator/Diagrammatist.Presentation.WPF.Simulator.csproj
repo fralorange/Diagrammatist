@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Styles\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\Localization\SimulatorResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -39,6 +35,10 @@
     <EmbeddedResource Update="Resources\Localization\SimulatorResources.ru-RU.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Styles\" />
   </ItemGroup>
 
 </Project>

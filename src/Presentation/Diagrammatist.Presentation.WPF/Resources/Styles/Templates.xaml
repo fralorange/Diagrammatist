@@ -4,6 +4,9 @@
                     xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Figures;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:simulatorSelector="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Selectors;assembly=Diagrammatist.Presentation.WPF.Simulator"
+                    xmlns:connection="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Connection;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:node="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Models.Node;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
     <!--#region  Shared-->
     <DataTemplate x:Key="MagneticPointsTemplate">
@@ -283,5 +286,26 @@
                                          TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"
                                          ContainerFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"
                                          FlowchartFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"/>
+    <!--#endregion-->
+    <!--#region Simulator-->
+    <DataTemplate x:Key="SimulationNodeTemplate"
+                  DataType="node:SimulationNodeBase">
+        <ContentControl Content="{Binding Figure}"
+                        ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SimulationConnectionTemplate"
+                  DataType="connection:ConnectionModel">
+        <ContentControl Content="{Binding Line}"
+                        ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+    </DataTemplate>
+    
+    <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
+                                              SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
+                                              SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
+
+    <simulatorSelector:SimulationItemStyleSelector x:Key="SimulationItemStyleSelector"
+                                                   SimulationNodeStyle="{StaticResource SimulationNodeStyle}"
+                                                   SimulationConnectionStyle="{StaticResource SimulationConnectionStyle}"/>
     <!--#endregion-->
 </ResourceDictionary>

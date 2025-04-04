@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Interval" xml:space="preserve">
+    <value>Интервал (мс):</value>
+  </data>
   <data name="Pause" xml:space="preserve">
     <value>Пауза</value>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Запуск</value>
+  </data>
+  <data name="SimulationSettings" xml:space="preserve">
+    <value>Настройки симуляции</value>
+  </data>
+  <data name="SimulationTime" xml:space="preserve">
+    <value>Время симуляции: </value>
   </data>
   <data name="Simulator" xml:space="preserve">
     <value>Симулятор</value>

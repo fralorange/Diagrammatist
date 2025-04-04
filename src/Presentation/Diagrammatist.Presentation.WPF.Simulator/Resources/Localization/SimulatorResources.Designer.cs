@@ -62,6 +62,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Close.
+        /// </summary>
+        internal static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Interval (ms):.
+        /// </summary>
+        internal static string Interval {
+            get {
+                return ResourceManager.GetString("Interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pause.
         /// </summary>
         internal static string Pause {
@@ -76,6 +94,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         internal static string Play {
             get {
                 return ResourceManager.GetString("Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulation Settings.
+        /// </summary>
+        internal static string SimulationSettings {
+            get {
+                return ResourceManager.GetString("SimulationSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulation Time: .
+        /// </summary>
+        internal static string SimulationTime {
+            get {
+                return ResourceManager.GetString("SimulationTime", resourceCulture);
             }
         }
         

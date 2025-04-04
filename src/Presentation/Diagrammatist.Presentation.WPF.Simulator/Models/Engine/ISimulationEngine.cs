@@ -12,7 +12,8 @@
         /// <summary>
         /// Starts simulation.
         /// </summary>
-        void Start();
+        /// <param name="milliseconds">Interval.</param>
+        void Start(int milliseconds);
         /// <summary>
         /// Stops simulation.
         /// </summary>

@@ -64,79 +64,131 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
-                    Style="{StaticResource InternalBorder}">
-                <ListBox ItemsSource="{Binding CurrentCanvas.Figures}"
-                         ItemTemplateSelector="{StaticResource CanvasFiguresSelector}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.CurrentCanvas.Settings.Width, FallbackValue=0}"
-                                    Height="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.CurrentCanvas.Settings.Height, FallbackValue=0}"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
-                            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="{Binding Rotation}"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                    Style="{StaticResource InternalBorder}"
+                    Padding="0">
+                <Grid>
+                    <Grid.Resources>
+                        <CollectionViewSource x:Key="NodesCollection" Source="{Binding Nodes}"/>
+                        <CollectionViewSource x:Key="ConnectionCollection" Source="{Binding Connections}"/>
+                    </Grid.Resources>
+                    <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
+                             ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}">
+                        <ListBox.ItemsSource>
+                            <CompositeCollection>
+                                <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
+                                <CollectionContainer Collection="{Binding Source={StaticResource ConnectionCollection}}"/>
+                            </CompositeCollection>
+                        </ListBox.ItemsSource>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Width, FallbackValue=0}"
+                                        Height="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Height, FallbackValue=0}"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                    <Border HorizontalAlignment="Left" 
+                            VerticalAlignment="Bottom"
+                            BorderThickness="0 2 2 0"
+                            Margin="0"
+                            Padding="0"
+                            Style="{StaticResource InternalBorder}">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource MediaButton}">
+                                    <Setter Property="Margin" Value="5 0" />
+                                </Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="{StaticResource FrameStroke}" />
+                                    <Setter Property="Width" Value="16" />
+                                    <Setter Property="Height" Value="16" />
+                                    <Setter Property="Stretch" Value="Uniform" />
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Play}"
+                                    Command="{Binding StartSimulationCommand}">
+                                <Path Data="M0,0 L1,0.5 0,1 Z"/>
+                            </Button>
+
+                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Pause}"
+                                    Command="{Binding StopSimulationCommand}">
+                                <Path Data="M0,0 H0.3 V1 H0z M0.7,0 H1 V1 H0.7z"/>
+                            </Button>
+
+                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}"
+                                    Command="{Binding ResetSimulationCommand}">
+                                <Path Data="M0,0 H1 V1 H0z"/>
+                            </Button>
+
+                            <Rectangle Style="{StaticResource VerticalCustomSeparator}"/>
+
+                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepBackward}"
+                                    Command="{Binding StepBackwardCommand}">
+                                <Path Data="M1,0 L0.25,0.5 1,1 Z M0.1,0 L0.25,0 V1 H0.1z"/>
+                            </Button>
+
+                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepForward}"
+                                    Command="{Binding StepForwardCommand}" Cursor="Hand">
+                                <Path Data="M0,0 L0.75,0.5 0,1 Z M0.9,0 L0.75,0 V1 H0.9z"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </Border>
 
             <Border Grid.Column="1"
                     Padding="0"
                     Style="{StaticResource InternalBorder}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock"
+                           x:Key="Section"
+                           BasedOn="{StaticResource BaseBlock}">
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Margin" Value="5 5 0 10" />
+                    </Style>
+                </Border.Resources>
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource MediaButton}">
-                                <Setter Property="Margin" Value="5 0" />
-                            </Style>
-                            <Style TargetType="Path">
-                                <Setter Property="Fill" Value="{StaticResource FrameStroke}" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Stretch" Value="Uniform" />
-                            </Style>
-                        </StackPanel.Resources>
+                    <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationSettings}" 
+                               Style="{StaticResource Section}"/>
 
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Play}">
-                            <Path Data="M0,0 L1,0.5 0,1 Z"/>
-                        </Button>
-
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Pause}">
-                            <Path Data="M0,0 H0.3 V1 H0z M0.7,0 H1 V1 H0.7z"/>
-                        </Button>
-
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}">
-                            <Path Data="M0,0 H1 V1 H0z"/>
-                        </Button>
-
-                        <Rectangle Style="{StaticResource VerticalCustomSeparator}"/>
-
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepBackward}">
-                            <Path Data="M1,0 L0.25,0.5 1,1 Z M0.1,0 L0.25,0 V1 H0.1z"/>
-                        </Button>
-
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepForward}">
-                            <Path Data="M0,0 L0.75,0.5 0,1 Z M0.9,0 L0.75,0 V1 H0.9z"/>
-                        </Button>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0 10 0 10">
+                        <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Interval}" 
+                                   Margin="5 0 5 0"/>
+                        <TextBox Text="{Binding SimulationInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="80"
+                                 Margin="0 0 5 0"/>
                     </StackPanel>
+
                     <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+
+                    <TextBlock Text="Lua" 
+                               Style="{StaticResource Section}"/>
+                    <TextBox Text="{Binding SimulationNode.LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             HorizontalScrollBarVisibility="Disabled"
+                             VerticalScrollBarVisibility="Auto"
+                             Margin="5"
+                             MinHeight="160"/>
+
+                    <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+                    
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Bottom"
+                                Margin="5 5 0 10">
+                        <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationTime}"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="55"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
-            <Button Content="OK"
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Close}"
                     Grid.Row="1"
                     Grid.Column="1"
                     IsDefault="True"
