@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Views
@@ -22,6 +23,14 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Views
         private void OnIconMouseDown(object sender, MouseButtonEventArgs e)
         {
             TitleBarHelper.DoubleClickProcess(this, e);
+        }
+
+        private void OnListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source is ListBox listBox)
+            {
+                FocusHelper.ClearFocusAndSelection(listBox);
+            }
         }
     }
 }

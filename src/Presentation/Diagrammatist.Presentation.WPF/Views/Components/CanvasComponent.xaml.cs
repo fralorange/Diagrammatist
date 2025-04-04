@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Controls;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Interfaces;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
@@ -56,9 +57,9 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         /// <param name="e"></param>
         private void OnListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.Source is ListBox && e.OriginalSource is Canvas canvas)
+            if (e.Source is ListBox listBox && e.OriginalSource is Canvas canvas)
             {
-                ClearSelection(canvas);
+                FocusHelper.ClearFocusAndSelection(listBox, canvas);
             }
         }
 
@@ -193,20 +194,6 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         #endregion
 
-        private void ClearSelection(IInputElement? focus = null)
-        {
-            itemsHolder.UnselectAll();
-
-            if (focus is null)
-            {
-                Keyboard.ClearFocus();
-            }
-            else
-            {
-                Keyboard.Focus(focus);
-            }
-        }
-
         private void CaptureMousePosition(ExtendedCanvas canvas, Action<Point> positionHandler)
         {
             if (canvas == null) return;
@@ -253,7 +240,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 Filter = "PNG|*.png",
             };
 
-            ClearSelection();
+            FocusHelper.ClearFocusAndSelection(itemsHolder);
 
             if (saveFileDialog.ShowDialog() == true)
             {

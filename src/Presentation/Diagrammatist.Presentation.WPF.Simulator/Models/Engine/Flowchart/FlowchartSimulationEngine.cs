@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart;
 using NLua;
@@ -25,9 +26,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         /// <summary>
         /// Initializes flowchart simulation engine.
         /// </summary>
-        public FlowchartSimulationEngine(CanvasModel canvas)
+        /// <param name="nodes"></param>
+        /// <param name="connections"></param>
+        public FlowchartSimulationEngine(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections)
         {
-            BuildGraph(canvas);
+            BuildGraph(nodes, connections);
             ResetNode();
         }
 
@@ -95,11 +98,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         /// <inheritdoc/>
         public void StepBackward()
         {
-            //if (_history.Count > 0)
-            //{
-            //    _currentNode = _history.Pop();
-            //}
-            throw new NotImplementedException();
+            if (_history.Count > 0)
+            {
+                _currentNode = _history.Pop();
+            }
         }
 
         /// <inheritdoc/>
@@ -137,7 +139,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             var cond = result is bool b && b;
 
             var nextNodes = _graph[_currentNode];
-            _currentNode = cond ? nextNodes.ElementAtOrDefault(1) : nextNodes.ElementAtOrDefault(0);
+            _currentNode = cond ? nextNodes.ElementAtOrDefault(0) : nextNodes.ElementAtOrDefault(1);
         }
 
         private void HandleInputOutput()
@@ -167,34 +169,21 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             throw new NotImplementedException();
         }
 
-        private void BuildGraph(CanvasModel canvas)
+        private void BuildGraph(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections)
         {
-            var nodes = canvas.Figures
-                .OfType<FlowchartFigureModel>()
-                .Select(f => new FlowchartSimulationNode { Figure = f })
-                .ToDictionary(n => n.Figure);
+            var figureToNode = nodes.ToDictionary(n => n.Figure);
 
-            foreach (var connection in canvas.Connections)
+            foreach (var connection in connections)
             {
                 if (connection.SourceMagneticPoint?.Owner is FlowchartFigureModel sourceFig &&
                     connection.DestinationMagneticPoint?.Owner is FlowchartFigureModel destFig &&
-                    nodes.TryGetValue(sourceFig, out var sourceNode) &&
-                    nodes.TryGetValue(destFig, out var destNode))
+                    figureToNode.TryGetValue(sourceFig, out var sourceNode) &&
+                    figureToNode.TryGetValue(destFig, out var destNode))
                 {
                     if (!_graph.ContainsKey(sourceNode))
-                    {
                         _graph[sourceNode] = [];
-                    }
 
                     _graph[sourceNode].Add(destNode);
-                }
-            }
-
-            foreach (var node in nodes.Values.ToList())
-            {
-                if (!_graph.ContainsKey(node) && !_graph.Values.Any(list => list.Contains(node)))
-                {
-                    nodes.Remove(node.Figure!);
                 }
             }
         }

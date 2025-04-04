@@ -76,7 +76,9 @@
                         <CollectionViewSource x:Key="ConnectionCollection" Source="{Binding Connections}"/>
                     </Grid.Resources>
                     <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
-                             ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}">
+                             ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
+                             SelectedItem="{Binding SelectedNode}"
+                             PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
                         <ListBox.ItemsSource>
                             <CompositeCollection>
                                 <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
@@ -166,18 +168,10 @@
 
                     <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
 
-                    <TextBlock Text="Lua" 
-                               Style="{StaticResource Section}"/>
-                    <TextBox Text="{Binding SimulationNode.LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
-                             HorizontalScrollBarVisibility="Disabled"
-                             VerticalScrollBarVisibility="Auto"
-                             Margin="5"
-                             MinHeight="160"/>
+                    <ContentControl Margin="5 5 0 10"
+                                    Content="{Binding SelectedNode}"
+                                    ContentTemplateSelector="{StaticResource SimulationScriptSelector}"/>
 
-                    <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
-                    
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Bottom"
                                 Margin="5 5 0 10">

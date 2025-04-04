@@ -299,6 +299,23 @@
         <ContentControl Content="{Binding Line}"
                         ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
     </DataTemplate>
+
+    <DataTemplate x:Key="ScriptTemplate"
+                  DataType="node:SimulationNodeBase">
+        <StackPanel>
+            <TextBlock Text="Lua"
+                       FontWeight="Bold"/>
+            <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 HorizontalScrollBarVisibility="Disabled"
+                 VerticalScrollBarVisibility="Auto"
+                 VerticalContentAlignment="Top"
+                 Margin="5"
+                 MinHeight="160"/>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+        </StackPanel>
+    </DataTemplate>
     
     <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
                                               SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
@@ -307,5 +324,8 @@
     <simulatorSelector:SimulationItemStyleSelector x:Key="SimulationItemStyleSelector"
                                                    SimulationNodeStyle="{StaticResource SimulationNodeStyle}"
                                                    SimulationConnectionStyle="{StaticResource SimulationConnectionStyle}"/>
+
+    <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
+                                                FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"/>
     <!--#endregion-->
 </ResourceDictionary>

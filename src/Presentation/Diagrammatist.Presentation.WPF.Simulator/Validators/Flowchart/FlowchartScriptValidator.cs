@@ -38,9 +38,9 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Validators.Flowchart
                     break;
 
                 case FlowchartSubtypeModel.InputOutput:
-                    if (!Regex.IsMatch(script, @"io\.\w+\("))
+                    if (!string.IsNullOrWhiteSpace(script))
                     {
-                        errorMessage = "The 'InputOutput' block must contain input/output (e.g. io.write(), io.read()).";
+                        errorMessage = "The 'InputOutput' block must not contain LuaScript.";
                         return false;
                     }
                     break;
