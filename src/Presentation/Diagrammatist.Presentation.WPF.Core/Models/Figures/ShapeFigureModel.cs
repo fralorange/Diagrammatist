@@ -2,7 +2,6 @@
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Interfaces;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Figures

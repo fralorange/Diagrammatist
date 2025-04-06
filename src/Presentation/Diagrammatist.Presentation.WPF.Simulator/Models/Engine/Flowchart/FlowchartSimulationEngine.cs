@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
@@ -144,6 +145,8 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             _history.Clear();
         }
 
+        #region IO Handlers
+
         /// <summary>
         /// Gets input from dialog window.
         /// </summary>
@@ -174,11 +177,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             _io.ShowOutput(message);
         }
 
-        private void ResetNode()
-        {
-            CurrentNode = _graph.Keys
-                .FirstOrDefault(n => n.Figure is FlowchartFigureModel figure && figure.Subtype == FlowchartSubtypeModel.StartEnd);
-        }
+        #endregion
 
         private void InitializeLua()
         {
@@ -186,6 +185,14 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
             _lua.RegisterFunction("print", this, GetType().GetMethod(nameof(ShowOutput)));
             _lua.RegisterFunction("read", this, GetType().GetMethod(nameof(GetInput)));
+        }
+
+        #region Node Handlers
+
+        private void ResetNode()
+        {
+            CurrentNode = _graph.Keys
+                .FirstOrDefault(n => n.Figure is FlowchartFigureModel figure && figure.Subtype == FlowchartSubtypeModel.StartEnd);
         }
 
         private void MoveToNext()
@@ -244,9 +251,21 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             throw new NotImplementedException();
         }
 
-        private void BuildGraph(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections)
+        #endregion
+
+        #region Graph Builders
+
+        /// <summary>
+        /// Builds outgoing dictionary.
+        /// </summary>
+        /// <param name="figureToNode">Dictionary of nodes.</param>
+        /// <param name="connections">Logical connections between figures.</param>
+        /// <returns>Outgoing <see cref="Dictionary{TKey, TValue}"/>.</returns>
+        private Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>> BuildOutgoingConnections(
+            Dictionary<FigureModel, FlowchartSimulationNode> figureToNode,
+            IEnumerable<ConnectionModel> connections)
         {
-            var figureToNode = nodes.ToDictionary(n => n.Figure);
+            var outgoing = new Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>>();
 
             foreach (var connection in connections)
             {
@@ -255,12 +274,94 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                     figureToNode.TryGetValue(sourceFig, out var sourceNode) &&
                     figureToNode.TryGetValue(destFig, out var destNode))
                 {
-                    if (!_graph.ContainsKey(sourceNode))
-                        _graph[sourceNode] = [];
+                    if (!outgoing.ContainsKey(sourceNode))
+                        outgoing[sourceNode] = [];
 
-                    _graph[sourceNode].Add(destNode);
+                    outgoing[sourceNode].Add(destNode);
+                }
+            }
+
+            return outgoing;
+        }
+
+        /// <summary>
+        /// Finds start node.
+        /// </summary>
+        /// <param name="nodes">Collection of nodes.</param>
+        /// <param name="connections">Logical connections between figures.</param>
+        /// <returns>Start node with subtype <see cref="FlowchartSubtypeModel.StartEnd"/>.</returns>
+        private FlowchartSimulationNode? FindStartNode(
+            IEnumerable<FlowchartSimulationNode> nodes,
+            IEnumerable<ConnectionModel> connections)
+        {
+            var figureToNode = nodes.ToDictionary(n => n.Figure);
+            var nodesWithIncoming = new HashSet<FlowchartSimulationNode>();
+
+            foreach (var connection in connections)
+            {
+                if (connection.DestinationMagneticPoint?.Owner is FlowchartFigureModel destFig &&
+                    figureToNode.TryGetValue(destFig, out var destNode))
+                {
+                    nodesWithIncoming.Add(destNode);
+                }
+            }
+
+            return nodes
+                .FirstOrDefault(n => !nodesWithIncoming.Contains(n) && n.Figure is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.StartEnd});
+        }
+
+        /// <summary>
+        /// Traverses from start node to the end node.
+        /// </summary>
+        /// <param name="startNode">Start node.</param>
+        /// <param name="outgoing">Dictionary of nodes with outgoing connections.</param>
+        private void TraverseFromStartNode(
+            FlowchartSimulationNode startNode,
+            Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>> outgoing)
+        {
+            var visited = new HashSet<FlowchartSimulationNode>();
+            var queue = new Queue<FlowchartSimulationNode>();
+            queue.Enqueue(startNode);
+            visited.Add(startNode);
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+
+                if (!outgoing.TryGetValue(current, out var nextNodes))
+                    continue;
+
+                foreach (var next in nextNodes)
+                {
+                    if (!_graph.ContainsKey(current))
+                        _graph[current] = [];
+
+                    _graph[current].Add(next);
+
+                    if (visited.Add(next))
+                        queue.Enqueue(next);
                 }
             }
         }
+
+
+        /// <summary>
+        /// Builds graph.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="connections"></param>
+        private void BuildGraph(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections)
+        {
+            var figureToNode = nodes.ToDictionary(n => n.Figure);
+
+            var outgoing = BuildOutgoingConnections(figureToNode, connections);
+            var startNode = FindStartNode(nodes, connections) 
+                ?? throw new InvalidOperationException("The starting node of the flowchart could not be determined.");
+            _graph.Clear();
+
+            TraverseFromStartNode(startNode, outgoing);
+        }
+
+        #endregion
     }
 }
