@@ -289,9 +289,24 @@
     <!--#endregion-->
     <!--#region Simulator-->
     <DataTemplate x:Key="SimulationNodeTemplate"
-                  DataType="node:SimulationNodeBase">
-        <ContentControl Content="{Binding Figure}"
-                        ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+                  DataType="node:SimulationNodeBase"
+                  xmlns:converters="clr-namespace:Diagrammatist.Presentation.WPF.Resources.Converters">
+        <DataTemplate.Resources>
+            <converters:EqualityToBrushMultiConverter x:Key="EqualityToBrushMultiConverter" 
+                                                      HighlightBrush="{StaticResource ControlHighlightBrush}" 
+                                                      DefaultBrush="Transparent"/>
+        </DataTemplate.Resources>
+        <Border BorderThickness="2">
+            <Border.BorderBrush>
+                <MultiBinding Converter="{StaticResource EqualityToBrushMultiConverter}">
+                    <Binding Path="DataContext.CurrentNode" 
+                             RelativeSource="{RelativeSource AncestorType=ListBox}"/>
+                    <Binding/>
+                </MultiBinding>
+            </Border.BorderBrush>
+            <ContentControl Content="{Binding Figure}"
+                            ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="SimulationConnectionTemplate"
@@ -306,13 +321,13 @@
             <TextBlock Text="Lua"
                        FontWeight="Bold"/>
             <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 AcceptsReturn="True"
-                 TextWrapping="Wrap"
-                 HorizontalScrollBarVisibility="Disabled"
-                 VerticalScrollBarVisibility="Auto"
-                 VerticalContentAlignment="Top"
-                 Margin="5"
-                 MinHeight="160"/>
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     HorizontalScrollBarVisibility="Disabled"
+                     VerticalScrollBarVisibility="Auto"
+                     VerticalContentAlignment="Top"
+                     Margin="5"
+                     MinHeight="160"/>
             <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
         </StackPanel>
     </DataTemplate>

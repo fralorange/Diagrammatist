@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 
@@ -21,7 +22,8 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories
         /// </summary>
         /// <param name="nodes"></param>
         /// <param name="connections"></param>
+        /// <param name="io"></param>
         /// <returns></returns>
-        ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections);
+        ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io);
     }
 }

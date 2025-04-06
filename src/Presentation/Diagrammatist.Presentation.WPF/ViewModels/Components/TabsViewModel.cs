@@ -166,6 +166,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             if (_canvasSerializationService.LoadCanvas(filePath)?.ToModel() is { } loadedCanvas)
             {
                 AddCanvas(loadedCanvas, filePath);
+
+                Messenger.Send(CommandFlags.ZoomReset);
             }
         }
 

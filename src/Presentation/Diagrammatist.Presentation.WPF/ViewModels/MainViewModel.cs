@@ -357,7 +357,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand(CanExecute = nameof(MenuWithNotCustomCanvasCanExecute))]
         private void MenuSimulator()
         {
-            var dialogViewModel = new SimulatorWindowViewModel();
+            var dialogViewModel = new SimulatorWindowViewModel(_dialogService);
 
             _dialogService.ShowDialog(this, dialogViewModel);
         }

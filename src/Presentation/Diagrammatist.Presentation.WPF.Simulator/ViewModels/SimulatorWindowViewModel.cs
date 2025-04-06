@@ -62,23 +62,31 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// <summary>
         /// Initializes simulator view model.
         /// </summary>
-        /// <param name="currentCanvas">Current canvas.</param>
+        /// <param name="dialogService"></param>
         /// <exception cref="ArgumentException"></exception>
-        public SimulatorWindowViewModel()
+        public SimulatorWindowViewModel(IDialogService dialogService)
         {
+            // Validation.
             var currentCanvas = Messenger.Send(new CurrentCanvasRequestMessage()).Response;
 
-            if (currentCanvas is null)
-                throw new ArgumentNullException(nameof(currentCanvas));
+            ArgumentNullException.ThrowIfNull(currentCanvas, nameof(currentCanvas));
 
+            // Factory.
             var factory = SimulationFactoryProvider.GetFactory(currentCanvas.Settings.Type);
 
             var createdNodes = factory.CreateNodes(currentCanvas.Figures);
             Nodes = new ObservableCollection<SimulationNodeBase>(createdNodes);
             Connections = currentCanvas.Connections;
 
+            // Simulation parameters.
             SimulationSize = new Size(currentCanvas.Settings.Width, currentCanvas.Settings.Height);
-            _simulationEngine = factory.CreateEngine(Nodes, Connections);
+
+            var simIO = new SimulationDialogIOProvider(dialogService, this);
+
+            _simulationEngine = factory.CreateEngine(Nodes, Connections, simIO);
+            _simulationEngine.CurrentNodeChanged += (sender, node) 
+                => CurrentNode = node;
+            _simulationEngine.Initialize();
         }
 
         /// <summary>

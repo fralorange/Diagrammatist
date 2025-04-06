@@ -1,6 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
+using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
@@ -22,11 +23,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart
         }
 
         /// <inheritdoc/>
-        public ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections)
+        public ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
         {
             return new FlowchartSimulationEngine(
                 nodes.OfType<FlowchartSimulationNode>(),
-                connections);
+                connections,
+                io);
         }
     }
 }
