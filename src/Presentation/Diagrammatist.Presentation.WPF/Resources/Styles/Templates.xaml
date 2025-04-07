@@ -50,6 +50,7 @@
         <Polyline lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
                   ToolTip="{lex:Loc {Binding Name}}"
                   Style="{StaticResource Line}"
+                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"/>
     </DataTemplate>
 
@@ -108,10 +109,11 @@
                                      Points="{Binding Points}"
                                      PosX="{Binding PosX, Mode=OneWayToSource}"
                                      PosY="{Binding PosY, Mode=OneWayToSource}"
-                                     Fill="Transparent"
+                                     Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                                      Stroke="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                                      StrokeThickness="{Binding Thickness}"
-                                     StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
+                                     StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"
+                                     HasArrow="{Binding HasArrow}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasTextFigureTemplate"

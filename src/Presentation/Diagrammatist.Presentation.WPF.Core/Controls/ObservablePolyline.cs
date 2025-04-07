@@ -1,8 +1,8 @@
-﻿using System.Collections.Specialized;
-using System.Windows.Media;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.Core.Controls
 {
@@ -24,6 +24,12 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             typeof(FillRule),
             typeof(ObservablePolyline),
             new FrameworkPropertyMetadata(FillRule.EvenOdd));
+
+        public static readonly DependencyProperty HasArrowProperty = DependencyProperty.Register(
+            nameof(HasArrow),
+            typeof(bool),
+            typeof(ObservablePolyline),
+            new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender, OnHasArrowChanged));
 
         private static readonly DependencyProperty PosXProperty = DependencyProperty.Register(
             nameof(PosX),
@@ -53,6 +59,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             get => (FillRule)GetValue(FillRuleProperty);
             set => SetValue(FillRuleProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets has arrow parameter.
+        /// </summary>
+        public bool HasArrow
+        {
+            get => (bool)GetValue(HasArrowProperty);
+            set => SetValue(HasArrowProperty, value);
         }
 
         /// <summary>
@@ -121,6 +136,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                     figure.Segments.Add(new LineSegment(relativePoints[i], true));
                     geometry.Figures.Add(figure);
                 }
+
+                if (HasArrow && relativePoints.Count >= 2)
+                {
+                    Point from = relativePoints[^2];
+                    Point to = relativePoints[^1];
+
+                    var arrowFigure = CreateArrowHead(from, to);
+                    geometry.Figures.Add(arrowFigure);
+                }
+
                 _polylineGeometry = geometry;
             }
 
@@ -155,6 +180,35 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             UpdatePolyline();
             InvalidateMeasure();
+        }
+
+        private PathFigure CreateArrowHead(Point from, Point to, double size = 10)
+        {
+            var direction = to - from;
+            direction.Normalize();
+
+            var perpendicular = new Vector(-direction.Y, direction.X);
+
+            var arrowTip = to;
+            var base1 = to - direction * size + perpendicular * (size / 2);
+            var base2 = to - direction * size - perpendicular * (size / 2);
+
+            return new PathFigure
+            {
+                StartPoint = base1,
+                Segments =
+                [
+                    new LineSegment(base2, true),
+                    new LineSegment(arrowTip, true)
+                ],
+                IsClosed = true,
+                IsFilled = true
+            };
+        }
+
+        private static void OnHasArrowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((ObservablePolyline)d).UpdatePolyline();
         }
     }
 }
