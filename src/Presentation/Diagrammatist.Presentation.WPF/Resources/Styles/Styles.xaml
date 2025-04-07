@@ -432,7 +432,6 @@
 
     <Style TargetType="Shape" x:Key="BaseGeometry">
         <Setter Property="Stroke" Value="{StaticResource ShapeDefaultStroke}" />
-        <Setter Property="Fill" Value="{StaticResource ShapeDefaultStroke}" />
         <Setter Property="StrokeThickness" Value="2" />
         <Setter Property="Stretch" Value="Uniform" />
     </Style>
@@ -449,6 +448,7 @@
     </Style>
 
     <Style TargetType="Shape" x:Key="Line" BasedOn="{StaticResource BaseGeometry}">
+        <Setter Property="Fill" Value="Transparent" />
         <Setter Property="Stretch" Value="None" />
     </Style>
 
