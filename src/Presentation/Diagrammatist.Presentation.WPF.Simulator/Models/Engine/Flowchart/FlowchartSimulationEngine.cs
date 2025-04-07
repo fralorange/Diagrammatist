@@ -294,14 +294,46 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                     figureToNode.TryGetValue(sourceFig, out var sourceNode) &&
                     figureToNode.TryGetValue(destFig, out var destNode))
                 {
-                    if (!outgoing.ContainsKey(sourceNode))
-                        outgoing[sourceNode] = [];
+                    AddOutgoingEdge(outgoing, sourceNode, destNode);
+                }
+            }
 
-                    outgoing[sourceNode].Add(destNode);
+            var labeledConnectors = figureToNode
+                .Where(kvp => kvp.Key is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.Connector, Text: not "" or not null } connector &&
+                    connector.Text.Trim().StartsWith('#'))
+                .GroupBy(kvp => ((FlowchartFigureModel)kvp.Key).Text!.Trim());
+
+            foreach (var group in labeledConnectors)
+            {
+                var connectorNodes = group.Select(g => g.Value).ToList();
+                if (connectorNodes.Count < 2)
+                    continue;
+
+                var source = connectorNodes.First();
+                foreach (var target in connectorNodes.Skip(1))
+                {
+                    AddOutgoingEdge(outgoing, source, target);
                 }
             }
 
             return outgoing;
+        }
+
+        /// <summary>
+        /// Adds a relation between two nodes if it doesn't already exist.
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        private void AddOutgoingEdge(Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>> dict,
+                                    FlowchartSimulationNode from,
+                                    FlowchartSimulationNode to)
+        {
+            if (!dict.ContainsKey(from))
+                dict[from] = [];
+
+            if (!dict[from].Contains(to))
+                dict[from].Add(to);
         }
 
         /// <summary>
