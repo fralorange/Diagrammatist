@@ -107,15 +107,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Simulation Time: .
-        /// </summary>
-        internal static string SimulationTime {
-            get {
-                return ResourceManager.GetString("SimulationTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Simulator.
         /// </summary>
         internal static string Simulator {

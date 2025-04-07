@@ -12,10 +12,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine
         /// </summary>
         event EventHandler<SimulationNodeBase?> CurrentNodeChanged;
         /// <summary>
-        /// Gets or sets time interval between simulation steps.
-        /// </summary>
-        TimeSpan SimulationTime { get; set; }
-        /// <summary>
         /// Initializes simulation engine.
         /// </summary>
         void Initialize();

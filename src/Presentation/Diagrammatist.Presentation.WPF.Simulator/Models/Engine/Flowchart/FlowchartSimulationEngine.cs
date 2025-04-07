@@ -40,8 +40,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         // Simulation settings.
         private Timer? _simulationTimer;
 
-        public TimeSpan SimulationTime { get; set; }
-
         /// <summary>
         /// Initializes flowchart simulation engine.
         /// </summary>
@@ -69,11 +67,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             if (_simulationTimer != null) return;
 
             _simulationTimer = new Timer(milliseconds);
-            _simulationTimer.Elapsed += (sender, e) =>
-            {
-                StepForward();
-                SimulationTime.Add(TimeSpan.FromMilliseconds(milliseconds));
-            };
+            _simulationTimer.Elapsed += (sender, e) => StepForward();
             _simulationTimer.AutoReset = true;
             _simulationTimer.Start();
         }
@@ -145,7 +139,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             _history.Clear();
         }
 
-        #region IO Handlers
+        #region Lua handlers
 
         /// <summary>
         /// Gets input from dialog window.
@@ -177,6 +171,42 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             _io.ShowOutput(message);
         }
 
+        /// <summary>
+        /// Loops over with parameter.
+        /// </summary>
+        /// <param name="args">Loop args, which requires three arguments: iterator name, start-end, and step (optional).</param>
+        /// <returns>A <see cref="bool"/> value. True if still in the loop, otherwise false.</returns>
+        public bool Loop(params object[] args)
+        {
+            if (args.Length < 3 || args.Length > 4) return false;
+
+            var varName = args[0]?.ToString();
+            if (string.IsNullOrEmpty(varName)) return false;
+
+            if (!double.TryParse(args[1]?.ToString(), out var from)) return false;
+            if (!double.TryParse(args[2]?.ToString(), out var to)) return false;
+            var step = (args.Length >= 4 && double.TryParse(args[3]?.ToString(), out var s)) ? s : 1;
+
+            var val = _lua[varName] as double?;
+
+            if (val is null)
+            {
+                _lua[varName] = from;
+                return true;
+            }
+
+            var next = val.Value + step;
+
+            if ((step > 0 && next > to) || (step < 0 && next < to))
+            {
+                _lua[varName] = null;
+                return false;
+            }
+
+            _lua[varName] = next;
+            return true;
+        }
+
         #endregion
 
         private void InitializeLua()
@@ -185,6 +215,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
             _lua.RegisterFunction("print", this, GetType().GetMethod(nameof(ShowOutput)));
             _lua.RegisterFunction("read", this, GetType().GetMethod(nameof(GetInput)));
+            _lua.RegisterFunction("loop", this, GetType().GetMethod(nameof(Loop)));
         }
 
         #region Node Handlers
@@ -231,7 +262,23 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
         private void HandleLoop()
         {
-            throw new NotImplementedException();
+            if (CurrentNode == null || string.IsNullOrWhiteSpace(CurrentNode.LuaScript))
+                return;
+
+            var result = _lua.DoString(CurrentNode.LuaScript);
+            var res = result.FirstOrDefault();
+
+            if (res is bool shouldContinue && shouldContinue)
+            {
+                MoveToNext();
+            }
+            else
+            {
+                if (_graph.TryGetValue(CurrentNode, out var nextNodes))
+                {
+                    CurrentNode = nextNodes.ElementAtOrDefault(1);
+                }
+            }
         }
 
         private void HandleConnector()

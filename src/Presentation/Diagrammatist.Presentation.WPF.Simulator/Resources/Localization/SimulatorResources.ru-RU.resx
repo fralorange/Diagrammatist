@@ -132,9 +132,6 @@
   <data name="SimulationSettings" xml:space="preserve">
     <value>Настройки симуляции</value>
   </data>
-  <data name="SimulationTime" xml:space="preserve">
-    <value>Время симуляции: </value>
-  </data>
   <data name="Simulator" xml:space="preserve">
     <value>Симулятор</value>
   </data>

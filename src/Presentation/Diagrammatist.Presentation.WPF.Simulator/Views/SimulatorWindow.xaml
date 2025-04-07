@@ -173,14 +173,6 @@
                     <ContentControl Margin="5 5 0 10"
                                     Content="{Binding SelectedNode}"
                                     ContentTemplateSelector="{StaticResource SimulationScriptSelector}"/>
-
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Bottom"
-                                Margin="5 5 0 10">
-                        <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationTime}"
-                                   FontWeight="Bold"/>
-                        <TextBlock Text="55"/>
-                    </StackPanel>
                 </StackPanel>
             </Border>
 
