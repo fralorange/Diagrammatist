@@ -16,15 +16,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine
         /// </summary>
         void Initialize();
         /// <summary>
-        /// Starts simulation.
-        /// </summary>
-        /// <param name="milliseconds">Interval.</param>
-        void Start(int milliseconds);
-        /// <summary>
-        /// Stops simulation.
-        /// </summary>
-        void Stop();
-        /// <summary>
         /// Takes the simulation one step forward.
         /// </summary>
         void StepForward();

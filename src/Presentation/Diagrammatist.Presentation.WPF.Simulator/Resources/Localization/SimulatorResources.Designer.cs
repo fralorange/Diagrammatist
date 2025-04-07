@@ -71,33 +71,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Interval (ms):.
-        /// </summary>
-        internal static string Interval {
-            get {
-                return ResourceManager.GetString("Interval", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Pause.
-        /// </summary>
-        internal static string Pause {
-            get {
-                return ResourceManager.GetString("Pause", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Play.
-        /// </summary>
-        internal static string Play {
-            get {
-                return ResourceManager.GetString("Play", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Simulation Settings.
         /// </summary>
         internal static string SimulationSettings {

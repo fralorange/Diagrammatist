@@ -112,17 +112,6 @@
                                     <Setter Property="Stretch" Value="Uniform" />
                                 </Style>
                             </StackPanel.Resources>
-
-                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Play}"
-                                    Command="{Binding StartSimulationCommand}">
-                                <Path Data="M0,0 L1,0.5 0,1 Z"/>
-                            </Button>
-
-                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Pause}"
-                                    Command="{Binding StopSimulationCommand}">
-                                <Path Data="M0,0 H0.3 V1 H0z M0.7,0 H1 V1 H0.7z"/>
-                            </Button>
-
                             <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}"
                                     Command="{Binding ResetSimulationCommand}">
                                 <Path Data="M0,0 H1 V1 H0z"/>
@@ -147,29 +136,12 @@
             <Border Grid.Column="1"
                     Padding="0"
                     Style="{StaticResource InternalBorder}">
-                <Border.Resources>
-                    <Style TargetType="TextBlock"
-                           x:Key="Section"
-                           BasedOn="{StaticResource BaseBlock}">
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="Margin" Value="5 5 0 10" />
-                    </Style>
-                </Border.Resources>
                 <StackPanel>
                     <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationSettings}" 
-                               Style="{StaticResource Section}"/>
-
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0 10 0 10">
-                        <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Interval}" 
-                                   Margin="5 0 5 0"/>
-                        <TextBox Text="{Binding SimulationInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 Width="80"
-                                 Margin="0 0 5 0"/>
-                    </StackPanel>
+                               FontWeight="Bold"
+                               Margin="10"/>
 
                     <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
-
                     <ContentControl Margin="5 5 0 10"
                                     Content="{Binding SelectedNode}"
                                     ContentTemplateSelector="{StaticResource SimulationScriptSelector}"/>

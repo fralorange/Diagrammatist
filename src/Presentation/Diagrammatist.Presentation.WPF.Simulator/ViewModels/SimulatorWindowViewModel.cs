@@ -90,27 +90,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         }
 
         /// <summary>
-        /// Starts simulation in simulation window.
-        /// </summary>
-        [RelayCommand]
-        private void StartSimulation()
-        {
-            _simulationEngine.Start(SimulationInterval);
-        }
-
-        /// <summary>
-        /// Stops simulation in simulation window.
-        /// </summary>
-        /// <remarks>
-        /// *Acts as pause.
-        /// </remarks>
-        [RelayCommand]
-        private void StopSimulation()
-        {
-            _simulationEngine.Stop();
-        }
-
-        /// <summary>
         /// Takes one step forward in simulation window.
         /// </summary>
         [RelayCommand]

@@ -120,15 +120,6 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="Interval" xml:space="preserve">
-    <value>Interval (ms):</value>
-  </data>
-  <data name="Pause" xml:space="preserve">
-    <value>Pause</value>
-  </data>
-  <data name="Play" xml:space="preserve">
-    <value>Play</value>
-  </data>
   <data name="SimulationSettings" xml:space="preserve">
     <value>Simulation Settings</value>
   </data>

@@ -37,8 +37,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         }
 
         private Stack<FlowchartSimulationNode> _history = [];
-        // Simulation settings.
-        private Timer? _simulationTimer;
 
         /// <summary>
         /// Initializes flowchart simulation engine.
@@ -62,24 +60,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         }
 
         /// <inheritdoc/>
-        public void Start(int milliseconds)
-        {
-            if (_simulationTimer != null) return;
-
-            _simulationTimer = new Timer(milliseconds);
-            _simulationTimer.Elapsed += (sender, e) => StepForward();
-            _simulationTimer.AutoReset = true;
-            _simulationTimer.Start();
-        }
-
-        /// <inheritdoc/>
-        public void Stop()
-        {
-            _simulationTimer?.Stop();
-            _simulationTimer = null;
-        }
-
-        /// <inheritdoc/>
         public void StepForward()
         {
             if (CurrentNode == null || CurrentNode.Figure is not FlowchartFigureModel figure)
@@ -89,6 +69,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
             switch (figure.Subtype)
             {
+                case FlowchartSubtypeModel.StartEnd:
+                case FlowchartSubtypeModel.Connector:
+                    MoveToNext();
+                    break;
                 case FlowchartSubtypeModel.Process:
                     _lua.DoString(CurrentNode.LuaScript);
                     MoveToNext();
@@ -100,20 +84,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                 case FlowchartSubtypeModel.Decision:
                     MoveByDecision();
                     break;
-                case FlowchartSubtypeModel.Connector:
-                    HandleConnector();
-                    break;
                 case FlowchartSubtypeModel.Preparation:
                     HandleLoop();
                     break;
-                case FlowchartSubtypeModel.StartEnd:
-                    MoveToNext();
-                    break;
                 case FlowchartSubtypeModel.PredefinedProcess:
                     HandlePredefinedProcess();
+                    MoveToNext();
                     break;
                 case FlowchartSubtypeModel.Database:
                     HandleDatabase();
+                    MoveToNext();
                     break;
             }
         }
@@ -130,8 +110,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         /// <inheritdoc/>
         public void Reset()
         {
-            Stop();
-
             ResetNode();
 
             _lua.Dispose();
@@ -279,11 +257,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                     CurrentNode = nextNodes.ElementAtOrDefault(1);
                 }
             }
-        }
-
-        private void HandleConnector()
-        {
-            throw new NotImplementedException();
         }
 
         private void HandlePredefinedProcess()
