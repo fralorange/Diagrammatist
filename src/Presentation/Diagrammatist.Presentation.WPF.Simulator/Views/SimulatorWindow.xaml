@@ -148,7 +148,7 @@
                 </StackPanel>
             </Border>
 
-            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Close}"
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Close}"
                     Grid.Row="1"
                     Grid.Column="1"
                     IsDefault="True"

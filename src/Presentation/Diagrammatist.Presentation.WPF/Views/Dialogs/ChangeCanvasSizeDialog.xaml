@@ -50,7 +50,7 @@
             <Button Grid.Column="2"
                     Click="OnCloseButtonClick"
                     Style="{StaticResource TitleBarCloseButtonStyle}"
-                    ToolTip="{lex:Loc Close}"
+                    ToolTip="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Close}"
                     HorizontalAlignment="Right">
                 <Path Width="36"
                       Height="32"

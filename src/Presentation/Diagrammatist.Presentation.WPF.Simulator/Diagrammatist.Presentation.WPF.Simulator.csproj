@@ -25,15 +25,15 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Localization\SimulatorResources.en-US.resx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\SimulatorResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SimulatorResources.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\SimulatorResources.ru-RU.resx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

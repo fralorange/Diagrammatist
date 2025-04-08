@@ -62,15 +62,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Close.
-        /// </summary>
-        internal static string Close {
-            get {
-                return ResourceManager.GetString("Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Simulation Settings.
         /// </summary>
         internal static string SimulationSettings {
