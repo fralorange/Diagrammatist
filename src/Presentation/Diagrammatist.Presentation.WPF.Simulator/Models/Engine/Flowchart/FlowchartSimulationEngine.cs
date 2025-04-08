@@ -5,7 +5,6 @@ using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart;
 using NLua;
-using Timer = System.Timers.Timer;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 {
@@ -21,7 +20,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         private Lua _lua;
         // Nodes.
         private readonly Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>> _graph = [];
-        
+
         private FlowchartSimulationNode? _currentNode;
         private FlowchartSimulationNode? CurrentNode
         {
@@ -43,7 +42,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         /// </summary>
         /// <param name="nodes"></param>
         /// <param name="connections"></param>
-#pragma warning disable CS8618 
+#pragma warning disable CS8618
         public FlowchartSimulationEngine(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
 #pragma warning restore CS8618 
         {
@@ -88,11 +87,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                     HandleLoop();
                     break;
                 case FlowchartSubtypeModel.PredefinedProcess:
-                    HandlePredefinedProcess();
+                    //HandlePredefinedProcess();
                     MoveToNext();
                     break;
                 case FlowchartSubtypeModel.Database:
-                    HandleDatabase();
+                    //HandleDatabase();
                     MoveToNext();
                     break;
             }
@@ -359,7 +358,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             }
 
             return nodes
-                .FirstOrDefault(n => !nodesWithIncoming.Contains(n) && n.Figure is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.StartEnd});
+                .FirstOrDefault(n => !nodesWithIncoming.Contains(n) && n.Figure is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.StartEnd });
         }
 
         /// <summary>
@@ -407,7 +406,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             var figureToNode = nodes.ToDictionary(n => n.Figure);
 
             var outgoing = BuildOutgoingConnections(figureToNode, connections);
-            var startNode = FindStartNode(nodes, connections) 
+            var startNode = FindStartNode(nodes, connections)
                 ?? throw new InvalidOperationException("The starting node of the flowchart could not be determined.");
             _graph.Clear();
 
