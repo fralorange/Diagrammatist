@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Drawing;
+using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
 {

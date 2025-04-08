@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Drawing;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
 {
@@ -10,7 +11,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
     {
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLinePoints"]/*'/>
         [ObservableProperty]
-        private List<Point> _points;
+        private ObservableCollection<Point> _points;
 
         private double _thickness;
 

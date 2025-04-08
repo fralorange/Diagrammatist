@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -14,11 +15,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <summary>
         /// Occurs when user requests end drawing.
         /// </summary>
-        public event Func<(List<Point> points, Point point)?>? RequestEndDrawing;
+        public event Func<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?>? RequestEndDrawing;
 
         public ActionViewModel()
         {
             IsActive = true;
+        }
+
+        /// <summary>
+        /// Confirms action when logic requests it.
+        /// </summary>
+        public void EarlyConfirm()
+        {
+            Confirm();
         }
 
         /// <summary>

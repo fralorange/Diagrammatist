@@ -68,7 +68,7 @@
     "Category": "Advanced",
     "Data": {
       "Type": "Points",
-      "Value": "0,0 50,50"
+      "Value": "0,0 2,10 10,2 0,0 50,50"
     }
   },
   {
@@ -83,72 +83,81 @@
     "Name": "Start/End",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M200,0 A50,50 0 0 1 250,50 A50,50 0 0 1 200,100 H50 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
+      "Type": "Flowchart",
+      "Value": "M200,0 A50,50 0 0 1 250,50 A50,50 0 0 1 200,100 H50 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z",
+      "Subtype": "StartEnd"
     }
   },
   {
     "Name": "Process",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M0,0 L125,0 L125,50 L0,50 Z"
+      "Type": "Flowchart",
+      "Value": "M0,0 L125,0 L125,50 L0,50 Z",
+      "Subtype": "Process"
     }
   },
   {
     "Name": "Input/Output",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M30,0 L125,0 L95,50 L0,50 Z"
+      "Type": "Flowchart",
+      "Value": "M30,0 L125,0 L95,50 L0,50 Z",
+      "Subtype": "InputOutput"
     }
   },
   {
     "Name": "Decision",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M50,50 L100,75 L150,50 L100,25 Z"
+      "Type": "Flowchart",
+      "Value": "M50,50 L100,75 L150,50 L100,25 Z",
+      "Subtype": "Decision"
     }
   },
   {
     "Name": "Connector",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z"
+      "Type": "Flowchart",
+      "Value": "M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z",
+      "Subtype": "Connector"
     }
   },
   {
     "Name": "Preparation",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M50,0 L25,25 L50,50 L125,50 L150,25 L125,0 Z"
+      "Type": "Flowchart",
+      "Value": "M50,0 L25,25 L50,50 L125,50 L150,25 L125,0 Z",
+      "Subtype": "Preparation"
     }
   },
   {
     "Name": "PredefinedProcess",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M0,0 L125,0 L125,50 L0,50 Z M25,0 L25,50 M100,0 L100,50"
+      "Type": "Flowchart",
+      "Value": "M0,0 L125,0 L125,50 L0,50 Z M25,0 L25,50 M100,0 L100,50",
+      "Subtype": "PredefinedProcess"
     }
   },
   {
     "Name": "Document",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M100,0 L0,0 L0,50 Q15,65 50,50 T100,40 Z"
+      "Type": "Flowchart",
+      "Value": "M100,0 L0,0 L0,50 Q15,65 50,50 T100,40 Z",
+      "Subtype": "Document"
     }
   },
   {
     "Name": "Database",
     "Category": "Blocks",
     "Data": {
-      "Type": "Path",
-      "Value": "M0,0 A50,15 0 0 0 100,0 A50,15 0 0 0 0,0 M100,0 L100,75 A50,15 0 0 1 0,75 L0,0 A50,15 0 0 0 100,0"
+      "Type": "Flowchart",
+      "Value": "M0,0 A50,15 0 0 0 100,0 A50,15 0 0 0 0,0 M100,0 L100,75 A50,15 0 0 1 0,75 L0,0 A50,15 0 0 0 100,0",
+      "Subtype": "Database"
     }
   }
 ]

@@ -1,5 +1,7 @@
 ﻿using Diagrammatist.Application.AppServices.Figures.Serializer.Witness;
 using Diagrammatist.Domain.Figures;
+using Diagrammatist.Domain.Figures.Special.Container;
+using Diagrammatist.Domain.Figures.Special.Flowchart;
 using Nerdbank.MessagePack;
 
 namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
@@ -19,6 +21,8 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
             mapping.Add<LineFigure, FigureWitness>(1);
             mapping.Add<ShapeFigure, FigureWitness>(2);
             mapping.Add<TextFigure, FigureWitness>(3);
+            mapping.Add<ContainerFigure, FigureWitness>(4);
+            mapping.Add<FlowchartFigure, FigureWitness>(5);
 
             serializer.RegisterKnownSubTypes(mapping);
         }

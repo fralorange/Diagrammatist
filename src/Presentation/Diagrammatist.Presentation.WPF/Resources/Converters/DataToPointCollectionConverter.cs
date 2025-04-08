@@ -6,17 +6,17 @@ using System.Windows.Media;
 namespace Diagrammatist.Presentation.WPF.Resources.Converters
 {
     /// <summary>
-    /// A class that converts from <see cref="List{T}"/> of <see cref="System.Drawing.Point"/> to <see cref="PointCollection"/> class.
+    /// A class that converts from <see cref="IEnumerable{T}{T}"/> of <see cref="Point"/> to <see cref="PointCollection"/> class.
     /// </summary>
-    [ValueConversion(typeof(List<System.Drawing.Point>), typeof(PointCollection))]
+    [ValueConversion(typeof(IEnumerable<Point>), typeof(PointCollection))]
     public class DataToPointCollectionConverter : IValueConverter
     {
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is List<System.Drawing.Point> points)
+            if (value is IEnumerable<Point> points)
             {
-                return new PointCollection(points.Select(p => new Point(p.X, p.Y)));
+                return new PointCollection(points);
             }
             return value;
         }

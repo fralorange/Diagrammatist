@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
 
@@ -28,6 +29,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
 #pragma warning restore CS8618 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Figures"]/*'/>
         public ObservableCollection<FigureModel> Figures { get; set; } = [];
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Connections"]/*'/>
+        public ObservableCollection<ConnectionModel> Connections { get; set; } = [];
         /// <summary>
         /// Gets or sets 'has changes' flag.
         /// </summary>

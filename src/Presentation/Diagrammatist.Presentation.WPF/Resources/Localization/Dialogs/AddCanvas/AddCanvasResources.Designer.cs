@@ -80,6 +80,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom.
+        /// </summary>
+        internal static string Custom {
+            get {
+                return ResourceManager.GetString("Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Diagram type:.
         /// </summary>
         internal static string DiagramType {
@@ -94,6 +103,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         internal static string FileName {
             get {
                 return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Flowchart.
+        /// </summary>
+        internal static string Flowchart {
+            get {
+                return ResourceManager.GetString("Flowchart", resourceCulture);
             }
         }
         

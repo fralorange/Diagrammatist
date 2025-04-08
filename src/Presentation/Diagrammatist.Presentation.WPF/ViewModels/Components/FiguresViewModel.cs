@@ -6,12 +6,19 @@ using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Windows;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
+using Diagrammatist.Domain.Figures;
+using Diagrammatist.Domain.Connection;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -22,6 +29,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     {
         private readonly IFigureService _figureService;
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly IConnectionService _connectionService;
 
         /// <summary>
         /// Occurs when a requested user input confirmed.
@@ -29,7 +37,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user presses "checkmark" button and passes line figure data.
         /// </remarks>
-        public event Action<(List<Point> points, Point point)?>? LineInputConfirmed;
+        public event Action<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?>? LineInputConfirmed;
         /// <summary>
         /// Occurs when a requested user input cancelled.
         /// </summary>
@@ -51,6 +59,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         [ObservableProperty]
         private ObservableCollection<FigureModel>? _canvasFigures;
+
+        /// <summary>
+        /// Gets or sets <see cref="ObservableCollection{T}"/> of <see cref="ConnectionModel"/>.
+        /// </summary>
+        /// <remarks>
+        /// This property used to store connections that placed on canvas.
+        /// </remarks>
+        [ObservableProperty]
+        private ObservableCollection<ConnectionModel>? _canvasConnections;
 
         /// <summary>
         /// Gets or sets dictionary with string keys and <see cref="List{T}"/> of <see cref="FigureModel"/> pairs.
@@ -93,10 +110,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         /// <param name="figureService">A figure service.</param>
         /// <param name="trackableCommandManager">A command manager.</param>
-        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager)
+        /// <param name="connectionManager">A connection manager.</param>
+        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager, IConnectionService connectionManager)
         {
             _figureService = figureService;
             _trackableCommandManager = trackableCommandManager;
+            _connectionService = connectionManager;
 
             IsActive = true;
         }
@@ -110,14 +129,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             switch (figure)
             {
                 case LineFigureModel line:
-                    line.BackgroundColor = Color.FromArgb(themeColor.A, themeColor.R, themeColor.G, themeColor.B);
+                    line.BackgroundColor = themeColor;
                     break;
-                case TextFigureModel textFigure:
-                    textFigure.TextColor = Color.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B);
-                    textFigure.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                case ContainerFigureModel containerFigure:
+                    containerFigure.TextColor = textColor;
+                    containerFigure.BackgroundColor = bgColor;
+                    break;
+                case TextFigureModel textFigure :
+                    textFigure.TextColor = textColor;
+                    textFigure.BackgroundColor = bgColor;
                     break;
                 default:
-                    figure.BackgroundColor = Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                    figure.BackgroundColor = bgColor;
                     break;
             }
         }
@@ -170,7 +193,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             var figureTemplate = SelectedFigure;
             SelectedFigure = null;
 
-            if (CanvasFigures is null || figureTemplate is null)
+            if (CanvasFigures is null || CanvasConnections is null || figureTemplate is null)
             {
                 return;
             }
@@ -192,11 +215,32 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     return;
                 }
 
+                var mStart = result.Value.start;
+                var mEnd = result.Value.end;
+
                 var figure = (figureTemplate.Clone() as LineFigureModel)!;
 
-                figure.PosX = result.Value.point.X;
-                figure.PosY = result.Value.point.Y;
-                figure.Points = result.Value.points;
+                figure.Points = result.Value.points.ToObservableCollection();
+
+                if (mStart is not null || mEnd is not null)
+                {
+                    var connection = new ConnectionModel()
+                    {
+                        SourceMagneticPoint = mStart,
+                        DestinationMagneticPoint = mEnd,
+                        Line = figure,
+                    };
+
+                    _connectionService.AddConnection(CanvasConnections, connection);
+                }
+
+                AddTrackedFigure(figure);
+            }
+            else if (figureTemplate is ShapeFigureModel figureModel)
+            {
+                var figure = figureModel.Clone() as ShapeFigureModel;
+
+                figure!.UpdateMagneticPoints();
 
                 AddTrackedFigure(figure);
             }
@@ -213,13 +257,34 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             // Track changes in figure properties.
             figure.ExtendedPropertyChanged += OnPropertyChanged;
 
+            var connection = GetConnection(CanvasConnections!, figure, _connectionService);
+
             // Track addition to canvas.
             var command = CommonUndoableHelper.CreateUndoableCommand(
-                () => CanvasFigures!.Add(figure),
-                () => CanvasFigures!.Remove(figure)
+                () =>
+                {
+                    CanvasFigures!.Add(figure);
+                    if (connection is not null && !CanvasConnections!.Any(c => c == connection)) _connectionService.AddConnection(CanvasConnections!, connection);
+                },
+                () =>
+                {
+                    CanvasFigures!.Remove(figure);
+                    if (connection is not null && CanvasConnections!.Any(c => c == connection)) _connectionService.RemoveConnection(CanvasConnections!, connection);
+                }
             );
 
             _trackableCommandManager.Execute(command);
+        }
+
+        // TO-DO move this somewhere else.
+        private static ConnectionModel? GetConnection<T>(ICollection<ConnectionModel> connections, T target, IConnectionService connectionService)
+        {
+            if (target is LineFigureModel line)
+            {
+                return connectionService.GetConnection(connections, line);
+            }
+
+            return null;
         }
 
         private void OnPropertyChanged(object? sender, ExtendedPropertyChangedEventArgs e)
@@ -250,11 +315,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        private Task<(List<Point> points, Point point)?> WaitForUserInputAsync()
+        private Task<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?> WaitForUserInputAsync()
         {
-            var tcs = new TaskCompletionSource<(List<Point> points, Point point)?>();
+            var tcs = new TaskCompletionSource<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?>();
 
-            void OnUserConfirmed((List<Point> points, Point point)? lineData)
+            void OnUserConfirmed((List<Point> points, MagneticPointModel? start, MagneticPointModel? end)? lineData)
             {
                 tcs.TrySetResult(lineData);
 
@@ -296,20 +361,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 else
                 {
                     var points = m.Value.Value.points;
-                    var position = m.Value.Value.point;
 
-                    var positionX = Convert.ToInt32(position.X);
-                    var positionY = Convert.ToInt32(position.Y);
+                    var mStart = m.Value.Value.start;
+                    var mEnd = m.Value.Value.end;
 
-                    var drawingPosition = new Point(positionX, positionY);
-
-                    LineInputConfirmed?.Invoke((points.Select(point =>
-                    {
-                        int x = Convert.ToInt32(point.X);
-                        int y = Convert.ToInt32(point.Y);
-
-                        return new Point(x, y);
-                    }).ToList(), drawingPosition));
+                    LineInputConfirmed?.Invoke((points, mStart, mEnd));
                 }
             });
 
@@ -324,6 +380,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     m.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Figures))
                 {
                     CanvasFigures = m.NewValue;
+                }
+            });
+
+            Messenger.Register<FiguresViewModel, PropertyChangedMessage<ObservableCollection<ConnectionModel>?>>(this, (r, m) =>
+            {
+                if (m.Sender.GetType() == typeof(CanvasViewModel) &&
+                    m.PropertyName == nameof(CanvasViewModel.CurrentCanvas.Connections))
+                {
+                    CanvasConnections = m.NewValue;
                 }
             });
         }

@@ -5,7 +5,7 @@ using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
+using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {

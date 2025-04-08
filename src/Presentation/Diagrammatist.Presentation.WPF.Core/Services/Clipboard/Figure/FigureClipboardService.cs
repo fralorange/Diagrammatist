@@ -4,18 +4,18 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Windows;
 using ClipboardInstance = System.Windows.Clipboard;
 
-namespace Diagrammatist.Presentation.WPF.Core.Managers.Clipboard.Figure
+namespace Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure
 {
     /// <summary>
     /// A class that manages <see cref="ClipboardInstance"/> operations for <see cref="FigureModel"/>.
     /// </summary>
-    public class FigureClipboardManager : IClipboardManager<FigureModel>
+    public class FigureClipboardService : IClipboardService<FigureModel>
     {
         private const string FigureClipboardFormat = $"{nameof(Diagrammatist)}.Figure";
 
         private readonly IFigureSerializationService _figureSerializationService;
 
-        public FigureClipboardManager(IFigureSerializationService figureSerializationService)
+        public FigureClipboardService(IFigureSerializationService figureSerializationService)
         {
             _figureSerializationService = figureSerializationService;
         }

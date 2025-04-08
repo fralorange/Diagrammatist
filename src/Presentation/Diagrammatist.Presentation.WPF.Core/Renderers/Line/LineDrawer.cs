@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,13 +13,22 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
     /// </summary>
     public class LineDrawer
     {
+        /// <summary>
+        /// Occurs when logic requires early exit from drawing.
+        /// </summary>
+        public event Action? RequestEarlyExit;
+
         private Panel _panel;
         private int _gridStep;
 
         private Polyline? _line;
 
         private bool _isShiftPressed;
+        private bool _isCtrlPressed;
         private bool _isDrawing;
+
+        private MagneticPointModel? _startMagneticPoint;
+        private MagneticPointModel? _endMagneticPoint;
 
         /// <summary>
         /// Gets or sets 'is drawing' parameter.
@@ -35,6 +45,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
         /// Initializes a new instance of the <see cref="LineDrawer"/> class.
         /// </summary>
         /// <param name="panel">The panel where drawing will take place.</param>
+        /// <param name="gridStep">A grid step.</param>
         public LineDrawer(Panel panel, int gridStep)
         {
             _panel = panel;
@@ -45,8 +56,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
         /// Adds new point to line.
         /// </summary>
         /// <param name="newPoint">A new line point.</param>
-        public void AddPoint(Point newPoint)
+        public void AddPoint(Point newPoint, IEnumerable<MagneticPointModel> magneticPoints)
         {
+            var magneticPoint = GetNearestMagneticPoint(newPoint, magneticPoints);
+
             if (_line is null)
             {
                 _line = new Polyline
@@ -56,13 +69,26 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
                     StrokeLineJoin = PenLineJoin.Bevel,
                 };
 
+                _startMagneticPoint = magneticPoint;
                 _isDrawing = true;
                 _panel.Children.Insert(0, _line);
             }
 
-            newPoint = GetSnappedToGridPoint(newPoint);
+            if (!_isCtrlPressed)
+            {
+                newPoint = GetSnappedToGridPoint(newPoint);
+            }
+
+            newPoint = magneticPoint?.Position ?? newPoint;
 
             _line.Points.Add(newPoint);
+
+            if (_line.Points.Count > 1 && magneticPoint is not null && RequestEarlyExit is not null)
+            {
+                _endMagneticPoint = magneticPoint;
+
+                RequestEarlyExit();
+            }
         }
 
         /// <summary>
@@ -70,19 +96,28 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
         /// </summary>
         /// <param name="currentPoint">Current point that latest point updates to.</param>
         /// <param name="isShiftPressed">Shift pressed parameter.</param>
-        public void UpdateLine(Point currentPoint, bool isShiftPressed)
+        /// <param name="isCtrlPressed">Ctrl pressed parameter.</param>
+        /// <param name="magneticPoints">Magnetic points.</param>
+        public void UpdateLine(Point currentPoint, bool isShiftPressed, bool isCtrlPressed, IEnumerable<MagneticPointModel> magneticPoints)
         {
             if (_line is null)
                 return;
 
             _isShiftPressed = isShiftPressed;
+            _isCtrlPressed = isCtrlPressed;
 
             if (_isShiftPressed)
             {
                 currentPoint = GetSnappedToAnglePoint(currentPoint);
             }
 
-            currentPoint = GetSnappedToGridPoint(currentPoint);
+            if (!_isCtrlPressed)
+            {
+                currentPoint = GetSnappedToGridPoint(currentPoint);
+            }
+
+            var magneticPoint = GetNearestMagneticPoint(currentPoint, magneticPoints);
+            currentPoint = magneticPoint?.Position ?? currentPoint;
 
             if (_line.Points.Count == 1)
             {
@@ -98,22 +133,22 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
         /// Ends drawing operation.
         /// </summary>
         /// <returns></returns>
-        public (List<Point> Points, Point Position)? EndDrawing()
+        public (List<Point> Points, MagneticPointModel? Start, MagneticPointModel? End)? EndDrawing()
         {
-            if (_line is null || _line.Points.Count < 3)
-                return null;
-
             try
             {
-                var newList = new List<Point>(_line.Points.SkipLast(1));
-                var position = GetPolylinePosition();
+                if (_line is null || _line.Points.Count < 3) return null;
 
-                return (newList, position);
+                var newList = new List<Point>(_line.Points.SkipLast(1));
+
+                return (newList, _startMagneticPoint, _endMagneticPoint);
             }
             finally
             {
+                _startMagneticPoint = null;
+                _endMagneticPoint = null;
                 _isDrawing = false;
-                _line.Points.Clear();
+                _line?.Points.Clear();
                 _panel.Children.Remove(_line);
                 _line = null;
             }
@@ -153,17 +188,20 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
             return new Point(snappedX, snappedY);
         }
 
-        private Point GetPolylinePosition()
+        private MagneticPointModel? GetNearestMagneticPoint(Point point, IEnumerable<MagneticPointModel> magneticPoints, double threshold = 10)
         {
-            if (_line is null || _line.Points.Count == 0)
-                return new Point(0, 0);
+            var nearestPoint = magneticPoints
+                .Select(p => new { Point = p, Distance = GetDistance(point, p.Position) })
+                .Where(p => p.Distance <= threshold)
+                .OrderBy(p => p.Distance)
+                .FirstOrDefault();
 
-            var points = _line.Points.SkipLast(1);
+            return nearestPoint?.Point;
+        }
 
-            double minX = points.Min(p => p.X);
-            double minY = points.Min(p => p.Y);
-
-            return new(minX, minY);
+        private double GetDistance(Point p1, Point p2)
+        {
+            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
         }
     }
 }

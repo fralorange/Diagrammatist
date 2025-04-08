@@ -17,5 +17,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
         {
             CollectionViewSource.GetDefaultView(collection).Refresh();
         }
+
+        /// <summary>
+        /// Casts <see cref="IEnumerable{T}"/> to <see cref="ObservableCollection{T}"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
+        {
+            return new ObservableCollection<T>(enumerable);
+        }
     }
 }

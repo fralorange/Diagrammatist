@@ -12,6 +12,6 @@
         /// <summary>
         /// Default line arrow cap parameter.
         /// </summary>
-        public const bool DefaultArrowParameter = false;
+        public const bool DefaultArrowParameter = true;
     }
 }

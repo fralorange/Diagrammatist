@@ -19,5 +19,12 @@
         /// This property used to store figure type related properties.
         /// </remarks>
         public required string Value { get; init; }
+        /// <summary>
+        /// Gets subtype.
+        /// </summary>
+        /// <remarks>
+        /// This property used to configure figure subtype, if it exists.
+        /// </remarks>
+        public string? Subtype { get; init; }
     }
 }

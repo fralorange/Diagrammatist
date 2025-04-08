@@ -2,8 +2,40 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Figures;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:simulatorSelector="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Selectors;assembly=Diagrammatist.Presentation.WPF.Simulator"
+                    xmlns:connection="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Connection;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:node="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Models.Node;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
+    <!--#region  Shared-->
+    <DataTemplate x:Key="MagneticPointsTemplate">
+        <ItemsControl ItemsSource="{Binding MagneticPoints}"
+                      Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                       Path=DataContext.CurrentMouseMode, 
+                                       Converter={StaticResource MouseModeToVisibilityConverter}, 
+                                       FallbackValue=Collapsed}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Style="{StaticResource MagneticPoint}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Canvas.Left" 
+                            Value="{Binding Position.X, Converter={StaticResource OffsetHalfEllipseConverter}}"/>
+                    <Setter Property="Canvas.Top" 
+                            Value="{Binding Position.Y, Converter={StaticResource OffsetHalfEllipseConverter}}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+    </DataTemplate>
+    <!--#endregion-->
     <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"
                   DataType="figures:ShapeFigureModel">
@@ -18,6 +50,7 @@
         <Polyline lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
                   ToolTip="{lex:Loc {Binding Name}}"
                   Style="{StaticResource Line}"
+                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"/>
     </DataTemplate>
 
@@ -30,39 +63,57 @@
         </Border>
     </DataTemplate>
 
+    <DataTemplate x:Key="ToolboxContainerFigureTemplate">
+        <Grid lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources"
+              ToolTip="{lex:Loc {Binding Name}}">
+            <Path Style="{StaticResource Shape}"
+                  Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"/>
+            <TextBlock Text="{Binding Text}"
+                       Style="{StaticResource FigureText}"/>
+        </Grid>
+    </DataTemplate>
+
     <selector:FigureItemTemplateSelector x:Key="ToolboxFiguresSelector"
                                          ShapeFigureTemplate="{StaticResource ToolboxShapeFigureTemplate}"
                                          LineFigureTemplate="{StaticResource ToolboxLineFigureTemplate}"
-                                         TextFigureTemplate="{StaticResource ToolboxTextFigureTemplate}"/>
+                                         TextFigureTemplate="{StaticResource ToolboxTextFigureTemplate}"
+                                         ContainerFigureTemplate="{StaticResource ToolboxContainerFigureTemplate}"
+                                         FlowchartFigureTemplate="{StaticResource ToolboxContainerFigureTemplate}"/>
     <!--#endregion-->
     <!--#region Canvas-->
     <DataTemplate x:Key="CanvasShapeFigureTemplate"
                   DataType="figures:ShapeFigureModel">
-        <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
-              Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
-              Width="{Binding Width}"
-              Height="{Binding Height}">
-            <Path.Style>
-                <Style TargetType="Path" BasedOn="{StaticResource Shape}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding KeepAspectRatio}"
-                                     Value="False">
-                            <Setter Property="Stretch" Value="Fill" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Path.Style>
-        </Path>
+        <Grid>
+            <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
+                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                  Width="{Binding Width}"
+                  Height="{Binding Height}">
+                <Path.Style>
+                    <Style TargetType="Path" BasedOn="{StaticResource Shape}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding KeepAspectRatio}"
+                                         Value="False">
+                                <Setter Property="Stretch" Value="Fill" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MagneticPointsTemplate}"/>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasLineFigureTemplate"
                   DataType="figures:LineFigureModel">
-        <Polyline Style="{StaticResource Line}"
-                  Points="{Binding Points, Converter={StaticResource DataToPointCollectionConverter}}"
-                  Fill="Transparent"
-                  Stroke="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
-                  StrokeThickness="{Binding Thickness}"
-                  StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"/>
+        <controls:ObservablePolyline Style="{StaticResource Line}"
+                                     Points="{Binding Points}"
+                                     PosX="{Binding PosX, Mode=OneWayToSource}"
+                                     PosY="{Binding PosY, Mode=OneWayToSource}"
+                                     Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                                     Stroke="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                                     StrokeThickness="{Binding Thickness}"
+                                     StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"
+                                     HasArrow="{Binding HasArrow}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasTextFigureTemplate"
@@ -89,10 +140,45 @@
         </Border>
     </DataTemplate>
 
+    <DataTemplate x:Key="CanvasContainerFigureTemplate">
+        <Grid>
+            <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
+                  Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                  Width="{Binding Width}"
+                  Height="{Binding Height}">
+                <Path.Style>
+                    <Style TargetType="Path" BasedOn="{StaticResource Shape}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding KeepAspectRatio}"
+                                         Value="False">
+                                <Setter Property="Stretch" Value="Fill" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+
+            <Border>
+                <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Text}"
+                               FontSize="{Binding FontSize}"
+                               Foreground="{Binding TextColor, Converter={StaticResource ColorToBrushConverter}}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Viewbox>
+            </Border>
+
+            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MagneticPointsTemplate}"/>
+        </Grid>
+    </DataTemplate>
+
+
     <selector:FigureItemTemplateSelector x:Key="CanvasFiguresSelector"
                                          ShapeFigureTemplate="{StaticResource CanvasShapeFigureTemplate}"
                                          LineFigureTemplate="{StaticResource CanvasLineFigureTemplate}"
-                                         TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"/>
+                                         TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"
+                                         ContainerFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"
+                                         FlowchartFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"/>
     <!--#endregion-->
     <!--#region Properties-->
     <DataTemplate x:Key="BasePropertiesFigureTemplate"
@@ -104,7 +190,7 @@
             <Label Content="{lex:Loc Rotation}"/>
             <TextBox Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="{lex:Loc Color}"/>
-            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              ShowAlpha="False"
                                              ShowFractionalPart="False"
                                              Style="{StaticResource PortableColorSlider}"/>
@@ -158,7 +244,7 @@
                     <Label Content="{lex:Loc FontSize}"/>
                     <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="{lex:Loc TextColor}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      ShowAlpha="False"
                                                      ShowFractionalPart="False"
                                                      Style="{StaticResource PortableColorSlider}"/>
@@ -171,9 +257,92 @@
         </ScrollViewer>
     </DataTemplate>
 
+    <DataTemplate x:Key="PropertiesContainerFigureTemplate">
+        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="{lex:Loc Width}"/>
+                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc Height}"/>
+                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc Text}"/>
+                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc FontSize}"/>
+                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc TextColor}"/>
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ShowAlpha="False"
+                                 ShowFractionalPart="False"
+                                 Style="{StaticResource PortableColorSlider}"/>
+                </UniformGrid>
+                <CheckBox Content="{lex:Loc KeepAspectRatio}"
+                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
     <selector:FigureItemTemplateSelector x:Key="PropertiesFigureSelector"
                                          ShapeFigureTemplate="{StaticResource PropertiesShapeFigureTemplate}"
                                          LineFigureTemplate="{StaticResource PropertiesLineFigureTemplate}"
-                                         TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"/>
+                                         TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"
+                                         ContainerFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"
+                                         FlowchartFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"/>
+    <!--#endregion-->
+    <!--#region Simulator-->
+    <DataTemplate x:Key="SimulationNodeTemplate"
+                  DataType="node:SimulationNodeBase"
+                  xmlns:converters="clr-namespace:Diagrammatist.Presentation.WPF.Resources.Converters">
+        <DataTemplate.Resources>
+            <converters:EqualityToBrushMultiConverter x:Key="EqualityToBrushMultiConverter" 
+                                                      HighlightBrush="{StaticResource ControlHighlightBrush}" 
+                                                      DefaultBrush="Transparent"/>
+        </DataTemplate.Resources>
+        <Border BorderThickness="2">
+            <Border.BorderBrush>
+                <MultiBinding Converter="{StaticResource EqualityToBrushMultiConverter}">
+                    <Binding Path="DataContext.CurrentNode" 
+                             RelativeSource="{RelativeSource AncestorType=ListBox}"/>
+                    <Binding/>
+                </MultiBinding>
+            </Border.BorderBrush>
+            <ContentControl Content="{Binding Figure}"
+                            ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SimulationConnectionTemplate"
+                  DataType="connection:ConnectionModel">
+        <ContentControl Content="{Binding Line}"
+                        ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ScriptTemplate"
+                  DataType="node:SimulationNodeBase">
+        <StackPanel>
+            <TextBlock Text="Lua"
+                       FontWeight="Bold"/>
+            <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     HorizontalScrollBarVisibility="Disabled"
+                     VerticalScrollBarVisibility="Auto"
+                     VerticalContentAlignment="Top"
+                     Margin="5"
+                     MinHeight="160"/>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+        </StackPanel>
+    </DataTemplate>
+    
+    <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
+                                              SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
+                                              SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
+
+    <simulatorSelector:SimulationItemStyleSelector x:Key="SimulationItemStyleSelector"
+                                                   SimulationNodeStyle="{StaticResource SimulationNodeStyle}"
+                                                   SimulationConnectionStyle="{StaticResource SimulationConnectionStyle}"/>
+
+    <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
+                                                FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"/>
     <!--#endregion-->
 </ResourceDictionary>

@@ -18,6 +18,7 @@
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal">
             <Button Style="{StaticResource ActionButton}"
+                    Margin="0 0 10 0"
                     ToolTip="{lex:Loc Confirm}"
                     Command="{Binding ConfirmCommand}">
                 <ContentControl>
@@ -27,6 +28,7 @@
             </Button>
 
             <Button Style="{StaticResource ActionButton}"
+                    Margin="0 0 10 0"
                     ToolTip="{lex:Loc Cancel}"
                     Command="{Binding CancelCommand}">
                 <ContentControl>
