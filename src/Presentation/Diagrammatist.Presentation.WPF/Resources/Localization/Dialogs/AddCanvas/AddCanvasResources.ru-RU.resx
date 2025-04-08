@@ -123,11 +123,17 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Заказная</value>
+  </data>
   <data name="DiagramType" xml:space="preserve">
     <value>Тип диаграммы: </value>
   </data>
   <data name="FileName" xml:space="preserve">
     <value>Имя диаграммы: </value>
+  </data>
+  <data name="Flowchart" xml:space="preserve">
+    <value>Блок-схема</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>Высота: </value>

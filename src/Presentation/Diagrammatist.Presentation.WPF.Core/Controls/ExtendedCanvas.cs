@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -194,7 +195,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 var selBorder = GetElementSelectionBorder(_selectedElement!);
 
                 CenterSelectedElement(selBorder, ref newX, ref newY);
-                SnapCoordinatesToGrid(selBorder, ref newX, ref newY);
+                GridHelper.SnapCoordinatesToGrid(selBorder, ref newX, ref newY, GridStep);
                 ValidateAndSetElementPosition(_selectedElement!, selBorder, newX, newY);
             }
         }
@@ -234,12 +235,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             x -= (_selectedElement!.ActualWidth - selBorder.Left - selBorder.Right) / 2;
             y -= (_selectedElement!.ActualHeight - selBorder.Top - selBorder.Bottom) / 2;
-        }
-
-        private void SnapCoordinatesToGrid(Thickness selBorder, ref double x, ref double y)
-        {
-            x = Math.Round(x / GridStep) * GridStep - selBorder.Left;
-            y = Math.Round(y / GridStep) * GridStep - selBorder.Top;
         }
 
         private Thickness GetElementSelectionBorder(FrameworkElement? elem = null)

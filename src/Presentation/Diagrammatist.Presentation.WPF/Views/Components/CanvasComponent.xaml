@@ -83,8 +83,12 @@
                                                  IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
                                                  IsBorderVisible="{Binding DataContext.CurrentCanvas, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource NullToBooleanConverter}, FallbackValue=False}"
                                                  GridLineColor="{DynamicResource FrameStroke}"
+                                                 ContextMenuService.IsEnabled="{Binding DataContext.IsNotBlocked, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                 PreviewMouseLeftButtonDown="OnExtendedCanvasPreviewMouseLeftButtonDown"
+                                                 PreviewMouseMove="OnExtendedCanvasPreviewMouseMove"
                                                  PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown"
                                                  PreviewKeyDown="OnExtendedCanvasPreviewKeyDown"
+                                                 Loaded="OnExtendedCanvasLoaded"
                                                  Focusable="True">
                             <controls:ExtendedCanvas.ContextMenu>
                                 <ContextMenu lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
@@ -104,7 +108,7 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
                         <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
@@ -114,10 +118,18 @@
                                 <RotateTransform Angle="{Binding Rotation}"/>
                             </Setter.Value>
                         </Setter>
+                        <Setter Property="ContextMenuService.IsEnabled" Value="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.IsNotBlocked}" />
                         <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+
+            <Canvas x:Name="drawingCanvas"
+                    Width="{Binding CurrentCanvas.Settings.Width}"
+                    Height="{Binding CurrentCanvas.Settings.Height}"
+                    Background="Transparent"
+                    ClipToBounds="True"
+                    IsHitTestVisible="False"/>
         </Grid>
         <i:Interaction.Behaviors>
             <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"

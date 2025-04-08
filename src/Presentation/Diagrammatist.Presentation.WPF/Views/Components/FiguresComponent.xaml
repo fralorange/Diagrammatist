@@ -39,7 +39,8 @@
         <ListBox Grid.Row="2"
                  ItemsSource="{Binding SelectedCategory.Value}"
                  SelectedItem="{Binding SelectedFigure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 ItemTemplateSelector="{StaticResource ToolboxFiguresSelector}">
+                 ItemTemplateSelector="{StaticResource ToolboxFiguresSelector}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding AddFigureCommand}"/>

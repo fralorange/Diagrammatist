@@ -9,7 +9,7 @@ namespace Diagrammatist.Domain.Figures
     public class LineFigure : Figure
     {
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLinePoints"]/*'/>
-        public List<Point> Points { get; set; } = [];
+        public List<PointF> Points { get; set; } = [];
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineThickness"]/*'/>
         public double Thickness { get; set; } = LineFigureManipulationConstants.DefaultThickness;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureLineIsDashed"]/*'/>

@@ -82,4 +82,31 @@
             </GradientStopCollection>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
+
+    <DrawingBrush x:Key="PointBrush">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="{DynamicResource FrameStroke}">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,1,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="{DynamicResource ControlBackgroundBrush}">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry Center="0.5,0.5" RadiusX="0.4" RadiusY="0.4" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <RadialGradientBrush x:Key="ItemHoverBorderBrush">
+        <GradientStop Color="{DynamicResource ControlHover}" Offset="0.2"/>
+        <GradientStop Color="{DynamicResource ControlHover}" Offset="1.0"/>
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="ItemSelectedBorderBrush">
+        <GradientStop Color="{DynamicResource ControlFocused}" Offset="0.1"/>
+        <GradientStop Color="{DynamicResource ControlFocused}" Offset="1.0"/>
+    </RadialGradientBrush>
+    <SolidColorBrush x:Key="ItemSelectionBackground" Color="{DynamicResource ControlHighlight}" Opacity="0.1"/>
 </ResourceDictionary>

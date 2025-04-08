@@ -132,6 +132,9 @@
   <data name="Data flow" xml:space="preserve">
     <value>Поток данных</value>
   </data>
+  <data name="Database" xml:space="preserve">
+    <value>База данных</value>
+  </data>
   <data name="Decision" xml:space="preserve">
     <value>Решение</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="Pentagon" xml:space="preserve">
     <value>Пятиугольник</value>
+  </data>
+  <data name="PredefinedProcess" xml:space="preserve">
+    <value>Предопределенный процесс</value>
   </data>
   <data name="Preparation" xml:space="preserve">
     <value>Подготовка</value>

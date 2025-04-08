@@ -142,15 +142,6 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на General....
-        /// </summary>
-        internal static string General {
-            get {
-                return ResourceManager.GetString("General", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Grid.
         /// </summary>
         internal static string Grid {
@@ -264,6 +255,24 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         internal static string SaveAs {
             get {
                 return ResourceManager.GetString("SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulator.
+        /// </summary>
+        internal static string Simulator {
+            get {
+                return ResourceManager.GetString("Simulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tools.
+        /// </summary>
+        internal static string Tools {
+            get {
+                return ResourceManager.GetString("Tools", resourceCulture);
             }
         }
         

@@ -1,6 +1,7 @@
-﻿using Diagrammatist.Application.AppServices.Figures.Serializer.Converters;
-using Diagrammatist.Application.AppServices.Figures.Serializer.Witness;
+﻿using Diagrammatist.Application.AppServices.Figures.Serializer.Witness;
 using Diagrammatist.Domain.Figures;
+using Diagrammatist.Domain.Figures.Special.Container;
+using Diagrammatist.Domain.Figures.Special.Flowchart;
 using Nerdbank.MessagePack;
 
 namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
@@ -11,15 +12,6 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
     public class SerializationConfigurator
     {
         /// <summary>
-        /// Configures converters.
-        /// </summary>
-        /// <param name="serializer"></param>
-        internal void ConfigureConverters(MessagePackSerializer serializer)
-        {
-            serializer.RegisterConverter(new ColorConverter());
-        }
-
-        /// <summary>
         /// Configures figures through runtime registration.
         /// </summary>
         /// <param name="serializer"></param>
@@ -29,6 +21,8 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
             mapping.Add<LineFigure, FigureWitness>(1);
             mapping.Add<ShapeFigure, FigureWitness>(2);
             mapping.Add<TextFigure, FigureWitness>(3);
+            mapping.Add<ContainerFigure, FigureWitness>(4);
+            mapping.Add<FlowchartFigure, FigureWitness>(5);
 
             serializer.RegisterKnownSubTypes(mapping);
         }
@@ -39,9 +33,11 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
         /// <returns>Configure <see cref="MessagePackSerializer"/>.</returns>
         public MessagePackSerializer Configure()
         {
-            var serializer = new MessagePackSerializer();
+            var serializer = new MessagePackSerializer()
+            {
+                SerializeDefaultValues = SerializeDefaultValuesPolicy.Always,
+            };
 
-            ConfigureConverters(serializer);
             ConfigureFiguresMapping(serializer);
 
             return serializer;

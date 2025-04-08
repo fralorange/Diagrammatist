@@ -152,6 +152,14 @@
 
     <!--#endregion-->
     <!--#region TitleBar-->
+    <Style TargetType="Image" x:Key="IconImage">
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="5 0 0 0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    
     <Style x:Key="TitleBarButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource TitleBarButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource TitleBarButtonForeground}" />
@@ -255,6 +263,22 @@
 
     <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}"/>
 
+    <Style TargetType="Window" x:Key="BaseWindow">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="{StaticResource FrameStroke}" 
+                                BorderThickness="3 0 3 3"
+                                Background="{TemplateBinding Background}">
+                        <AdornerDecorator>
+                            <ContentPresenter/>
+                        </AdornerDecorator>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="Grid" x:Key="Window">
         <Setter Property="Background" Value="{StaticResource WindowBackground}" />
     </Style>
@@ -266,12 +290,66 @@
         <Setter Property="Margin" Value="2.5" />
     </Style>
 
+    <!--#region ItemsControl and Subtypes-->
     <Style TargetType="ItemsControl" x:Key="BaseItemsControls">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="{StaticResource FrameBackground}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ItemsControl">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}" 
+                            Padding="{TemplateBinding Padding}">
+                        <ScrollViewer Focusable="False">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource FrameBackground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="ListBox" BasedOn="{StaticResource BaseItemsControls}"/>
+
+    <Style TargetType="ListBoxItem" x:Key="CustomSelectionBox">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <Border x:Name="SelectionVisual"
+                                BorderBrush="{StaticResource ItemSelectedBorderBrush}"
+                                BorderThickness="2"
+                                Margin="-2"
+                                Background="{StaticResource ItemSelectionBackground}"
+                                Visibility="Collapsed"/>
+
+                        <ContentPresenter/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="SelectionVisual" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="SelectionVisual"  Property="Visibility" Value="Visible" />
+                            <Setter TargetName="SelectionVisual"  Property="BorderBrush" Value="{StaticResource ItemHoverBorderBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 
     <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseItemsControls}">
@@ -328,6 +406,24 @@
         </Setter>
     </Style>
 
+    <!--#endregion-->
+
+    <Style TargetType="Rectangle" x:Key="VerticalCustomSeparator">
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Width" Value="2" />
+        <Setter Property="Stroke" Value="{StaticResource FrameStroke}" />
+        <Setter Property="Margin" Value="5 0" />
+        <Setter Property="StrokeThickness" Value="5" />
+    </Style>
+
+    <Style TargetType="Rectangle" x:Key="HorizontalCustomSeparator">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="1" />
+        <Setter Property="Stroke" Value="{StaticResource FrameStroke}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="StrokeThickness" Value="5" />
+    </Style>
+
     <Style TargetType="ToolBar">
         <Style.Resources>
             <Style TargetType="Button">
@@ -371,29 +467,42 @@
         <Setter Property="Stretch" Value="Uniform" />
     </Style>
 
-    <Style TargetType="Path" x:Key="Shape" BasedOn="{StaticResource BaseGeometry}">
-        <Setter Property="Fill" Value="{StaticResource ShapeDefaultBackground}" />
+    <Style TargetType="Ellipse" x:Key="MagneticPoint">
+        <Setter Property="Fill" Value="{StaticResource PointBrush}" />
+        <Setter Property="MinWidth" Value="5" />
+        <Setter Property="MinHeight" Value="5" />
     </Style>
 
-    <Style TargetType="Polyline" x:Key="Line" BasedOn="{StaticResource BaseGeometry}">
+    <Style TargetType="Path" x:Key="Shape" BasedOn="{StaticResource BaseGeometry}">
+        <Setter Property="Fill" Value="{StaticResource ShapeDefaultBackground}" />
+        <Setter Property="StrokeLineJoin" Value="Bevel" />
+    </Style>
+
+    <Style TargetType="Shape" x:Key="Line" BasedOn="{StaticResource BaseGeometry}">
         <Setter Property="Fill" Value="Transparent" />
+        <Setter Property="Stretch" Value="None" />
     </Style>
 
     <Style TargetType="Border" x:Key="TextBorder">
-        <Setter Property="BorderBrush" Value="{StaticResource ShapeDefaultStroke}" />
+        <Setter Property="BorderBrush" Value="{StaticResource FrameStrokeRadial}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Background" Value="{StaticResource ShapeDefaultBackground}" />
         <Setter Property="Padding" Value="5" />
     </Style>
 
+    <Style TargetType="Border" x:Key="InternalBorder" BasedOn="{StaticResource TextBorder}">
+        <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="FigureText" BasedOn="{StaticResource BaseBlock}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
     <Style TargetType="Border" x:Key="ToolboxTextBorder" BasedOn="{StaticResource TextBorder}">
         <Style.Resources>
-            <Style TargetType="TextBox">
-                <Setter Property="IsReadOnly" Value="True" />
-                <Setter Property="SelectionOpacity" Value="0" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Background" Value="Transparent" />
-            </Style>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource FigureText}"/>
         </Style.Resources>
     </Style>
 
@@ -604,6 +713,22 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinWidth" Value="80"/>
         <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource ControlHoverBrush}"/>
@@ -613,12 +738,31 @@
                 <Setter Property="Background" Value="{StaticResource ControlPressedBrush}"/>
                 <Setter Property="BorderBrush" Value="{StaticResource ControlPressedBrush}"/>
             </Trigger>
-            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+            <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{StaticResource ControlDisabledBrush}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource ControlDisabledBrush}"/>
-                <Setter Property="Foreground" Value="{StaticResource MenuDisabledTextBrush}"/>
-            </DataTrigger>
+                <Setter Property="Opacity" Value="0.3" />
+            </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource BaseButton}" x:Key="ActionButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="MinWidth" Value="24"/>
+        <Setter Property="MinHeight" Value="24"/>
+        
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Opacity" Value="0.3" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource ActionButton}" x:Key="MediaButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="8"/>
     </Style>
 
     <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
@@ -884,6 +1028,37 @@
                 <Setter Property="Visibility" Value="Collapsed" />
             </Style>
         </Style.Resources>
+    </Style>
+    <!--#endregion-->
+
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
+    </Style>
+
+    <!--#region Simulation-->
+    <Style TargetType="ListBoxItem" x:Key="SimulationNodeStyle">
+        <Setter Property="Canvas.Left" Value="{Binding Figure.PosX}"/>
+        <Setter Property="Canvas.Top" Value="{Binding Figure.PosY}"/>
+        <Setter Property="Canvas.ZIndex" Value="{Binding Figure.ZIndex}"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="{Binding Figure.Rotation}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListBoxItem" x:Key="SimulationConnectionStyle">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Canvas.Left" Value="{Binding Line.PosX}"/>
+        <Setter Property="Canvas.Top" Value="{Binding Line.PosY}"/>
+        <Setter Property="Canvas.ZIndex" Value="{Binding Line.ZIndex}"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="{Binding Line.Rotation}"/>
+            </Setter.Value>
+        </Setter>
     </Style>
     <!--#endregion-->
 </ResourceDictionary>

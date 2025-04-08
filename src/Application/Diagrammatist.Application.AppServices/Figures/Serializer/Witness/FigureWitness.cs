@@ -1,4 +1,6 @@
 ﻿using Diagrammatist.Domain.Figures;
+using Diagrammatist.Domain.Figures.Special.Container;
+using Diagrammatist.Domain.Figures.Special.Flowchart;
 using PolyType;
 
 namespace Diagrammatist.Application.AppServices.Figures.Serializer.Witness
@@ -10,5 +12,7 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Witness
     [GenerateShape<LineFigure>]
     [GenerateShape<ShapeFigure>]
     [GenerateShape<TextFigure>]
+    [GenerateShape<ContainerFigure>]
+    [GenerateShape<FlowchartFigure>]
     partial class FigureWitness;
 }

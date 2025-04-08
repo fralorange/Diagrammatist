@@ -5,6 +5,7 @@ using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using MvvmDialogs;
@@ -50,7 +51,27 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// This property used to determine whether app has a canvas on the screen right now or not.
         /// </remarks>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(
+            nameof(MenuCloseCommand),
+            nameof(MenuCloseAllCommand),
+            nameof(MenuSaveAsCommand),
+            nameof(MenuExportCommand),
+            nameof(MenuZoomInCommand),
+            nameof(MenuZoomOutCommand),
+            nameof(MenuZoomResetCommand),
+            nameof(MenuEnableGridCommand),
+            nameof(MenuSimulatorCommand),
+            nameof(MenuChangeSizeCommand))]
         private bool _hasCanvasFlag;
+        /// <summary>
+        /// Gets or sets 'has custom canvas' flag.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether app current canvas is custom or not.
+        /// </remarks>
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(MenuSimulatorCommand))]
+        private bool _hasCustomCanvasFlag;
         /// <summary>
         /// Gets 'has grid flag' from client-prefs (be default: True)
         /// </summary>
@@ -59,6 +80,29 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// </remarks>
         [ObservableProperty]
         private bool _hasGridFlag = Properties.Settings.Default.GridVisible;
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsBlocked"]/*'/>
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
+        [NotifyCanExecuteChangedFor(
+            nameof(MenuNewCommand), 
+            nameof(MenuOpenCommand),
+            nameof(MenuCloseCommand),
+            nameof(MenuCloseAllCommand),
+            nameof(MenuSaveCommand),
+            nameof(MenuSaveAsCommand),
+            nameof(MenuSaveAllCommand),
+            nameof(MenuExportCommand),
+            nameof(MenuExitCommand),
+            nameof(MenuUndoCommand),
+            nameof(MenuRedoCommand),
+            nameof(MenuZoomInCommand),
+            nameof(MenuZoomOutCommand),
+            nameof(MenuZoomResetCommand),
+            nameof(MenuSimulatorCommand),
+            nameof(MenuChangeSizeCommand))]
+        private bool _isBlocked;
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
+        public bool IsNotBlocked => !IsBlocked;
         #endregion
 
         public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
@@ -81,12 +125,52 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
 
         #region Menu
 
+        private bool MenuCanExecute()
+        {
+            return IsNotBlocked;
+        }
+
+        private bool CanvasCanExecute()
+        {
+            return HasCanvasFlag;
+        }
+
+        private bool MenuWithCanvasCanExecute()
+        {
+            return MenuCanExecute() && CanvasCanExecute();
+        }
+
+        private bool MenuWithNotCustomCanvasCanExecute()
+        {
+            return MenuCanExecute() && CanvasCanExecute() && !HasCustomCanvasFlag;
+        }
+
+        private bool MenuWithCanvasChangesCanExecute()
+        {
+            return MenuCanExecute() && HasChangesFlag;
+        }
+
+        private bool MenuWithGlobalChangesCanExecute()
+        {
+            return MenuCanExecute() && HasGlobalChangesFlag;
+        }
+
+        private bool MenuWithUndoCanExecute()
+        {
+            return MenuCanExecute() && HasUndoFlag;
+        }
+
+        private bool MenuWithRedoCanExecute()
+        {
+            return MenuCanExecute() && HasRedoFlag;
+        }
+
         #region File
 
         /// <summary>
         /// Creates a new canvas through dialog window from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuCanExecute))]
         private void MenuNew()
         {
             var dialogViewModel = new AddCanvasDialogViewModel();
@@ -103,7 +187,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Opens an existing canvas from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuCanExecute))]
         private void MenuOpen()
         {
             Messenger.Send(CommandFlags.Open);
@@ -112,7 +196,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Closes current canvas from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
         private void MenuClose()
         {
             Messenger.Send(CommandFlags.CloseCanvas);
@@ -121,7 +205,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Closes all canvases from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
         private void MenuCloseAll()
         {
             Messenger.Send(CommandFlags.CloseCanvases);
@@ -130,7 +214,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Saves current canvas as new file from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
         private void MenuSaveAs()
         {
             Messenger.Send(CommandFlags.SaveAs);
@@ -139,7 +223,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Saves all canvases from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithGlobalChangesCanExecute))]
         private void MenuSaveAll()
         {
             SaveAll();
@@ -157,7 +241,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Saves current canvas from menu button.
         /// </summary>
-        [RelayCommand()]
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasChangesCanExecute))]
         private void MenuSave()
         {
             Messenger.Send(new SaveRequestMessage());
@@ -166,7 +250,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Exports current canvas as bitmap file from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
         private void MenuExport()
         {
             Messenger.Send(CommandFlags.Export);
@@ -175,7 +259,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Exits from program from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuCanExecute))]
         private void MenuExit()
         {
             if (OnRequestClose is not null)
@@ -190,7 +274,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Cancels user last actions from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithUndoCanExecute))]
         private void MenuUndo()
         {
             Messenger.Send(CommandFlags.Undo);
@@ -199,18 +283,57 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <summary>
         /// Repeats user last actions if they were undid from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithRedoCanExecute))]
         private void MenuRedo()
         {
             Messenger.Send(CommandFlags.Redo);
         }
+        #endregion
+        #region View
+
+        /// <summary>
+        /// Zooms in to dynamic center from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuZoomIn()
+        {
+            Messenger.Send(CommandFlags.ZoomIn);
+        }
+
+        /// <summary>
+        /// Zoms out from dynamic center from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuZoomOut()
+        {
+            Messenger.Send(CommandFlags.ZoomOut);
+        }
+
+        /// <summary>
+        /// Resets current zoom to default from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuZoomReset()
+        {
+            Messenger.Send(CommandFlags.ZoomReset);
+        }
+
+        /// <summary>
+        /// Enables or disables grid visual from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanvasCanExecute))]
+        private void MenuEnableGrid()
+        {
+            Messenger.Send(CommandFlags.EnableGrid);
+        }
+
         #endregion
         #region Canvas
 
         /// <summary>
         /// Changes size of the current selected canvas through dialog window from menu button.
         /// </summary>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
         private void MenuChangeSize()
         {
             var currentCanvas = Messenger.Send<CurrentCanvasRequestMessage>().Response;
@@ -227,51 +350,23 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         #endregion
-        #region View
-
+        #region Tools
         /// <summary>
-        /// Zooms in to dynamic center from menu button.
+        /// Opens dialog 'simulator' window from menu button.
         /// </summary>
-        [RelayCommand]
-        private void MenuZoomIn()
+        [RelayCommand(CanExecute = nameof(MenuWithNotCustomCanvasCanExecute))]
+        private void MenuSimulator()
         {
-            Messenger.Send(CommandFlags.ZoomIn);
+            var dialogViewModel = new SimulatorWindowViewModel(_dialogService);
+
+            _dialogService.ShowDialog(this, dialogViewModel);
         }
 
         /// <summary>
-        /// Zoms out from dynamic center from menu button.
+        /// Opens dialog 'preferences' window from menu button.
         /// </summary>
         [RelayCommand]
-        private void MenuZoomOut()
-        {
-            Messenger.Send(CommandFlags.ZoomOut);
-        }
-
-        /// <summary>
-        /// Resets current zoom to default from menu button.
-        /// </summary>
-        [RelayCommand]
-        private void MenuZoomReset()
-        {
-            Messenger.Send(CommandFlags.ZoomReset);
-        }
-
-        /// <summary>
-        /// Enables or disables grid visual from menu button.
-        /// </summary>
-        [RelayCommand]
-        private void MenuEnableGrid()
-        {
-            Messenger.Send(CommandFlags.EnableGrid);
-        }
-
-        #endregion
-        #region Preferences
-        /// <summary>
-        /// Opens dialog 'general preferences' window from menu button.
-        /// </summary>
-        [RelayCommand]
-        private void MenuGeneralPreferences()
+        private void MenuPreferences()
         {
             var dialogViewModel = new SettingsDialogViewModel();
 
@@ -310,12 +405,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         {
             OnPropertyChanged(nameof(HasGlobalChangesFlag));
             OnPropertyChanged(nameof(HasChangesFlag));
+
+            MenuSaveAllCommand.NotifyCanExecuteChanged();
+            MenuSaveCommand.NotifyCanExecuteChanged();
         }
 
         private void OnOperationPerformed(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(HasUndoFlag));
             OnPropertyChanged(nameof(HasRedoFlag));
+
+            MenuUndoCommand.NotifyCanExecuteChanged();
+            MenuRedoCommand.NotifyCanExecuteChanged();
         }
 
         private void OnSettingsChanged(object? sender, SettingChangingEventArgs e)
@@ -337,6 +438,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
                 {
                     case MenuFlags.HasCanvas:
                         HasCanvasFlag = m.Item2;
+                        break;
+                    case MenuFlags.HasCustomCanvas:
+                        HasCustomCanvasFlag = m.Item2;
+                        break;
+                    case MenuFlags.IsBlocked:
+                        IsBlocked = m.Item2;
                         break;
                 }
             });

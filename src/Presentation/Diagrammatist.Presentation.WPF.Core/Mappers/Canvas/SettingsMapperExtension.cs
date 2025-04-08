@@ -20,7 +20,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
                 FileName = settings.FileName,
                 Width = settings.Width,
                 Height = settings.Height,
-                Background = settings.Background,
+                Background = System.Windows.Media.Color
+                    .FromArgb(settings.Background.A, settings.Background.R, settings.Background.G, settings.Background.B),
                 Type = (DiagramsModel)Enum.Parse(typeof(DiagramsModel), settings.Type.ToString()),
             };
         }
@@ -37,7 +38,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas
                 FileName = settings.FileName,
                 Width = settings.Width,
                 Height = settings.Height,
-                Background = settings.Background,
+                Background = System.Drawing.Color
+                    .FromArgb(settings.Background.A, settings.Background.R, settings.Background.G, settings.Background.B),
                 Type = (Diagrams)Enum.Parse(typeof(Diagrams), settings.Type.ToString()),
             };
         }

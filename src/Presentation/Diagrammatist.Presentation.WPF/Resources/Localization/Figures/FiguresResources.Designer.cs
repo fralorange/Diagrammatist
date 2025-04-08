@@ -106,6 +106,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Figures {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Database.
+        /// </summary>
+        internal static string Database {
+            get {
+                return ResourceManager.GetString("Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Decision.
         /// </summary>
         internal static string Decision {
@@ -165,6 +174,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Figures {
         internal static string Pentagon {
             get {
                 return ResourceManager.GetString("Pentagon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Predefined Process.
+        /// </summary>
+        internal static string PredefinedProcess {
+            get {
+                return ResourceManager.GetString("PredefinedProcess", resourceCulture);
             }
         }
         

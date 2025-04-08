@@ -27,5 +27,12 @@
         /// This mode used to transform objects that placed on the canvas.
         /// </remarks>
         Transform,
+        /// <summary>
+        /// Line mode.
+        /// </summary>
+        /// <remarks>
+        /// This mode is hidden and used to draw lines.
+        /// </remarks>
+        Line
     }
 }

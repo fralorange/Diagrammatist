@@ -5,9 +5,10 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
 using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
 using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Managers.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -18,7 +19,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class ToolbarViewModel : ObservableRecipient
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IClipboardManager<FigureModel> _clipboardManager;
+        private readonly IClipboardService<FigureModel> _clipboardManager;
 
         private CanvasModel? _currentCanvas;
         private CanvasModel? CurrentCanvas
@@ -41,6 +42,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to enable or disable clipboard buttons (copy, cut and duplicate).
         /// </remarks>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(
+            nameof(CopyCommand),
+            nameof(CutCommand),
+            nameof(DuplicateCommand))]
         private bool _hasSelectedFigure;
         /// <summary>
         /// Gets or sets 'has canvas' flag.
@@ -49,14 +54,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to enable or disable clipboard buttons (paste).
         /// </remarks>
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(PasteCommand))]
         private bool _hasCanvas;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CurrentMouseMode"]/*'/>
         [ObservableProperty]
         [NotifyPropertyChangedRecipients]
+        [NotifyCanExecuteChangedFor(nameof(ChangeModeCommand))]
         private MouseMode _currentMouseMode;
 
-        public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IClipboardManager<FigureModel> clipboardManager)
+        public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager)
         {
             _trackableCommandManager = trackableCommandManager;
             _clipboardManager = clipboardManager;
@@ -64,18 +71,39 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
+        #region Commands Can Execute
+
+        private bool CanvasCanExecute()
+        {
+            return HasCanvas;
+        }
+
+        private bool FigureCanExecute()
+        {
+            return HasSelectedFigure;
+        }
+
+        private bool LineModeCanExecute()
+        {
+            return CurrentMouseMode is not MouseMode.Line;
+        }
+
+        #endregion
+
+        #region Commands
+
         /// <summary>
         /// Changes mouse mode.
         /// </summary>
         /// <param name="mode">A new mouse mode.</param>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(LineModeCanExecute))]
         private void ChangeMode(string mode)
         {
-            CurrentMouseMode = (MouseMode)Enum.Parse(typeof(MouseMode), mode);
+            CurrentMouseMode = MouseModeHelper.GetParsedMode<MouseMode>(mode);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Paste"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanvasCanExecute))]
         private void Paste()
         {
             if (CurrentCanvas is not null && _clipboardManager.PasteFromClipboard() is { } pastedFigure)
@@ -91,7 +119,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Copy"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Copy()
         {
             if (SelectedFigure is not null)
@@ -101,7 +129,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Cut"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Cut()
         {
             if (SelectedFigure is not null)
@@ -117,7 +145,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Duplicate"]/*'/>
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Duplicate()
         {
             if (SelectedFigure is not null)
@@ -132,10 +160,34 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// Changes parameters that depend on specific mouse mode.
+        /// </summary>
+        /// <param name="oldValue">Old mouse mode.</param>
+        /// <param name="newValue">New mouse mode.</param>
+        partial void OnCurrentMouseModeChanged(MouseMode oldValue, MouseMode newValue)
+        {
+            if (newValue is MouseMode.Line)
+            {
+                Messenger.Send(new Tuple<string, bool>(MenuFlags.IsBlocked, true));
+            }
+            else if (oldValue is MouseMode.Line)
+            {
+                Messenger.Send(new Tuple<string, bool>(MenuFlags.IsBlocked, false));
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
             base.OnActivated();
+
+            Messenger.Register<ToolbarViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
+            {
+                CurrentMouseMode = m.NewValue;
+            });
 
             Messenger.Register<ToolbarViewModel, PropertyChangedMessage<CanvasModel?>>(this, (r, m) =>
             {

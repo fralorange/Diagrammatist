@@ -19,6 +19,7 @@
         BorderThickness="{Binding RelativeSource={RelativeSource Mode=Self}, Path=WindowState, Converter={StaticResource WindowStateToThicknessConverter}}"
         ResizeMode="CanResize"
         WindowStyle="SingleBorderWindow"
+        Style="{StaticResource BaseWindow}"
         x:Name="window"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d">
@@ -97,11 +98,7 @@
 
             <Image x:Name="icon"
                    Grid.Column="0"
-                   Width="24"
-                   Height="24"
-                   Margin="5,0,0,0"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
+                   Style="{StaticResource IconImage}"
                    MouseDown="OnIconMouseDown"
                    Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
                    WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -121,27 +118,21 @@
                                   Command="{Binding MenuOpenCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Close}"
-                                  Command="{Binding MenuCloseCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuCloseCommand}"/>
                         <MenuItem Header="{lex:Loc CloseAll}"
-                                  Command="{Binding MenuCloseAllCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuCloseAllCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Save}"
                                   InputGestureText="Ctrl+S"
-                                  Command="{Binding MenuSaveCommand}"
-                                  IsEnabled="{Binding HasChangesFlag}"/>
+                                  Command="{Binding MenuSaveCommand}"/>
                         <MenuItem Header="{lex:Loc SaveAs}"
                                   InputGestureText="Ctrl+Shift+S"
-                                  Command="{Binding MenuSaveAsCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuSaveAsCommand}"/>
                         <MenuItem Header="{lex:Loc SaveAll}"
-                                  Command="{Binding MenuSaveAllCommand}"
-                                  IsEnabled="{Binding HasGlobalChangesFlag}"/>
+                                  Command="{Binding MenuSaveAllCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Export}"
-                                  Command="{Binding MenuExportCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuExportCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Exit}"
                                   InputGestureText="Alt+F4"
@@ -150,40 +141,36 @@
                     <MenuItem Header="{lex:Loc Edit}">
                         <MenuItem Header="{lex:Loc Undo}"
                                   InputGestureText="Ctrl+Z"
-                                  Command="{Binding MenuUndoCommand}"
-                                  IsEnabled="{Binding HasUndoFlag}"/>
+                                  Command="{Binding MenuUndoCommand}"/>
                         <MenuItem Header="{lex:Loc Redo}"
                                   InputGestureText="Ctrl+Y"
-                                  Command="{Binding MenuRedoCommand}"
-                                  IsEnabled="{Binding HasRedoFlag}"/>
+                                  Command="{Binding MenuRedoCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc View}">
                         <MenuItem Header="{lex:Loc ZoomIn}"
                                   InputGestureText="Ctrl++"
-                                  Command="{Binding MenuZoomInCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuZoomInCommand}"/>
                         <MenuItem Header="{lex:Loc ZoomOut}"
                                   InputGestureText="Ctrl+-"
-                                  Command="{Binding MenuZoomOutCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuZoomOutCommand}"/>
                         <MenuItem Header="{lex:Loc ResetZoom}"
                                   InputGestureText="Ctrl+0"
-                                  Command="{Binding MenuZoomResetCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuZoomResetCommand}"/>
                         <Separator/>
                         <MenuItem Header="{lex:Loc Grid}"
                                   Command="{Binding MenuEnableGridCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"
                                   IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc Canvas}">
                         <MenuItem Header="{lex:Loc ChangeSize}"
-                                  Command="{Binding MenuChangeSizeCommand}"
-                                  IsEnabled="{Binding HasCanvasFlag}"/>
+                                  Command="{Binding MenuChangeSizeCommand}"/>
                     </MenuItem>
-                    <MenuItem Header="{lex:Loc Preferences}">
-                        <MenuItem Header="{lex:Loc General}"
-                                  Command="{Binding MenuGeneralPreferencesCommand}"/>
+                    <MenuItem Header="{lex:Loc Tools}">
+                        <MenuItem Header="{lex:Loc Simulator}"
+                                  Command="{Binding MenuSimulatorCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="{lex:Loc Preferences}"
+                                  Command="{Binding MenuPreferencesCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{lex:Loc Help}">
                         <MenuItem Header="{lex:Loc ViewHelp}"
@@ -262,11 +249,13 @@
 
             <components:ToolbarComponent Grid.Row="0"
                                          Grid.ColumnSpan="3"
-                                         Style="{StaticResource Component}"/>
+                                         Style="{StaticResource Component}"
+                                         IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             <components:FiguresComponent Grid.Row="1"
                                          Grid.RowSpan="2"
                                          Grid.Column="0"
-                                         Style="{StaticResource Component}"/>
+                                         Style="{StaticResource Component}"
+                                         IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             
             <!--Splits FiguresComponent from CanvasComponent-->
             <GridSplitter Grid.Row="1" 
@@ -279,14 +268,19 @@
                   Grid.RowSpan="2" 
                   Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
-                <components:CanvasComponent Grid.Row="0"
+
+                <components:ActionComponent Grid.Row="0"
+                                            Style="{StaticResource Component}"
+                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsBlocked}"/>
+                <components:CanvasComponent Grid.Row="1"
                                             Style="{StaticResource Component}"/>
-                <components:TabsComponent Grid.Row="1"
-                                          Style="{StaticResource Component}"/>
+                <components:TabsComponent Grid.Row="2"
+                                          Style="{StaticResource Component}"
+                                          IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             </Grid>
 
             <!--Splits ObjectTreeComponent and PropertiesComponent from CanvasComponent-->
@@ -298,7 +292,8 @@
 
             <components:ObjectTreeComponent Grid.Row="1"
                                             Grid.Column="2"
-                                            Style="{StaticResource Component}"/>
+                                            Style="{StaticResource Component}"
+                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             
             <!--Splits PropertiesComponent from ObjectTreeComponent-->
             <GridSplitter Grid.Row="2" 
@@ -308,7 +303,8 @@
             
             <components:PropertiesComponent Grid.Row="2"
                                             Grid.Column="2"
-                                            Style="{StaticResource Component}"/>
+                                            Style="{StaticResource Component}"
+                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
         </Grid>
     </DockPanel>
 </Window>

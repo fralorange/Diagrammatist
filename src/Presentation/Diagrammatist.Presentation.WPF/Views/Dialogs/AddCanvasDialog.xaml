@@ -19,10 +19,10 @@
         d:DataContext="{d:DesignInstance {x:Type vmd:AddCanvasDialogViewModel}}">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
-                  GlassFrameThickness="1,0,1,1"
-                  NonClientFrameEdges="Left,Right,Bottom"
-                  ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                  UseAeroCaptionButtons="False"/>
+                      GlassFrameThickness="1,0,1,1"
+                      NonClientFrameEdges="Left,Right,Bottom"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                      UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>
     <DockPanel>
         <Grid DockPanel.Dock="Top"
@@ -37,11 +37,7 @@
 
             <Image x:Name="icon"
                    Grid.Column="0"
-                   Width="24"
-                   Height="24"
-                   Margin="5,0,0,0"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
+                   Style="{StaticResource IconImage}"
                    MouseDown="OnIconMouseDown"
                    Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
                    WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -55,7 +51,7 @@
             <Button Grid.Column="2"
                     Click="OnCloseButtonClick"
                     Style="{StaticResource TitleBarCloseButtonStyle}"
-                    ToolTip="{lex:Loc Close}"
+                    ToolTip="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Close}"
                     HorizontalAlignment="Right">
                 <Path Width="36"
                       Height="32"
@@ -97,9 +93,15 @@
                     <TextBox Text="{Binding Height}"/>
                     <Label Content="{lex:Loc DiagramType}"/>
                     <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
-                              SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{lex:Loc {Binding}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Label Content="{lex:Loc Background}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Converter={StaticResource ColorToMediaColorConverter}, Mode=TwoWay}"
+                    <colorpicker:PortableColorPicker SelectedColor="{Binding Background, Mode=TwoWay}"
                                                      ShowAlpha="False"
                                                      ShowFractionalPart="False"/>
 

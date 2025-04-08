@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    <None Remove="Data\FiguresData.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\FiguresData.json">
+    <EmbeddedResource Include="Data\FiguresData.json">
       <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
-    </None>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
 </Project>
