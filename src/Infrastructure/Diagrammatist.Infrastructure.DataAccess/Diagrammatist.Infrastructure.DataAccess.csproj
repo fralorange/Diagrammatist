@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\Diagrammatist.Infrastructure\Data\FiguresData.json" Link="Contexts\Figures\Data\FiguresData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
@@ -20,10 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Application\Diagrammatist.Application.AppServices\Diagrammatist.Application.AppServices.csproj" />
     <ProjectReference Include="..\Diagrammatist.Infrastructure\Diagrammatist.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Contexts\Figures\Data\" />
   </ItemGroup>
 
 </Project>
