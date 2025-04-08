@@ -162,10 +162,6 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             {
                 var points = new List<MagneticPointModel>();
 
-                // TO-DO: Delete this parameters when selection box will not be accounted in calculating element position on canvas.
-                var selectionBoxX = 5;
-                var selectionBoxY = 2;
-                //
                 foreach (var figure in figures)
                 {
                     var figurePosition = new Point(figure.PosX, figure.PosY);
@@ -173,8 +169,8 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                     foreach (var magneticPoint in figure.MagneticPoints)
                     {
                         var globalPoint = new Point(
-                            figurePosition.X + magneticPoint.Position.X + selectionBoxX,
-                            figurePosition.Y + magneticPoint.Position.Y + selectionBoxY);
+                            figurePosition.X + magneticPoint.Position.X,
+                            figurePosition.Y + magneticPoint.Position.Y);
 
                         points.Add(new MagneticPointModel() { Owner = magneticPoint.Owner, Position = globalPoint });
                     }

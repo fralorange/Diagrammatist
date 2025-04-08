@@ -319,6 +319,37 @@
     </Style>
 
     <Style TargetType="ListBox" BasedOn="{StaticResource BaseItemsControls}"/>
+
+    <Style TargetType="ListBoxItem" x:Key="CustomSelectionBox">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <Border x:Name="SelectionVisual"
+                                BorderBrush="{StaticResource ItemSelectedBorderBrush}"
+                                BorderThickness="2"
+                                Margin="-2"
+                                Background="{StaticResource ItemSelectionBackground}"
+                                Visibility="Collapsed"/>
+
+                        <ContentPresenter/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="SelectionVisual" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="SelectionVisual"  Property="Visibility" Value="Visible" />
+                            <Setter TargetName="SelectionVisual"  Property="BorderBrush" Value="{StaticResource ItemHoverBorderBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 
     <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseItemsControls}">
@@ -1003,7 +1034,7 @@
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
     </Style>
-    
+
     <!--#region Simulation-->
     <Style TargetType="ListBoxItem" x:Key="SimulationNodeStyle">
         <Setter Property="Canvas.Left" Value="{Binding Figure.PosX}"/>

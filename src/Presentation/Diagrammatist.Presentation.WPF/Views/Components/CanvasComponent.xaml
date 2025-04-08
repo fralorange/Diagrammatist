@@ -108,7 +108,7 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
                         <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
