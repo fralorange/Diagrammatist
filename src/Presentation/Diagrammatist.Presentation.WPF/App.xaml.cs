@@ -38,6 +38,7 @@ namespace Diagrammatist.Presentation.WPF
             services.AddViewModels();
 
             services.AddServices();
+            services.AddFacades();
             services.AddSerializers();
             services.AddRepositories();
 

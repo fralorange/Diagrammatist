@@ -1,4 +1,4 @@
-﻿namespace Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General
+﻿namespace Diagrammatist.Presentation.WPF.Core.Helpers
 {
     /// <summary>
     /// A class that helps with changing mouse modes.

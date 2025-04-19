@@ -2,12 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
+using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
@@ -19,7 +18,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class ToolbarViewModel : ObservableRecipient
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IClipboardService<FigureModel> _clipboardManager;
+        private readonly IFigureManipulationService _figureManipulationService;
 
         private CanvasModel? _currentCanvas;
         private CanvasModel? CurrentCanvas
@@ -63,10 +62,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyCanExecuteChangedFor(nameof(ChangeModeCommand))]
         private MouseMode _currentMouseMode;
 
-        public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager)
+        public ToolbarViewModel(ITrackableCommandManager trackableCommandManager, IFigureManipulationService figureManipulationService)
         {
             _trackableCommandManager = trackableCommandManager;
-            _clipboardManager = clipboardManager;
+            _figureManipulationService = figureManipulationService;
 
             IsActive = true;
         }
@@ -106,15 +105,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(CanvasCanExecute))]
         private void Paste()
         {
-            if (CurrentCanvas is not null && _clipboardManager.PasteFromClipboard() is { } pastedFigure)
+            if (CurrentCanvas?.Figures is { } figures)
             {
-                var command = PasteHelper.CreatePasteCommand(
-                    CurrentCanvas.Figures,
-                    pastedFigure,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure);
-
-                _trackableCommandManager.Execute(command);
+                _figureManipulationService.Paste(figures);
             }
         }
 
@@ -124,7 +117,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (SelectedFigure is not null)
             {
-                CopyHelper.Copy(_clipboardManager, SelectedFigure);
+                _figureManipulationService.Copy(SelectedFigure);
             }
         }
 
@@ -132,15 +125,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Cut()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && CurrentCanvas?.Figures is { } figures)
             {
-                var command = CutHelper.CreateCutCommand(
-                    _clipboardManager,
-                    CurrentCanvas!.Figures,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure);
-
-                _trackableCommandManager.Execute(command);
+                _figureManipulationService.Cut(SelectedFigure, figures);
             }
         }
 
@@ -148,15 +135,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(FigureCanExecute))]
         private void Duplicate()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && CurrentCanvas?.Figures is { } figures)
             {
-                var command = DuplicateHelper.CreateDuplicateCommand(
-                    CurrentCanvas!.Figures,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure,
-                    figure => figure.Clone());
-
-                _trackableCommandManager.Execute(command);
+                _figureManipulationService.Duplicate(SelectedFigure, figures);
             }
         }
 

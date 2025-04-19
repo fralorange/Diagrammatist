@@ -6,7 +6,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Helpers
     /// <summary>
     /// A class that helps to easily localize values.
     /// </summary>
-    public static class LocalizationHelpers
+    public static class LocalizationHelper
     {
         /// <summary>
         /// Gets localized value from dictionary.

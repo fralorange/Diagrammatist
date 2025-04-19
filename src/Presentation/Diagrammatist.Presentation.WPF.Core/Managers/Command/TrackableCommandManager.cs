@@ -1,7 +1,7 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Commands.Base;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Base.UndoableCommand;
 using System.Collections.Concurrent;
 
-namespace Diagrammatist.Presentation.WPF.Core.Commands.Managers
+namespace Diagrammatist.Presentation.WPF.Core.Managers.Command
 {
     /// <summary>
     /// A class that implements <see cref="ITrackableCommandManager"/>. Manages tracking in undoable commands.

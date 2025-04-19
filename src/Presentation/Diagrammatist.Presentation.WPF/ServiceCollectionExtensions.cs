@@ -5,12 +5,17 @@ using Diagrammatist.Application.AppServices.Figures.Serializer;
 using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
+using Diagrammatist.Presentation.WPF.Core.Managers.Tabs;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Interaction;
 using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
+using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.Views;
@@ -56,7 +61,7 @@ namespace Diagrammatist.Presentation.WPF
         }
 
         /// <summary>
-        /// Add services (from application layer) as Transient.
+        /// Add services as Transient.
         /// </summary>
         /// <param name="services"></param>
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
@@ -65,10 +70,13 @@ namespace Diagrammatist.Presentation.WPF
             #region Figures
             services.AddTransient<IFigureService, FigureService>();
             services.AddTransient<IFigureSerializationService, FigureSerializationService>();
+            services.AddTransient<IFigureManipulationService, FigureManipulationService>();
+            services.AddTransient<IFigurePlacementService, FigurePlacementService>();
             #endregion
             #region Canvases
             services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
             services.AddTransient<ICanvasSerializationService, CanvasSerializationService>();
+            services.AddTransient<ICanvasInteractionService, CanvasInteractionService>();
             #endregion
 
             #region Presentation
@@ -76,6 +84,18 @@ namespace Diagrammatist.Presentation.WPF
             services.AddTransient<IClipboardService<FigureModel>, FigureClipboardService>();
             services.AddTransient<IConnectionService, ConnectionService>();
             #endregion
+            return services;
+        }
+
+        /// <summary>
+        /// Add facade as Transient.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
+        public static IServiceCollection AddFacades(this IServiceCollection services)
+        {
+            services.AddTransient<ICanvasServiceFacade, CanvasServiceFacade>();
+
             return services;
         }
 
@@ -136,6 +156,7 @@ namespace Diagrammatist.Presentation.WPF
         {
             services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
             services.AddSingleton<ITrackableCommandManager, TrackableCommandManager>();
+            services.AddSingleton<ICanvasTabsManager, CanvasTabsManager>();
 
             return services;
         }

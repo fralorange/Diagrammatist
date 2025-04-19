@@ -3,22 +3,19 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Figures.Services;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
-using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 using System.Windows;
-using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
-using Diagrammatist.Domain.Figures;
-using Diagrammatist.Domain.Connection;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -28,8 +25,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class FiguresViewModel : ObservableRecipient
     {
         private readonly IFigureService _figureService;
-        private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly IConnectionService _connectionService;
+        private readonly IFigurePlacementService _figurePlacementService;
 
         /// <summary>
         /// Occurs when a requested user input confirmed.
@@ -45,11 +42,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when user presses "cross" button.
         /// </remarks>
         public event Action? LineInputCancelled;
-
-        /// <summary>
-        /// Flag that determines whether figure changes in the moment or not.
-        /// </summary>
-        private bool _figureChanges;
 
         /// <summary>
         /// Gets or sets <see cref="ObservableCollection{T}"/> of <see cref="FigureModel"/>.
@@ -111,11 +103,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <param name="figureService">A figure service.</param>
         /// <param name="trackableCommandManager">A command manager.</param>
         /// <param name="connectionManager">A connection manager.</param>
-        public FiguresViewModel(IFigureService figureService, ITrackableCommandManager trackableCommandManager, IConnectionService connectionManager)
+        public FiguresViewModel(IFigureService figureService,
+                                IConnectionService connectionManager,
+                                IFigurePlacementService figurePlacementService)
         {
             _figureService = figureService;
-            _trackableCommandManager = trackableCommandManager;
             _connectionService = connectionManager;
+            _figurePlacementService = figurePlacementService;
 
             IsActive = true;
         }
@@ -135,7 +129,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     containerFigure.TextColor = textColor;
                     containerFigure.BackgroundColor = bgColor;
                     break;
-                case TextFigureModel textFigure :
+                case TextFigureModel textFigure:
                     textFigure.TextColor = textColor;
                     textFigure.BackgroundColor = bgColor;
                     break;
@@ -171,9 +165,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (Figures is null)
                 return;
-
-            var updateBgColor = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
-            var updateThemeColor = (System.Windows.Media.Color)App.Current.Resources["AppThemeColor"];
 
             foreach (var category in Figures.Values)
             {
@@ -234,7 +225,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     _connectionService.AddConnection(CanvasConnections, connection);
                 }
 
-                AddTrackedFigure(figure);
+                _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
             }
             else if (figureTemplate is ShapeFigureModel figureModel)
             {
@@ -242,76 +233,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 figure!.UpdateMagneticPoints();
 
-                AddTrackedFigure(figure);
+                _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
             }
             else
             {
                 var figure = figureTemplate.Clone();
 
-                AddTrackedFigure(figure);
-            }
-        }
-
-        private void AddTrackedFigure(FigureModel figure)
-        {
-            // Track changes in figure properties.
-            figure.ExtendedPropertyChanged += OnPropertyChanged;
-
-            var connection = GetConnection(CanvasConnections!, figure, _connectionService);
-
-            // Track addition to canvas.
-            var command = CommonUndoableHelper.CreateUndoableCommand(
-                () =>
-                {
-                    CanvasFigures!.Add(figure);
-                    if (connection is not null && !CanvasConnections!.Any(c => c == connection)) _connectionService.AddConnection(CanvasConnections!, connection);
-                },
-                () =>
-                {
-                    CanvasFigures!.Remove(figure);
-                    if (connection is not null && CanvasConnections!.Any(c => c == connection)) _connectionService.RemoveConnection(CanvasConnections!, connection);
-                }
-            );
-
-            _trackableCommandManager.Execute(command);
-        }
-
-        // TO-DO move this somewhere else.
-        private static ConnectionModel? GetConnection<T>(ICollection<ConnectionModel> connections, T target, IConnectionService connectionService)
-        {
-            if (target is LineFigureModel line)
-            {
-                return connectionService.GetConnection(connections, line);
-            }
-
-            return null;
-        }
-
-        private void OnPropertyChanged(object? sender, ExtendedPropertyChangedEventArgs e)
-        {
-            if (sender is FigureModel figure && e.PropertyName is not null && !_figureChanges)
-            {
-                var command = CommonUndoableHelper.CreateUndoableCommand(
-                    () => SetFigureProperty(figure, e.PropertyName, e.NewValue),
-                    () => SetFigureProperty(figure, e.PropertyName, e.OldValue)
-                );
-
-                _trackableCommandManager.Execute(command);
-            }
-        }
-
-        private void SetFigureProperty(FigureModel figure, string propertyName, object? value)
-        {
-            _figureChanges = true;
-            try
-            {
-                var property = figure.GetType().GetProperty(propertyName);
-
-                property?.SetValue(figure, value);
-            }
-            finally
-            {
-                _figureChanges = false;
+                _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
             }
         }
 

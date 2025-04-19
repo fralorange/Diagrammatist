@@ -2,17 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Application.AppServices.Canvas.Services;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
+using Diagrammatist.Presentation.WPF.Core.Managers.Tabs;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 using Size = System.Drawing.Size;
-using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -24,6 +25,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly ICanvasManipulationService _canvasManipulationService;
         private readonly ICanvasSerializationService _canvasSerializationService;
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly ICanvasTabsManager _tabsManager;
 
         /// <summary>
         /// Occurs when a request is made to open existing file.
@@ -53,9 +55,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This property used to store canvases in tabs UI.
         /// </remarks>
-        public ObservableCollection<CanvasModel> Canvases { get; } = [];
-
-        private readonly Dictionary<CanvasModel, string> _canvasFilePathes = [];
+        public ObservableCollection<CanvasModel> Canvases => _tabsManager.Canvases;
 
         /// <summary>
         /// Gets or sets 'has canvases' flag.
@@ -78,40 +78,29 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         public TabsViewModel(ICanvasManipulationService canvasManipulationService,
                              ITrackableCommandManager trackableCommandManager,
-                             ICanvasSerializationService canvasSerializationService)
+                             ICanvasSerializationService canvasSerializationService,
+                             ICanvasTabsManager tabsManager)
         {
             _canvasManipulationService = canvasManipulationService;
             _trackableCommandManager = trackableCommandManager;
             _canvasSerializationService = canvasSerializationService;
-
-            Canvases.CollectionChanged += OnCanvasesCollectionChanged;
+            _tabsManager = tabsManager;
 
             IsActive = true;
         }
 
         /// <summary>
-        /// Adds and selects new canvas.
-        /// </summary>
-        /// <param name="canvas"></param>
-        private void AddCanvas(CanvasModel canvas)
-        {
-            Canvases.Add(canvas);
-            _canvasFilePathes.Add(canvas, string.Empty);
-
-            SelectedCanvas = canvas;
-        }
-
-        /// <summary>
-        /// Adds and selects new canvas with file path saved.
+        /// Adds and selects new canvas with file path (optional) saved.
         /// </summary>
         /// <param name="canvas"></param>
         /// <param name="filePath"></param>
-        private void AddCanvas(CanvasModel canvas, string filePath)
+        private void AddCanvas(CanvasModel canvas, string filePath = "")
         {
-            Canvases.Add(canvas);
-            _canvasFilePathes.Add(canvas, filePath);
+            _tabsManager.Add(canvas, filePath);
 
             SelectedCanvas = canvas;
+
+            UpdateFlags();
         }
 
         /// <summary>
@@ -120,9 +109,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <param name="canvas"></param>
         private void RemoveCanvas(CanvasModel canvas)
         {
-            _canvasFilePathes.Remove(canvas);
-            Canvases.Remove(canvas);
+            _tabsManager.Remove(canvas);
+
             _trackableCommandManager.DeleteContent(canvas);
+
+            UpdateFlags();
         }
 
         /// <summary>
@@ -132,11 +123,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private async Task CreateCanvas(SettingsModel settings)
         {
             var canvasDomain = await _canvasManipulationService.CreateCanvasAsync(settings.ToDomain());
-
             var canvas = canvasDomain.ToModel();
 
             AddCanvas(canvas);
-
             Messenger.Send(CommandFlags.ZoomReset);
         }
 
@@ -145,19 +134,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </summary>
         private void OpenCanvas()
         {
-            if (RequestOpen is null)
-            {
-                return;
-            }
+            if (RequestOpen is null) return;
 
             var filePath = RequestOpen();
 
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(filePath)) return;
 
-            if (_canvasFilePathes.ContainsValue(filePath) && OpenFailed is not null)
+            if (_tabsManager.ContainsFilePath(filePath) && OpenFailed is not null)
             {
                 OpenFailed();
                 return;
@@ -198,6 +181,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 _trackableCommandManager.Execute(command);
             }
         }
+        
+        /// <summary>
+        /// Updates current canvas file path.
+        /// </summary>
+        /// <param name="filePath">New file path.</param>
+        private void UpdateCanvasFilePath(string filePath)
+        {
+            if (SelectedCanvas is not null)
+            {
+                _tabsManager.UpdateFilePath(SelectedCanvas, filePath);
+            }
+        }
 
         /// <summary>
         /// Deletes existing <see cref="CanvasModel"/> from <see cref="Canvases"/>.
@@ -206,10 +201,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void CloseCanvas(CanvasModel target)
         {
-            if (CloseFailed is null)
-            {
-                return;
-            }
+            if (CloseFailed is null) return;
 
             if (!target.HasChanges)
             {
@@ -219,18 +211,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var closeResult = CloseFailed();
 
-            if (closeResult == MessageBoxResult.Cancel)
+            if (closeResult == MessageBoxResult.Cancel) return;
+
+            SelectedCanvas = target;
+
+            if (closeResult == MessageBoxResult.Yes && !Messenger.Send(new SaveRequestMessage()))
             {
                 return;
-            }
-            else if (closeResult == MessageBoxResult.Yes)
-            {
-                SelectedCanvas = target;
-
-                if (!Messenger.Send(new SaveRequestMessage()))
-                {
-                    return;
-                }
             }
 
             RemoveCanvas(target);
@@ -238,20 +225,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         private void CloseCanvases()
         {
-            if (Canvases.Count > 0)
+            foreach (var canvas in Canvases.ToList())
             {
-                foreach (var canvas in Canvases.ToList())
-                {
-                    CloseCanvas(canvas);
-                }
-            }
-        }
-
-        private void UpdateCanvasFilePath(string filePath)
-        {
-            if (SelectedCanvas is not null && _canvasFilePathes.ContainsKey(SelectedCanvas))
-            {
-                _canvasFilePathes[SelectedCanvas] = filePath;
+                CloseCanvas(canvas);
             }
         }
 
@@ -272,16 +248,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             return true;
         }
 
-        private void OnCanvasesCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void UpdateFlags()
         {
             HasCanvases = Canvases.Count > 0;
         }
 
         partial void OnSelectedCanvasChanged(CanvasModel? value)
         {
-            if (value is not null && _canvasFilePathes.TryGetValue(value, out var canvasFilePath))
+            if (value is not null)
             {
-                Messenger.Send(new CanvasFilePathMessage(canvasFilePath));
+                var path = _tabsManager.GetFilePath(value);
+                if (path is not null)
+                {
+                    Messenger.Send(new CanvasFilePathMessage(path));
+                }
             }
 
             Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCanvas, value is not null));

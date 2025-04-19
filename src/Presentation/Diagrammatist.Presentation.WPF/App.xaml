@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Styles/Vectors.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
                 <ResourceDictionary Source="Resources/Converters/Converters.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Bindings.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Templates.xaml"/>
                 <ResourceDictionary Source="Resources/Properties/Properties.xaml"/>
             </ResourceDictionary.MergedDictionaries>

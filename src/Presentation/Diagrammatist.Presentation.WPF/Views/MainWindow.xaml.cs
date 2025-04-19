@@ -40,18 +40,18 @@ namespace Diagrammatist.Presentation.WPF.Views
         {
             switch (msg)
             {
-                case NativeHelpers.WM_NCHITTEST:
-                    if (NativeHelpers.IsSnapLayoutEnabled())
+                case NativeHelper.WM_NCHITTEST:
+                    if (NativeHelper.IsSnapLayoutEnabled())
                     {
                         // Return HTMAXBUTTON when the mouse is over the maximize/restore button
                         var point = PointFromScreen(new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16));
-                        if (WpfHelpers.GetElementBoundsRelativeToWindow(maximizeRestoreButton, this).Contains(point))
+                        if (WpfHelper.GetElementBoundsRelativeToWindow(maximizeRestoreButton, this).Contains(point))
                         {
                             handled = true;
                             // Apply hover button style
                             maximizeRestoreButton.Background = (Brush)App.Current.Resources["TitleBarButtonHoverBackground"];
                             maximizeRestoreButton.Foreground = (Brush)App.Current.Resources["TitleBarButtonHoverForeground"];
-                            return new IntPtr(NativeHelpers.HTMAXBUTTON);
+                            return new IntPtr(NativeHelper.HTMAXBUTTON);
                         }
                         else
                         {
@@ -61,10 +61,10 @@ namespace Diagrammatist.Presentation.WPF.Views
                         }
                     }
                     break;
-                case NativeHelpers.WM_NCLBUTTONDOWN:
-                    if (NativeHelpers.IsSnapLayoutEnabled())
+                case NativeHelper.WM_NCLBUTTONDOWN:
+                    if (NativeHelper.IsSnapLayoutEnabled())
                     {
-                        if (wParam.ToInt32() == NativeHelpers.HTMAXBUTTON)
+                        if (wParam.ToInt32() == NativeHelper.HTMAXBUTTON)
                         {
                             handled = true;
                             // Apply pressed button style
@@ -73,10 +73,10 @@ namespace Diagrammatist.Presentation.WPF.Views
                         }
                     }
                     break;
-                case NativeHelpers.WM_NCLBUTTONUP:
-                    if (NativeHelpers.IsSnapLayoutEnabled())
+                case NativeHelper.WM_NCLBUTTONUP:
+                    if (NativeHelper.IsSnapLayoutEnabled())
                     {
-                        if (wParam.ToInt32() == NativeHelpers.HTMAXBUTTON)
+                        if (wParam.ToInt32() == NativeHelper.HTMAXBUTTON)
                         {
                             // Apply default button style
                             maximizeRestoreButton.Background = (Brush)App.Current.Resources["TitleBarButtonBackground"];
@@ -96,8 +96,8 @@ namespace Diagrammatist.Presentation.WPF.Views
 
             if (DataContext is MainViewModel viewModel && viewModel.HasGlobalChangesFlag)
             {
-                var result = _alertService.RequestConfirmation(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppMessage"),
-                    LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppCaption"));
+                var result = _alertService.RequestConfirmation(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppMessage"),
+                    LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppCaption"));
 
                 if (result == MessageBoxResult.Yes && !viewModel.SaveAll() || result == MessageBoxResult.Cancel)
                 {
@@ -124,8 +124,8 @@ namespace Diagrammatist.Presentation.WPF.Views
         private void OnMaximizeRestoreButtonToolTipOpening(object sender, ToolTipEventArgs e)
         {
             maximizeRestoreButton.ToolTip = WindowState == WindowState.Normal
-                ? LocalizationHelpers.GetLocalizedValue<string>("MainResources", "Maximize")
-                : LocalizationHelpers.GetLocalizedValue<string>("MainResources", "Restore");
+                ? LocalizationHelper.GetLocalizedValue<string>("MainResources", "Maximize")
+                : LocalizationHelper.GetLocalizedValue<string>("MainResources", "Restore");
         }
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)

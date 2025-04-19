@@ -1,6 +1,6 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Commands.Base;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Base.UndoableCommand;
 
-namespace Diagrammatist.Presentation.WPF.Core.Commands.Managers
+namespace Diagrammatist.Presentation.WPF.Core.Managers.Command
 {
     /// <summary>
     /// An interface that defines base methods to manage undoable commands.
@@ -21,7 +21,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Commands.Managers
         /// <summary>
         /// Gets a value indicating whether a redo operation can be performed.
         /// </summary>
-        bool CanRedo { get; }   
+        bool CanRedo { get; }
         /// <summary>
         /// Executes command.
         /// </summary>

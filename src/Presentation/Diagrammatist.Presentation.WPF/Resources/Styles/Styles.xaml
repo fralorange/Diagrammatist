@@ -1034,31 +1034,4 @@
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
     </Style>
-
-    <!--#region Simulation-->
-    <Style TargetType="ListBoxItem" x:Key="SimulationNodeStyle">
-        <Setter Property="Canvas.Left" Value="{Binding Figure.PosX}"/>
-        <Setter Property="Canvas.Top" Value="{Binding Figure.PosY}"/>
-        <Setter Property="Canvas.ZIndex" Value="{Binding Figure.ZIndex}"/>
-        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <RotateTransform Angle="{Binding Figure.Rotation}"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="ListBoxItem" x:Key="SimulationConnectionStyle">
-        <Setter Property="IsHitTestVisible" Value="False" />
-        <Setter Property="Canvas.Left" Value="{Binding Line.PosX}"/>
-        <Setter Property="Canvas.Top" Value="{Binding Line.PosY}"/>
-        <Setter Property="Canvas.ZIndex" Value="{Binding Line.ZIndex}"/>
-        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <RotateTransform Angle="{Binding Line.Rotation}"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <!--#endregion-->
 </ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿namespace Diagrammatist.Presentation.WPF.Core.Commands.Managers
+﻿namespace Diagrammatist.Presentation.WPF.Core.Managers.Command
 {
     /// <summary>
     /// An interface that defines base methods and properties to decorate undoable commands with tracking.

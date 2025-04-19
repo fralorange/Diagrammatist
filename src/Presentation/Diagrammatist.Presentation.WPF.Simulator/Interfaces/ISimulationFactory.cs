@@ -1,10 +1,9 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 
-namespace Diagrammatist.Presentation.WPF.Simulator.Factories
+namespace Diagrammatist.Presentation.WPF.Simulator.Interfaces
 {
     /// <summary>
     /// An interface that provides node and engine creation operations.

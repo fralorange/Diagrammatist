@@ -322,7 +322,7 @@
         <StackPanel>
             <TextBlock Text="Lua"
                        FontWeight="Bold"/>
-            <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
                      HorizontalScrollBarVisibility="Disabled"
@@ -333,14 +333,10 @@
             <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
         </StackPanel>
     </DataTemplate>
-    
+
     <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
                                               SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
                                               SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
-
-    <simulatorSelector:SimulationItemStyleSelector x:Key="SimulationItemStyleSelector"
-                                                   SimulationNodeStyle="{StaticResource SimulationNodeStyle}"
-                                                   SimulationConnectionStyle="{StaticResource SimulationConnectionStyle}"/>
 
     <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
                                                 FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"/>

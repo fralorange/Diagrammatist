@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Diagrammatist.Presentation.WPF.Core.Commands.Base
+namespace Diagrammatist.Presentation.WPF.Core.Foundation.Base.UndoableCommand
 {
     /// <summary>
     /// An interface expanding <see cref="ICommand"/> with undo behavior.

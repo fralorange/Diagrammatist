@@ -34,14 +34,14 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         private MessageBoxResult CloseFail()
         {
-            return _alertService.RequestConfirmation(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasMessage"),
-                LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasCaption"));
+            return _alertService.RequestConfirmation(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasMessage"),
+                LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasCaption"));
         }
 
         private void OpenFail()
         {
-            _alertService.ShowError(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenMessage"),
-                LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenCaption"));
+            _alertService.ShowError(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenMessage"),
+                LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenCaption"));
         }
 
         private string OpenCanvas()

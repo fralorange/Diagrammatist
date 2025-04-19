@@ -37,9 +37,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\Styles\" />
-    <Folder Include="Views\Dialogs\" />
-  </ItemGroup>
-
 </Project>
