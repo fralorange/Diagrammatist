@@ -334,11 +334,35 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="ScriptFileTemplate"
+                  DataType="node:SimulationNodeBase"
+                  xmlns:adorners="http://gu.se/Adorners">
+        <StackPanel>
+            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ScriptTemplate}"/>
+            <StackPanel Margin="0 5 0 5">
+                <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:File}"
+                           FontWeight="Bold"/>
+                <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:LoadFile}"
+                        Command="{Binding DataContext.LoadFileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Margin="5"/>
+                <TextBox Text="{Binding ExternalFilePath}"
+                         adorners:Watermark.Text="C:\Users\User\example.dgmf"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         FontStyle="Italic"
+                         FontSize="10"
+                         Margin="5,0,5,0"/>
+            </StackPanel>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+        </StackPanel>
+    </DataTemplate>
+
     <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
                                               SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
                                               SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
 
     <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
-                                                FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"/>
+                                                FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"
+                                                FlowchartSimulationNodeFileTemplate="{StaticResource ScriptFileTemplate}"/>
     <!--#endregion-->
 </ResourceDictionary>

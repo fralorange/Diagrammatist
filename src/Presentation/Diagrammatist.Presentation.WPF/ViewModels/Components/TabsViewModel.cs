@@ -27,12 +27,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly ICanvasTabsManager _tabsManager;
 
-        /// <summary>
-        /// Occurs when a request is made to open existing file.
-        /// </summary>
-        /// <remarks>
-        /// This event is triggered when user initiates a open action from menu button and returns file path.
-        /// </remarks>
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="RequestOpen"]/*'/>
         public event Func<string>? RequestOpen;
         /// <summary>
         /// Occurs when canvas can't be open.

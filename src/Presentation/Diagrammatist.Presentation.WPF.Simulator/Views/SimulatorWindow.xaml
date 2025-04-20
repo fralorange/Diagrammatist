@@ -14,7 +14,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Loaded="SimulatorLoaded">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
                   GlassFrameThickness="1,0,1,1"

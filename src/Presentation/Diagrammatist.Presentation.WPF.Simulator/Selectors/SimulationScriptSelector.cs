@@ -17,6 +17,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Selectors
         /// </summary>
         public DataTemplate? FlowchartSimulationNodeTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets flowchart simulation node with file template.
+        /// </summary>
+        public DataTemplate? FlowchartSimulationNodeFileTemplate { get; set; }
+
         /// <inheritdoc/>
         public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
@@ -24,12 +29,14 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Selectors
             {
                 return figure switch
                 {
+                    FlowchartFigureModel flowchart when flowchart.Subtype is FlowchartSubtypeModel.PredefinedProcess
+                        => FlowchartSimulationNodeFileTemplate,
+
                     FlowchartFigureModel flowchart when flowchart.Subtype is FlowchartSubtypeModel.Process
                                                                 or FlowchartSubtypeModel.InputOutput
                                                                 or FlowchartSubtypeModel.Decision
                                                                 or FlowchartSubtypeModel.Preparation
                         => FlowchartSimulationNodeTemplate,
-
 
                     _ => _emptyTemplate
                 };

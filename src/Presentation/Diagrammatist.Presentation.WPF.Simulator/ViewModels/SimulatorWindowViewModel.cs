@@ -19,6 +19,9 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
     {
         private readonly ISimulationEngine _simulationEngine;
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="RequestOpen"]/*'/>
+        public event Func<string>? RequestOpen;
+
         /// <summary>
         /// Gets or sets current node in simulation.
         /// </summary>
@@ -114,6 +117,18 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         private void ResetSimulation()
         {
             _simulationEngine.Reset();
+        }
+
+        [RelayCommand]
+        private void LoadFile()
+        {
+            if (RequestOpen is null || SelectedNode is null) return;
+
+            var filePath = RequestOpen();
+
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            SelectedNode.ExternalFilePath = filePath;
         }
     }
 }
