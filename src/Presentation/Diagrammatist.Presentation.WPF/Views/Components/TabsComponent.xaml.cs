@@ -24,6 +24,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             _alertService = App.Current.Services.GetRequiredService<IAlertService>();
 
             viewModel.RequestOpen += OpenCanvas;
+            viewModel.RequestSaveAs += SaveAs;
             viewModel.OpenFailed += OpenFail;
             viewModel.CloseFailed += CloseFail;
 
@@ -54,6 +55,22 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             if (openFileDialog.ShowDialog() == true)
             {
                 return openFileDialog.FileName;
+            }
+
+            return string.Empty;
+        }
+
+        private string SaveAs(string fileName)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                Filter = $"{App.Current.Resources["Filter"]}|*.{App.Current.Resources["Extension"]}",
+                FileName = fileName,
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                return saveFileDialog.FileName;
             }
 
             return string.Empty;

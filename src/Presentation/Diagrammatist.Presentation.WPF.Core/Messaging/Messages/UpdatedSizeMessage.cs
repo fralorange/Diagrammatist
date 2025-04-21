@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using System.Drawing;
+using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.Core.Messaging.Messages
 {

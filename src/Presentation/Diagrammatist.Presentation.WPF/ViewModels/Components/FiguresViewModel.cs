@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
-using Diagrammatist.Presentation.WPF.Core.Managers.Command;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
@@ -175,6 +175,40 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
+        private string GetUniqueFigureName(string baseName)
+        {
+            if (CanvasFigures is null)
+                return baseName;
+
+            var existingNames = CanvasFigures.Select(f => f.Name).ToHashSet();
+            if (!existingNames.Contains(baseName))
+                return baseName;
+
+            var index = 1;
+            var newName = string.Empty;
+            
+            do
+            {
+                newName = $"{baseName} {index}";
+                index++;
+            } while (existingNames.Contains(newName));
+
+            return newName;
+        }
+
+        private string GetTranslatedFigureName(string baseName)
+        {
+            return LocalizationHelper.GetLocalizedValue<string>("Figures.FiguresResources", baseName);
+        }
+
+        private T CloneAndRename<T>(T template) where T : FigureModel
+        {
+            var clone = (T)template.Clone();
+            var translatedName = GetTranslatedFigureName(clone.Name);
+            clone.Name = GetUniqueFigureName(translatedName);
+            return clone;
+        }
+
         /// <summary>
         /// Adds new figure to canvas component.
         /// </summary>
@@ -209,7 +243,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 var mStart = result.Value.start;
                 var mEnd = result.Value.end;
 
-                var figure = (figureTemplate.Clone() as LineFigureModel)!;
+                var figure = CloneAndRename((LineFigureModel)figureTemplate);
 
                 figure.Points = result.Value.points.ToObservableCollection();
 
@@ -229,7 +263,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
             else if (figureTemplate is ShapeFigureModel figureModel)
             {
-                var figure = figureModel.Clone() as ShapeFigureModel;
+                var figure = CloneAndRename((ShapeFigureModel)figureTemplate);
 
                 figure!.UpdateMagneticPoints();
 
@@ -237,7 +271,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
             else
             {
-                var figure = figureTemplate.Clone();
+                var figure = CloneAndRename(figureTemplate);
 
                 _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
             }

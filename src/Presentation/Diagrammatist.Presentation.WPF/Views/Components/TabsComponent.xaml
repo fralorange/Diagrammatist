@@ -16,7 +16,7 @@
             <ContextMenu x:Key="CanvasMenu"
                          lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                 <MenuItem Header="{lex:Loc Close}"
-                          Command="{Binding DataContext.CloseCanvasCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                          Command="{Binding DataContext.CloseDocumentCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
             </ContextMenu>
         </ListBox.Resources>

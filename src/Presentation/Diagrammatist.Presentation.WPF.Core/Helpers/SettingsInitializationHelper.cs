@@ -1,6 +1,6 @@
-﻿using Diagrammatist.Domain.Canvas;
+﻿using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 
-namespace Diagrammatist.Application.AppServices.Canvas.Helpers
+namespace Diagrammatist.Presentation.WPF.Core.Helpers
 {
     /// <summary>
     /// Helps to initialize diagram settings in presentation layer.
@@ -11,9 +11,9 @@ namespace Diagrammatist.Application.AppServices.Canvas.Helpers
         /// Initializes new default diagram settings.
         /// </summary>
         /// <returns><see cref="DiagramSettingsDto"/> with default values.</returns>
-        public static Settings InitializeDefaultSettings()
+        public static SettingsModel InitializeDefaultSettings()
         {
-            return new Settings();
+            return new SettingsModel();
         }
     }
 }

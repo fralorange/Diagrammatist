@@ -67,7 +67,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// </summary>
         /// <param name="dialogService"></param>
         /// <exception cref="ArgumentException"></exception>
-        public SimulatorWindowViewModel(IDialogService dialogService)
+        public SimulatorWindowViewModel(IDialogService dialogService, IEnumerable<SimulationNode>? nodes = null)
         {
             // Validation.
             var currentCanvas = Messenger.Send(new CurrentCanvasRequestMessage()).Response;
@@ -77,7 +77,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             // Factory.
             var factory = SimulationFactoryProvider.GetFactory(currentCanvas.Settings.Type);
 
-            var createdNodes = factory.CreateNodes(currentCanvas.Figures);
+            var createdNodes = nodes ?? factory.CreateNodes(currentCanvas.Figures);
             Nodes = new ObservableCollection<SimulationNode>(createdNodes);
             Connections = currentCanvas.Connections;
 

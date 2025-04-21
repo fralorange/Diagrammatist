@@ -1,4 +1,6 @@
-﻿namespace Diagrammatist.Application.AppServices.Canvas.Helpers
+﻿using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+
+namespace Diagrammatist.Presentation.WPF.Core.Helpers
 {
     /// <summary>
     /// Helps to update or set up canvas bounds.
@@ -11,7 +13,7 @@
         /// Updates canvas bounds.
         /// </summary>
         /// <param name="canvas">Target canvas.</param>
-        public static void UpdateCanvasBounds(Domain.Canvas.Canvas canvas)
+        public static void UpdateCanvasBounds(CanvasModel canvas)
         {
             var settings = canvas.Settings;
             var zoom = canvas.Zoom;

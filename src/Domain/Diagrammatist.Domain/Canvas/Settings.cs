@@ -1,5 +1,4 @@
-﻿using Diagrammatist.Domain.Canvas.Constants;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Diagrammatist.Domain.Canvas
 {
@@ -9,14 +8,14 @@ namespace Diagrammatist.Domain.Canvas
     public class Settings
     {
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FileName"]/*'/>
-        public string FileName { get; set; } = SettingsConstants.DefaultFileName;
+        public string FileName { get; set; } = string.Empty;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Width"]/*'/>
-        public int Width { get; set; } = SettingsConstants.DefaultWidth;
+        public int Width { get; set; } 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Height"]/*'/>
-        public int Height { get; set; } = SettingsConstants.DefaultHeight;
+        public int Height { get; set; } 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Background"]/*'/>
-        public Color Background { get; set; } = SettingsConstants.DefaultBackground;
+        public Color Background { get; set; } 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DiagramType"]/*'/>
-        public Diagrams Type { get; set; } = SettingsConstants.DefaultType;
+        public Diagrams Type { get; set; } 
     }
 }

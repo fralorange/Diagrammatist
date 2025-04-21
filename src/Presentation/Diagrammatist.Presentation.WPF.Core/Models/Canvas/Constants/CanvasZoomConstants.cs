@@ -1,4 +1,4 @@
-﻿namespace Diagrammatist.Domain.Canvas.Constants
+﻿namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants
 {
     /// <summary>
     /// Canvas zoom constants.

@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Application.AppServices.Canvas.Serializer;
-using Diagrammatist.Application.AppServices.Canvas.Services;
+using Diagrammatist.Application.AppServices.Document.Serializer;
+using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Application.AppServices.Figures.Repositories;
 using Diagrammatist.Application.AppServices.Figures.Serializer;
 using Diagrammatist.Application.AppServices.Figures.Serializer.Configuration;
@@ -11,6 +12,7 @@ using Diagrammatist.Presentation.WPF.Core.Managers.Tabs;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Interaction;
+using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation;
 using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 using Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
@@ -75,8 +77,10 @@ namespace Diagrammatist.Presentation.WPF
             #endregion
             #region Canvases
             services.AddTransient<ICanvasManipulationService, CanvasManipulationService>();
-            services.AddTransient<ICanvasSerializationService, CanvasSerializationService>();
             services.AddTransient<ICanvasInteractionService, CanvasInteractionService>();
+            #endregion
+            #region Document
+            services.AddTransient<IDocumentSerializationService, DocumentSerializationService>();
             #endregion
 
             #region Presentation
@@ -120,6 +124,9 @@ namespace Diagrammatist.Presentation.WPF
             #region Figures
             services.AddTransient<IFigureSerializer, FigureSerializer>();
             #endregion
+            #region Document
+            services.AddTransient<IDocumentSerializer, DocumentSerializer>();
+            #endregion
             return services;
         }
 
@@ -156,7 +163,7 @@ namespace Diagrammatist.Presentation.WPF
         {
             services.AddSingleton<IUndoableCommandManager, UndoableCommandManager>();
             services.AddSingleton<ITrackableCommandManager, TrackableCommandManager>();
-            services.AddSingleton<ICanvasTabsManager, CanvasTabsManager>();
+            services.AddSingleton<IDocumentTabsManager, DocumentTabsManager>();
 
             return services;
         }

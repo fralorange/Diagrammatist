@@ -1,9 +1,9 @@
-﻿using Diagrammatist.Application.AppServices.Canvas.Helpers;
-using Diagrammatist.Domain.Canvas;
-using System.Drawing;
-using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
+﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using System.Windows;
+using System.Windows.Media;
 
-namespace Diagrammatist.Application.AppServices.Canvas.Services
+namespace Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation
 {
     /// <summary>
     /// A class that implements <see cref="ICanvasManipulationService"/>. A canvas manipulation service.
@@ -11,9 +11,9 @@ namespace Diagrammatist.Application.AppServices.Canvas.Services
     public class CanvasManipulationService : ICanvasManipulationService
     {
         /// <inheritdoc/>
-        public Task<CanvasEntity> CreateCanvasAsync(Settings settings)
+        public Task<CanvasModel> CreateCanvasAsync(SettingsModel settings)
         {
-            var canvas = new CanvasEntity { Settings = settings };
+            var canvas = new CanvasModel { Settings = settings };
 
             CanvasBoundaryHelper.UpdateCanvasBounds(canvas);
 
@@ -21,18 +21,18 @@ namespace Diagrammatist.Application.AppServices.Canvas.Services
         }
 
         /// <inheritdoc/>
-        public void UpdateCanvas(CanvasEntity canvas, Size size)
+        public void UpdateCanvas(CanvasModel canvas, Size size)
         {
             var settings = canvas.Settings;
 
-            settings.Width = size.Width;
-            settings.Height = size.Height;
+            settings.Width = ((int)size.Width);
+            settings.Height = ((int)size.Height);
 
             CanvasBoundaryHelper.UpdateCanvasBounds(canvas);
         }
 
         /// <inheritdoc/>
-        public void UpdateCanvas(CanvasEntity canvas, Color background)
+        public void UpdateCanvas(CanvasModel canvas, Color background)
         {
             var settings = canvas.Settings;
 

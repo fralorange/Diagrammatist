@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Windows.Media;
 
-namespace Diagrammatist.Domain.Canvas.Constants
+namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants
 {
     /// <summary>
     /// Diagram Settings constants.
@@ -22,10 +22,10 @@ namespace Diagrammatist.Domain.Canvas.Constants
         /// <summary>
         /// Default value for diagram canvas background.
         /// </summary>
-        public static readonly Color DefaultBackground = Color.DimGray;
+        public static readonly Color DefaultBackground = Colors.DimGray;
         /// <summary>
         /// Default value for diagram's type.
         /// </summary>
-        public const Diagrams DefaultType = Diagrams.Custom;
+        public const DiagramsModel DefaultType = DiagramsModel.Custom;
     }
 }

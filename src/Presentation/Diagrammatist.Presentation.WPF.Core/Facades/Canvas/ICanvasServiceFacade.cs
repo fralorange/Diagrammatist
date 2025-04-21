@@ -1,5 +1,5 @@
-﻿using Diagrammatist.Application.AppServices.Canvas.Services;
-using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Interaction;
+﻿using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Interaction;
+using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
 
 namespace Diagrammatist.Presentation.WPF.Core.Facades.Canvas
@@ -18,8 +18,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Facades.Canvas
         /// </summary>
         ICanvasInteractionService Interaction { get; }
         /// <summary>
-        /// Gets canvas serialization service.
+        /// Gets canvas manipulation service.
         /// </summary>
-        ICanvasSerializationService Serialization { get; }
+        ICanvasManipulationService Manipulation { get; }
     }
 }

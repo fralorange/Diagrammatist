@@ -1,8 +1,8 @@
-﻿using Diagrammatist.Domain.Canvas;
-using System.Drawing;
-using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
+﻿using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using System.Windows;
+using System.Windows.Media;
 
-namespace Diagrammatist.Application.AppServices.Canvas.Services
+namespace Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation
 {
     /// <summary>
     /// An interface for canvas manipulation operations.
@@ -13,19 +13,19 @@ namespace Diagrammatist.Application.AppServices.Canvas.Services
         /// Create new canvas.
         /// </summary>
         /// <param name="settings">Settings.</param>
-        /// <returns><see cref="CanvasEntity"/>. Canvas model.</returns>
-        Task<CanvasEntity> CreateCanvasAsync(Settings settings);
+        /// <returns><see cref="CanvasModel"/>. Canvas model.</returns>
+        Task<CanvasModel> CreateCanvasAsync(SettingsModel settings);
         /// <summary>
         /// Edits existing canvas settings by changing its size.
         /// </summary>
         /// <param name="canvas">Target canvas.</param>
         /// <param name="size">New size.</param>
-        void UpdateCanvas(CanvasEntity canvas, Size size);
+        void UpdateCanvas(CanvasModel canvas, Size size);
         /// <summary>
         /// Edits existing canvas settings by changing its background color.
         /// </summary>
         /// <param name="canvas">Target canvas.</param>
         /// <param name="background">New background color.</param>
-        void UpdateCanvas(CanvasEntity canvas, Color background);
+        void UpdateCanvas(CanvasModel canvas, Color background);
     }
 }

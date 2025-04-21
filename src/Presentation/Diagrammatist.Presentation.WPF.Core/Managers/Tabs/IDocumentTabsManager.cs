@@ -1,28 +1,35 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Models.Document;
 using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.Core.Managers.Tabs
 {
     /// <summary>
-    /// An interface that is responsible for canvas tabs management.
+    /// An interface that is responsible for document tabs management.
     /// </summary>
-    public interface ICanvasTabsManager
+    public interface IDocumentTabsManager
     {
         /// <summary>
         /// Gets observable canvases.
         /// </summary>
         ObservableCollection<CanvasModel> Canvases { get; }
         /// <summary>
-        /// Adds new canvas.
+        /// Gets document model by canvas model.
         /// </summary>
-        /// <param name="canvas">New canvas.</param>
-        /// <param name="filePath">Optional file path.</param>
-        void Add(CanvasModel canvas, string filePath = "");
+        /// <param name="canvas">A canvas model that acts as a key.</param>
+        /// <returns><see cref="DocumentModel"/>.</returns>
+        DocumentModel? Get(CanvasModel canvas);
         /// <summary>
-        /// Removes existing canvas.
+        /// Adds new document.
         /// </summary>
-        /// <param name="canvas">Target canvas.</param>
-        void Remove(CanvasModel canvas);
+        /// <param name="document">New document.</param>
+        /// <param name="filePath">Optional file path.</param>
+        void Add(DocumentModel document, string filePath = "");
+        /// <summary>
+        /// Removes existing document.
+        /// </summary>
+        /// <param name="document">Target document.</param>
+        void Remove(DocumentModel document);
         /// <summary>
         /// Determines whether manager contains file path.
         /// </summary>
