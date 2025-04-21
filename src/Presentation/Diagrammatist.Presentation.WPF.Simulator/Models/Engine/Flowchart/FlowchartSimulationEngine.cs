@@ -14,7 +14,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
     public partial class FlowchartSimulationEngine : ISimulationEngine
     {
         /// <inheritdoc/>
-        public event EventHandler<SimulationNodeBase?> CurrentNodeChanged;
+        public event EventHandler<SimulationNode?> CurrentNodeChanged;
 
         private readonly ISimulationIO _io;
         private Lua _lua;

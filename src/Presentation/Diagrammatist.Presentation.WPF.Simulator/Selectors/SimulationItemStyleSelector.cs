@@ -24,7 +24,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Selectors
         {
             return item switch
             {
-                SimulationNodeBase => SimulationNodeStyle,
+                SimulationNode => SimulationNodeStyle,
                 ConnectionModel => SimulationConnectionStyle,
                 _ => null
             };

@@ -347,6 +347,7 @@
                         Margin="5"/>
                 <TextBox Text="{Binding ExternalFilePath}"
                          adorners:Watermark.Text="C:\Users\User\example.dgmf"
+                         adorners:Watermark.VisibleWhen="Empty"
                          IsReadOnly="True"
                          TextWrapping="Wrap"
                          FontStyle="Italic"
@@ -362,7 +363,7 @@
                                               SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
 
     <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
-                                                FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"
-                                                FlowchartSimulationNodeFileTemplate="{StaticResource ScriptFileTemplate}"/>
+                                                SimulationNodeTemplate="{StaticResource ScriptTemplate}"
+                                                SimulationFileNodeTemplate="{StaticResource ScriptFileTemplate}"/>
     <!--#endregion-->
 </ResourceDictionary>

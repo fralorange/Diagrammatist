@@ -26,13 +26,13 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// Gets or sets current node in simulation.
         /// </summary>
         [ObservableProperty]
-        private SimulationNodeBase? _currentNode;
+        private SimulationNode? _currentNode;
 
         /// <summary>
         /// Gets or sets selected node in simulation.
         /// </summary>
         [ObservableProperty]
-        private SimulationNodeBase? _selectedNode;
+        private SimulationNode? _selectedNode;
 
         /// <summary>
         /// Gets or sets simulation interval between steps.
@@ -52,7 +52,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// <summary>
         /// Gets simulation nodes.
         /// </summary>
-        public ObservableCollection<SimulationNodeBase> Nodes { get; }
+        public ObservableCollection<SimulationNode> Nodes { get; }
 
         /// <summary>
         /// Gets connections.
@@ -78,7 +78,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             var factory = SimulationFactoryProvider.GetFactory(currentCanvas.Settings.Type);
 
             var createdNodes = factory.CreateNodes(currentCanvas.Figures);
-            Nodes = new ObservableCollection<SimulationNodeBase>(createdNodes);
+            Nodes = new ObservableCollection<SimulationNode>(createdNodes);
             Connections = currentCanvas.Connections;
 
             // Simulation parameters.

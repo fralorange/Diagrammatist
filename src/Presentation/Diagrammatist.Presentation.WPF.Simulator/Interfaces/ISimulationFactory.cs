@@ -15,7 +15,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Interfaces
         /// </summary>
         /// <param name="figures"></param>
         /// <returns></returns>
-        IEnumerable<SimulationNodeBase> CreateNodes(IEnumerable<FigureModel> figures);
+        IEnumerable<SimulationNode> CreateNodes(IEnumerable<FigureModel> figures);
         /// <summary>
         /// Creates simulation engine.
         /// </summary>
@@ -23,6 +23,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Interfaces
         /// <param name="connections"></param>
         /// <param name="io"></param>
         /// <returns></returns>
-        ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io);
+        ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io);
     }
 }

@@ -15,7 +15,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart
     public class FlowchartSimulationFactory : ISimulationFactory
     {
         /// <inheritdoc/>
-        public IEnumerable<SimulationNodeBase> CreateNodes(IEnumerable<FigureModel> figures)
+        public IEnumerable<SimulationNode> CreateNodes(IEnumerable<FigureModel> figures)
         {
             return figures
                 .OfType<FlowchartFigureModel>()
@@ -23,7 +23,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart
         }
 
         /// <inheritdoc/>
-        public ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
+        public ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
         {
             return new FlowchartSimulationEngine(
                 nodes.OfType<FlowchartSimulationNode>(),

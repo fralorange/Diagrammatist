@@ -1,5 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
+using Diagrammatist.Presentation.WPF.Simulator.Providers;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,36 +11,23 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Selectors
     /// </summary>
     public class SimulationScriptSelector : DataTemplateSelector
     {
-        private DataTemplate _emptyTemplate = new();
-
         /// <summary>
         /// Gets or sets flowchart simulation node template.
         /// </summary>
-        public DataTemplate? FlowchartSimulationNodeTemplate { get; set; }
+        public DataTemplate? SimulationNodeTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets flowchart simulation node with file template.
         /// </summary>
-        public DataTemplate? FlowchartSimulationNodeFileTemplate { get; set; }
+        public DataTemplate? SimulationFileNodeTemplate { get; set; }
 
         /// <inheritdoc/>
         public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
-            if (item is SimulationNodeBase { Figure: var figure })
+            if (item is SimulationNode node)
             {
-                return figure switch
-                {
-                    FlowchartFigureModel flowchart when flowchart.Subtype is FlowchartSubtypeModel.PredefinedProcess
-                        => FlowchartSimulationNodeFileTemplate,
-
-                    FlowchartFigureModel flowchart when flowchart.Subtype is FlowchartSubtypeModel.Process
-                                                                or FlowchartSubtypeModel.InputOutput
-                                                                or FlowchartSubtypeModel.Decision
-                                                                or FlowchartSubtypeModel.Preparation
-                        => FlowchartSimulationNodeTemplate,
-
-                    _ => _emptyTemplate
-                };
+                var factory = TemplateFactoryProvider.GetFactory(node, SimulationNodeTemplate, SimulationFileNodeTemplate);
+                return factory.CreateTemplate(node);
             }
 
             return null;

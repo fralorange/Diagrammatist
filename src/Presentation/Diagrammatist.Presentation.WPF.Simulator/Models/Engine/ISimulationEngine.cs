@@ -10,7 +10,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine
         /// <summary>
         /// An event that occurs when current node changes.
         /// </summary>
-        event EventHandler<SimulationNodeBase?> CurrentNodeChanged;
+        event EventHandler<SimulationNode?> CurrentNodeChanged;
         /// <summary>
         /// Initializes simulation engine.
         /// </summary>
