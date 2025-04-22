@@ -120,6 +120,9 @@
   <data name="AllFiles" xml:space="preserve">
     <value>Все файлы</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>Файл</value>
   </data>

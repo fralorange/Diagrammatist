@@ -18,7 +18,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Managers.Tabs
         /// </summary>
         /// <param name="canvas">A canvas model that acts as a key.</param>
         /// <returns><see cref="DocumentModel"/>.</returns>
-        DocumentModel? Get(CanvasModel canvas);
+        DocumentModel? Get(CanvasModel? canvas);
         /// <summary>
         /// Adds new document.
         /// </summary>

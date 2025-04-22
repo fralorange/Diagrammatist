@@ -15,7 +15,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Node
         /// <summary>
         /// Decorated figure.
         /// </summary>
-        public required FigureModel Figure { get; init; }
+        public required FigureModel Figure { get; set; }
 
         /// <summary>
         /// Gets or sets lua script string value.

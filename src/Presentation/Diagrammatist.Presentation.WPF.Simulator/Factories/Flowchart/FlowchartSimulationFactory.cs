@@ -15,11 +15,46 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart
     public class FlowchartSimulationFactory : ISimulationFactory
     {
         /// <inheritdoc/>
-        public IEnumerable<SimulationNode> CreateNodes(IEnumerable<FigureModel> figures)
+        public IEnumerable<SimulationNode> CreateNodes(IEnumerable<FigureModel> figures, IEnumerable<SimulationNode>? existingNodes = null)
         {
+            var existingDict = existingNodes?
+                .OfType<FlowchartSimulationNode>()
+                .ToDictionary(n => n.Figure.Id) ?? [];
+
             return figures
                 .OfType<FlowchartFigureModel>()
-                .Select(f => new FlowchartSimulationNode { Figure = f });
+                .Select(f =>
+                {
+                    if (existingDict.TryGetValue(f.Id, out var existingNode))
+                    {
+                        existingNode.Figure = f;
+                        return existingNode;
+                    }
+                    return new FlowchartSimulationNode { Figure = f };
+                });
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<ConnectionModel> CreateConnections(IEnumerable<ConnectionModel> currentConnections, 
+            IEnumerable<ConnectionModel>? existingConnections = null)
+        {
+            if (existingConnections is null)
+                return currentConnections;
+
+            var existingDict = existingConnections?
+                .ToDictionary(c => c.Line.Id) ?? [];
+
+            return currentConnections.Select(c =>
+            {
+                if (existingDict.TryGetValue(c.Line.Id, out var existing))
+                {
+                    existing.SourceMagneticPoint = c.SourceMagneticPoint;
+                    existing.DestinationMagneticPoint = c.DestinationMagneticPoint;
+                    existing.Line = c.Line;
+                    return existing;
+                }
+                return c; 
+            });
         }
 
         /// <inheritdoc/>

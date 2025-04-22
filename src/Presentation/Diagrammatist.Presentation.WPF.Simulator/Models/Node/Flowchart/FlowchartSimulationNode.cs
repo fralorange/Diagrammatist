@@ -16,11 +16,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart
             get => _luaScript;
             set
             {
-                if (Figure is FlowchartFigureModel flowchartFigure
-                    && !FlowchartScriptValidator.Validate(flowchartFigure.Subtype, value, out var error))
-                {
-                    throw new InvalidOperationException($"LuaScript error: {error}");
-                }
+                //if (Figure is FlowchartFigureModel flowchartFigure
+                //    && !FlowchartScriptValidator.Validate(flowchartFigure.Subtype, value, out var error))
+                //{
+                //    throw new InvalidOperationException($"LuaScript error: {error}");
+                //}
 
                 _luaScript = value;
             }

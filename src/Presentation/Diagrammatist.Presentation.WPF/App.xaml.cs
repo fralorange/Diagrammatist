@@ -1,5 +1,7 @@
-﻿using Diagrammatist.Presentation.WPF.Views;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Document;
+using Diagrammatist.Presentation.WPF.Simulator.Mappers;
+using Diagrammatist.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using System.Windows;
@@ -28,25 +30,23 @@ namespace Diagrammatist.Presentation.WPF
             Services = ConfigureServices();
 
             ConfigureCulture();
+            ConfigureMappers();
         }
 
         private static ServiceProvider ConfigureServices()
         {
-            var services = new ServiceCollection();
-
-            services.AddStartupServices();
-            services.AddViewModels();
-
-            services.AddServices();
-            services.AddFacades();
-            services.AddSerializers();
-            services.AddRepositories();
-
-            services.AddDialogServices();
-
-            services.AddManagers();
-
-            return services.BuildServiceProvider();
+            return new ServiceCollection()
+                .AddStartupServices()
+                .AddViewModels()
+                .AddServices()
+                .AddFacades()
+                .AddSerializers()
+                .AddRepositories()
+                .AddDialogServices()
+                .AddManagers()
+                .AddCulture()
+                .AddMappers()
+                .BuildServiceProvider();
         }
 
         private static void ConfigureCulture()
@@ -60,6 +60,11 @@ namespace Diagrammatist.Presentation.WPF
             CultureInfo.CurrentUICulture = culture;
 
             LocalizeDictionary.Instance.SetCultureCommand.Execute(culture.ToString());
+        }
+
+        private static void ConfigureMappers()
+        {
+            DocumentMapperExtension.RegisterPayloadMapper(new SimulationDocumentMapper());
         }
 
         protected override void OnStartup(StartupEventArgs e)

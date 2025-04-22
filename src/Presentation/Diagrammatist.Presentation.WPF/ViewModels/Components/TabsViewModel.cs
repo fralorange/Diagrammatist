@@ -302,6 +302,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 m.Reply(Save());
             });
+            // Return current document.
+            Messenger.Register<TabsViewModel, CurrentDocumentRequestMessage>(this, (r, m) =>
+            {
+                m.Reply(_tabsManager.Get(SelectedCanvas));
+            });
             // Register commands.
             Messenger.Register<TabsViewModel, string>(this, (r, m) =>
             {

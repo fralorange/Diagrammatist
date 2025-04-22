@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Providers;
@@ -59,15 +61,26 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// </summary>
         public ObservableCollection<ConnectionModel> Connections { get; }
 
+        private bool? _dialogResult;
+
         /// <inheritdoc/>
-        public bool? DialogResult => true;
+        public bool? DialogResult
+        {
+            get => _dialogResult;
+            private set => SetProperty(ref _dialogResult, value);
+        }
+
+        /// <summary>
+        /// Gets or sets new context, if user confirmed changes.
+        /// </summary>
+        public SimulationContext? NewContext { get; private set; }
 
         /// <summary>
         /// Initializes simulator view model.
         /// </summary>
         /// <param name="dialogService"></param>
         /// <exception cref="ArgumentException"></exception>
-        public SimulatorWindowViewModel(IDialogService dialogService, IEnumerable<SimulationNode>? nodes = null)
+        public SimulatorWindowViewModel(IDialogService dialogService, SimulationContext? payload = null)
         {
             // Validation.
             var currentCanvas = Messenger.Send(new CurrentCanvasRequestMessage()).Response;
@@ -77,9 +90,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             // Factory.
             var factory = SimulationFactoryProvider.GetFactory(currentCanvas.Settings.Type);
 
-            var createdNodes = nodes ?? factory.CreateNodes(currentCanvas.Figures);
-            Nodes = new ObservableCollection<SimulationNode>(createdNodes);
-            Connections = currentCanvas.Connections;
+            var createdNodes = factory.CreateNodes(currentCanvas.Figures, payload?.Nodes);
+            var createdConnections = factory.CreateConnections(currentCanvas.Connections, payload?.Connections);
+            Nodes = createdNodes.ToObservableCollection();
+            Connections = createdConnections.ToObservableCollection();
 
             // Simulation parameters.
             SimulationSize = new Size(currentCanvas.Settings.Width, currentCanvas.Settings.Height);
@@ -119,6 +133,9 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             _simulationEngine.Reset();
         }
 
+        /// <summary>
+        /// Loads file to selected node.
+        /// </summary>
         [RelayCommand]
         private void LoadFile()
         {
@@ -129,6 +146,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             if (string.IsNullOrEmpty(filePath)) return;
 
             SelectedNode.ExternalFilePath = filePath;
+        }
+
+        /// <summary>
+        /// Confirms changes.
+        /// </summary>
+        [RelayCommand]
+        private void OK()
+        {
+            NewContext = new() { Nodes = Nodes, Connections = Connections };
+            DialogResult = true;
         }
     }
 }

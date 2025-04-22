@@ -5,6 +5,7 @@ using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
@@ -357,9 +358,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand(CanExecute = nameof(MenuWithNotCustomCanvasCanExecute))]
         private void MenuSimulator()
         {
-            var dialogViewModel = new SimulatorWindowViewModel(_dialogService);
+            var key = "Simulation";
+            var doc = Messenger.Send<CurrentDocumentRequestMessage>().Response;
 
-            _dialogService.ShowDialog(this, dialogViewModel);
+            if (doc is null) return;
+
+            var payload = doc.GetPayloadData<SimulationContext>(key);
+
+            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, payload);
+            
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.NewContext is { } context)
+            {
+                doc.SetPayload(key, context);
+            }
         }
 
         /// <summary>

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\Diagrammatist.Application.AppServices.Simulator\Diagrammatist.Application.AppServices.Simulator.csproj" />
     <ProjectReference Include="..\..\Application\Diagrammatist.Application.AppServices\Diagrammatist.Application.AppServices.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Diagrammatist.Infrastructure.DataAccess\Diagrammatist.Infrastructure.DataAccess.csproj" />
   </ItemGroup>

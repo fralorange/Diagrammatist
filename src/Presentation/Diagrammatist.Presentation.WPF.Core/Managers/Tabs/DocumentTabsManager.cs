@@ -17,7 +17,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Managers.Tabs
         public ObservableCollection<CanvasModel> Canvases => _canvases;
 
         /// <inheritdoc/>
-        public DocumentModel? Get(CanvasModel model)
+        public DocumentModel? Get(CanvasModel? model)
         {
             return _documents.FirstOrDefault(doc => doc.Canvas == model);
         }

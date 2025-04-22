@@ -12,35 +12,37 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
     public class SerializationConfigurator
     {
         /// <summary>
-        /// Configures figures through runtime registration.
+        /// Get required figure mappings.
         /// </summary>
-        /// <param name="serializer"></param>
-        internal void ConfigureFiguresMapping(MessagePackSerializer serializer)
+        /// <returns></returns>
+        public IEnumerable<DerivedTypeMapping> GetMappings()
         {
-            KnownSubTypeMapping<Figure> mapping = new();
-            mapping.Add<LineFigure, FigureWitness>(1);
-            mapping.Add<ShapeFigure, FigureWitness>(2);
-            mapping.Add<TextFigure, FigureWitness>(3);
-            mapping.Add<ContainerFigure, FigureWitness>(4);
-            mapping.Add<FlowchartFigure, FigureWitness>(5);
+            var figureMapping = new DerivedShapeMapping<Figure>();
+            figureMapping.Add<LineFigure, FigureWitness>(1);
+            figureMapping.Add<ShapeFigure, FigureWitness>(2);
+            figureMapping.Add<TextFigure, FigureWitness>(3);
+            figureMapping.Add<ContainerFigure, FigureWitness>(4);
+            figureMapping.Add<FlowchartFigure, FigureWitness>(5);
 
-            serializer.RegisterKnownSubTypes(mapping);
+            return [figureMapping];
         }
 
         /// <summary>
-        /// Configures serializer.
+        /// Creates and configures serializer.
         /// </summary>
         /// <returns>Configure <see cref="MessagePackSerializer"/>.</returns>
-        public MessagePackSerializer Configure()
+        public MessagePackSerializer CreateSerializer(IEnumerable<DerivedTypeMapping> additionalMappings)
         {
             var serializer = new MessagePackSerializer()
             {
                 SerializeDefaultValues = SerializeDefaultValuesPolicy.Always,
             };
 
-            ConfigureFiguresMapping(serializer);
+            var allMappings = new List<DerivedTypeMapping>();
+            allMappings.AddRange(GetMappings());
+            allMappings.AddRange(additionalMappings);
 
-            return serializer;
+            return serializer with { DerivedTypeMappings = [.. serializer.DerivedTypeMappings, ..allMappings] };
         }
     }
 }

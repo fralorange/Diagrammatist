@@ -1,6 +1,4 @@
-﻿using Diagrammatist.Domain.Simulator;
-
-namespace Diagrammatist.Domain.Document
+﻿namespace Diagrammatist.Domain.Document
 {
     /// <summary>
     /// A class that represents composite data source.
@@ -12,8 +10,8 @@ namespace Diagrammatist.Domain.Document
         /// </summary>
         public required Canvas.Canvas Canvas { get; set; }
         /// <summary>
-        /// Gets or sets simulation data, if it exists.
+        /// Gets or sets payload data, if it exists.
         /// </summary>
-        public SimulationData? SimulationData { get; set; }
+        public Dictionary<string, IPayloadData> Payloads { get; set; } = [];
     }
 }
