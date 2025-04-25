@@ -20,6 +20,6 @@ namespace Diagrammatist.Domain.Canvas
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Figures"]/*'/>
         public List<Figure> Figures { get; set; } = [];
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Connections"]/*'/>
-        public List<Domain.Connection.ConnectionData> Connections { get; set; } = [];
+        public List<Connection.ConnectionData> Connections { get; set; } = [];
     }
 }

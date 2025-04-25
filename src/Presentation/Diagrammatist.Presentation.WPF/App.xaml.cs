@@ -28,9 +28,6 @@ namespace Diagrammatist.Presentation.WPF
         public App()
         {
             Services = ConfigureServices();
-
-            ConfigureCulture();
-            ConfigureMappers();
         }
 
         private static ServiceProvider ConfigureServices()
@@ -47,24 +44,6 @@ namespace Diagrammatist.Presentation.WPF
                 .AddCulture()
                 .AddMappers()
                 .BuildServiceProvider();
-        }
-
-        private static void ConfigureCulture()
-        {
-            var culture = new CultureInfo(WPF.Properties.Settings.Default.Culture);
-
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.CurrentCulture = culture;
-
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
-            CultureInfo.CurrentUICulture = culture;
-
-            LocalizeDictionary.Instance.SetCultureCommand.Execute(culture.ToString());
-        }
-
-        private static void ConfigureMappers()
-        {
-            DocumentMapperExtension.RegisterPayloadMapper(new SimulationDocumentMapper());
         }
 
         protected override void OnStartup(StartupEventArgs e)

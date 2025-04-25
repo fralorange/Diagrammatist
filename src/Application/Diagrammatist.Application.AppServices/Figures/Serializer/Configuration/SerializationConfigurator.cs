@@ -21,10 +21,14 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
             figureMapping.Add<LineFigure, FigureWitness>(1);
             figureMapping.Add<ShapeFigure, FigureWitness>(2);
             figureMapping.Add<TextFigure, FigureWitness>(3);
-            figureMapping.Add<ContainerFigure, FigureWitness>(4);
-            figureMapping.Add<FlowchartFigure, FigureWitness>(5);
 
-            return [figureMapping];
+            var shapeFigureMapping = new DerivedShapeMapping<ShapeFigure>();
+            shapeFigureMapping.Add<ContainerFigure, FigureWitness>(nameof(ContainerFigure)); 
+
+            var containerFigureMapping = new DerivedShapeMapping<ContainerFigure>();
+            containerFigureMapping.Add<FlowchartFigure, FigureWitness>(nameof(FlowchartFigure));
+
+            return [figureMapping, shapeFigureMapping, containerFigureMapping];
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
             allMappings.AddRange(GetMappings());
             allMappings.AddRange(additionalMappings);
 
-            return serializer with { DerivedTypeMappings = [.. serializer.DerivedTypeMappings, ..allMappings] };
+            return serializer with { DerivedTypeMappings = [.. serializer.DerivedTypeMappings, .. allMappings] };
         }
     }
 }

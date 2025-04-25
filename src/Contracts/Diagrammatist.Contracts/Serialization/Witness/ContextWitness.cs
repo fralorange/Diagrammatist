@@ -9,5 +9,5 @@ namespace Diagrammatist.Application.AppServices.Simulator.Serializer.Witness
     /// </summary>
     [GenerateShape<IPayloadData>]
     [GenerateShape<SimulationContextData>]
-    partial class ContextWitness;
+    public partial class ContextWitness;
 }

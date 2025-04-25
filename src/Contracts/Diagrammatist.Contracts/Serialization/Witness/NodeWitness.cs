@@ -9,5 +9,5 @@ namespace Diagrammatist.Application.AppServices.Simulator.Serializer.Witness
     /// </summary>
     [GenerateShape<SimulationNodeData>]
     [GenerateShape<FlowchartSimulationNodeData>]
-    partial class NodeWitness;
+    public partial class NodeWitness;
 }

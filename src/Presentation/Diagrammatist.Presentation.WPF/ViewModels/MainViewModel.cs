@@ -369,7 +369,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             
             if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.NewContext is { } context)
             {
-                doc.SetPayload(key, context);
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => doc.SetPayload(key, context), 
+                    () => doc.SetPayload(key, payload));
+
+                _trackableCommandManager.Execute(command);
             }
         }
 

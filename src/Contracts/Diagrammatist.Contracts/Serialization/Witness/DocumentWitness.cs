@@ -6,5 +6,5 @@ namespace Diagrammatist.Application.AppServices.Document.Serializer.Witness
     /// A document witness partial class.
     /// </summary>
     [GenerateShape<Domain.Document.Document>]
-    partial class DocumentWitness;
+    public partial class DocumentWitness;
 }
