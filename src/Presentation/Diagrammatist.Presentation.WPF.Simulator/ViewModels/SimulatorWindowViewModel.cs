@@ -121,7 +121,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         [RelayCommand]
         private void StepBackward()
         {
-            //_simulationEngine.StepBackward();
+            _simulationEngine.StepBackward();
         }
 
         /// <summary>

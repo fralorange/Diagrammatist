@@ -2,9 +2,9 @@
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
+using Diagrammatist.Presentation.WPF.Simulator.Managers;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart;
-using NLua;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 {
@@ -17,7 +17,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         public event EventHandler<SimulationNode?> CurrentNodeChanged;
 
         private readonly ISimulationIO _io;
-        private Lua _lua;
+        private readonly LuaStateManager _luaStateManager = new();
         // Nodes.
         private readonly Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>> _graph = [];
 
@@ -35,7 +35,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             }
         }
 
-        private Stack<FlowchartSimulationNode> _history = [];
+        private Stack<FlowchartSimulationNode> _history = [];  
 
         /// <summary>
         /// Initializes flowchart simulation engine.
@@ -73,7 +73,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                     MoveToNext();
                     break;
                 case FlowchartSubtypeModel.Process:
-                    _lua.DoString(CurrentNode.LuaScript);
+                    _luaStateManager.Execute(CurrentNode.LuaScript);
                     MoveToNext();
                     break;
                 case FlowchartSubtypeModel.InputOutput:
@@ -90,20 +90,17 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                     //HandlePredefinedProcess();
                     MoveToNext();
                     break;
-                case FlowchartSubtypeModel.Database:
-                    //HandleDatabase();
-                    MoveToNext();
-                    break;
             }
         }
 
         /// <inheritdoc/>
         public void StepBackward()
         {
-            if (_history.Count > 0)
-            {
-                CurrentNode = _history.Pop();
-            }
+            if (_history.Count == 0) 
+                return;
+
+            CurrentNode = _history.Pop();
+            _luaStateManager.Undo();
         }
 
         /// <inheritdoc/>
@@ -111,9 +108,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         {
             ResetNode();
 
-            _lua.Dispose();
-            InitializeLua();
+            _luaStateManager.Reset();
             _history.Clear();
+
+            InitializeLua();
         }
 
         #region Lua handlers
@@ -134,7 +132,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                 return;
 
             var luaCode = string.Join("\n", values.Select(kv => $"{kv.Key} = {kv.Value}"));
-            _lua.DoString(luaCode);
+            _luaStateManager.Execute(luaCode);
         }
 
         /// <summary>
@@ -164,11 +162,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             if (!double.TryParse(args[2]?.ToString(), out var to)) return false;
             var step = (args.Length >= 4 && double.TryParse(args[3]?.ToString(), out var s)) ? s : 1;
 
-            var val = _lua[varName] as double?;
+            var val = _luaStateManager.GetValue(varName) as double?;
 
             if (val is null)
             {
-                _lua[varName] = from;
+                _luaStateManager.SetValue(varName, from);
                 return true;
             }
 
@@ -176,11 +174,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
             if ((step > 0 && next > to) || (step < 0 && next < to))
             {
-                _lua[varName] = null;
+                _luaStateManager.SetValue(varName, null);
                 return false;
             }
 
-            _lua[varName] = next;
+            _luaStateManager.SetValue(varName, next);
             return true;
         }
 
@@ -188,11 +186,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
         private void InitializeLua()
         {
-            _lua = new Lua();
+            _luaStateManager.Initialize();
 
-            _lua.RegisterFunction("print", this, GetType().GetMethod(nameof(ShowOutput)));
-            _lua.RegisterFunction("read", this, GetType().GetMethod(nameof(GetInput)));
-            _lua.RegisterFunction("loop", this, GetType().GetMethod(nameof(Loop)));
+            _luaStateManager.RegisterFunctions(this,
+                nameof(ShowOutput),
+                nameof(GetInput),
+                nameof(Loop));
         }
 
         #region Node Handlers
@@ -216,7 +215,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             if (CurrentNode is null || !_graph.TryGetValue(CurrentNode, out List<FlowchartSimulationNode>? nextNodes))
                 return;
 
-            var result = _lua.DoString(CurrentNode.LuaScript).FirstOrDefault();
+            var result = _luaStateManager.Execute(CurrentNode.LuaScript).FirstOrDefault();
             var cond = result is bool b && b;
             CurrentNode = cond ? nextNodes.ElementAtOrDefault(0) : nextNodes.ElementAtOrDefault(1);
         }
@@ -234,7 +233,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             if (!hasIO)
                 return;
 
-            _lua.DoString(script);
+            _luaStateManager.Execute(script);
         }
 
         private void HandleLoop()
@@ -242,7 +241,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             if (CurrentNode == null || string.IsNullOrWhiteSpace(CurrentNode.LuaScript))
                 return;
 
-            var result = _lua.DoString(CurrentNode.LuaScript);
+            var result = _luaStateManager.Execute(CurrentNode.LuaScript);
             var res = result.FirstOrDefault();
 
             if (res is bool shouldContinue && shouldContinue)

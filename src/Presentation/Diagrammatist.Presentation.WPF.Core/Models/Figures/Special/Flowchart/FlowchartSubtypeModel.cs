@@ -38,7 +38,7 @@
         /// </summary>
         Document,
         /// <summary>
-        /// A database subtype.
+        /// A database subtype [REDUNDANT].
         /// </summary>
         Database,
     }
