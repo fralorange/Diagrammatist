@@ -192,11 +192,13 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 double newX = e.GetPosition(this).X;
                 double newY = e.GetPosition(this).Y;
 
-                var selBorder = GetElementSelectionBorder(_selectedElement!);
+                CenterSelectedElement(ref newX, ref newY);
 
-                CenterSelectedElement(selBorder, ref newX, ref newY);
-                GridHelper.SnapCoordinatesToGrid(selBorder, ref newX, ref newY, GridStep);
-                ValidateAndSetElementPosition(_selectedElement!, selBorder, newX, newY);
+                TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY);
+
+                GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
+
+                ValidateAndSetElementPosition(_selectedElement!, newX, newY);
             }
         }
 
@@ -219,44 +221,106 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
         #endregion
         #region Element position handlers
-        private void ValidateAndSetElementPosition(FrameworkElement element, Thickness? border = null, double? x = null, double? y = null)
+        private void ValidateAndSetElementPosition(FrameworkElement element, double? x = null, double? y = null)
         {
             double left = x ?? GetLeft(element);
             double top = y ?? GetTop(element);
 
-            var selBorder = border ?? GetElementSelectionBorder(element);
-
-            EnsureElementInsideCanvas(selBorder, ref left, ref top, element);
+            EnsureElementInsideCanvas(ref left, ref top, element);
 
             SetLeft(element, left);
             SetTop(element, top);
         }
-        private void CenterSelectedElement(Thickness selBorder, ref double x, ref double y)
-        {
-            x -= (_selectedElement!.ActualWidth - selBorder.Left - selBorder.Right) / 2;
-            y -= (_selectedElement!.ActualHeight - selBorder.Top - selBorder.Bottom) / 2;
-        }
 
-        private Thickness GetElementSelectionBorder(FrameworkElement? elem = null)
+        private void TrySnapWithDynamicSpacing(FrameworkElement movingElement, ref double newX, ref double newY)
         {
-            elem ??= _selectedElement;
+            const double snapThreshold = 10; 
 
-            if (elem is Control control)
+            var elements = Children.OfType<FrameworkElement>().Where(e => e != movingElement).ToList();
+
+            foreach (var reference in elements)
             {
-                var pad = control.Padding;
-                var border = control.BorderThickness;
-                return new Thickness(pad.Left + border.Left, pad.Top + border.Top, pad.Right + border.Top, pad.Bottom + border.Bottom);
-            }
+                double refLeft = GetLeft(reference);
+                double refTop = GetTop(reference);
+                double refRight = refLeft + reference.ActualWidth;
+                double refBottom = refTop + reference.ActualHeight;
 
-            return new Thickness();
+                double movingCenterX = newX + movingElement.ActualWidth / 2;
+                double movingCenterY = newY + movingElement.ActualHeight / 2;
+
+                double refCenterX = refLeft + reference.ActualWidth / 2;
+                double refCenterY = refTop + reference.ActualHeight / 2;
+
+                // Center by X.
+                if (Math.Abs(movingCenterX - refCenterX) < snapThreshold)
+                {
+                    newX = refLeft + (reference.ActualWidth - movingElement.ActualWidth) / 2;
+                }
+
+                // Center by Y.
+                if (Math.Abs(movingCenterY - refCenterY) < snapThreshold)
+                {
+                    newY = refTop + (reference.ActualHeight - movingElement.ActualHeight) / 2;
+                }
+
+                // Edge snapping.
+                if (Math.Abs(newX - refLeft) < snapThreshold)
+                    newX = refLeft;
+
+                if (Math.Abs((newX + movingElement.ActualWidth) - (refLeft + reference.ActualWidth)) < snapThreshold)
+                    newX = refLeft + reference.ActualWidth - movingElement.ActualWidth;
+
+                if (Math.Abs(newY - refTop) < snapThreshold)
+                    newY = refTop;
+
+                if (Math.Abs((newY + movingElement.ActualHeight) - (refTop + reference.ActualHeight)) < snapThreshold)
+                    newY = refTop + reference.ActualHeight - movingElement.ActualHeight;
+
+                // Dynamic distance by Y-axis.
+                foreach (var secondReference in elements)
+                {
+                    if (secondReference == reference) continue;
+
+                    double secondRefTop = GetTop(secondReference);
+                    double secondRefBottom = secondRefTop + secondReference.ActualHeight;
+
+                    double expectedDistance = refTop - secondRefBottom;
+                    if (expectedDistance > 0 && Math.Abs(newY - (refBottom + expectedDistance)) < snapThreshold)
+                    {
+                        newY = refBottom + expectedDistance;
+                    }
+                }
+
+                // Dynamic distance by X-axis.
+                foreach (var secondReference in elements)
+                {
+                    if (secondReference == reference) continue;
+
+                    double secondRefLeft = GetLeft(secondReference);
+                    double secondRefRight = secondRefLeft + secondReference.ActualWidth;
+
+                    double expectedDistance = refLeft - secondRefRight;
+                    if (expectedDistance > 0 && Math.Abs(newX - (refRight + expectedDistance)) < snapThreshold)
+                    {
+                        newX = refRight + expectedDistance;
+                    }
+                }
+            }
         }
 
-        private void EnsureElementInsideCanvas(Thickness selBorder, ref double x, ref double y, FrameworkElement? elem = null)
+
+        private void CenterSelectedElement(ref double x, ref double y)
+        {
+            x -= _selectedElement!.ActualWidth / 2;
+            y -= _selectedElement!.ActualHeight / 2;
+        }
+
+        private void EnsureElementInsideCanvas(ref double x, ref double y, FrameworkElement? elem = null)
         {
             elem ??= _selectedElement;
 
-            x = Math.Max(0 - selBorder.Left, Math.Min(x, ActualWidth - elem!.ActualWidth + selBorder.Right));
-            y = Math.Max(0 - selBorder.Top, Math.Min(y, ActualHeight - elem!.ActualHeight + selBorder.Bottom));
+            x = Math.Max(0, Math.Min(x, ActualWidth - elem!.ActualWidth));
+            y = Math.Max(0, Math.Min(y, ActualHeight - elem!.ActualHeight));
         }
         #endregion
         #region Event handlers
