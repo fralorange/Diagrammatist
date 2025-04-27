@@ -154,7 +154,8 @@
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1"
                         Grid.Column="1"
-                        Margin="0 0 10 10">
+                        Margin="0 0 10 10"
+                        HorizontalAlignment="Right">
                 <Button Content="OK"
                         Command="{Binding OKCommand}"
                         IsDefault="True"

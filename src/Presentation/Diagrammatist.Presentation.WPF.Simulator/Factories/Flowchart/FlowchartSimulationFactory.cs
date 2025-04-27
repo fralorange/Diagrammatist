@@ -35,35 +35,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ConnectionModel> CreateConnections(IEnumerable<ConnectionModel> currentConnections, 
-            IEnumerable<ConnectionModel>? existingConnections = null)
-        {
-            if (existingConnections is null)
-                return currentConnections;
-
-            var existingDict = existingConnections?
-                .ToDictionary(c => c.Line.Id) ?? [];
-
-            return currentConnections.Select(c =>
-            {
-                if (existingDict.TryGetValue(c.Line.Id, out var existing))
-                {
-                    existing.SourceMagneticPoint = c.SourceMagneticPoint;
-                    existing.DestinationMagneticPoint = c.DestinationMagneticPoint;
-                    existing.Line = c.Line;
-                    return existing;
-                }
-                return c; 
-            });
-        }
-
-        /// <inheritdoc/>
-        public ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
+        public ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes,
+                                              IEnumerable<ConnectionModel> connections,
+                                              ISimulationIO io,
+                                              ISimulationContextProvider contextProvider)
         {
             return new FlowchartSimulationEngine(
                 nodes.OfType<FlowchartSimulationNode>(),
                 connections,
-                io);
+                io,
+                contextProvider);
         }
     }
 }

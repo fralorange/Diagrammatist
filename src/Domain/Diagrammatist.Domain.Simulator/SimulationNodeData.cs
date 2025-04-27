@@ -13,5 +13,9 @@
         /// Gets or sets lua script.
         /// </summary>
         public abstract string LuaScript { get; set; }
+        /// <summary>
+        /// Gets or sets optional external file path (e.g., nested dgmf).
+        /// </summary>
+        public string? ExternalFilePath { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
@@ -27,6 +28,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
     {
         private readonly IDialogService _dialogService;
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly IDocumentSerializationService _documentSerializationService;
 
         /// <summary>
         /// Occurs when a request is made to close the current canvas.
@@ -106,10 +108,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         public bool IsNotBlocked => !IsBlocked;
         #endregion
 
-        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
+        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IDocumentSerializationService documentSerializationService)
         {
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
+            _documentSerializationService = documentSerializationService;
 
             ConfigureEvents();
 
@@ -365,7 +368,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
 
             var payload = doc.GetPayloadData<SimulationContext>(key);
 
-            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, payload);
+            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, _documentSerializationService, payload);
             
             if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.NewContext is { } context)
             {

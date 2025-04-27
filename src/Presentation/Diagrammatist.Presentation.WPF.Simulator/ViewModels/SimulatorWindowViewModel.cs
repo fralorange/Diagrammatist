@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
@@ -37,15 +38,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         private SimulationNode? _selectedNode;
 
         /// <summary>
-        /// Gets or sets simulation interval between steps.
-        /// </summary>
-        /// <remarks>
-        /// By default its 5000 ms.
-        /// </remarks>
-        [ObservableProperty]
-        private int _simulationInterval = 5000;
-
-        /// <summary>
         /// Gets or sets simulation window size.
         /// </summary>
         [ObservableProperty]
@@ -80,7 +72,9 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// </summary>
         /// <param name="dialogService"></param>
         /// <exception cref="ArgumentException"></exception>
-        public SimulatorWindowViewModel(IDialogService dialogService, SimulationContext? payload = null)
+        public SimulatorWindowViewModel(IDialogService dialogService,
+                                        IDocumentSerializationService documentSerializationService,
+                                        SimulationContext? payload = null)
         {
             // Validation.
             var currentCanvas = Messenger.Send(new CurrentCanvasRequestMessage()).Response;
@@ -91,16 +85,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             var factory = SimulationFactoryProvider.GetFactory(currentCanvas.Settings.Type);
 
             var createdNodes = factory.CreateNodes(currentCanvas.Figures, payload?.Nodes);
-            var createdConnections = factory.CreateConnections(currentCanvas.Connections, payload?.Connections);
             Nodes = createdNodes.ToObservableCollection();
-            Connections = createdConnections.ToObservableCollection();
+            Connections = currentCanvas.Connections;
 
             // Simulation parameters.
             SimulationSize = new Size(currentCanvas.Settings.Width, currentCanvas.Settings.Height);
 
             var simIO = new SimulationDialogIOProvider(dialogService, this);
+            var simContextProvider = new SimulationContextProvider(documentSerializationService);
 
-            _simulationEngine = factory.CreateEngine(Nodes, Connections, simIO);
+            _simulationEngine = factory.CreateEngine(Nodes, Connections, simIO, simContextProvider);
             _simulationEngine.CurrentNodeChanged += (sender, node) 
                 => CurrentNode = node;
             _simulationEngine.Initialize();

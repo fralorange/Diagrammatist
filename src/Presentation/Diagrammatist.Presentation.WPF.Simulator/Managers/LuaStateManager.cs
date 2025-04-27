@@ -10,6 +10,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Managers
     {
         private Lua _lua;
         private readonly Stack<Dictionary<string, object>> _snapshots = [];
+        private bool _isIsolated;
 
         /// <summary>
         /// Initializes new lua state manager.
@@ -20,24 +21,44 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Managers
         }
 
         /// <summary>
+        /// Initializes isolated environment in the same lua state.
+        /// </summary>
+        public LuaStateManager(LuaStateManager stateManager)
+        {
+            _lua = stateManager._lua;
+            _isIsolated = true;
+        }
+
+        /// <summary>
         /// Initializes lua.
         /// </summary>
         public void Initialize()
             => _lua ??= new Lua();
 
         /// <summary>
-        /// Registers functions
+        /// Registers base functions.
         /// </summary>
-        /// <param name="engine">A class target where function handlers located are.</param>
+        /// <param name="target">A class target where function handlers located are.</param>
         /// <param name="methods">Method names</param>
-        public void RegisterFunctions(object engine, params string[] methods)
+        public void RegisterFunctions(object target, params string[] methods)
         {
             if (methods.Length < 0 || methods.Length < 3)
                 return;
 
-            _lua.RegisterFunction("print", engine, GetMethod(engine, methods[0]));
-            _lua.RegisterFunction("read", engine, GetMethod(engine, methods[1]));
-            _lua.RegisterFunction("loop", engine, GetMethod(engine, methods[2]));
+            _lua.RegisterFunction("print", target, GetMethod(target, methods[0]));
+            _lua.RegisterFunction("read", target, GetMethod(target, methods[1]));
+            _lua.RegisterFunction("loop", target, GetMethod(target, methods[2]));
+        }
+
+        /// <summary>
+        /// Register custom function.
+        /// </summary>
+        /// <param name="target">A class target where function handler located are.</param>
+        /// <param name="name">A function name.</param>
+        /// <param name="method">A method name.</param>
+        public void RegisterFunction(object target, string name, string method)
+        {
+            _lua.RegisterFunction(name, target, GetMethod(target, method));
         }
 
         /// <summary>
@@ -55,8 +76,21 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Managers
         /// <param name="command"></param>
         public object[] ExecuteWithSnapshot(string command)
         {
-            SaveSnapshot();
+            if (!_isIsolated)
+            {
+                SaveSnapshot();
+            }
             return _lua.DoString(command);
+        }
+
+        /// <summary>
+        /// Executes file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public object[] ExecuteFile(string filePath)
+        {
+            return _lua.DoFile(filePath);
         }
 
         /// <summary>
@@ -93,28 +127,35 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Managers
         /// <param name="value">A value.</param>
         public void SetValue(string key, object? value)
         {
-            if (_lua != null)
-            {
-                _lua[key] = value;
-            }
+            _lua[key] = value;
         }
-
 
         private void SaveSnapshot()
         {
-            var globals = _lua.GetTable("_G");
+            var globals = _lua.GetTable("_G");  
             var snapshot = new Dictionary<string, object>();
 
-            foreach (var key in globals)
+            foreach (var key in globals.Keys)
             {
-                var keyStr = key.ToString();
-                var value = _lua[keyStr];
+                var keyStr = key?.ToString();  
+                object value;
 
-                if (keyStr is not null)
+                try
                 {
-                    snapshot[keyStr] = value;
+                    value = globals[key];  
+                }
+                catch (NLua.Exceptions.LuaException)
+                {
+                    continue;  
+                }
+
+                if (keyStr != null)
+                {
+                    snapshot[keyStr] = value;  
                 }
             }
+
+            _snapshots.Push(snapshot);  
         }
 
         private void RestoreSnapshot()
@@ -122,17 +163,17 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Managers
             if (_snapshots.Count == 0)
                 return;
 
-            var snapshot = _snapshots.Pop();
-            var globals = _lua.GetTable("_G");
+            var snapshot = _snapshots.Pop();  
+            var globals = _lua.GetTable("_G");  
 
             foreach (var key in globals.Keys)
             {
-                globals[key] = null;
+                globals[key] = null;  
             }
 
             foreach (var kv in snapshot)
             {
-                _lua[kv.Key] = kv.Value;
+                globals[kv.Key] = kv.Value;  
             }
         }
 

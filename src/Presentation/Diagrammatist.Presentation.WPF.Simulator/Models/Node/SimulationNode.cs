@@ -32,6 +32,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Node
         /// This property used to add data source.
         /// </remarks>
         [ObservableProperty]
-        public string? _externalFilePath;
+        private string? _externalFilePath;
     }
 }

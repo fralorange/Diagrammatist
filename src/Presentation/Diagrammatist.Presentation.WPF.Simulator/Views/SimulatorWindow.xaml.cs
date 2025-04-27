@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ApplicationEnt = System.Windows.Application;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Views
 {
@@ -45,11 +46,13 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Views
 
         private string OpenFile()
         {
-            var localizedAllFiles = LocalizationHelper.GetLocalizedValue<string>("SimulatorResources", "AllFiles");
+            var lua = LocalizationHelper.GetLocalizedValue<string>("SimulatorResources", "Lua");
+            var filter = $"{ApplicationEnt.Current.Resources["Filter"]}|*.{ApplicationEnt.Current.Resources["Extension"]}|" +
+                $"{lua}|*.lua";
 
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            OpenFileDialog openFileDialog = new()
             {
-                Filter = $"{localizedAllFiles} (*.*)|*.*"
+                Filter = filter
             };
 
             if (openFileDialog.ShowDialog() == true)

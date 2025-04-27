@@ -78,6 +78,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
             Height = source.Height;
             KeepAspectRatio = source.KeepAspectRatio;
             Data = new(source.Data);
+
+            UpdateMagneticPoints();
         }
 
         /// <inheritdoc/>

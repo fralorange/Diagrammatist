@@ -18,20 +18,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Interfaces
         /// <returns></returns>
         IEnumerable<SimulationNode> CreateNodes(IEnumerable<FigureModel> figures, IEnumerable<SimulationNode>? existingNodes = null);
         /// <summary>
-        /// Creates connection models.
-        /// </summary>
-        /// <param name="currentConnections"></param>
-        /// <param name="existingConnections"></param>
-        /// <returns></returns>
-        IEnumerable<ConnectionModel> CreateConnections(IEnumerable<ConnectionModel> currentConnections, 
-            IEnumerable<ConnectionModel>? existingConnections = null);
-        /// <summary>
         /// Creates simulation engine.
         /// </summary>
         /// <param name="nodes"></param>
         /// <param name="connections"></param>
         /// <param name="io"></param>
+        /// <param name="contextProvider"></param>
         /// <returns></returns>
-        ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io);
+        ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes,
+                                       IEnumerable<ConnectionModel> connections,
+                                       ISimulationIO io,
+                                       ISimulationContextProvider contextProvider);
     }
 }

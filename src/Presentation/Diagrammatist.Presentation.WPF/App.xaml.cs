@@ -1,11 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
-using Diagrammatist.Presentation.WPF.Core.Mappers.Document;
-using Diagrammatist.Presentation.WPF.Simulator.Mappers;
 using Diagrammatist.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
-using System.Globalization;
 using System.Windows;
-using WPFLocalizeExtension.Engine;
 using ApplicationEntity = System.Windows.Application;
 
 namespace Diagrammatist.Presentation.WPF

@@ -59,7 +59,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
         /// <inheritdoc/>
         public void Paste(ICollection<FigureModel> figures)
         {
-            if (_clipboardService.GetFromClipboard() is not { } pastedFigure)
+            if (_clipboardService.GetFromClipboard()?.Clone() is not { } pastedFigure)
                 return;
 
             var command = CommonUndoableHelper.CreateUndoableCommand(
@@ -72,7 +72,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
         /// <inheritdoc/>
         public void Paste(ICollection<FigureModel> figures, object pos)
         {
-            if (_clipboardService.GetFromClipboard() is not { } pastedFigure || pos is not Point point)
+            if (_clipboardService.GetFromClipboard()?.Clone() is not { } pastedFigure || pos is not Point point)
                 return;
 
             var command = CommonUndoableHelper.CreateUndoableCommand(

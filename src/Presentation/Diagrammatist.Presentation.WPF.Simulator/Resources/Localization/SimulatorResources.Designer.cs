@@ -62,15 +62,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на All Files.
-        /// </summary>
-        internal static string AllFiles {
-            get {
-                return ResourceManager.GetString("AllFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         internal static string Cancel {
@@ -94,6 +85,15 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         internal static string LoadFile {
             get {
                 return ResourceManager.GetString("LoadFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Lua source File.
+        /// </summary>
+        internal static string Lua {
+            get {
+                return ResourceManager.GetString("Lua", resourceCulture);
             }
         }
         

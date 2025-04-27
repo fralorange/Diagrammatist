@@ -213,14 +213,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var doc = _tabsManager.Get(SelectedCanvas)!;
 
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
+            if (fileName != SelectedCanvas.Settings.FileName)
+                SelectedCanvas.Settings.FileName = fileName;
+
             _documentSerializationService.Save(doc.ToDomain(), filePath);
             _trackableCommandManager.MarkSaved();
 
             _tabsManager.UpdateFilePath(SelectedCanvas, filePath);
-
-            string fileName = Path.GetFileNameWithoutExtension(filePath);
-            if (fileName != SelectedCanvas.Settings.FileName)
-                SelectedCanvas.Settings.FileName = fileName;
 
             return true;
         }
@@ -278,7 +278,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCanvas, value is not null));
             Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCustomCanvas, value?.Settings.Type is DiagramsModel.Custom));
 
-            _trackableCommandManager.UpdateContent(value);
+            var doc = _tabsManager.Get(value);
+            _trackableCommandManager.UpdateContent(doc);
         }
 
         protected override void OnActivated()

@@ -1,4 +1,7 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Models.Document;
+﻿using Diagrammatist.Application.AppServices.Document.Services;
+using Diagrammatist.Presentation.WPF.Core.Mappers.Document;
+using Diagrammatist.Presentation.WPF.Core.Models.Document;
+using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Providers
@@ -6,28 +9,27 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Providers
     /// <summary>
     /// A class that provides required simulation context.
     /// </summary>
-    public static class SimulationContextProvider
+    public class SimulationContextProvider : ISimulationContextProvider
     {
         private const string Key = "Simulation";
+        
+        private readonly IDocumentSerializationService _serializationService;
 
         /// <summary>
-        /// Saves simulation context to document.
+        /// Initializes simulation context provider.
         /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="context"></param>
-        public static void SaveToDocument(DocumentModel doc, SimulationContext context)
+        /// <param name="serializationService"></param>
+        public SimulationContextProvider(IDocumentSerializationService serializationService)
         {
-            doc.SetPayload(Key, context);
+            _serializationService = serializationService;
         }
 
-        /// <summary>
-        /// Loads simulation context from document.
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <returns><c><see cref="SimulationContext"/></c> if it exists, otherwise <c><see cref="null"/></c>.</returns>
-        public static SimulationContext? LoadFromDocument(DocumentModel doc)
+        /// <inheritdoc/>
+        public SimulationContext? Load(string path)
         {
-            return doc.GetPayloadData<SimulationContext>(Key);
+            var doc = _serializationService.Load(path)?.ToModel();
+
+            return doc?.GetPayloadData<SimulationContext>(Key);
         }
     }
 }

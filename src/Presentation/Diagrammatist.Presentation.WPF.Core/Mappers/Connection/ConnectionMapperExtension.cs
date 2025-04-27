@@ -39,7 +39,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Connection
             {
                 SourceMagneticPoint = connection.SourceMagneticPoint?.ToDomain(figures),
                 DestinationMagneticPoint = connection.DestinationMagneticPoint?.ToDomain(figures),
-                LineId = figures.OfType<LineFigure>().FirstOrDefault(line => connection.Line.Id == line.Id)!.Id
+                LineId = figures.OfType<LineFigure>().FirstOrDefault(line => connection.Line.Id == line.Id)?.Id ?? Guid.Empty,
             };
         }
     }
