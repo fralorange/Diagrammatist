@@ -12,6 +12,6 @@
         /// </summary>
         public double PosY { get; set; }
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Owner"]/*'/>
-        public required ShapeFigure Owner { get; set; }
+        public required Guid OwnerId { get; set; }
     }
 }

@@ -13,6 +13,6 @@
         /// <summary>
         /// Pastes object from clipboard.
         /// </summary>
-        TObject? PasteFromClipboard();
+        TObject? GetFromClipboard();
     }
 }

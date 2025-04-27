@@ -4,9 +4,9 @@ using Diagrammatist.Presentation.WPF.Simulator.Validators.Flowchart;
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart
 {
     /// <summary>
-    /// A class that derived from <see cref="SimulationNodeBase"/>. Defines flowchart simulation node.
+    /// A class that derived from <see cref="SimulationNode"/>. Defines flowchart simulation node.
     /// </summary>
-    public class FlowchartSimulationNode : SimulationNodeBase
+    public class FlowchartSimulationNode : SimulationNode
     {
         private string _luaScript = string.Empty;
 

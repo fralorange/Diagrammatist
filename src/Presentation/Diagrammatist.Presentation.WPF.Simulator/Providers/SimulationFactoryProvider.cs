@@ -1,6 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
-using Diagrammatist.Presentation.WPF.Simulator.Factories;
 using Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart;
+using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Providers
 {

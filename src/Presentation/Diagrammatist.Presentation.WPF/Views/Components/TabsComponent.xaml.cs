@@ -24,6 +24,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             _alertService = App.Current.Services.GetRequiredService<IAlertService>();
 
             viewModel.RequestOpen += OpenCanvas;
+            viewModel.RequestSaveAs += SaveAs;
             viewModel.OpenFailed += OpenFail;
             viewModel.CloseFailed += CloseFail;
 
@@ -34,14 +35,14 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         private MessageBoxResult CloseFail()
         {
-            return _alertService.RequestConfirmation(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasMessage"),
-                LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasCaption"));
+            return _alertService.RequestConfirmation(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasMessage"),
+                LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasCaption"));
         }
 
         private void OpenFail()
         {
-            _alertService.ShowError(LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenMessage"),
-                LocalizationHelpers.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenCaption"));
+            _alertService.ShowError(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenMessage"),
+                LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenCaption"));
         }
 
         private string OpenCanvas()
@@ -54,6 +55,22 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             if (openFileDialog.ShowDialog() == true)
             {
                 return openFileDialog.FileName;
+            }
+
+            return string.Empty;
+        }
+
+        private string SaveAs(string fileName)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                Filter = $"{App.Current.Resources["Filter"]}|*.{App.Current.Resources["Extension"]}",
+                FileName = fileName,
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                return saveFileDialog.FileName;
             }
 
             return string.Empty;

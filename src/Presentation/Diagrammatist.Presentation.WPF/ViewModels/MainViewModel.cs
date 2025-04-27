@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Application.AppServices.Document.Services;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
@@ -26,6 +28,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
     {
         private readonly IDialogService _dialogService;
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly IDocumentSerializationService _documentSerializationService;
 
         /// <summary>
         /// Occurs when a request is made to close the current canvas.
@@ -105,10 +108,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         public bool IsNotBlocked => !IsBlocked;
         #endregion
 
-        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
+        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IDocumentSerializationService documentSerializationService)
         {
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
+            _documentSerializationService = documentSerializationService;
 
             ConfigureEvents();
 
@@ -357,9 +361,23 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand(CanExecute = nameof(MenuWithNotCustomCanvasCanExecute))]
         private void MenuSimulator()
         {
-            var dialogViewModel = new SimulatorWindowViewModel(_dialogService);
+            var key = "Simulation";
+            var doc = Messenger.Send<CurrentDocumentRequestMessage>().Response;
 
-            _dialogService.ShowDialog(this, dialogViewModel);
+            if (doc is null) return;
+
+            var payload = doc.GetPayloadData<SimulationContext>(key);
+
+            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, _documentSerializationService, payload);
+            
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.NewContext is { } context)
+            {
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => doc.SetPayload(key, context), 
+                    () => doc.SetPayload(key, payload));
+
+                _trackableCommandManager.Execute(command);
+            }
         }
 
         /// <summary>

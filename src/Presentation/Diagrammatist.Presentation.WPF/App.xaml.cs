@@ -1,9 +1,7 @@
-﻿using Diagrammatist.Presentation.WPF.Views;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Views;
 using Microsoft.Extensions.DependencyInjection;
-using System.Globalization;
 using System.Windows;
-using WPFLocalizeExtension.Engine;
 using ApplicationEntity = System.Windows.Application;
 
 namespace Diagrammatist.Presentation.WPF
@@ -26,39 +24,22 @@ namespace Diagrammatist.Presentation.WPF
         public App()
         {
             Services = ConfigureServices();
-
-            ConfigureCulture();
         }
 
         private static ServiceProvider ConfigureServices()
         {
-            var services = new ServiceCollection();
-
-            services.AddStartupServices();
-            services.AddViewModels();
-
-            services.AddServices();
-            services.AddSerializers();
-            services.AddRepositories();
-
-            services.AddDialogServices();
-
-            services.AddManagers();
-
-            return services.BuildServiceProvider();
-        }
-
-        private static void ConfigureCulture()
-        {
-            var culture = new CultureInfo(WPF.Properties.Settings.Default.Culture);
-
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.CurrentCulture = culture;
-
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
-            CultureInfo.CurrentUICulture = culture;
-
-            LocalizeDictionary.Instance.SetCultureCommand.Execute(culture.ToString());
+            return new ServiceCollection()
+                .AddStartupServices()
+                .AddViewModels()
+                .AddServices()
+                .AddFacades()
+                .AddSerializers()
+                .AddRepositories()
+                .AddDialogServices()
+                .AddManagers()
+                .AddCulture()
+                .AddMappers()
+                .BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)

@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
+using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {

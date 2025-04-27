@@ -432,5 +432,14 @@
 				Duplicates valid object on canvas.
 			</summary>
 		</Member>
+
+		<Member name="RequestOpen">
+			<summary>
+				Occurs when a request is made to open existing file.
+			</summary>
+			<remarks>
+				This event is triggered when user initiates a open action from menu button and returns file path.
+			</remarks>
+		</Member>
 	</Behaviors>
 </CommonXmlDocComments>

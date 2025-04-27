@@ -2,22 +2,21 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Application.AppServices.Canvas.Services;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
-using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Windows;
 
@@ -29,9 +28,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     public sealed partial class CanvasViewModel : ObservableRecipient
     {
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly ICanvasSerializationService _canvasSerializationService;
-        private readonly IClipboardService<FigureModel> _clipboardManager;
-        private readonly IConnectionService _connectionService;
+        private readonly ICanvasServiceFacade _canvasServiceFacade;
+        private readonly IDocumentSerializationService _documentSerializationService;
 
         /// <summary>
         /// Occurs when a request is made to zoom current window in.
@@ -54,13 +52,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when user initiates a zoom reset action from menu button.
         /// </remarks>
         public event Action? RequestZoomReset;
-        /// <summary>
-        /// Occurs when a request is made to save current canvas as new file.
-        /// </summary>
-        /// <remarks>
-        /// This event is triggered when user initiates a save as action from menu button and returns file path.
-        /// </remarks>
-        public event Func<string, string>? RequestSaveAs;
         /// <summary>
         /// Occurs when a requiest is made to export current canvas as bitmap.
         /// </summary>
@@ -87,22 +78,30 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             private set => SetProperty(ref _currentMouseMode, value);
         }
 
-        /// <summary>
-        /// Gets or sets current file path to the current canvas.
-        /// </summary>
-        /// <remarks>
-        /// This property used to configure save options.
-        /// </remarks>
-        [ObservableProperty]
-        private string _filePath = string.Empty;
+        private ObservableCollection<FigureModel>? _figures;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="ViewModelFigures"]/*'/>
         /// <remarks>
         /// This property used to send figures as message to other components that require it.
         /// </remarks>
-        [ObservableProperty]
-        [NotifyPropertyChangedRecipients]
-        private ObservableCollection<FigureModel>? _figures;
+        public ObservableCollection<FigureModel>? Figures
+        {
+            get => _figures;
+            private set
+            {
+                if (_figures is not null)
+                {
+                    _figures.CollectionChanged -= FiguresCollectionChanged;
+                }
+
+                SetProperty(ref _figures, value, broadcast: true);
+
+                if (_figures is not null)
+                {
+                    _figures.CollectionChanged += FiguresCollectionChanged;
+                }
+            }
+        }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="ViewModelConnections"]/*'/>
         /// <remarks>
@@ -148,16 +147,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         public bool IsNotBlocked => !IsBlocked;
 
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
-                               ICanvasSerializationService canvasSerializationService,
-                               IClipboardService<FigureModel> clipboardManager,
-                               IConnectionService connectionManager)
+                               ICanvasServiceFacade canvasServiceFacade,
+                               IDocumentSerializationService documentSerializationService)
         {
             _trackableCommandManager = trackableCommandManager;
-            _canvasSerializationService = canvasSerializationService;
-            _clipboardManager = clipboardManager;
-            _connectionService = connectionManager;
+            _canvasServiceFacade = canvasServiceFacade;
+            _documentSerializationService = documentSerializationService;
 
-            _trackableCommandManager.StateChanged += OnStateChanged;
+            _trackableCommandManager.StateChanged += (_, _) =>
+            {
+                if (CurrentCanvas != null)
+                    CurrentCanvas.HasChanges = _trackableCommandManager.HasChanges;
+            };
 
             IsActive = true;
         }
@@ -241,51 +242,29 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Saves current canvas as new file.
-        /// summary>
-        private bool SaveAs()
-        {
-            if (CurrentCanvas == null || RequestSaveAs == null)
-                return false;
-
-            string filePath = RequestSaveAs(CurrentCanvas.Settings.FileName);
-
-            if (string.IsNullOrEmpty(filePath))
-                return false;
-
-            _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), filePath);
-            _trackableCommandManager.MarkSaved();
-
-            FilePath = filePath;
-            Messenger.Send(new UpdatedCanvasFilePathMessage(filePath));
-
-            string fileName = Path.GetFileNameWithoutExtension(filePath);
-            if (fileName != CurrentCanvas.Settings.FileName)
-                CurrentCanvas.Settings.FileName = fileName;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Saves current canvas.
+        /// Updates current canvas size.
         /// </summary>
-        private bool Save()
+        /// <param name="newSize">New size.</param>
+        private void UpdateCanvasSize(Size newSize)
         {
-            if (CurrentCanvas is null)
+            if (CurrentCanvas is not null)
             {
-                return false;
-            }
+                var oldSize = new Size(CurrentCanvas.Settings.Width, CurrentCanvas.Settings.Height);
 
-            if (!File.Exists(FilePath))
-            {
-                return SaveAs();
-            }
-            else
-            {
-                _canvasSerializationService.SaveCanvas(CurrentCanvas.ToDomain(), FilePath);
-                _trackableCommandManager.MarkSaved();
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () =>
+                    {
+                        _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, newSize);
+                        ZoomReset();
+                    },
+                    () =>
+                    {
+                        _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, oldSize);
+                        ZoomReset();
+                    }
+                );
 
-                return true;
+                _trackableCommandManager.Execute(command);
             }
         }
 
@@ -304,33 +283,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void DeleteItem(FigureModel figure)
         {
-            if (CurrentCanvas?.Figures is null)
+            if (Figures is null || Connections is null)
                 return;
 
-            var command = DeleteItemHelper.CreateDeleteItemCommand(CurrentCanvas.Figures, figure, _connectionService, CurrentCanvas.Connections);
-
-            _trackableCommandManager.Execute(command);
+            _canvasServiceFacade.FigureManipulation.Delete(figure, Figures, Connections);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Paste"]/*'/>
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Paste(object position)
         {
-            if (CurrentCanvas is not null && _clipboardManager.PasteFromClipboard() is { } pastedFigure && position is Point destination)
+            if (Figures is not null && position is Point destination)
             {
-                var command = PasteHelper.CreatePasteCommand(
-                    CurrentCanvas.Figures,
-                    pastedFigure,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure,
-                    (figure, x, y) =>
-                    {
-                        figure.PosX = x;
-                        figure.PosY = y;
-                    },
-                    new(destination.X, destination.Y));
-
-                _trackableCommandManager.Execute(command);
+                _canvasServiceFacade.FigureManipulation.Paste(Figures, destination);
             }
         }
 
@@ -338,9 +303,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Copy()
         {
-            if (SelectedFigure is not null && CurrentCanvas is not null)
+            if (SelectedFigure is not null)
             {
-                CopyHelper.Copy(_clipboardManager, SelectedFigure);
+                _canvasServiceFacade.FigureManipulation.Copy(SelectedFigure);
             }
         }
 
@@ -348,15 +313,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Cut()
         {
-            if (SelectedFigure is not null && CurrentCanvas is not null)
+            if (SelectedFigure is not null && Figures is not null)
             {
-                var command = CutHelper.CreateCutCommand(
-                    _clipboardManager,
-                    CurrentCanvas!.Figures,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure);
-
-                _trackableCommandManager.Execute(command);
+                _canvasServiceFacade.FigureManipulation.Cut(SelectedFigure, Figures);
             }
         }
 
@@ -364,15 +323,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void Duplicate()
         {
-            if (SelectedFigure is not null && CurrentCanvas is not null)
+            if (SelectedFigure is not null && Figures is not null)
             {
-                var command = DuplicateHelper.CreateDuplicateCommand(
-                    CurrentCanvas!.Figures,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure,
-                    figure => figure.Clone());
-
-                _trackableCommandManager.Execute(command);
+                _canvasServiceFacade.FigureManipulation.Duplicate(SelectedFigure, Figures);
             }
         }
 
@@ -380,24 +333,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void BringForwardItem(FigureModel figure)
         {
-            if (CurrentCanvas?.Figures is null)
-                return;
-
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true);
-
-            _trackableCommandManager.Execute(command);
+            _canvasServiceFacade.FigureManipulation.BringForward(figure);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="SendBackwardItem"]/*'/>
         [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
         private void SendBackwardItem(FigureModel figure)
         {
-            if (CurrentCanvas?.Figures is null)
-                return;
-
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false);
-
-            _trackableCommandManager.Execute(command);
+            _canvasServiceFacade.FigureManipulation.SendBackward(figure);
         }
 
         /// <summary>
@@ -410,100 +353,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void ItemPositionChange(PositionChangedEventArgs e)
         {
-            if (e.DataContext is FigureModel figure)
+            if (e.DataContext is FigureModel figure && Connections is not null)
             {
-                var lineUpdater = UpdateLineIfExists(figure);
-
-                var command = CommonUndoableHelper.CreateUndoableCommand(
-                    () =>
-                    {
-                        UpdatePositions(figure, e.NewPos);
-                        ValidateConnections(e.DataContext, e.NewPos, e.OldPos);
-                        lineUpdater?.Invoke(false);
-                    },
-                    () =>
-                    {
-                        UpdatePositions(figure, e.OldPos);
-                        ValidateConnections(e.DataContext, e.OldPos, e.NewPos);
-                        lineUpdater?.Invoke(true);
-                    }
-                );
-
-                _trackableCommandManager.Execute(command);
+                _canvasServiceFacade.Interaction.MoveFigure(figure, e.OldPos, e.NewPos, Connections);
             }
-        }
-
-        #region ItemPositionChange sub operations
-
-        private void UpdatePositions(FigureModel figure, Point newPos)
-        {
-            figure.PosX = newPos.X;
-            figure.PosY = newPos.Y;
-        }
-
-        private void UpdateConnections(ConnectionModel connection, Point newPos, bool isSource)
-        {
-            if (isSource)
-            {
-                connection.SourceMagneticPoint!.Position = newPos;
-                connection.Line.Points[0] = newPos;
-            }
-            else
-            {
-                connection.DestinationMagneticPoint!.Position = newPos;
-                connection.Line.Points[^1] = newPos;
-            }
-        }
-
-        private void ValidateConnections(object? dataContext, Point newPos, Point oldPos)
-        {
-            if (dataContext is ShapeFigureModel shapeFigure && Connections is not null)
-            {
-                var connections = _connectionService.GetConnections(Connections, shapeFigure);
-
-                foreach (var connection in connections)
-                {
-                    var source = connection.SourceMagneticPoint;
-                    var dest = connection.DestinationMagneticPoint;
-
-                    var deltaX = newPos.X - oldPos.X;
-                    var deltaY = newPos.Y - oldPos.Y;
-
-                    var isSource = source?.Owner == shapeFigure;
-
-                    var currentPoint = isSource ? source!.Position : dest!.Position;
-                    var nextPos = new Point(currentPoint.X + deltaX, currentPoint.Y + deltaY);
-
-                    UpdateConnections(connection, nextPos, isSource);
-                }
-            }
-        }
-
-        private Action<bool>? UpdateLineIfExists(FigureModel figure)
-        {
-            if (figure is LineFigureModel lineFigure && CurrentCanvas?.Connections is { } connections && _connectionService.GetConnection(connections, lineFigure) is { } connection)
-            {
-                return new Action<bool>((revert) =>
-                {
-                    if (revert)
-                        _connectionService.AddConnection(connections, connection);
-                    else
-                        _connectionService.RemoveConnection(connections, connection);
-                });
-            }
-
-            return null;
         }
 
         #endregion
 
-        #endregion
-
-        private void OnStateChanged(object? sender, EventArgs e)
+        // Always select new figures.
+        private void FiguresCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (CurrentCanvas is not null)
+            if (e.Action is NotifyCollectionChangedAction.Add && e.NewItems is { Count: > 0 })
             {
-                CurrentCanvas.HasChanges = _trackableCommandManager.HasChanges;
+                SelectedFigure = e.NewItems[^1] as FigureModel;
             }
         }
 
@@ -520,6 +383,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 Connections = CurrentCanvas?.Connections;
             });
+            // Change canvas size
+            Messenger.Register<CanvasViewModel, UpdatedSizeMessage>(this, (r, m) =>
+            {
+                UpdateCanvasSize(m.Value);
+            });
             // Change mouse mode.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
             {
@@ -530,29 +398,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 SelectedFigure = m.NewValue;
             });
-            // Get file path associated with current canvas.
-            Messenger.Register<CanvasViewModel, CanvasFilePathMessage>(this, (r, m) =>
-            {
-                FilePath = m.Value;
-            });
             // Answer request from canvas.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
             {
                 m.Reply(r.CurrentCanvas);
-            });
-            // Save and return result.
-            Messenger.Register<CanvasViewModel, SaveRequestMessage>(this, (r, m) =>
-            {
-                m.Reply(Save());
             });
             // Register menu flags.
             Messenger.Register<CanvasViewModel, Tuple<string, bool>>(this, (r, m) =>
             {
                 switch (m.Item1)
                 {
-                    case MenuFlags.IsBlocked:
-                        IsBlocked = m.Item2;
-                        break;
+                    case MenuFlags.IsBlocked: IsBlocked = m.Item2; break;
                 }
             });
             // Register menu commands.
@@ -560,30 +416,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 switch (m)
                 {
-                    case CommandFlags.Undo:
-                        Undo();
-                        break;
-                    case CommandFlags.Redo:
-                        Redo();
-                        break;
-                    case CommandFlags.ZoomIn:
-                        ZoomIn();
-                        break;
-                    case CommandFlags.ZoomOut:
-                        ZoomOut();
-                        break;
-                    case CommandFlags.ZoomReset:
-                        ZoomReset();
-                        break;
-                    case CommandFlags.EnableGrid:
-                        EnableGrid();
-                        break;
-                    case CommandFlags.Export:
-                        Export();
-                        break;
-                    case CommandFlags.SaveAs:
-                        SaveAs();
-                        break;
+                    case CommandFlags.Undo: Undo(); break;
+                    case CommandFlags.Redo: Redo(); break;
+                    case CommandFlags.ZoomIn: ZoomIn(); break;
+                    case CommandFlags.ZoomOut: ZoomOut(); break;
+                    case CommandFlags.ZoomReset: ZoomReset(); break;
+                    case CommandFlags.EnableGrid: EnableGrid(); break;
+                    case CommandFlags.Export: Export(); break;
                 }
             });
         }

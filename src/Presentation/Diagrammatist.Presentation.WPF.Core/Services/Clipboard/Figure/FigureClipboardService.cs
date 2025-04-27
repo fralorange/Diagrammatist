@@ -31,7 +31,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure
 
         /// <inheritdoc/>
         /// <returns>a <see cref="FigureModel"/>.</returns>
-        public FigureModel? PasteFromClipboard()
+        public FigureModel? GetFromClipboard()
         {
             if (ClipboardInstance.ContainsData(FigureClipboardFormat) && ClipboardInstance.GetData(FigureClipboardFormat) is byte[] data)
             {

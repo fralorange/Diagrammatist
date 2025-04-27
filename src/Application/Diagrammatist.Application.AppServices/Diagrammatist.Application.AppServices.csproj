@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nerdbank.MessagePack" Version="0.3.161-beta" />
+    <PackageReference Include="Nerdbank.MessagePack" Version="0.5.72-beta" />
+    <PackageReference Include="PolyType" Version="0.36.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\Diagrammatist.Domain\Diagrammatist.Domain.csproj" />
+    <ProjectReference Include="..\..\Contracts\Diagrammatist.Contracts\Diagrammatist.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

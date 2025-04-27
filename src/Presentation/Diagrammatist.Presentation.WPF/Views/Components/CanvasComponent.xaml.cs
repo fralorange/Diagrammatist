@@ -43,7 +43,6 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             viewModel.RequestZoomIn += ZoomIn;
             viewModel.RequestZoomOut += ZoomOut;
             viewModel.RequestZoomReset += ZoomReset;
-            viewModel.RequestSaveAs += SaveAs;
             viewModel.RequestExport += Export;
         }
 
@@ -210,22 +209,6 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         private void ZoomReset()
         {
             extScrollViewer.ZoomReset();
-        }
-
-        private string SaveAs(string fileName)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                Filter = $"{App.Current.Resources["Filter"]}|*.{App.Current.Resources["Extension"]}",
-                FileName = fileName,
-            };
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                return saveFileDialog.FileName;
-            }
-
-            return string.Empty;
         }
 
         private void Export()

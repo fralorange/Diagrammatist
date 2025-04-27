@@ -14,7 +14,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Loaded="SimulatorLoaded">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
                   GlassFrameThickness="1,0,1,1"
@@ -148,12 +149,20 @@
                 </StackPanel>
             </Border>
 
-            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Close}"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    IsDefault="True"
-                    IsCancel="True"
-                    Margin="0 0 10 10"/>
+
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0 0 10 10"
+                        HorizontalAlignment="Right">
+                <Button Content="OK"
+                        Command="{Binding OKCommand}"
+                        IsDefault="True"
+                        Margin="0 0 10 0"/>
+                <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Cancel}"
+                        IsCancel="True"/>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>

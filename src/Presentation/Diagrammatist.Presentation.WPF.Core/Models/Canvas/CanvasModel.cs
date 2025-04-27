@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using System.Collections.ObjectModel;
@@ -22,10 +23,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
         private SettingsModel _settings;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Zoom"]/*'/>
         [ObservableProperty]
-        private double _zoom;
+        private double _zoom = CanvasZoomConstants.DefaultZoom;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Offset"]/*'/>
         [ObservableProperty]
-        private OffsetModel _offset;
+        private OffsetModel _offset = new();
 #pragma warning restore CS8618 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Figures"]/*'/>
         public ObservableCollection<FigureModel> Figures { get; set; } = [];
