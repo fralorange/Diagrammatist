@@ -14,10 +14,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Helpers
         /// <param name="x">X-axis coordinate.</param>
         /// <param name="y">Y-axis coordinate.</param>
         /// <param name="gridStep">Grid step.</param>
-        public static void SnapCoordinatesToGrid(Thickness selBorder, ref double x, ref double y, double gridStep)
+        public static void SnapCoordinatesToGrid(ref double x, ref double y, double gridStep)
         {
-            x = Math.Round(x / gridStep) * gridStep - selBorder.Left;
-            y = Math.Round(y / gridStep) * gridStep - selBorder.Top;
+            x = Math.Round(x / gridStep) * gridStep;
+            y = Math.Round(y / gridStep) * gridStep;
         }
     }
 }
