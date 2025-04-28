@@ -3,38 +3,12 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Figures;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:simulatorSelector="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Selectors;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:connection="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Connection;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:node="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Models.Node;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
-    <!--#region  Shared-->
-    <DataTemplate x:Key="MagneticPointsTemplate">
-        <ItemsControl ItemsSource="{Binding MagneticPoints}"
-                      Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                       Path=DataContext.CurrentMouseMode, 
-                                       Converter={StaticResource MouseModeToVisibilityConverter}, 
-                                       FallbackValue=Collapsed}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Ellipse Style="{StaticResource MagneticPoint}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Setter Property="Canvas.Left" 
-                            Value="{Binding Position.X, Converter={StaticResource OffsetHalfEllipseConverter}}"/>
-                    <Setter Property="Canvas.Top" 
-                            Value="{Binding Position.Y, Converter={StaticResource OffsetHalfEllipseConverter}}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
-    </DataTemplate>
     <!--#endregion-->
     <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"
@@ -83,7 +57,11 @@
     <!--#region Canvas-->
     <DataTemplate x:Key="CanvasShapeFigureTemplate"
                   DataType="figures:ShapeFigureModel">
-        <Grid>
+        <Grid behaviors:MagneticPointsAdornerBehavior.AttachMagneticPoints="True"
+              behaviors:MagneticPointsAdornerBehavior.IsVisible="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                         Path=DataContext.CurrentMouseMode, 
+                         Converter={StaticResource MouseModeToBoolConverter}, 
+                         FallbackValue=False}">
             <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   Width="{Binding Width}"
@@ -99,7 +77,6 @@
                     </Style>
                 </Path.Style>
             </Path>
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MagneticPointsTemplate}"/>
         </Grid>
     </DataTemplate>
 
@@ -141,7 +118,11 @@
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasContainerFigureTemplate">
-        <Grid>
+        <Grid behaviors:MagneticPointsAdornerBehavior.AttachMagneticPoints="True"
+              behaviors:MagneticPointsAdornerBehavior.IsVisible="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                       Path=DataContext.CurrentMouseMode, 
+                                       Converter={StaticResource MouseModeToBoolConverter}, 
+                                       FallbackValue=False}">
             <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   Width="{Binding Width}"
@@ -167,8 +148,6 @@
                                VerticalAlignment="Center"/>
                 </Viewbox>
             </Border>
-
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MagneticPointsTemplate}"/>
         </Grid>
     </DataTemplate>
 

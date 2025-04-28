@@ -15,6 +15,6 @@
     <local:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
     <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <local:OffsetHalfEllipseConverter x:Key="OffsetHalfEllipseConverter"/>
-    <local:MouseModeToVisibilityConverter x:Key="MouseModeToVisibilityConverter"/>
+    <local:MouseModeToBoolConverter x:Key="MouseModeToBoolConverter"/>
     <local:FigureModelExtractorMultiConverter x:Key="FigureModelExtractorMultiConverter"/>
 </ResourceDictionary>
