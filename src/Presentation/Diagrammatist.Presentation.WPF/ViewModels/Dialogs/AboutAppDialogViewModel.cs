@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using MvvmDialogs;
-using System.Reflection;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
@@ -14,14 +13,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// <summary>
         /// Gets app title.
         /// </summary>
-        public string AppTitle => Assembly.GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? string.Empty;
+        public string AppTitle => AppMetadata.Title;
 
         /// <summary>
         /// Gets app version.
         /// </summary>
-        public string AppVersion =>
-            Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? string.Empty;
+        public string AppVersion => AppMetadata.Version;
 
         /// <summary>
         /// Gets app author.
