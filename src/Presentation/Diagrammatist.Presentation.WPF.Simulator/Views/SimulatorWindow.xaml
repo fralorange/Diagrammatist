@@ -1,168 +1,128 @@
-﻿<Window x:Class="Diagrammatist.Presentation.WPF.Simulator.Views.SimulatorWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Views"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:md="clr-namespace:MvvmDialogs;assembly=MvvmDialogs"
-        xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.ViewModels"
-        md:DialogServiceViews.IsRegistered="True"
-        d:DataContext="{d:DesignInstance Type=viewmodels:SimulatorWindowViewModel}"
-        Title="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Simulator}"
-        Icon="../../Resources/Icon/appIcon.ico"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"
-        SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize"
-        Loaded="SimulatorLoaded">
-    <WindowChrome.WindowChrome>
-        <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
-                  GlassFrameThickness="1,0,1,1"
-                  NonClientFrameEdges="Left,Right,Bottom"
-                  ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                  UseAeroCaptionButtons="False"/>
-    </WindowChrome.WindowChrome>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top"
-              x:Name="titleBar"
-              Background="{DynamicResource TitleBarBackground}"
-              Height="{StaticResource TitleBarHeight}" Cursor="">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Simulator.Views.SimulatorWindow"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Views"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:md="clr-namespace:MvvmDialogs;assembly=MvvmDialogs"
+                         xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.ViewModels"
+                         md:DialogServiceViews.IsRegistered="True"
+                         d:DataContext="{d:DesignInstance Type=viewmodels:SimulatorWindowViewModel}"
+                         Title="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Simulator}"
+                         Icon="{StaticResource AppIcon}"
+                         mc:Ignorable="d"
+                         WindowStartupLocation="CenterOwner"
+                         SizeToContent="WidthAndHeight"
+                         ResizeMode="NoResize"
+                         Loaded="SimulatorLoaded"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False"
+                         ShowCenteredTitle="True">
+    <Grid Style="{StaticResource Window}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <Image x:Name="icon"
-                   Grid.Column="0"
-                   Style="{StaticResource IconImage}"
-                   MouseDown="OnIconMouseDown"
-                   Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
-                   WindowChrome.IsHitTestVisibleInChrome="True"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Foreground="{DynamicResource FrameForeground}" />
+        <Border Grid.Column="0"
+                Style="{StaticResource InternalBorder}"
+                Padding="0">
+            <Grid>
+                <Grid.Resources>
+                    <CollectionViewSource x:Key="NodesCollection" Source="{Binding Nodes}"/>
+                    <CollectionViewSource x:Key="ConnectionCollection" Source="{Binding Connections}"/>
+                </Grid.Resources>
+                <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
+                         ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
+                         SelectedItem="{Binding SelectedNode}"
+                         PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
+                    <ListBox.ItemsSource>
+                        <CompositeCollection>
+                            <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
+                            <CollectionContainer Collection="{Binding Source={StaticResource ConnectionCollection}}"/>
+                        </CompositeCollection>
+                    </ListBox.ItemsSource>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Width, FallbackValue=0}"
+                                    Height="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Height, FallbackValue=0}"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+                <Border HorizontalAlignment="Left" 
+                        VerticalAlignment="Bottom"
+                        BorderThickness="0 2 2 0"
+                        Margin="0"
+                        Padding="0"
+                        Style="{StaticResource InternalBorder}">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource MediaButton}">
+                                <Setter Property="Margin" Value="5 0" />
+                            </Style>
+                            <Style TargetType="Path">
+                                <Setter Property="Fill" Value="{StaticResource FrameStroke}" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Stretch" Value="Uniform" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}"
+                                Command="{Binding ResetSimulationCommand}">
+                            <Path Data="M0,0 H1 V1 H0z"/>
+                        </Button>
 
-            <Button Grid.Column="2"
-                    Click="OnCloseButtonClick"
-                    Style="{StaticResource TitleBarCloseButtonStyle}"
-                    ToolTip="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Close}"
-                    HorizontalAlignment="Right">
-                <Path Width="36"
-                      Height="32"
-                      Data="M 13,11 22,20 M 13,20 22,11"
-                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                      StrokeThickness="1"/>
-            </Button>
-        </Grid>
-        <Grid Style="{StaticResource Window}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                        <Rectangle Style="{StaticResource VerticalCustomSeparator}"/>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
+                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepBackward}"
+                                Command="{Binding StepBackwardCommand}">
+                            <Path Data="M1,0 L0.25,0.5 1,1 Z M0.1,0 L0.25,0 V1 H0.1z"/>
+                        </Button>
 
-            <Border Grid.Column="0"
-                    Style="{StaticResource InternalBorder}"
-                    Padding="0">
-                <Grid>
-                    <Grid.Resources>
-                        <CollectionViewSource x:Key="NodesCollection" Source="{Binding Nodes}"/>
-                        <CollectionViewSource x:Key="ConnectionCollection" Source="{Binding Connections}"/>
-                    </Grid.Resources>
-                    <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
-                             ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
-                             SelectedItem="{Binding SelectedNode}"
-                             PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
-                        <ListBox.ItemsSource>
-                            <CompositeCollection>
-                                <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
-                                <CollectionContainer Collection="{Binding Source={StaticResource ConnectionCollection}}"/>
-                            </CompositeCollection>
-                        </ListBox.ItemsSource>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Width, FallbackValue=0}"
-                                        Height="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Height, FallbackValue=0}"/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
-                    <Border HorizontalAlignment="Left" 
-                            VerticalAlignment="Bottom"
-                            BorderThickness="0 2 2 0"
-                            Margin="0"
-                            Padding="0"
-                            Style="{StaticResource InternalBorder}">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel.Resources>
-                                <Style TargetType="Button" BasedOn="{StaticResource MediaButton}">
-                                    <Setter Property="Margin" Value="5 0" />
-                                </Style>
-                                <Style TargetType="Path">
-                                    <Setter Property="Fill" Value="{StaticResource FrameStroke}" />
-                                    <Setter Property="Width" Value="16" />
-                                    <Setter Property="Height" Value="16" />
-                                    <Setter Property="Stretch" Value="Uniform" />
-                                </Style>
-                            </StackPanel.Resources>
-                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}"
-                                    Command="{Binding ResetSimulationCommand}">
-                                <Path Data="M0,0 H1 V1 H0z"/>
-                            </Button>
+                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepForward}"
+                                Command="{Binding StepForwardCommand}">
+                            <Path Data="M0,0 L0.75,0.5 0,1 Z M0.9,0 L0.75,0 V1 H0.9z"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
 
-                            <Rectangle Style="{StaticResource VerticalCustomSeparator}"/>
+        <Border Grid.Column="1"
+                Padding="0"
+                Style="{StaticResource InternalBorder}">
+            <StackPanel>
+                <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationSettings}" 
+                           FontWeight="Bold"
+                           Margin="10"/>
 
-                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepBackward}"
-                                    Command="{Binding StepBackwardCommand}">
-                                <Path Data="M1,0 L0.25,0.5 1,1 Z M0.1,0 L0.25,0 V1 H0.1z"/>
-                            </Button>
-
-                            <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepForward}"
-                                    Command="{Binding StepForwardCommand}" Cursor="Hand">
-                                <Path Data="M0,0 L0.75,0.5 0,1 Z M0.9,0 L0.75,0 V1 H0.9z"/>
-                            </Button>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </Border>
-
-            <Border Grid.Column="1"
-                    Padding="0"
-                    Style="{StaticResource InternalBorder}">
-                <StackPanel>
-                    <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationSettings}" 
-                               FontWeight="Bold"
-                               Margin="10"/>
-
-                    <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
-                    <ContentControl Margin="5 5 0 10"
-                                    Content="{Binding SelectedNode}"
-                                    ContentTemplateSelector="{StaticResource SimulationScriptSelector}"/>
-                </StackPanel>
-            </Border>
-
-
-
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="0 0 10 10"
-                        HorizontalAlignment="Right">
-                <Button Content="OK"
-                        Command="{Binding OKCommand}"
-                        IsDefault="True"
-                        Margin="0 0 10 0"/>
-                <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Cancel}"
-                        IsCancel="True"/>
+                <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+                <ContentControl Margin="5 5 0 10"
+                                Content="{Binding SelectedNode}"
+                                ContentTemplateSelector="{StaticResource SimulationScriptSelector}"/>
             </StackPanel>
-        </Grid>
-    </DockPanel>
-</Window>
+        </Border>
+
+
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="0 0 10 10"
+                    HorizontalAlignment="Right">
+            <Button Content="OK"
+                    Command="{Binding OKCommand}"
+                    IsDefault="True"
+                    Margin="0 0 10 0"/>
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Cancel}"
+                    IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</controls:TitleBarWindow>

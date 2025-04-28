@@ -1,76 +1,36 @@
-﻿<Window x:Class="Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views.OutputDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:OutputDialogViewModel}"
-        mc:Ignorable="d"
-        Height="200" 
-        Width="400"
-        WindowStartupLocation="CenterOwner"
-        SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize">
-    <WindowChrome.WindowChrome>
-        <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
-                      GlassFrameThickness="1,0,1,1"
-                      NonClientFrameEdges="Left,Right,Bottom"
-                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                      UseAeroCaptionButtons="False"/>
-    </WindowChrome.WindowChrome>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top"
-              x:Name="titleBar"
-              Background="{DynamicResource TitleBarBackground}"
-              Height="{StaticResource TitleBarHeight}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <Image x:Name="icon"
-                   Grid.Column="0"
-                   Style="{StaticResource IconImage}"
-                   MouseDown="OnIconMouseDown"
-                   Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
-                   WindowChrome.IsHitTestVisibleInChrome="True"/>
-
-            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Foreground="{DynamicResource FrameForeground}" />
-
-            <Button Grid.Column="2"
-                    Click="OnCloseButtonClick"
-                    Style="{StaticResource TitleBarCloseButtonStyle}"
-                    ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Close}"
-                    HorizontalAlignment="Right">
-                <Path Width="36"
-                      Height="32"
-                      Data="M 13,11 22,20 M 13,20 22,11"
-                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                      StrokeThickness="1"/>
-            </Button>
-        </Grid>
-        <Grid Style="{StaticResource Window}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Message}"
-                       Style="{StaticResource BaseBlock}"
-                       VerticalAlignment="Center" 
-                       HorizontalAlignment="Center" 
-                       Margin="10"/>
-            <Button Grid.Row="1"
-                    Command="{Binding OkCommand}"
-                    Content="OK"
-                    Style="{StaticResource BaseButton}"
-                    IsDefault="True"/>
-        </Grid>
-    </DockPanel>
-</Window>
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views.OutputDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels" 
+                         d:DataContext="{d:DesignInstance Type=viewmodels:OutputDialogViewModel}"
+                         mc:Ignorable="d"
+                         Icon="{StaticResource AppIcon}"
+                         Height="200" 
+                         Width="400"
+                         WindowStartupLocation="CenterOwner"
+                         SizeToContent="WidthAndHeight"
+                         ResizeMode="NoResize"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False">
+    <Grid Style="{StaticResource Window}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Message}"
+                   Style="{StaticResource BaseBlock}"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center" 
+                   Margin="10"/>
+        <Button Grid.Row="1"
+                Command="{Binding OkCommand}"
+                Content="OK"
+                Style="{StaticResource BaseButton}"
+                IsDefault="True"/>
+    </Grid>
+</controls:TitleBarWindow>

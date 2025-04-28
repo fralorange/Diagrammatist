@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Microsoft.Win32;
 using System.Windows;
@@ -9,9 +10,9 @@ using ApplicationEnt = System.Windows.Application;
 namespace Diagrammatist.Presentation.WPF.Simulator.Views
 {
     /// <summary>
-    /// A class that derived from <see cref="Window"/>. This class defines simulator view.
+    /// A class that derived from <see cref="TitleBarWindow"/>. This class defines simulator view.
     /// </summary>
-    public partial class SimulatorWindow : Window
+    public partial class SimulatorWindow : TitleBarWindow
     {
         public SimulatorWindow()
         {
@@ -24,16 +25,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Views
             {
                 vm.RequestOpen += OpenFile;
             }
-        }
-
-        private void OnCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            TitleBarHelper.CloseWindow(this);
-        }
-
-        private void OnIconMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            TitleBarHelper.DoubleClickProcess(this, e);
         }
 
         private void OnListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
