@@ -251,11 +251,13 @@
                                   MaxWidth="400"/>
             </Grid.ColumnDefinitions>
 
-            <components:ToolbarComponent Grid.Row="0"
+            <components:ToolbarComponent x:Name="ToolbarComponentName"
+                                         Grid.Row="0"
                                          Grid.ColumnSpan="3"
                                          Style="{StaticResource Component}"
                                          IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
-            <components:FiguresComponent Grid.Row="1"
+            <components:FiguresComponent x:Name="FiguresComponentName"
+                                         Grid.Row="1"
                                          Grid.RowSpan="2"
                                          Grid.Column="0"
                                          Style="{StaticResource Component}"
@@ -277,12 +279,15 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <components:ActionComponent Grid.Row="0"
+                <components:ActionComponent x:Name="ActionComponentName"
+                                            Grid.Row="0"
                                             Style="{StaticResource Component}"
                                             IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsBlocked}"/>
-                <components:CanvasComponent Grid.Row="1"
+                <components:CanvasComponent x:Name="CanvasComponentName"
+                                            Grid.Row="1"
                                             Style="{StaticResource Component}"/>
-                <components:TabsComponent Grid.Row="2"
+                <components:TabsComponent x:Name="TabsComponentName"
+                                          Grid.Row="2"
                                           Style="{StaticResource Component}"
                                           IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
             </Grid>
@@ -294,7 +299,8 @@
                           Style="{StaticResource Vertical}" 
                           HorizontalAlignment="Left"/>
 
-            <components:ObjectTreeComponent Grid.Row="1"
+            <components:ObjectTreeComponent x:Name="ObjectTreeComponentName"
+                                            Grid.Row="1"
                                             Grid.Column="2"
                                             Style="{StaticResource Component}"
                                             IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
@@ -304,8 +310,9 @@
                           Grid.Column="2" 
                           Style="{StaticResource Horizontal}"
                           VerticalAlignment="Top" />
-            
-            <components:PropertiesComponent Grid.Row="2"
+
+            <components:PropertiesComponent x:Name="PropertiesComponentName"
+                                            Grid.Row="2"
                                             Grid.Column="2"
                                             Style="{StaticResource Component}"
                                             IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>

@@ -12,7 +12,7 @@
 
   <PropertyGroup>
 	<AssemblyTitle>Diagrammatist</AssemblyTitle>
-	<Version>1.0.0</Version>
+	<Version>1.0.0-rc3</Version>
   </PropertyGroup>
 	
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -102,6 +102,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PropertiesResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Localization\Splash\SplashResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SplashResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Localization\Toolbar\ToolbarResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -214,6 +219,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Properties\PropertiesResources.ru-RU.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Splash\SplashResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SplashResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Toolbar\ToolbarResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

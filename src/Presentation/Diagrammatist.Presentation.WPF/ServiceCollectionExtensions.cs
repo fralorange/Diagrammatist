@@ -23,6 +23,7 @@ using Diagrammatist.Presentation.WPF.Simulator.Mappers;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Diagrammatist.Presentation.WPF.Views;
+using Diagrammatist.Presentation.WPF.Views.Splash;
 using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;
 using System.Globalization;
@@ -42,6 +43,8 @@ namespace Diagrammatist.Presentation.WPF
         /// <returns>A reference to this <see cref="IServiceCollection"/> after the operation has completed.</returns>
         public static IServiceCollection AddStartupServices(this IServiceCollection services)
         {
+            services.AddTransient<SplashScreen>();
+
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainViewModel>();
 

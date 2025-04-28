@@ -40,4 +40,12 @@
     <Color x:Key="ControlHover">#FFF0F0F0</Color>
     <Color x:Key="ControlPressed">#FFE0E0E0</Color>
     <Color x:Key="ControlFocused">#FFD0D0FF</Color>
+
+    <Color x:Key="SplashBackgroundStartColor">#F0F0F0</Color>
+    <Color x:Key="SplashBackgroundEndColor">#E0E0E0</Color>
+    <Color x:Key="PrimaryGlowColor">#30007ACC</Color>
+    <Color x:Key="SecondaryGlowColor">#40007ACC</Color>
+    <Color x:Key="ProgressTextForeground">#606060</Color>
+    <Color x:Key="VersionTextForeground">#505050</Color>
+    <Color x:Key="DeveloperTextForeground">#404040</Color>
 </ResourceDictionary>

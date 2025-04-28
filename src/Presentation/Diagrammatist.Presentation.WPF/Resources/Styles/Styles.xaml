@@ -268,8 +268,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">
                     <Border BorderBrush="{StaticResource FrameStroke}" 
-                                BorderThickness="3 0 3 3"
-                                Background="{TemplateBinding Background}">
+                            BorderThickness="3 0 3 3"
+                            Background="{TemplateBinding Background}">
                         <AdornerDecorator>
                             <ContentPresenter/>
                         </AdornerDecorator>
@@ -278,7 +278,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="Grid" x:Key="Window">
         <Setter Property="Background" Value="{StaticResource WindowBackground}" />
     </Style>
@@ -1027,5 +1027,107 @@
 
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
+    </Style>
+
+    <Style x:Key="CustomProgressBar" TargetType="ProgressBar">
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FrameStroke}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <Border x:Name="PART_Track"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"/>
+
+                        <Border x:Name="PART_Indicator"
+                            Background="{TemplateBinding Foreground}"
+                            BorderBrush="{DynamicResource ControlHighlightBrush}"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            HorizontalAlignment="Left">
+                            <Rectangle x:Name="AnimationRect"
+                                   Fill="{TemplateBinding Foreground}"
+                                   RadiusX="4" 
+                                   RadiusY="4">
+                                <Rectangle.Clip>
+                                    <RectangleGeometry x:Name="ClipRect"/>
+                                </Rectangle.Clip>
+                            </Rectangle>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsIndeterminate" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimationUsingKeyFrames
+                                        Storyboard.TargetName="AnimationRect"
+                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].X">
+                                            <LinearDoubleKeyFrame KeyTime="0:0:0" Value="-100"/>
+                                            <LinearDoubleKeyFrame KeyTime="0:0:1" Value="100"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Track" Property="Background" Value="{DynamicResource ControlHoverBrush}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource ControlDisabledBrush}"/>
+                            <Setter TargetName="PART_Track" Property="Background" Value="{DynamicResource MenuDisabledBackgroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ProgressBar" BasedOn="{StaticResource CustomProgressBar}"/>
+
+    <Style TargetType="TextBlock" x:Key="ProgressText">
+        <Setter Property="Foreground" Value="{DynamicResource ProgressTextBrush}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0,0,0,8" />
+        <Setter Property="Effect" Value="{DynamicResource SecondaryGlowEffect}"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="VersionText">
+        <Setter Property="Foreground" Value="{DynamicResource VersionTextBrush}" />
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DeveloperText" BasedOn="{StaticResource VersionText}">
+        <Setter Property="Foreground" Value="{DynamicResource DeveloperTextBrush}" /> 
+    </Style>
+
+    <Style TargetType="Border" x:Key="BaseSplashBackground">
+        <Setter Property="CornerRadius" Value="15" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="PrimarySplashBackground" BasedOn="{StaticResource BaseSplashBackground}">
+        <Setter Property="Opacity" Value="0.95" />
+        <Setter Property="Background" Value="{DynamicResource SplashBackground}" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <BlurEffect Radius="20"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border" x:Key="SecondarySplashBackground" BasedOn="{StaticResource BaseSplashBackground}">
+        <Setter Property="Margin" Value="15" />
+        <Setter Property="Effect" Value="{DynamicResource PrimaryGlowEffect}" />
     </Style>
 </ResourceDictionary>

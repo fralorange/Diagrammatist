@@ -8,6 +8,7 @@
                 <ResourceDictionary Source="Resources/Styles/Colors/Light.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Constants.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Brushes.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Effects.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Vectors.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
                 <ResourceDictionary Source="Resources/Converters/Converters.xaml"/>

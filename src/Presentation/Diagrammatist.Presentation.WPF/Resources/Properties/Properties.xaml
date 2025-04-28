@@ -1,10 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF">
+    <ObjectDataProvider x:Key="AppMetadata" 
+                        ObjectType="{x:Type local:AppMetadata}"/>
+
     <sys:String x:Key="HelpUrl">https://github.com/fralorange/Diagrammatist/wiki</sys:String>
     <sys:String x:Key="HubUrl">https://github.com/fralorange/Diagrammatist</sys:String>
+
     <sys:String x:Key="Author">(c) Alexei `fralorange` Rodionov.</sys:String>
-    
+
     <sys:String x:Key="Filter">Diagrammatist</sys:String>
     <sys:String x:Key="Extension">dgmf</sys:String>
 </ResourceDictionary>

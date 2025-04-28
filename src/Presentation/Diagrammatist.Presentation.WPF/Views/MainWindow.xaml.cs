@@ -20,16 +20,64 @@ namespace Diagrammatist.Presentation.WPF.Views
     {
         private readonly IAlertService _alertService;
 
+        /// <summary>
+        /// Initializes main window services and events.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <param name="alertService"></param>
         public MainWindow(MainViewModel viewModel, IAlertService alertService)
         {
             DataContext = viewModel;
             _alertService = alertService;
 
             viewModel.OnRequestClose += CloseWindow;
-
-            InitializeComponent();
         }
 
+        /// <summary>
+        /// Loads main window.
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <returns></returns>
+        public async Task LoadAsync(IProgress<(int, string)> progress)
+        {
+            await Dispatcher.InvokeAsync(InitializeComponent);
+            progress.Report((10, "Core"));
+
+            var loadingSteps = new[]
+            {
+                ("ToolbarComponentName", 30, "Toolbar"),
+                ("FiguresComponentName", 50, "Figures"),
+                ("CanvasComponentName", 65, "Canvas"),
+                ("TabsComponentName", 75, "Tabs"),
+                ("ObjectTreeComponentName", 85, "Tree"),
+                ("PropertiesComponentName", 90, "Properties"),
+                ("ActionComponentName", 95, "Action")
+            };
+
+            // Loads components.
+            foreach (var step in loadingSteps)
+            {
+                await LoadComponentAsync(step.Item1);
+                progress.Report((step.Item2, step.Item3));
+            }
+
+            // Smooth finish.
+            await Task.Delay(200); 
+            progress.Report((100, "Finish"));
+        }
+
+        private async Task LoadComponentAsync(string componentName)
+        {
+            await Dispatcher.InvokeAsync(() =>
+            {
+                if (FindName(componentName) is FrameworkElement component)
+                {
+                    component.UpdateLayout();
+                }
+            });
+        }
+
+        // TO-DO Create 'Custom TitleBar' component and inherit from it in here.
         private void OnSourceInitialized(object? sender, EventArgs e)
         {
             var source = (HwndSource)PresentationSource.FromVisual(this);
