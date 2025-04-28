@@ -240,8 +240,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
             return currentPoint;
         }
 
-
-
         private MagneticPointModel? GetNearestMagneticPoint(Point point, IEnumerable<MagneticPointModel> magneticPoints, double threshold = 10)
         {
             var nearestPoint = magneticPoints

@@ -467,12 +467,6 @@
         <Setter Property="Stretch" Value="Uniform" />
     </Style>
 
-    <Style TargetType="Ellipse" x:Key="MagneticPoint">
-        <Setter Property="Fill" Value="{StaticResource PointBrush}" />
-        <Setter Property="MinWidth" Value="5" />
-        <Setter Property="MinHeight" Value="5" />
-    </Style>
-
     <Style TargetType="Path" x:Key="Shape" BasedOn="{StaticResource BaseGeometry}">
         <Setter Property="Fill" Value="{StaticResource ShapeDefaultBackground}" />
         <Setter Property="StrokeLineJoin" Value="Bevel" />
