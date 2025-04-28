@@ -104,6 +104,8 @@ namespace Diagrammatist.Presentation.WPF.Views
                     e.Cancel = true;
                 }
             }
+
+            SaveGridSizes();
         }
 
         private void CloseWindow()
@@ -148,6 +150,22 @@ namespace Diagrammatist.Presentation.WPF.Views
             {
                 SystemCommands.MaximizeWindow(this);
             }
+        }
+
+        private void OnWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            LeftPanel.Width = new GridLength(Properties.Settings.Default.LeftPanelWidth);
+            RightPanel.Width = new GridLength(Properties.Settings.Default.RightPanelWidth);
+            BottomPanel.Height = new GridLength(Properties.Settings.Default.BottomPanelHeight);
+        }
+
+        private void SaveGridSizes()
+        {
+            Properties.Settings.Default.LeftPanelWidth = LeftPanel.ActualWidth;
+            Properties.Settings.Default.RightPanelWidth = RightPanel.ActualWidth;
+            Properties.Settings.Default.BottomPanelHeight = BottomPanel.ActualHeight;
+
+            Properties.Settings.Default.Save();
         }
     }
 }

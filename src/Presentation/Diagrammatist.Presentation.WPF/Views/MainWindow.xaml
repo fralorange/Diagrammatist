@@ -22,7 +22,8 @@
         Style="{StaticResource BaseWindow}"
         x:Name="window"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-        mc:Ignorable="d">
+        mc:Ignorable="d"
+        Loaded="OnWindowLoaded">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
                       GlassFrameThickness="1,0,1,1"
@@ -233,16 +234,19 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="0.30*"
+                <RowDefinition x:Name="BottomPanel" 
+                               Height="0.30*"
                                MinHeight="200"
                                MaxHeight="400"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.15*"
+                <ColumnDefinition x:Name="LeftPanel"
+                                  Width="0.15*"
                                   MinWidth="200"
                                   MaxWidth="400"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.15*"
+                <ColumnDefinition x:Name="RightPanel"
+                                  Width="0.15*"
                                   MinWidth="200"
                                   MaxWidth="400"/>
             </Grid.ColumnDefinitions>
