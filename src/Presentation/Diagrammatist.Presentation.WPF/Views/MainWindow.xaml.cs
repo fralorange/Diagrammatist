@@ -62,8 +62,8 @@ namespace Diagrammatist.Presentation.WPF.Views
             }
 
             // Smooth finish.
-            await Task.Delay(200); 
             progress.Report((100, "Finish"));
+            await Task.Delay(200);
         }
 
         private async Task LoadComponentAsync(string componentName)
