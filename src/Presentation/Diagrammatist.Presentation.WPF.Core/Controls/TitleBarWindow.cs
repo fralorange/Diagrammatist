@@ -1,5 +1,4 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
-using MvvmDialogs;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -122,6 +121,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             Style = (Style)FindResource(typeof(Window));
             ResizeMode = ResizeMode.CanResize;
             WindowStyle = WindowStyle.SingleBorderWindow;
+
+            StateChanged += OnWindowStateChanged;
         }
 #pragma warning restore CS8618
 
@@ -129,7 +130,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             // Get converters from resources
             var captionConverter = GetResource<IMultiValueConverter>("CaptionHeightMultiConverter");
-            var borderThicknessConverter = GetResource<IValueConverter>("WindowStateToThicknessConverter");
 
             // Configure WindowChrome
             var chrome = new WindowChrome
@@ -146,14 +146,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             captionBinding.Bindings.Add(new Binding("ActualHeight") { Source = titleBar });
             captionBinding.Bindings.Add(new Binding("BorderThickness.Top") { Source = this });
             BindingOperations.SetBinding(this, WindowChrome.CaptionHeightProperty, captionBinding);
-
-            // Setup border thickness binding
-            var borderBinding = new Binding("WindowState")
-            {
-                Source = this,
-                Converter = borderThicknessConverter
-            };
-            SetBinding(BorderThicknessProperty, borderBinding);
 
             WindowChrome.SetWindowChrome(this, chrome);
         }
@@ -244,19 +236,19 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 TextWrapping = TextWrapping.NoWrap
             };
-    
+
             // Bind Text to Window.Title
-            titleTextBlock.SetBinding(TextBlock.TextProperty, 
+            titleTextBlock.SetBinding(TextBlock.TextProperty,
                 new Binding("Title") { Source = this });
-    
+
             // Bind Visibility to ShowCenteredTitle with converter
-            titleTextBlock.SetBinding(TextBlock.VisibilityProperty, 
-                new Binding(nameof(ShowCenteredTitle)) 
-                { 
-                    Source = this, 
-                    Converter = new BooleanToVisibilityConverter() 
+            titleTextBlock.SetBinding(TextBlock.VisibilityProperty,
+                new Binding(nameof(ShowCenteredTitle))
+                {
+                    Source = this,
+                    Converter = new BooleanToVisibilityConverter()
                 });
-    
+
             dockPanelInner.Children.Add(titleTextBlock);
         }
 
@@ -400,6 +392,18 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             WindowState = WindowState == WindowState.Maximized
                 ? WindowState.Normal
                 : WindowState.Maximized;
+        }
+
+        private void OnWindowStateChanged(object? sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                titleBar.Margin = new Thickness(4, 6, 4, 0);
+            }
+            else
+            {
+                titleBar.Margin = new Thickness(0);
+            }
         }
 
         private void OnMaximizeRestoreButtonToolTipOpening(object sender, ToolTipEventArgs e)

@@ -10,7 +10,6 @@
     <local:BoolToStrokeDashArrayConverter x:Key="BoolToStrokeDashArrayConverter"/>
     <local:CaptionHeightMultiConverter x:Key="CaptionHeightMultiConverter"/>
     <local:WindowStateToPathConverter x:Key="WindowStateToPathConverter"/>
-    <local:WindowStateToThicknessConverter x:Key="WindowStateToThicknessConverter"/>
     <local:HexToMediaColorConverter x:Key="HexToMediaColorConverter"/>
     <local:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
     <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
