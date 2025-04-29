@@ -263,22 +263,6 @@
 
     <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}"/>
 
-    <Style TargetType="Window" x:Key="BaseWindow">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Window}">
-                    <Border BorderBrush="{StaticResource FrameStroke}" 
-                            BorderThickness="3 0 3 3"
-                            Background="{TemplateBinding Background}">
-                        <AdornerDecorator>
-                            <ContentPresenter/>
-                        </AdornerDecorator>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style TargetType="Grid" x:Key="Window">
         <Setter Property="Background" Value="{StaticResource WindowBackground}" />
     </Style>
@@ -288,6 +272,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource FrameStrokeRadial}"/>
         <Setter Property="Background" Value="{StaticResource FrameBackground}"/>
         <Setter Property="Margin" Value="2.5" />
+        <Setter Property="Padding" Value="{Binding BorderThickness, RelativeSource={RelativeSource Self}}"/>
     </Style>
 
     <!--#region ItemsControl and Subtypes-->

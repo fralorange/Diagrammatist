@@ -19,7 +19,8 @@
                          Loaded="SimulatorLoaded"
                          ShowMinimizeButton="False"
                          ShowMaximizeButton="False"
-                         ShowCenteredTitle="True">
+                         ShowCenteredTitle="True"
+                         IsDialog="True">
     <Grid Style="{StaticResource Window}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

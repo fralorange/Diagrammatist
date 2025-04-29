@@ -17,10 +17,10 @@
                          Title="{Binding Source={StaticResource AppMetadata}, Path=Title}"
                          MinWidth="985"
                          MinHeight="557"
-                         Style="{StaticResource BaseWindow}"
                          d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
                          mc:Ignorable="d"
-                         Loaded="OnWindowLoaded">
+                         Loaded="OnWindowLoaded"
+                         Background="Transparent">
     <Window.Resources>
         <!--#region GridSplitters-->
         <Style TargetType="GridSplitter" x:Key="Base">

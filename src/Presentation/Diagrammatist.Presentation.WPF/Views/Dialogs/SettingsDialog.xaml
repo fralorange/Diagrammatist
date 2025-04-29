@@ -18,7 +18,8 @@
                          d:DataContext="{d:DesignInstance {x:Type vmd:SettingsDialogViewModel}}"
                          ShowMinimizeButton="False"
                          ShowMaximizeButton="False"
-                         ShowCenteredTitle="True">
+                         ShowCenteredTitle="True"
+                         IsDialog="True">
     <Grid Width="650"
           Height="750"
           Style="{StaticResource Window}">

@@ -16,7 +16,8 @@
                          SizeToContent="WidthAndHeight"
                          ResizeMode="NoResize"
                          ShowMinimizeButton="False"
-                         ShowMaximizeButton="False">
+                         ShowMaximizeButton="False"
+                         IsDialog="True">
     <Grid Style="{StaticResource Window}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

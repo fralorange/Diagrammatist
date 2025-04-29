@@ -20,7 +20,8 @@
                          d:DataContext="{d:DesignInstance {x:Type vmd:AddCanvasDialogViewModel}}"
                          ShowMinimizeButton="False"
                          ShowMaximizeButton="False"
-                         ShowCenteredTitle="True">
+                         ShowCenteredTitle="True"
+                         IsDialog="True">
     <Grid Style="{StaticResource Window}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

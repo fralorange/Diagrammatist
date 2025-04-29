@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -64,6 +65,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 new PropertyMetadata(true));
 
         /// <summary>
+        /// A dialog parameter dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsDialogProperty =
+            DependencyProperty.Register(
+                nameof(IsDialog),
+                typeof(bool),
+                typeof(TitleBarWindow),
+                new PropertyMetadata(false));
+
+        /// <summary>
         /// Gets or sets title bar menu content.
         /// </summary>
         public object TitleBarMenuContent
@@ -82,7 +93,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
 
         /// <summary>
-        /// Gets or sets 'show centered title'.
+        /// Gets or sets 'show centered title' parameter.
         /// </summary>
         public bool ShowCenteredTitle
         {
@@ -91,7 +102,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
 
         /// <summary>
-        /// Gets or sets 'show minimize button'.
+        /// Gets or sets 'show minimize button' parameter.
         /// </summary>
         public bool ShowMinimizeButton
         {
@@ -100,12 +111,21 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
 
         /// <summary>
-        /// Gets or sets 'show maximize button'.
+        /// Gets or sets 'show maximize button' parameter.
         /// </summary>
         public bool ShowMaximizeButton
         {
             get => (bool)GetValue(ShowMaximizeButtonProperty);
             set => SetValue(ShowMaximizeButtonProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets 'is dialog' parameter.
+        /// </summary>
+        public bool IsDialog
+        {
+            get => (bool)GetValue(IsDialogProperty);
+            set => SetValue(IsDialogProperty, value);
         }
 
         /// <summary>
@@ -118,9 +138,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
             InitializeWindowChrome();
 
-            Style = (Style)FindResource(typeof(Window));
             ResizeMode = ResizeMode.CanResize;
             WindowStyle = WindowStyle.SingleBorderWindow;
+            SnapsToDevicePixels = true;
 
             StateChanged += OnWindowStateChanged;
         }
@@ -134,11 +154,20 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             // Configure WindowChrome
             var chrome = new WindowChrome
             {
-                CornerRadius = SystemParameters.WindowCornerRadius,
-                GlassFrameThickness = new Thickness(1, 0, 1, 1),
-                NonClientFrameEdges = NonClientFrameEdges.Left | NonClientFrameEdges.Right | NonClientFrameEdges.Bottom,
-                ResizeBorderThickness = SystemParameters.WindowResizeBorderThickness,
+                CornerRadius = new CornerRadius(0),
+                GlassFrameThickness = new Thickness(0),
+                NonClientFrameEdges = NonClientFrameEdges.None,
+                ResizeBorderThickness = new Thickness(5),
                 UseAeroCaptionButtons = false
+            };
+
+            Loaded += (s, e) =>
+            {
+                if (IsDialog)
+                {
+                    chrome.GlassFrameThickness = new Thickness(1, 0, 1, 1);
+                    chrome.NonClientFrameEdges = NonClientFrameEdges.Left | NonClientFrameEdges.Right | NonClientFrameEdges.Bottom;
+                }
             };
 
             // Setup caption height binding
@@ -163,6 +192,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             var contentPresenter = new ContentPresenter();
             contentPresenter.SetBinding(ContentPresenter.ContentProperty,
                 new Binding("WindowContent") { Source = this });
+
             dockPanel.Children.Add(contentPresenter);
         }
 
@@ -396,13 +426,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         private void OnWindowStateChanged(object? sender, EventArgs e)
         {
+            var content = (WindowContent as FrameworkElement);
+
             if (WindowState == WindowState.Maximized)
             {
-                titleBar.Margin = new Thickness(4, 6, 4, 0);
+                titleBar.Margin = new Thickness(6, 6, 6, 0);
+                content?.SetValue(FrameworkElement.MarginProperty, new Thickness(6, 0, 6, 6));
             }
             else
             {
                 titleBar.Margin = new Thickness(0);
+                content?.SetValue(FrameworkElement.MarginProperty, new Thickness(0));
             }
         }
 
@@ -411,6 +445,69 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             maximizeRestoreButton.ToolTip = WindowState == WindowState.Normal
                 ? LocalizationHelper.GetLocalizedValue<string>("MainResources", "Maximize")
                 : LocalizationHelper.GetLocalizedValue<string>("MainResources", "Restore");
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case NativeHelper.WM_NCHITTEST:
+                    if (NativeHelper.IsSnapLayoutEnabled())
+                    {
+                        // Return HTMAXBUTTON when the mouse is over the maximize/restore button
+                        var point = PointFromScreen(new Point(lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16));
+                        if (WpfHelper.GetElementBoundsRelativeToWindow(maximizeRestoreButton, this).Contains(point))
+                        {
+                            handled = true;
+                            // Apply hover button style
+                            maximizeRestoreButton.Background = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonHoverBackground"];
+                            maximizeRestoreButton.Foreground = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonHoverForeground"];
+                            return new IntPtr(NativeHelper.HTMAXBUTTON);
+                        }
+                        else
+                        {
+                            // Apply default button style (cursor is not on the button)
+                            maximizeRestoreButton.Background = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonBackground"];
+                            maximizeRestoreButton.Foreground = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonForeground"];
+                        }
+                    }
+                    break;
+                case NativeHelper.WM_NCLBUTTONDOWN:
+                    if (NativeHelper.IsSnapLayoutEnabled())
+                    {
+                        if (wParam.ToInt32() == NativeHelper.HTMAXBUTTON)
+                        {
+                            handled = true;
+                            // Apply pressed button style
+                            maximizeRestoreButton.Background = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonPressedBackground"];
+                            maximizeRestoreButton.Foreground = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonPressedForeground"];
+                        }
+                    }
+                    break;
+                case NativeHelper.WM_NCLBUTTONUP:
+                    if (NativeHelper.IsSnapLayoutEnabled())
+                    {
+                        if (wParam.ToInt32() == NativeHelper.HTMAXBUTTON)
+                        {
+                            // Apply default button style
+                            maximizeRestoreButton.Background = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonBackground"];
+                            maximizeRestoreButton.Foreground = (Brush)ApplicationEnt.Current.Resources["TitleBarButtonForeground"];
+                            // Maximize or restore the window
+                            ToggleWindowState();
+                        }
+                    }
+                    break;
+            }
+            return IntPtr.Zero;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            var source = (HwndSource)PresentationSource.FromVisual(this);
+            source.AddHook(WndProc);
         }
     }
 }
