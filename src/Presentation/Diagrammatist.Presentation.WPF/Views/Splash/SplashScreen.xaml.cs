@@ -12,6 +12,12 @@ namespace Diagrammatist.Presentation.WPF.Views.Splash
         public SplashScreen()
         {
             InitializeComponent();
+
+            Loaded += (s, e) =>
+            {
+                Topmost = true;
+                Topmost = false;
+            };
         }
         
         /// <summary>
