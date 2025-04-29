@@ -10,8 +10,26 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
     /// </summary>
     public class MagneticPointsAdorner : Adorner
     {
+        /// <summary>
+        /// A fill brush dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FillBrushProperty =
+            DependencyProperty.Register(
+                nameof(FillBrush),
+                typeof(Brush),
+                typeof(MagneticPointsAdorner),
+                new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        /// <summary>
+        /// Gets or sets fill brush.
+        /// </summary>
+        public Brush FillBrush
+        {
+            get => (Brush)GetValue(FillBrushProperty);
+            set => SetValue(FillBrushProperty, value);
+        }
+
         private IEnumerable<Point> _points;
-        private Brush _fillBrush;
 
         private bool _isVisible = true;
 
@@ -42,10 +60,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             _points = points;
             IsHitTestVisible = false;
 
-            if (TryFindResource("PointBrush") is Brush brush)
-                _fillBrush = brush;
-            else
-                _fillBrush = Brushes.Red;
+            SetResourceReference(FillBrushProperty, "PointBrush");
+        }
+
+        /// <summary>
+        /// Updates points.
+        /// </summary>
+        /// <param name="newPoints"></param>
+        public void UpdatePoints(IEnumerable<Point> newPoints)
+        {
+            _points = newPoints;
+            InvalidateVisual(); 
         }
 
         /// <inheritdoc/>
@@ -53,20 +78,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             base.OnRender(drawingContext);
 
-            if (!IsVisible)
+            if (!IsVisible || _points is null)
                 return; 
-
-            if (_points == null)
-                return;
 
             double maxSide = Math.Max(AdornedElement.RenderSize.Width, AdornedElement.RenderSize.Height);
             double radius = maxSide / 25.0;
 
-            var pen = new Pen(_fillBrush, 1);
+            var pen = new Pen(FillBrush, 1);
 
             foreach (var point in _points)
             {
-                drawingContext.DrawEllipse(_fillBrush, pen, point, radius, radius);
+                drawingContext.DrawEllipse(FillBrush, pen, point, radius, radius);
             }
         }
     }

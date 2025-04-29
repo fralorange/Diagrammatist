@@ -28,6 +28,13 @@ namespace Diagrammatist.Presentation.WPF.Views
             _alertService = alertService;
 
             viewModel.OnRequestClose += CloseWindow;
+
+            // Launch on top.
+            Loaded += (s, e) =>
+            {
+                Topmost = true;
+                Topmost = false;
+            };
         }
 
         /// <summary>

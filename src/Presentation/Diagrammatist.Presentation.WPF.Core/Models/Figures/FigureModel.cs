@@ -29,15 +29,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         [ObservableProperty]
         private double _posY;
 
-        private double _rotation;
+        protected double _rotation;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureRotation"]/*'/>
-        public double Rotation
+        public virtual double Rotation
         {
             get => _rotation;
             set => SetProperty(ref _rotation, value);
         }
-
 
         private double _zIndex;
 

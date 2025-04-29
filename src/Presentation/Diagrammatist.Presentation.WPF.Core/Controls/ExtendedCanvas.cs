@@ -318,10 +318,33 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         private void EnsureElementInsideCanvas(ref double x, ref double y, FrameworkElement? elem = null)
         {
             elem ??= _selectedElement;
+            if (elem == null) return;
 
-            x = Math.Max(0, Math.Min(x, ActualWidth - elem!.ActualWidth));
-            y = Math.Max(0, Math.Min(y, ActualHeight - elem!.ActualHeight));
+            // Initial rectangle of the element (in its local coordinates)
+            var rect = new Rect(0, 0, elem.ActualWidth, elem.ActualHeight);
+
+            // Rotation matrix around the center of the element
+            var center = new Point(elem.ActualWidth / 2, elem.ActualHeight / 2);
+            var rotate = new RotateTransform
+            {
+                Angle = (elem.RenderTransform as RotateTransform)?.Angle ?? 0,
+                CenterX = center.X,
+                CenterY = center.Y
+            };
+
+            // Getting axis-oriented (AABB) rectangle after rotation
+            var rotatedBounds = rotate.TransformBounds(rect);
+
+            // Calculate the bounds of allowable x,y coordinates (element position is given by its local left-top corner)
+            double leftBound = -rotatedBounds.X;
+            double topBound = -rotatedBounds.Y;
+            double rightBound = ActualWidth - rotatedBounds.Width - rotatedBounds.X;
+            double bottomBound = ActualHeight - rotatedBounds.Height - rotatedBounds.Y;
+
+            x = Math.Max(leftBound, Math.Min(x, rightBound));
+            y = Math.Max(topBound, Math.Min(y, bottomBound));
         }
+
         #endregion
         #region Event handlers
         private static void OnGridChange(DependencyObject d, DependencyPropertyChangedEventArgs e)

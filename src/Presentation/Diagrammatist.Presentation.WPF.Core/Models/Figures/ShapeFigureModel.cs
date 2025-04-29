@@ -56,6 +56,19 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
             }
         }
 
+        /// <inheritdoc/>
+        public override double Rotation 
+        { 
+            get => base.Rotation; 
+            set 
+            {
+                if (SetProperty(ref _rotation, value))
+                {
+                    UpdateMagneticPoints();
+                }
+            } 
+        }
+
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeData"]/*'/>
         public List<string> Data { get; set; } = [];
 
@@ -104,9 +117,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
                 geometryGroup.Children.Add(geometry);
             }
 
-            var combinedGeometry = geometryGroup.GetOutlinedPathGeometry();
-
-            var points = FigureSnapHelper.GetMagneticPoints(combinedGeometry, Width, Height, KeepAspectRatio);
+            var points = FigureSnapHelper.GetMagneticPoints(geometryGroup, Width, Height, KeepAspectRatio, Rotation);
 
             foreach (var point in points)
             {

@@ -277,17 +277,20 @@
                                                       HighlightBrush="{StaticResource ControlHighlightBrush}" 
                                                       DefaultBrush="Transparent"/>
         </DataTemplate.Resources>
-        <Border BorderThickness="2">
-            <Border.BorderBrush>
-                <MultiBinding Converter="{StaticResource EqualityToBrushMultiConverter}">
-                    <Binding Path="DataContext.CurrentNode" 
-                             RelativeSource="{RelativeSource AncestorType=ListBox}"/>
-                    <Binding/>
-                </MultiBinding>
-            </Border.BorderBrush>
+        <Grid>
             <ContentControl Content="{Binding Figure}"
-                            ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
-        </Border>
+                        ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+            <Border BorderThickness="2"
+                    Background="Transparent"
+                    IsHitTestVisible="False">
+                <Border.BorderBrush>
+                    <MultiBinding Converter="{StaticResource EqualityToBrushMultiConverter}">
+                        <Binding Path="DataContext.CurrentNode" RelativeSource="{RelativeSource AncestorType=ListBox}"/>
+                        <Binding/>
+                    </MultiBinding>
+                </Border.BorderBrush>
+            </Border>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="SimulationConnectionTemplate"

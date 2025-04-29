@@ -48,4 +48,7 @@
     <Color x:Key="ProgressTextForeground">#606060</Color>
     <Color x:Key="VersionTextForeground">#505050</Color>
     <Color x:Key="DeveloperTextForeground">#404040</Color>
+
+    <Color x:Key="SelectedBorderColor">#FF6A4FCF</Color>
+    <Color x:Key="SelectedBackgroundColor">#336A4FCF</Color>
 </ResourceDictionary>

@@ -274,9 +274,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 Width = 36,
                 Height = 32,
                 Data = Geometry.Parse("M 13,15 H 23"),
-                Stroke = GetResource<Brush>("TitleBarButtonForeground"),
                 StrokeThickness = 1
             };
+            path.SetResourceReference(Path.StrokeProperty, "TitleBarButtonForeground");
             button.Content = path;
 
             titleBar.Children.Add(button);
@@ -305,9 +305,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             {
                 Width = 36,
                 Height = 32,
-                Stroke = GetResource<Brush>("TitleBarButtonForeground"),
                 StrokeThickness = 1
             };
+            path.SetResourceReference(Path.StrokeProperty, "TitleBarButtonForeground");
 
             var stateConverter = GetResource<IValueConverter>("WindowStateToPathConverter");
             path.SetBinding(Path.DataProperty, new Binding("WindowState")
@@ -335,9 +335,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 Width = 36,
                 Height = 32,
                 Data = Geometry.Parse("M 13,11 22,20 M 13,20 22,11"),
-                Stroke = GetResource<Brush>("TitleBarButtonForeground"),
                 StrokeThickness = 1
             };
+            path.SetResourceReference(Path.StrokeProperty, "TitleBarButtonForeground");
             button.Content = path;
 
             titleBar.Children.Add(button);
