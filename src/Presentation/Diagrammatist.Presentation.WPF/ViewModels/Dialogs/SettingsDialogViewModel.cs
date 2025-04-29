@@ -50,7 +50,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             {
                 if (SetProperty(ref _selectedLanguage, value) && value is not null)
                 {
-                    ApplyLanguage(value);
+                    CheckHasChanges();
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             {
                 if (SetProperty(ref _selectedTheme, value) && value is not null)
                 {
-                    ApplyTheme(value);
+                    CheckHasChanges();
                 }
             }
         }
@@ -83,6 +83,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             private set => SetProperty(ref _dialogResult, value);
         }
 
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(ApplyCommand))]
+        private bool _hasChanges;
+
 #pragma warning disable CS8618 
         public SettingsDialogViewModel()
 #pragma warning restore CS8618 
@@ -90,12 +94,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             AvailableLanguages = _supportedCultures.ToArray();
             AvailableThemes = _supportedThemes.ToArray();
 
-            SelectedLanguage = CultureInfo.CurrentUICulture;
-            SelectedTheme = Properties.Settings.Default.Theme;
-
             _initialLanguage = CultureInfo.CurrentUICulture;
             _initialTheme = Properties.Settings.Default.Theme;
+
+            SelectedLanguage = CultureInfo.CurrentUICulture;
+            SelectedTheme = Properties.Settings.Default.Theme;
         }
+
+        private bool CanApply() => HasChanges;
+
+        private void CheckHasChanges() => HasChanges =
+            !_selectedLanguage.Equals(_initialLanguage) ||
+            _selectedTheme != _initialTheme;
 
         private void ApplyLanguage(CultureInfo culture)
         {
@@ -109,6 +119,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             App.Current.ChangeTheme(theme);
         }
 
+        /// <summary>
+        /// Confirms changes.
+        /// </summary>
         [RelayCommand]
         private void Ok()
         {
@@ -119,6 +132,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
                 return;
             }
 
+            Apply();
+
             Properties.Settings.Default.Culture = SelectedLanguage.Name;
             Properties.Settings.Default.Theme = SelectedTheme;
             Properties.Settings.Default.Save();
@@ -126,6 +141,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             DialogResult = true;
         }
 
+        /// <summary>
+        /// Cancels changes.
+        /// </summary>
         [RelayCommand]
         private void Cancel()
         {
@@ -133,6 +151,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             SelectedTheme = _initialTheme;
 
             DialogResult = true;
+        }
+
+        /// <summary>
+        /// Applies changes.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanApply))]
+        private void Apply()
+        {
+            ApplyLanguage(SelectedLanguage);
+            ApplyTheme(SelectedTheme);
+
+            _initialLanguage = SelectedLanguage;
+            _initialTheme = SelectedTheme;
+            HasChanges = false;
         }
     }
 }

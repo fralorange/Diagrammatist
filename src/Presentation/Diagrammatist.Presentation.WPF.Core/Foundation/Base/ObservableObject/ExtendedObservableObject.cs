@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 namespace Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject
 {
     /// <summary>
-    /// An extended class for objects of which the properties must be observable that derives from <see cref="ObservableObject"/>.
+    /// An extended class for objects of which the properties must be observable that derives from <see cref="CommunityToolkit.Mvvm.ComponentModel.ObservableObject"/>.
     /// </summary>
     public class ExtendedObservableObject : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
     {

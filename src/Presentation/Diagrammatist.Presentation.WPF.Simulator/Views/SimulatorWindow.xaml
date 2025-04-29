@@ -111,19 +111,23 @@
             </StackPanel>
         </Border>
 
-
-
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
                     Grid.Column="1"
                     Margin="0 0 10 10"
                     HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                    <Setter Property="Margin" Value="10 0 0 0" />
+                </Style>
+            </StackPanel.Resources>
             <Button Content="OK"
                     Command="{Binding OKCommand}"
-                    IsDefault="True"
-                    Margin="0 0 10 0"/>
+                    IsDefault="True"/>
             <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Cancel}"
                     IsCancel="True"/>
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Apply}"
+                    Command="{Binding ApplyCommand}"/>
         </StackPanel>
     </Grid>
 </controls:TitleBarWindow>

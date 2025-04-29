@@ -22,7 +22,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart
                 //    throw new InvalidOperationException($"LuaScript error: {error}");
                 //}
 
-                _luaScript = value;
+                SetProperty(ref _luaScript, value);
             }
         }
     }

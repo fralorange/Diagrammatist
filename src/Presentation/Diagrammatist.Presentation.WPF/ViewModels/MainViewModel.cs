@@ -369,6 +369,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             var payload = doc.GetPayloadData<SimulationContext>(key);
 
             var dialogViewModel = new SimulatorWindowViewModel(_dialogService, _documentSerializationService, payload);
+            dialogViewModel.RequestApply += () =>
+            {
+                if (dialogViewModel.NewContext is null)
+                    return;
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => doc.SetPayload(key, dialogViewModel.NewContext),
+                    () => doc.SetPayload(key, payload));
+
+                _trackableCommandManager.Execute(command);
+            };
             
             if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.NewContext is { } context)
             {

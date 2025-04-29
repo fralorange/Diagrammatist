@@ -11,6 +11,7 @@ using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Providers;
 using MvvmDialogs;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
@@ -24,6 +25,14 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="RequestOpen"]/*'/>
         public event Func<string>? RequestOpen;
+
+        /// <summary>
+        /// Occurs when user wants to apply changes.
+        /// </summary>
+        /// <remarks>
+        /// This event marks current file as 'has changes'.
+        /// </remarks>
+        public event Action? RequestApply;
 
         /// <summary>
         /// Gets or sets current node in simulation.
@@ -63,6 +72,13 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets the change state of the current simulation.
+        /// </summary>
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(ApplyCommand))]
+        private bool _hasChanges;
+
+        /// <summary>
         /// Gets or sets new context, if user confirmed changes.
         /// </summary>
         public SimulationContext? NewContext { get; private set; }
@@ -99,6 +115,8 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
                 => CurrentNode = node;
             _simulationEngine.Initialize();
         }
+
+        private bool CanApply() => HasChanges;
 
         /// <summary>
         /// Takes one step forward in simulation window.
@@ -150,6 +168,46 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         {
             NewContext = new() { Nodes = Nodes, Connections = Connections };
             DialogResult = true;
+        }
+
+        /// <summary>
+        /// Applies changes.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanApply))]
+        private void Apply()
+        {
+            NewContext = new() { Nodes = Nodes, Connections = Connections };
+            HasChanges = false;
+            RequestApply?.Invoke();
+        }
+
+        private void SelectedNode_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SimulationNode.LuaScript) ||
+                e.PropertyName == nameof(SimulationNode.ExternalFilePath))
+            {
+                HasChanges = true;
+            }
+        }
+
+        /// <summary>
+        /// Handles selected node changing.
+        /// </summary>
+        /// <remarks>
+        /// Occurs when selected node changes.
+        /// </remarks>
+        /// <param name="value"></param>
+        partial void OnSelectedNodeChanged(SimulationNode? oldValue, SimulationNode? newValue)
+        {
+            if (oldValue is not null)
+            {
+                oldValue.PropertyChanged -= SelectedNode_PropertyChanged;
+            }
+
+            if (newValue is not null)
+            {
+                newValue.PropertyChanged += SelectedNode_PropertyChanged;
+            }
         }
     }
 }

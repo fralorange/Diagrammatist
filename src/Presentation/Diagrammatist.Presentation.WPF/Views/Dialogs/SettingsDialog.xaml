@@ -107,6 +107,10 @@
             <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}"
                     Command="{Binding CancelCommand}"
                     IsCancel="True"/>
+
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.Settings.SettingsResources:Apply}"
+                    Command="{Binding ApplyCommand}"
+                    IsCancel="True"/>
         </StackPanel>
     </Grid>
 </controls:TitleBarWindow>
