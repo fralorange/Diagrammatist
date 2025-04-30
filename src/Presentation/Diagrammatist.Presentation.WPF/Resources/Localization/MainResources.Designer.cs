@@ -70,20 +70,29 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Canvas.
+        ///   Ищет локализованную строку, похожую на Change Canvas Background.
         /// </summary>
-        internal static string Canvas {
+        internal static string ChangeBackground {
             get {
-                return ResourceManager.GetString("Canvas", resourceCulture);
+                return ResourceManager.GetString("ChangeBackground", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Change Size.
+        ///   Ищет локализованную строку, похожую на Change Canvas Size.
         /// </summary>
         internal static string ChangeSize {
             get {
                 return ResourceManager.GetString("ChangeSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change Diagram Type.
+        /// </summary>
+        internal static string ChangeType {
+            get {
+                return ResourceManager.GetString("ChangeType", resourceCulture);
             }
         }
         
@@ -102,6 +111,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         internal static string CloseAll {
             get {
                 return ResourceManager.GetString("CloseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Diagram.
+        /// </summary>
+        internal static string Diagram {
+            get {
+                return ResourceManager.GetString("Diagram", resourceCulture);
             }
         }
         

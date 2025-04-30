@@ -6,6 +6,7 @@ using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
@@ -27,6 +28,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
     public sealed partial class MainViewModel : ObservableRecipient
     {
         private readonly IDialogService _dialogService;
+        private readonly IAlertService _alertService;
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly IDocumentSerializationService _documentSerializationService;
 
@@ -64,7 +66,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuZoomResetCommand),
             nameof(MenuEnableGridCommand),
             nameof(MenuSimulatorCommand),
-            nameof(MenuChangeSizeCommand))]
+            nameof(MenuChangeSizeCommand),
+            nameof(MenuChangeBackgroundCommand),
+            nameof(MenuChangeTypeCommand))]
         private bool _hasCanvasFlag;
         /// <summary>
         /// Gets or sets 'has custom canvas' flag.
@@ -102,14 +106,27 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuZoomOutCommand),
             nameof(MenuZoomResetCommand),
             nameof(MenuSimulatorCommand),
-            nameof(MenuChangeSizeCommand))]
+            nameof(MenuChangeSizeCommand),
+            nameof(MenuChangeBackgroundCommand),
+            nameof(MenuChangeTypeCommand))]
         private bool _isBlocked;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
         public bool IsNotBlocked => !IsBlocked;
         #endregion
 
-        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IDocumentSerializationService documentSerializationService)
+        /// <summary>
+        /// Initializes main view model.
+        /// </summary>
+        /// <remarks>
+        /// This view model acts as adviser between all components..
+        /// </remarks>
+        /// <param name="alertService"></param>
+        /// <param name="dialogService"></param>
+        /// <param name="trackableCommandManager"></param>
+        /// <param name="documentSerializationService"></param>
+        public MainViewModel(IAlertService alertService, IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IDocumentSerializationService documentSerializationService)
         {
+            _alertService = alertService;
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
             _documentSerializationService = documentSerializationService;
@@ -332,7 +349,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         #endregion
-        #region Canvas
+        #region Diagram
 
         /// <summary>
         /// Changes size of the current selected canvas through dialog window from menu button.
@@ -350,6 +367,46 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.Size is { } size)
             {
                 Messenger.Send<UpdatedSizeMessage>(new(size));
+            }
+        }
+
+        /// <summary>
+        /// Changes background of the current selected canvas through dialog window from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuChangeBackground()
+        {
+            var currentCanvas = Messenger.Send<CurrentCanvasRequestMessage>().Response;
+
+            if (currentCanvas is null)
+                return;
+
+            var dialogViewModel = new ChangeCanvasBackgroundDialogViewModel(currentCanvas.Settings.Background);
+
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.Color is { } background)
+            {
+                Messenger.Send<UpdatedBackgroundMessage>(new(background));
+            }
+        }
+
+        /// <summary>
+        /// Changes diagram type of the current diagram through dialog window from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuChangeType()
+        {
+            var currentCanvas = Messenger.Send<CurrentCanvasRequestMessage>().Response;
+
+            if (currentCanvas is null)
+                return;
+
+            var dialogViewModel = new ChangeDiagramTypeDialogViewModel(_alertService, currentCanvas.Settings.Type);
+
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true
+                && dialogViewModel.DiagramType is { } diagram
+                && diagram != currentCanvas.Settings.Type)
+            {
+                Messenger.Send<UpdatedTypeMessage>(new(diagram));
             }
         }
 

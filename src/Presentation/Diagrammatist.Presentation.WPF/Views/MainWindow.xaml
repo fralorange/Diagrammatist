@@ -68,74 +68,78 @@
         <Menu Background="Transparent">
             <MenuItem Header="{lex:Loc File}">
                 <MenuItem Header="{lex:Loc New}"
-                              InputGestureText="Ctrl+N"
-                              Command="{Binding MenuNewCommand}"/>
+                          InputGestureText="Ctrl+N"
+                          Command="{Binding MenuNewCommand}"/>
                 <MenuItem Header="{lex:Loc Open}"
-                              InputGestureText="Ctrl+O"
-                              Command="{Binding MenuOpenCommand}"/>
+                          InputGestureText="Ctrl+O"
+                          Command="{Binding MenuOpenCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Close}"
-                              Command="{Binding MenuCloseCommand}"/>
+                          Command="{Binding MenuCloseCommand}"/>
                 <MenuItem Header="{lex:Loc CloseAll}"
-                              Command="{Binding MenuCloseAllCommand}"/>
+                          Command="{Binding MenuCloseAllCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Save}"
-                              InputGestureText="Ctrl+S"
-                              Command="{Binding MenuSaveCommand}"/>
+                          InputGestureText="Ctrl+S"
+                          Command="{Binding MenuSaveCommand}"/>
                 <MenuItem Header="{lex:Loc SaveAs}"
-                              InputGestureText="Ctrl+Shift+S"
-                              Command="{Binding MenuSaveAsCommand}"/>
+                          InputGestureText="Ctrl+Shift+S"
+                          Command="{Binding MenuSaveAsCommand}"/>
                 <MenuItem Header="{lex:Loc SaveAll}"
-                              Command="{Binding MenuSaveAllCommand}"/>
+                          Command="{Binding MenuSaveAllCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Export}"
-                              Command="{Binding MenuExportCommand}"/>
+                          Command="{Binding MenuExportCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Exit}"
-                              InputGestureText="Alt+F4"
-                              Command="{Binding MenuExitCommand}"/>
+                          InputGestureText="Alt+F4"
+                          Command="{Binding MenuExitCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc Edit}">
                 <MenuItem Header="{lex:Loc Undo}"
-                              InputGestureText="Ctrl+Z"
-                              Command="{Binding MenuUndoCommand}"/>
+                          InputGestureText="Ctrl+Z"
+                          Command="{Binding MenuUndoCommand}"/>
                 <MenuItem Header="{lex:Loc Redo}"
-                              InputGestureText="Ctrl+Y"
-                              Command="{Binding MenuRedoCommand}"/>
+                          InputGestureText="Ctrl+Y"
+                          Command="{Binding MenuRedoCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc View}">
                 <MenuItem Header="{lex:Loc ZoomIn}"
-                              InputGestureText="Ctrl++"
-                              Command="{Binding MenuZoomInCommand}"/>
+                          InputGestureText="Ctrl++"
+                          Command="{Binding MenuZoomInCommand}"/>
                 <MenuItem Header="{lex:Loc ZoomOut}"
-                              InputGestureText="Ctrl+-"
-                              Command="{Binding MenuZoomOutCommand}"/>
+                          InputGestureText="Ctrl+-"
+                          Command="{Binding MenuZoomOutCommand}"/>
                 <MenuItem Header="{lex:Loc ResetZoom}"
-                              InputGestureText="Ctrl+0"
-                              Command="{Binding MenuZoomResetCommand}"/>
+                          InputGestureText="Ctrl+0"
+                          Command="{Binding MenuZoomResetCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Grid}"
-                              Command="{Binding MenuEnableGridCommand}"
-                              IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
+                          Command="{Binding MenuEnableGridCommand}"
+                          IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
             </MenuItem>
-            <MenuItem Header="{lex:Loc Canvas}">
+            <MenuItem Header="{lex:Loc Diagram}">
                 <MenuItem Header="{lex:Loc ChangeSize}"
-                              Command="{Binding MenuChangeSizeCommand}"/>
+                          Command="{Binding MenuChangeSizeCommand}"/>
+                <MenuItem Header="{lex:Loc ChangeBackground}"
+                          Command="{Binding MenuChangeBackgroundCommand}"/>
+                <MenuItem Header="{lex:Loc ChangeType}"
+                          Command="{Binding MenuChangeTypeCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc Tools}">
                 <MenuItem Header="{lex:Loc Simulator}"
-                              Command="{Binding MenuSimulatorCommand}"/>
+                          Command="{Binding MenuSimulatorCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Preferences}"
-                              Command="{Binding MenuPreferencesCommand}"/>
+                          Command="{Binding MenuPreferencesCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc Help}">
                 <MenuItem Header="{lex:Loc ViewHelp}"
-                              InputGestureText="Ctrl+F1"
-                              Command="{Binding MenuHelpCommand}"/>
+                          InputGestureText="Ctrl+F1"
+                          Command="{Binding MenuHelpCommand}"/>
                 <Separator/>
                 <MenuItem Header="{lex:Loc AboutApp}"
-                              Command="{Binding MenuAboutCommand}"/>
+                          Command="{Binding MenuAboutCommand}"/>
             </MenuItem>
         </Menu>
     </controls:TitleBarWindow.TitleBarMenuContent>

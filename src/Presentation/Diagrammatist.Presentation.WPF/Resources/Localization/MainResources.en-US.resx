@@ -120,11 +120,11 @@
   <data name="AboutApp" xml:space="preserve">
     <value>About App</value>
   </data>
-  <data name="Canvas" xml:space="preserve">
-    <value>Canvas</value>
+  <data name="Diagram" xml:space="preserve">
+    <value>Diagram</value>
   </data>
   <data name="ChangeSize" xml:space="preserve">
-    <value>Change Size</value>
+    <value>Change Canvas Size</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
@@ -203,5 +203,11 @@
   </data>
   <data name="Simulator" xml:space="preserve">
     <value>Simulator</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Change Diagram Type</value>
+  </data>
+  <data name="ChangeBackground" xml:space="preserve">
+    <value>Change Canvas Background</value>
   </data>
 </root>

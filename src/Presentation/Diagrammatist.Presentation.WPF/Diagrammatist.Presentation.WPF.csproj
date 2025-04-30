@@ -78,6 +78,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AddCanvasResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ChangeCanvasBackground\ChangeCanvasBackgroundResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChangeCanvasBackgroundResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.Designer.cs">
+      <DependentUpon>ChangeDiagramTypeResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Localization\Dialogs\Settings\SettingsResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -112,6 +122,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToolbarResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Dialogs\ChangeDiagramTypeDialog.xaml.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Dialogs\SettingsDialog.xaml.cs">
       <SubType>Code</SubType>
@@ -162,6 +175,14 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\AddCanvas\AddCanvasResources.ru-RU.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeCanvasBackground\ChangeCanvasBackgroundResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeCanvasBackgroundResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.resx">
+      <LastGenOutput>ChangeDiagramTypeResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\Settings\SettingsResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

@@ -22,6 +22,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
         [ObservableProperty]
         private Color _background = SettingsConstants.DefaultBackground;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DiagramType"]/*'/>
-        public DiagramsModel Type { get; set; } = SettingsConstants.DefaultType;
+        [ObservableProperty]
+        private DiagramsModel _type = SettingsConstants.DefaultType;
     }
 }

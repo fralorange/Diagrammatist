@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Document.Services;
+using Diagrammatist.Domain.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
@@ -19,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -269,6 +271,60 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
+        /// Updates current canvas background.
+        /// </summary>
+        /// <param name="newBG"></param>
+        private void UpdateCanvasBackground(Color newBG)
+        {
+            if (CurrentCanvas is not null)
+            {
+                var oldBG = CurrentCanvas.Settings.Background;
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, newBG),
+                    () => _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, oldBG));
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <summary>
+        /// Updates current diagram (canvas) type.
+        /// </summary>
+        /// <param name="newDiagramType"></param>
+        private void UpdateCanvasDiagramType(DiagramsModel newDiagramType)
+        {
+            if (CurrentCanvas is not null)
+            {
+                var oldDiagramType = CurrentCanvas.Settings.Type;
+                var currentDoc = Messenger.Send<CurrentDocumentRequestMessage>().Response;
+                var payloads = currentDoc?.Payloads.ToDictionary();
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => 
+                    { 
+                        _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, newDiagramType);
+                        if (payloads is not null)
+                        {
+                            currentDoc!.SetPayloads([]);
+                        }
+                        Messenger.Send<Tuple<string, bool>>(new(MenuFlags.HasCustomCanvas, newDiagramType is DiagramsModel.Custom));
+                    },
+                    () => 
+                    { 
+                        _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, oldDiagramType); 
+                        if (payloads is not null)
+                        {
+                            currentDoc!.SetPayloads(payloads);
+                        }
+                        Messenger.Send<Tuple<string, bool>>(new(MenuFlags.HasCustomCanvas, oldDiagramType is DiagramsModel.Custom));
+                    });
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <summary>
         /// Exports current canvas. 
         /// </summary>
         private void Export()
@@ -383,10 +439,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 Connections = CurrentCanvas?.Connections;
             });
-            // Change canvas size
+            // Change canvas size.
             Messenger.Register<CanvasViewModel, UpdatedSizeMessage>(this, (r, m) =>
             {
                 UpdateCanvasSize(m.Value);
+            });
+            // Change canvas background.
+            Messenger.Register<CanvasViewModel, UpdatedBackgroundMessage>(this, (r, m) =>
+            {
+                UpdateCanvasBackground(m.Value);
+            });            
+            // Change canvas diagram type.
+            Messenger.Register<CanvasViewModel, UpdatedTypeMessage>(this, (r, m) =>
+            {
+                UpdateCanvasDiagramType(m.Value);
             });
             // Change mouse mode.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>

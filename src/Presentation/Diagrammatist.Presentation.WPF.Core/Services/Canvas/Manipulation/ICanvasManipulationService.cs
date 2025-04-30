@@ -27,5 +27,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation
         /// <param name="canvas">Target canvas.</param>
         /// <param name="background">New background color.</param>
         void UpdateCanvas(CanvasModel canvas, Color background);
+        /// <summary>
+        /// Edits existing canvas settings by changing its diagram type.
+        /// </summary>
+        /// <param name="canvas"></param>
+        /// <param name="type"></param>
+        void UpdateCanvas(CanvasModel canvas, DiagramsModel type);
     }
 }
