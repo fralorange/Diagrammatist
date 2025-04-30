@@ -16,4 +16,5 @@
     <local:OffsetHalfEllipseConverter x:Key="OffsetHalfEllipseConverter"/>
     <local:MouseModeToBoolConverter x:Key="MouseModeToBoolConverter"/>
     <local:FigureModelExtractorMultiConverter x:Key="FigureModelExtractorMultiConverter"/>
+    <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
 </ResourceDictionary>

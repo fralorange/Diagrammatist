@@ -120,4 +120,10 @@
     <SolidColorBrush x:Key="ProgressTextBrush" Color="{DynamicResource ProgressTextForeground}"/>
     <SolidColorBrush x:Key="VersionTextBrush" Color="{DynamicResource VersionTextForeground}"/>
     <SolidColorBrush x:Key="DeveloperTextBrush" Color="{DynamicResource DeveloperTextForeground}"/>
+
+    <SolidColorBrush x:Key="ToolbarItemSelectedBackground" Color="{DynamicResource ControlFocused}" Opacity="0.15"/>
+    <SolidColorBrush x:Key="ToolbarItemHoverBackground" Color="{DynamicResource ControlHover}" Opacity="0.1"/>
+
+    <SolidColorBrush x:Key="ToolbarItemBorderSelected" Color="{DynamicResource ControlFocused}"/>
+    <SolidColorBrush x:Key="ToolbarItemBorderHover" Color="{DynamicResource ControlHover}"/>
 </ResourceDictionary>

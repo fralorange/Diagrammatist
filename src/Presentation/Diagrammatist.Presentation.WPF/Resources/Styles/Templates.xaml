@@ -33,7 +33,9 @@
         <Border lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
                 ToolTip="{lex:Loc {Binding Name}}"
                 Style="{StaticResource ToolboxTextBorder}">
-            <TextBlock Text="{Binding Text}"/>
+            <TextBlock Text="{Binding Text}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
         </Border>
     </DataTemplate>
 
