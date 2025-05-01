@@ -77,22 +77,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Validators.Flowchart
                     }
                     break;
 
-                case FlowchartSubtypeModel.Document:
-                    if (!string.IsNullOrWhiteSpace(script))
-                    {
-                        errorMessage = "The 'Document' block must not contain LuaScript.";
-                        return false;
-                    }
-                    break;
-
-                case FlowchartSubtypeModel.Database:
-                    if (!Regex.IsMatch(script, @"db\.\w+\("))
-                    {
-                        errorMessage = "The 'Database' block must contain database operations (e.g. db.query()).";
-                        return false;
-                    }
-                    break;
-
                 default:
                     errorMessage = "Unknown block type.";
                     return false;
