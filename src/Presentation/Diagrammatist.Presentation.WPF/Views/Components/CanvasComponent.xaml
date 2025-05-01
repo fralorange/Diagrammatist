@@ -33,8 +33,8 @@
                     CommandParameter="{Binding SelectedFigure}"/>
     </UserControl.InputBindings>
 
-    <controls:ExtendedScrollViewer HorizontalScrollBarVisibility="Visible"
-                                   VerticalScrollBarVisibility="Visible"
+    <controls:ExtendedScrollViewer VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
+                                   HorizontalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"
                                    Focusable="False"
                                    IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
                                    Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}"
@@ -47,7 +47,7 @@
                      SelectedItem="{Binding SelectedFigure}"
                      Template="{StaticResource UnscrollableListBox}"
                      PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
-                     x:Name="itemsHolder">
+                     Loaded="OnListBoxLoaded">
                 <ListBox.Resources>
                     <ContextMenu x:Key="ElementMenu"
                                  lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
@@ -124,16 +124,12 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
 
-            <Canvas x:Name="drawingCanvas"
-                    Width="{Binding CurrentCanvas.Settings.Width}"
+            <Canvas Width="{Binding CurrentCanvas.Settings.Width}"
                     Height="{Binding CurrentCanvas.Settings.Height}"
                     Background="Transparent"
                     ClipToBounds="True"
-                    IsHitTestVisible="False"/>
+                    IsHitTestVisible="False"
+                    Loaded="OnCanvasLoaded"/>
         </Grid>
-        <i:Interaction.Behaviors>
-            <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
-                                            HorizontalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"/>
-        </i:Interaction.Behaviors>
     </controls:ExtendedScrollViewer>
 </UserControl>
