@@ -17,4 +17,5 @@
     <local:MouseModeToBoolConverter x:Key="MouseModeToBoolConverter"/>
     <local:FigureModelExtractorMultiConverter x:Key="FigureModelExtractorMultiConverter"/>
     <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+    <local:ObjectComparisonMultiConverter x:Key="ObjectComparisonMultiConverter"/>
 </ResourceDictionary>

@@ -320,6 +320,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="TextBox" x:Key="BaseTextBoxInverted" BasedOn="{StaticResource BaseTextBox}">
+        <Setter Property="Background" Value="{StaticResource WindowBackground}"/>
+    </Style>
+    
     <Style TargetType="TextBox" x:Key="UnderlineTextBoxStyle" BasedOn="{StaticResource BaseTextBox}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -679,6 +683,10 @@
         <Setter Property="StrokeThickness" Value="5" />
     </Style>
 
+    <Style TargetType="Rectangle" x:Key="HorizontalCustomNeutralSeparator" BasedOn="{StaticResource HorizontalCustomSeparator}">
+        <Setter Property="Stroke" Value="{StaticResource DialogFrameStrokeRadial}" />
+    </Style>
+
     <Style TargetType="ToolBar">
         <Style.Resources>
             <Style TargetType="Button">
@@ -979,6 +987,10 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox" x:Key="BaseComboBoxInverted" BasedOn="{StaticResource BaseComboBox}">
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
     </Style>
 
     <Style TargetType="ComboBoxItem">

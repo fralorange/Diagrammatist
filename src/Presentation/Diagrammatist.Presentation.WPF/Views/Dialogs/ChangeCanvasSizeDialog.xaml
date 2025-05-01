@@ -7,12 +7,9 @@
                          xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
                          xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
                          xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
-                         Icon="{StaticResource AppIcon}"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeCanvasSize.ChangeCanvasSizeResources"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeSize}"
                          mc:Ignorable="d"
-                         Height="450" 
-                         Width="450"
                          WindowStartupLocation="CenterOwner"
                          SizeToContent="WidthAndHeight"
                          ResizeMode="NoResize"
@@ -25,41 +22,146 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <UniformGrid Grid.Row="0"
-                     Margin="20"
-                     Columns="2">
-            <UniformGrid.Resources>
-                <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}">
-                    <Setter Property="Margin" Value="0,0,10,10" />
-                </Style>
-                <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
-                    <Setter Property="Margin" Value="10,10,0,0" />
-                </Style>
-            </UniformGrid.Resources>
-            <Label Content="{lex:Loc Width}"/>
-            <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="{lex:Loc Height}"/>
-            <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </UniformGrid>
+        <Grid Grid.Row="0" 
+              Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Grid.Row="1">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
-                    <Setter Property="Margin" Value="10" />
-                    <Setter Property="Padding" Value="5" />
-                </Style>
-            </StackPanel.Resources>
+            <Label Grid.Row="0" 
+                   Grid.Column="0"
+                   Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Width}"
+                   VerticalAlignment="Center"
+                   Margin="0 0 4 0"/>
+            <TextBox Grid.Row="0" 
+                     Grid.Column="1"
+                     Width="80"
+                     Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button Content="{lex:Loc OK}"
-                    Command="{Binding OkCommand}"
-                    IsDefault="True"/>
+            <Label Grid.Row="1" 
+                   Grid.Column="0"
+                   Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Height}"
+                   VerticalAlignment="Center"
+                   Margin="0 10 4 0"/>
+            <TextBox Grid.Row="1" 
+                     Grid.Column="1"
+                     Width="80"
+                     Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0 10 0 0"/>
 
-            <Button Content="{lex:Loc Cancel}"
-                    IsCancel="True"/>
+            <ComboBox Grid.Row="0" 
+                      Grid.RowSpan="2"
+                      Grid.Column="3"
+                      Width="100"
+                      VerticalAlignment="Center"      
+                      ItemsSource="{Binding UnitOptions}"
+                      SelectedItem="{Binding SelectedUnit}"
+                      Margin="10 0 0 0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{lex:Loc {Binding}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Margin="20 0">
+            <TextBlock Text="{lex:Loc InitialSize}"/>
+            <Rectangle Style="{StaticResource HorizontalCustomNeutralSeparator}" />
+        </StackPanel>
+
+        <Grid Grid.Row="2" 
+              Margin="20 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" 
+                   Grid.Column="0"
+                   Content="{lex:Loc Px}"
+                   VerticalAlignment="Center"
+                   Margin="0,0,4,0"/>
+
+            <TextBlock Grid.Row="0" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="0,0,4,0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} × {1}">
+                        <Binding Path="InitialWidthPx" />
+                        <Binding Path="InitialHeightPx" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+
+        <StackPanel Grid.Row="3"
+                    Margin="20 0">
+            <TextBlock Text="{lex:Loc NewSize}"/>
+            <Rectangle Style="{StaticResource HorizontalCustomNeutralSeparator}" />
+        </StackPanel>
+
+        <Grid Grid.Row="4" 
+              Margin="20 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" 
+                   Grid.Column="0"
+                   Content="{lex:Loc Px}"
+                   VerticalAlignment="Center"
+                   Margin="0,0,4,0"/>
+
+            <TextBlock Grid.Row="0" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="0,0,4,0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} × {1}"
+                                  ValidatesOnDataErrors="False"
+                                  ValidatesOnNotifyDataErrors="False">
+                        <Binding Path="WidthPx" />
+                        <Binding Path="HeightPx" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+
+        <StackPanel Grid.Row="5" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="20">
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:OK}" 
+                    Command="{Binding OkCommand}" 
+                    IsDefault="True" 
+                    Style="{StaticResource BaseButton}"/>
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}" 
+                    IsCancel="True" 
+                    Style="{StaticResource BaseButton}" 
+                    Margin="10,0,0,0"/>
         </StackPanel>
     </Grid>
 </controls:TitleBarWindow>

@@ -2,7 +2,7 @@
 
 namespace Diagrammatist.Presentation.WPF.Core.Helpers
 {
-    public static class UnitConverter
+    public static class UnitConvertHelper
     {
         /// <summary>
         /// Default DPI (dots per inch) value.

@@ -83,6 +83,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ChangeCanvasBackgroundResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ChangeCanvasSize\ChangeCanvasSizeResources.Designer.cs">
+      <DependentUpon>ChangeCanvasSizeResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.Designer.cs">
       <DependentUpon>ChangeDiagramTypeResources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -179,6 +184,10 @@
     <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeCanvasBackground\ChangeCanvasBackgroundResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ChangeCanvasBackgroundResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeCanvasSize\ChangeCanvasSizeResources.resx">
+      <LastGenOutput>ChangeCanvasSizeResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.resx">
       <LastGenOutput>ChangeDiagramTypeResources.Designer.cs</LastGenOutput>

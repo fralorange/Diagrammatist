@@ -65,17 +65,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// </summary>
         public ObservableCollection<MeasurementUnit> UnitOptions { get; }
 
-        private MeasurementUnit _selectedWidthUnit;
+        private MeasurementUnit _selectedUnit;
 
         /// <summary>
         /// Gets or sets the selected measurement unit.
         /// </summary>
-        public MeasurementUnit SelectedWidthUnit
+        public MeasurementUnit SelectedUnit
         {
-            get => _selectedWidthUnit;
+            get => _selectedUnit;
             set
             {
-                if (SetProperty(ref _selectedWidthUnit, value))
+                if (SetProperty(ref _selectedUnit, value))
                 {
                     OnPropertyChanged(nameof(Width));
                     OnPropertyChanged(nameof(Height));
@@ -91,10 +91,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [CustomValidation(typeof(AddCanvasDialogViewModel), nameof(ValidateWidth))]
         public double Width
         {
-            get => Math.Round(UnitConverter.FromPixels(_widthPx, SelectedWidthUnit), 3);
+            get => Math.Round(UnitConvertHelper.FromPixels(_widthPx, SelectedUnit), 3);
             set
             {
-                var newPx = UnitConverter.ToPixels(value, SelectedWidthUnit);
+                var newPx = UnitConvertHelper.ToPixels(value, SelectedUnit);
                 if (SetProperty(ref _widthPx, newPx))
                 {
                     ValidateProperty(_widthPx, nameof(Width));
@@ -107,10 +107,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [CustomValidation(typeof(AddCanvasDialogViewModel), nameof(ValidateHeight))]
         public double Height
         {
-            get => Math.Round(UnitConverter.FromPixels(_heightPx, SelectedWidthUnit), 3);
+            get => Math.Round(UnitConvertHelper.FromPixels(_heightPx, SelectedUnit), 3);
             set
             {
-                var newPx = UnitConverter.ToPixels(value, SelectedWidthUnit);
+                var newPx = UnitConvertHelper.ToPixels(value, SelectedUnit);
                 if (SetProperty(ref _heightPx, newPx))
                 {
                     ValidateProperty(_heightPx, nameof(Height));
@@ -182,7 +182,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             AvailablePresets = new ObservableCollection<DiagramsModel>(Enum.GetValues(typeof(DiagramsModel)).Cast<DiagramsModel>());
 
             UnitOptions = new ObservableCollection<MeasurementUnit>(Enum.GetValues(typeof(MeasurementUnit)).Cast<MeasurementUnit>());
-            SelectedWidthUnit = MeasurementUnit.Pixels;
+            SelectedUnit = MeasurementUnit.Pixels;
 
             BackgroundOptions = new ObservableCollection<BackgroundType>(Enum.GetValues(typeof(BackgroundType)).Cast<BackgroundType>());
             SelectedBackgroundType = BackgroundType.CustomBG;
