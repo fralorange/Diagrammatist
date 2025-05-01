@@ -36,6 +36,11 @@
     <SolidColorBrush x:Key="FrameBackground" Color="{DynamicResource AppBackground}"/>
     <SolidColorBrush x:Key="FrameForeground" Color="{DynamicResource AppTextColor}"/>
 
+    <RadialGradientBrush x:Key="FrameBackgroundStrokeInversedRadial">
+        <GradientStop Color="{DynamicResource AppBackgroundInversed}"/>
+        <GradientStop Color="{DynamicResource AppBackgroundInversed}"/>
+    </RadialGradientBrush>
+
     <SolidColorBrush x:Key="WindowBackground" Color="{DynamicResource AppSecondaryBackground}"/>
 
     <SolidColorBrush x:Key="DialogFrameStroke" Color="{DynamicResource AppDialogStroke}"/>

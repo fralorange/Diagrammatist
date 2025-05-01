@@ -9,6 +9,39 @@
                     xmlns:connection="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Connection;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:node="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Models.Node;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
+    <!--#region AddCanvas-->
+    <ControlTemplate x:Key="PresetItemTemplate" 
+                     TargetType="ContentControl">
+        <StackPanel>
+            <Border Margin="5"
+                    Padding="10"
+                    BorderBrush="{DynamicResource ControlBorderBrush}"
+                    BorderThickness="2"
+                    Width="90"
+                    Height="90">
+                <ContentPresenter/>
+            </Border>
+            <TextBlock Text="{lex:Loc {Binding}}"
+                       Style="{StaticResource PresetBlock}"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </ControlTemplate>
+    
+    <DataTemplate x:Key="CustomDiagramTemplate">
+        <ContentControl Template="{StaticResource PresetItemTemplate}">
+            <Image Source="{DynamicResource CustomDiagramImage}"/>
+        </ContentControl>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FlowchartTemplate">
+        <ContentControl Template="{StaticResource PresetItemTemplate}">
+            <Image Source="{DynamicResource FlowchartDiagramImage}"/>
+        </ContentControl>
+    </DataTemplate>
+
+    <selector:DiagramTemplateSelector x:Key="DiagramTemplateSelector"
+                                      CustomTemplate="{StaticResource CustomDiagramTemplate}"
+                                      FlowchartTemplate="{StaticResource FlowchartTemplate}"/>
     <!--#endregion-->
     <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"

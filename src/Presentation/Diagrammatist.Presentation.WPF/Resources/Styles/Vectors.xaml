@@ -54,4 +54,186 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+
+    <DrawingImage x:Key="CustomDiagramImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V200 H200 V0 H0 Z">
+                <DrawingGroup Opacity="1">
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="20,20" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="60,20" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="100,20" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="140,20" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="180,20" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="20,60" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="60,60" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="100,60" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="140,60" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="180,60" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="20,100" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="60,100" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="100,100" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="140,100" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="180,100" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="20,140" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="60,140" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="100,140" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="140,140" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="180,140" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="20,180" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="60,180" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="100,180" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="140,180" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource DialogFrameStrokeRadial}">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry RadiusX="5" RadiusY="5" Center="180,180" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="FlowchartDiagramImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V80 H80 V0 H0 Z">
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{DynamicResource DialogFrameStrokeRadial}" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry RadiusX="5" RadiusY="5" Rect="30,10,20,10" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="{DynamicResource FrameBackground}">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{DynamicResource DialogFrameStrokeRadial}" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <LineGeometry StartPoint="40,20" EndPoint="40,30" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{DynamicResource DialogFrameStrokeRadial}" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry RadiusX="2" RadiusY="2" Rect="30,30,20,10" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="{DynamicResource FrameBackground}">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{DynamicResource DialogFrameStrokeRadial}" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <LineGeometry StartPoint="40,40" EndPoint="40,50" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{DynamicResource DialogFrameStrokeRadial}" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry RadiusX="5" RadiusY="5" Rect="30,50,20,10" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
 </ResourceDictionary>

@@ -271,6 +271,15 @@
         <Setter Property="FontWeight" Value="Regular" />
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="PresetBlock" BasedOn="{StaticResource BaseBlock}">
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="MenuAddBlock" BasedOn="{StaticResource PresetBlock}">
+        <Setter Property="FontStretch" Value="Expanded" />
+    </Style>
+
     <Style TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}"/>
 
     <Style TargetType="TextBox" x:Key="BaseTextBox">
@@ -304,6 +313,45 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Opacity" Value="0.56"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="UnderlineTextBoxStyle" BasedOn="{StaticResource BaseTextBox}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0 4"/>
+        <Setter Property="CaretBrush" Value="{StaticResource FrameForeground}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                      VerticalAlignment="Center"
+                                      Margin="{TemplateBinding Padding}"/>
+
+                        <Border x:Name="UnderlineBorder" 
+                                Height="1"
+                                Background="{TemplateBinding BorderBrush}"
+                                VerticalAlignment="Bottom"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="UnderlineBorder" Property="Background" Value="{StaticResource ControlHighlightBrush}"/>
+                            <Setter TargetName="UnderlineBorder" Property="Height" Value="2"/>
+                        </Trigger>
+
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="UnderlineBorder" Property="Background" Value="{StaticResource ControlFocusedBrush}"/>
+                            <Setter TargetName="UnderlineBorder" Property="Height" Value="2"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="UnderlineBorder" Property="Opacity" Value="0.56"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -515,6 +563,47 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="PresetsSelectionBox" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <Border x:Name="HoverBackground"
+                                Background="{StaticResource ControlHoverBrush}"
+                                Opacity="0"
+                                CornerRadius="2"/>
+                        <Border x:Name="SelectionBorder"
+                                BorderBrush="{StaticResource ItemSelectedBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="2"
+                                Opacity="0"/>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HoverBackground" Property="Opacity" Value="0.1"/>
+                            <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="{StaticResource ItemHoverBorderBrush}"/>
+                            <Setter TargetName="SelectionBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                        
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="HoverBackground" Property="Background" Value="{StaticResource ItemSelectionBackground}"/>
+                            <Setter TargetName="HoverBackground" Property="Opacity" Value="0.2"/>
+                            <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="{StaticResource ItemSelectedBorderBrush}"/>
+                            <Setter TargetName="SelectionBorder" Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 

@@ -33,7 +33,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [Required]
         [Range(400, 2000)]
         [ObservableProperty]
-        private int _width;
+        private double _width;
 
         /// <summary>
         /// Gets or sets current height.
@@ -41,9 +41,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [Required]
         [Range(300, 2000)]
         [ObservableProperty]
-        private int _height;
+        private double _height;
 
-        public ChangeCanvasSizeDialogViewModel(int width, int height)
+        public ChangeCanvasSizeDialogViewModel(double width, double height)
         {
             Width = width;
             Height = height;

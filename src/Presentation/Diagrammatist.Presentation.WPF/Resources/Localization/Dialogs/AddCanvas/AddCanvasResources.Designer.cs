@@ -62,11 +62,29 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Background color: .
+        ///   Ищет локализованную строку, похожую на DIAGRAM SETUP.
+        /// </summary>
+        internal static string AddDiagramInfo {
+            get {
+                return ResourceManager.GetString("AddDiagramInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Background Color.
         /// </summary>
         internal static string Background {
             get {
                 return ResourceManager.GetString("Background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Black Background.
+        /// </summary>
+        internal static string BlackBG {
+            get {
+                return ResourceManager.GetString("BlackBG", resourceCulture);
             }
         }
         
@@ -80,6 +98,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Centimeters.
+        /// </summary>
+        internal static string Centimeters {
+            get {
+                return ResourceManager.GetString("Centimeters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Custom.
         /// </summary>
         internal static string Custom {
@@ -89,7 +116,16 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Diagram type:.
+        ///   Ищет локализованную строку, похожую на Custom.
+        /// </summary>
+        internal static string CustomBG {
+            get {
+                return ResourceManager.GetString("CustomBG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на DIAGRAM TYPES.
         /// </summary>
         internal static string DiagramType {
             get {
@@ -98,7 +134,7 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на File name: .
+        ///   Ищет локализованную строку, похожую на File Name.
         /// </summary>
         internal static string FileName {
             get {
@@ -116,11 +152,20 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Height: .
+        ///   Ищет локализованную строку, похожую на Height.
         /// </summary>
         internal static string Height {
             get {
                 return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inches.
+        /// </summary>
+        internal static string Inches {
+            get {
+                return ResourceManager.GetString("Inches", resourceCulture);
             }
         }
         
@@ -134,7 +179,25 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.AddCanva
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Width: .
+        ///   Ищет локализованную строку, похожую на Pixels.
+        /// </summary>
+        internal static string Pixels {
+            get {
+                return ResourceManager.GetString("Pixels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на White Background.
+        /// </summary>
+        internal static string WhiteBG {
+            get {
+                return ResourceManager.GetString("WhiteBG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Width.
         /// </summary>
         internal static string Width {
             get {
