@@ -275,8 +275,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         partial void OnSelectedCanvasChanged(CanvasModel? value)
         {
-            Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCanvas, value is not null));
-            Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCustomCanvas, value?.Settings.Type is DiagramsModel.Custom));
+            Messenger.Send(new Tuple<string, bool>(ActionFlags.HasCanvas, value is not null));
+            Messenger.Send(new Tuple<string, bool>(ActionFlags.HasCustomCanvas, value?.Settings.Type is DiagramsModel.Custom));
 
             var doc = _tabsManager.Get(value);
             _trackableCommandManager.UpdateContent(doc);

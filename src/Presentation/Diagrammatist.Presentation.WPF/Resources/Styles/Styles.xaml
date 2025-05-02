@@ -1235,30 +1235,66 @@
 
     <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
 
+    <Style x:Key="TabWindow" TargetType="Grid">
+        <Setter Property="Background" Value="{DynamicResource TabBackground}" />
+    </Style>
+    
     <Style x:Key="BaseTabControl" TargetType="TabControl">
-        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource WindowBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DialogFrameStrokeRadial}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="2"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource FrameForeground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FrameForeground}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <DockPanel>
+                        <TabPanel x:Name="HeaderPanel"
+                                  IsItemsHost="True"
+                                  Background="Transparent"
+                                  Margin="0"
+                                  KeyboardNavigation.TabIndex="1"/>
+
+                        <Border x:Name="ContentPanel"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                KeyboardNavigation.TabNavigation="Local"
+                                DockPanel.Dock="Bottom">
+                            <ContentPresenter x:Name="PART_SelectedContentHost"
+                                              Margin="0"
+                                              ContentSource="SelectedContent" />
+                        </Border>
+                    </DockPanel>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TabStripPlacement" Value="Left">
+                            <Setter TargetName="HeaderPanel" Property="DockPanel.Dock" Value="Left"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Right">
+                            <Setter TargetName="HeaderPanel" Property="DockPanel.Dock" Value="Right"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter TargetName="HeaderPanel" Property="DockPanel.Dock" Value="Bottom"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
-    <Style TargetType="Border" x:Key="TabBorder">
-        <Setter Property="Background" Value="{StaticResource FrameBackground}" />
-        <Setter Property="BorderBrush" Value="{StaticResource FrameStroke}" />
-        <Setter Property="BorderThickness" Value="0.5" />
+    <Style TargetType="Border" x:Key="TabBorder" BasedOn="{StaticResource DialogBorder}">
+        <Setter Property="Background" Value="{DynamicResource FrameBackground}" />
+        <Setter Property="Margin" Value="10" />
     </Style>
 
     <Style x:Key="BaseTabItem" TargetType="TabItem">
-        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="8,4"/>
-        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+        <Setter Property="Padding" Value="8 4"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource FrameForeground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FrameForeground}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -1267,32 +1303,32 @@
                 <ControlTemplate TargetType="{x:Type TabItem}">
                     <Grid>
                         <Border Name="Border"
-                                Background="{StaticResource ControlBackgroundBrush}"
-                                BorderBrush="{StaticResource  ControlBorderBrush}" 
-                                BorderThickness="1,1,1,1"  >
+                                Background="{DynamicResource ControlBackgroundBrush}"
+                                BorderBrush="{DynamicResource  ControlBorderBrush}" 
+                                BorderThickness="1 0 0 1"  >
                             <ContentPresenter x:Name="ContentSite"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Center"
                                               ContentSource="Header"
-                                              Margin="12,2,12,2"
+                                              Margin="12 2"
                                               RecognizesAccessKey="True"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlHoverBrush}"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ControlFocusedBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlHoverBrush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ControlFocusedBrush}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Panel.ZIndex" Value="100" />
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlFocusedBrush}"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ControlFocusedBrush}"/>
-                            <Setter Property="Foreground" Value="{StaticResource FrameForeground}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlFocusedBrush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ControlFocusedBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource FrameForeground}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource ControlDisabledBrush}"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ControlDisabledBrush}"/>
-                            <Setter Property="Foreground" Value="{StaticResource MenuDisabledTextBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlDisabledBrush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ControlDisabledBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource MenuDisabledTextBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -1,9 +1,9 @@
 ﻿namespace Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags
 {
     /// <summary>
-    /// A class that declares messenger flags for menu buttons.
+    /// A class that contains action flags.
     /// </summary>
-    public static class MenuFlags
+    public static class ActionFlags
     {
         /// <summary>
         /// Gets 'has canvas' flag.
@@ -17,5 +17,13 @@
         /// Gets 'blocked' flag.
         /// </summary>
         public const string IsBlocked = nameof(IsBlocked);
+        /// <summary>
+        /// Gets 'is grid snap enabled' flag.
+        /// </summary>
+        public const string IsGridSnapEnabled = nameof(IsGridSnapEnabled);
+        /// <summary>
+        /// Gets 'is alt grid snap disabled' flag.
+        /// </summary>
+        public const string IsAltGridSnapEnabled = nameof(IsAltGridSnapEnabled);
     }
 }

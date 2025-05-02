@@ -62,6 +62,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invert grid snapping with the ‘Alt’ key.
+        /// </summary>
+        internal static string AltSnapToGrid {
+            get {
+                return ResourceManager.GetString("AltSnapToGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Apply.
         /// </summary>
         internal static string Apply {
@@ -80,6 +89,33 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Default Font Size:.
+        /// </summary>
+        internal static string DefaultFontSize {
+            get {
+                return ResourceManager.GetString("DefaultFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на English.
+        /// </summary>
+        internal static string en_US {
+            get {
+                return ResourceManager.GetString("en-US", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Interface.
+        /// </summary>
+        internal static string InterfaceTab {
+            get {
+                return ResourceManager.GetString("InterfaceTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Language: .
         /// </summary>
         internal static string Language {
@@ -94,6 +130,24 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         internal static string Light {
             get {
                 return ResourceManager.GetString("Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Russian.
+        /// </summary>
+        internal static string ru_RU {
+            get {
+                return ResourceManager.GetString("ru-RU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The object must snap to the grid.
+        /// </summary>
+        internal static string SnapToGrid {
+            get {
+                return ResourceManager.GetString("SnapToGrid", resourceCulture);
             }
         }
         

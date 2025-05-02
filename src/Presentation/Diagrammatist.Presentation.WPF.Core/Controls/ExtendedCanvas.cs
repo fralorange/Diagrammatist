@@ -42,8 +42,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+        
         public static readonly DependencyProperty IsBorderVisibleProperty =
             DependencyProperty.Register(nameof(IsBorderVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnBorderChange));
+        
+        public static readonly DependencyProperty SnapToGridProperty =
+            DependencyProperty.RegisterAttached(nameof(SnapToGrid), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty AltSnapToGridProperty =
+            DependencyProperty.RegisterAttached(nameof(AltSnapToGrid), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(false));
 
 
         /// <summary>
@@ -91,6 +98,27 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             set => SetValue(IsBorderVisibleProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the snap to grid parameter.
+        /// </summary>
+        public bool SnapToGrid
+        {
+            get { return (bool)GetValue(SnapToGridProperty); }
+            set { SetValue(SnapToGridProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the alter snap to grid parameter.
+        /// </summary>
+        public bool AltSnapToGrid
+        {
+            get { return (bool)GetValue(AltSnapToGridProperty); }
+            set { SetValue(AltSnapToGridProperty, value); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ExtendedCanvas"/> class.
+        /// </summary>
         public ExtendedCanvas()
         {
             PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
@@ -196,7 +224,13 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
                 TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY);
 
-                GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
+                bool altPressed =
+                    Keyboard.IsKeyDown(Key.LeftAlt) ||
+                    Keyboard.IsKeyDown(Key.RightAlt);
+
+                bool shouldSnap = SnapToGrid ^ (AltSnapToGrid && altPressed);
+
+                if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
 
                 ValidateAndSetElementPosition(_selectedElement!, newX, newY);
             }

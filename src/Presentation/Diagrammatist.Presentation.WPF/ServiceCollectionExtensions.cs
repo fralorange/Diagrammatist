@@ -19,6 +19,8 @@ using Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.Properties;
 using Diagrammatist.Presentation.WPF.Simulator.Mappers;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
@@ -94,6 +96,11 @@ namespace Diagrammatist.Presentation.WPF
             services.AddTransient<IAlertService, AlertService>();
             services.AddTransient<IClipboardService<FigureModel>, FigureClipboardService>();
             services.AddTransient<IConnectionService, ConnectionService>();
+            services.AddSingleton<IUserSettingsService>(sp =>
+            {
+                var storage = new PropertiesSettingsStorage();
+                return new UserSettingsService(storage);
+            });
             #endregion
             return services;
         }

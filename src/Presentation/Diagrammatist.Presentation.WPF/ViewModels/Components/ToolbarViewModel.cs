@@ -152,11 +152,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (newValue is MouseMode.Line)
             {
-                Messenger.Send(new Tuple<string, bool>(MenuFlags.IsBlocked, true));
+                Messenger.Send(new Tuple<string, bool>(ActionFlags.IsBlocked, true));
             }
             else if (oldValue is MouseMode.Line)
             {
-                Messenger.Send(new Tuple<string, bool>(MenuFlags.IsBlocked, false));
+                Messenger.Send(new Tuple<string, bool>(ActionFlags.IsBlocked, false));
             }
         }
 

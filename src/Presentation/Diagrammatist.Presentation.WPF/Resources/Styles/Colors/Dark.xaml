@@ -2,8 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="AppThemeColor">#FFAC99EA</Color>
     <Color x:Key="AppBackground">#FF212121</Color>
-    <Color x:Key="AppSecondaryBackground">#FF212121</Color>
+    <Color x:Key="AppSecondaryBackground">#FF1a1a1a</Color>
     <Color x:Key="AppTextColor">#FFC8C8C8</Color>
+
+    <Color x:Key="AppTabBackground">#FF212121</Color>
 
     <Color x:Key="ButtonHoverBG">#AAAC99EA</Color>
     <Color x:Key="ButtonPressedBG">#CCAC99EA</Color>

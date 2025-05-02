@@ -94,5 +94,29 @@ namespace Diagrammatist.Presentation.WPF.Properties {
                 this["BottomPanelHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SnapToGrid {
+            get {
+                return ((bool)(this["SnapToGrid"]));
+            }
+            set {
+                this["SnapToGrid"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AltGridSnap {
+            get {
+                return ((bool)(this["AltGridSnap"]));
+            }
+            set {
+                this["AltGridSnap"] = value;
+            }
+        }
     }
 }

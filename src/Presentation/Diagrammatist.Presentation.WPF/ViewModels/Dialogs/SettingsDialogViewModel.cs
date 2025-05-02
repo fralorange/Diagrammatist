@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using MvvmDialogs;
 using System.Globalization;
 using WPFLocalizeExtension.Engine;
@@ -12,26 +15,35 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
     /// </summary>
     public partial class SettingsDialogViewModel : ObservableValidator, IModalDialogViewModel
     {
-        // if project grows then use snapshot pattern.
+        private readonly IUserSettingsService _userSettingsService;
+
         private CultureInfo _initialLanguage;
         private string _initialTheme;
+        private bool _initialSnapToGrid;
+        private bool _initialAltGridSnap;
 
-        private readonly List<CultureInfo> _supportedCultures = new()
-        {
+        private readonly List<CultureInfo> _supportedCultures =
+        [
             new CultureInfo("en-US"),
             new CultureInfo("ru-RU"),
-        };
+        ];
 
-        private readonly List<string> _supportedThemes = new()
-        {
+        private readonly List<string> _supportedThemes =
+        [
             "System",
             "Light",
             "Dark"
-        };
+        ];
 
+        /// <summary>
+        /// Gets or sets available languages.
+        /// </summary>
         [ObservableProperty]
         private CultureInfo[] _availableLanguages;
 
+        /// <summary>
+        /// Gets or sets available themes.
+        /// </summary>
         [ObservableProperty]
         private string[] _availableThemes;
 
@@ -75,8 +87,43 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             }
         }
 
+        private bool _selectedSnapToGrid;
+
+        /// <summary>
+        /// Gets or sets selected snap to grid option.
+        /// </summary>
+        public bool SelectedSnapToGrid
+        {
+            get => _selectedSnapToGrid;
+            set
+            {
+                if (SetProperty(ref _selectedSnapToGrid, value))
+                {
+                    CheckHasChanges();
+                }
+            }
+        }
+
+        private bool _selectedAltGridSnap;
+
+        /// <summary>
+        /// Gets or sets selected alter grid snap option.
+        /// </summary>
+        public bool SelectedAltGridSnap
+        {
+            get => _selectedAltGridSnap;
+            set
+            {
+                if (SetProperty(ref _selectedAltGridSnap, value))
+                {
+                    CheckHasChanges();
+                }
+            }
+        }
+
         private bool? _dialogResult;
 
+        /// <inheritdoc/>
         public bool? DialogResult
         {
             get => _dialogResult;
@@ -87,25 +134,37 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [NotifyCanExecuteChangedFor(nameof(ApplyCommand))]
         private bool _hasChanges;
 
-#pragma warning disable CS8618 
-        public SettingsDialogViewModel()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsDialogViewModel"/> class.
+        /// </summary>
+        /// <param name="userSettingsService"></param>
+#pragma warning disable CS8618
+        public SettingsDialogViewModel(IUserSettingsService userSettingsService)
 #pragma warning restore CS8618 
         {
-            AvailableLanguages = _supportedCultures.ToArray();
-            AvailableThemes = _supportedThemes.ToArray();
+            _userSettingsService = userSettingsService;
 
-            _initialLanguage = CultureInfo.CurrentUICulture;
-            _initialTheme = Properties.Settings.Default.Theme;
+            AvailableLanguages = [.. _supportedCultures];
+            AvailableThemes = [.. _supportedThemes];
+
+            _initialLanguage = _userSettingsService.Get("Culture", CultureInfo.CurrentUICulture)!; 
+            _initialTheme = _userSettingsService.Get("Theme", "Light")!;
+            _initialSnapToGrid = _userSettingsService.Get("SnapToGrid", true);
+            _initialAltGridSnap = _userSettingsService.Get("AltGridSnap", true);
 
             SelectedLanguage = CultureInfo.CurrentUICulture;
-            SelectedTheme = Properties.Settings.Default.Theme;
+            SelectedTheme = _initialTheme;
+            SelectedSnapToGrid = _initialSnapToGrid;
+            SelectedAltGridSnap = _initialAltGridSnap;
         }
 
         private bool CanApply() => HasChanges;
 
         private void CheckHasChanges() => HasChanges =
-            !_selectedLanguage.Equals(_initialLanguage) ||
-            _selectedTheme != _initialTheme;
+            !_selectedLanguage.Equals(_initialLanguage)
+            || _selectedTheme != _initialTheme
+            || _selectedSnapToGrid != _initialSnapToGrid
+            || _selectedAltGridSnap != _initialAltGridSnap;
 
         private void ApplyLanguage(CultureInfo culture)
         {
@@ -119,8 +178,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             App.Current.ChangeTheme(theme);
         }
 
+        private void ApplySnapToGrid(bool snapToGrid)
+        {
+            WeakReferenceMessenger.Default.Send(new Tuple<string, bool>(ActionFlags.IsGridSnapEnabled, snapToGrid));
+        }
+
+        private void ApplyAltGridSnap(bool altGridSnap)
+        {
+            WeakReferenceMessenger.Default.Send(new Tuple<string, bool>(ActionFlags.IsAltGridSnapEnabled, altGridSnap));
+        }
+
         /// <summary>
-        /// Confirms changes.
+        /// Validates all properties and confirms changes.
         /// </summary>
         [RelayCommand]
         private void Ok()
@@ -134,15 +203,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
             Apply();
 
-            Properties.Settings.Default.Culture = SelectedLanguage.Name;
-            Properties.Settings.Default.Theme = SelectedTheme;
-            Properties.Settings.Default.Save();
+            _userSettingsService.Set("Culture", SelectedLanguage.ToString());
+            _userSettingsService.Set("Theme", SelectedTheme);
+            _userSettingsService.Set("SnapToGrid", SelectedSnapToGrid);
+            _userSettingsService.Set("AltGridSnap", SelectedAltGridSnap);
+            _userSettingsService.Save();
 
             DialogResult = true;
         }
 
         /// <summary>
-        /// Cancels changes.
+        /// Cancels changes and closes the dialog.
         /// </summary>
         [RelayCommand]
         private void Cancel()
@@ -154,16 +225,21 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         }
 
         /// <summary>
-        /// Applies changes.
+        /// Applies the changes.
         /// </summary>
         [RelayCommand(CanExecute = nameof(CanApply))]
         private void Apply()
         {
             ApplyLanguage(SelectedLanguage);
             ApplyTheme(SelectedTheme);
+            ApplySnapToGrid(SelectedSnapToGrid);
+            ApplyAltGridSnap(SelectedAltGridSnap);
 
             _initialLanguage = SelectedLanguage;
             _initialTheme = SelectedTheme;
+            _initialSnapToGrid = SelectedSnapToGrid;
+            _initialAltGridSnap = SelectedAltGridSnap;
+
             HasChanges = false;
         }
     }

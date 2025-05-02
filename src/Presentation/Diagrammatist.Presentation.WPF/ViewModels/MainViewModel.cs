@@ -7,10 +7,12 @@ using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
+using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;
 using System.Configuration;
 
@@ -28,9 +30,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
     public sealed partial class MainViewModel : ObservableRecipient
     {
         private readonly IDialogService _dialogService;
-        private readonly IAlertService _alertService;
         private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IDocumentSerializationService _documentSerializationService;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Occurs when a request is made to close the current canvas.
@@ -123,17 +124,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <param name="alertService"></param>
         /// <param name="dialogService"></param>
         /// <param name="trackableCommandManager"></param>
-        /// <param name="documentSerializationService"></param>
-        public MainViewModel(IAlertService alertService, IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IDocumentSerializationService documentSerializationService)
+        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IServiceProvider serviceProvider)
         {
-            _alertService = alertService;
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
-            _documentSerializationService = documentSerializationService;
 
             ConfigureEvents();
 
             IsActive = true;
+            _serviceProvider = serviceProvider;
         }
 
         private void ConfigureEvents()
@@ -400,7 +399,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             if (currentCanvas is null)
                 return;
 
-            var dialogViewModel = new ChangeDiagramTypeDialogViewModel(_alertService, currentCanvas.Settings.Type);
+            var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+            var dialogViewModel = new ChangeDiagramTypeDialogViewModel(alertService, currentCanvas.Settings.Type);
 
             if (_dialogService.ShowDialog(this, dialogViewModel) == true
                 && dialogViewModel.SelectedType is { } diagram
@@ -425,7 +425,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
 
             var payload = doc.GetPayloadData<SimulationContext>(key);
 
-            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, _documentSerializationService, payload);
+            var documentSerializationService = _serviceProvider.GetRequiredService<IDocumentSerializationService>();
+            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, documentSerializationService, payload);
             dialogViewModel.RequestApply += () =>
             {
                 if (dialogViewModel.NewContext is null)
@@ -454,7 +455,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuPreferences()
         {
-            var dialogViewModel = new SettingsDialogViewModel();
+            var userSettingsService = _serviceProvider.GetRequiredService<IUserSettingsService>();
+            var dialogViewModel = new SettingsDialogViewModel(userSettingsService);
 
             _dialogService.ShowDialog(this, dialogViewModel);
         }
@@ -522,13 +524,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             {
                 switch (m.Item1)
                 {
-                    case MenuFlags.HasCanvas:
+                    case ActionFlags.HasCanvas:
                         HasCanvasFlag = m.Item2;
                         break;
-                    case MenuFlags.HasCustomCanvas:
+                    case ActionFlags.HasCustomCanvas:
                         HasCustomCanvasFlag = m.Item2;
                         break;
-                    case MenuFlags.IsBlocked:
+                    case ActionFlags.IsBlocked:
                         IsBlocked = m.Item2;
                         break;
                 }
