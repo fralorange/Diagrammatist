@@ -271,6 +271,61 @@
         <Setter Property="FontWeight" Value="Regular" />
     </Style>
 
+    <Style x:Key="SubHeading" TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0,4,0,0"/>
+    </Style>
+
+    <Style x:Key="Caption" TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+    </Style>
+
+    <Style x:Key="LinkButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{DynamicResource FrameStroke}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock x:Name="linkText"
+                               Text="{TemplateBinding Content}"
+                               TextDecorations="Underline"
+                               FontSize="{TemplateBinding FontSize}"
+                               FontWeight="{TemplateBinding FontWeight}"
+                               Opacity="1"
+                               RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="linkText" Property="Foreground" Value="{DynamicResource ControlHoverBrush}"/>
+                            <Setter TargetName="linkText" Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="linkText" Property="Foreground" Value="{DynamicResource ControlPressedBrush}"/>
+                            <Setter TargetName="linkText" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform X="0" Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="linkText" Property="Foreground" Value="{DynamicResource MenuDisabledTextBrush}"/>
+                            <Setter TargetName="linkText" Property="Opacity" Value="0.5"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="TextBlock" x:Key="PresetBlock" BasedOn="{StaticResource BaseBlock}">
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="FontSize" Value="12" />
@@ -615,7 +670,7 @@
 
     <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 
-    <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseItemsControls}">
+    <Style x:Key="{x:Type ListView}" TargetType="ListView" BasedOn="{StaticResource BaseItemsControls}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -624,7 +679,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListView}">
+                <ControlTemplate TargetType="ListView">
                     <Border Name="Border"
                             BorderThickness="1"
                             BorderBrush="{StaticResource DialogFrameStrokeRadial}">
@@ -658,10 +713,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DialogFrameStroke}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DialogFrameStrokeRadial}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource DialogFrameStroke}"/>
+                            <Setter Property="Foreground" Value="{StaticResource DialogFrameStrokeRadial}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

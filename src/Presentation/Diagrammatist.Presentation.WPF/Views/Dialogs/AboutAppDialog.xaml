@@ -7,7 +7,7 @@
                          xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
                          xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
                          xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                         Icon="{StaticResource AppIcon}"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AboutApp.AboutAppResources"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:AboutApp}"
                          mc:Ignorable="d"
                          WindowStartupLocation="CenterOwner"
@@ -18,57 +18,84 @@
                          ShowMaximizeButton="False"
                          ShowCenteredTitle="True"
                          IsDialog="True">
-    <Grid Width="450"
-          Height="450"
-          Style="{StaticResource Window}">
-        <Grid.Resources>
-            <Style TargetType="StackPanel">
-                <Setter Property="Margin" Value="5" />
-            </Style>
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Grid Width="500" 
+          Background="{StaticResource SplashBackground}" 
+          Effect="{StaticResource PrimaryGlowEffect}" >
+        <Border CornerRadius="12" 
+                Background="{StaticResource WindowBackground}" 
+                BorderBrush="{StaticResource DialogFrameStrokeRadial}" 
+                BorderThickness="2"
+                Padding="20"
+                Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="4">
-            <TextBlock Style="{StaticResource Heading}"
-                       Text="{Binding AppTitle}"
-                       HorizontalAlignment="Center"/>
+                <Viewbox Grid.Row="0" Height="100" HorizontalAlignment="Center">
+                    <Image Source="{StaticResource AppIcon}" 
+                           Stretch="Uniform"
+                           RenderTransformOrigin="0.5,0.5" 
+                           Opacity="0.8">
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </Image.RenderTransform>
+                        <Image.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                         From="1" To="1.1" Duration="0:0:1" AutoReverse="True" />
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                         From="1" To="1.1" Duration="0:0:1" AutoReverse="True" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </Viewbox>
 
-            <TextBlock Style="{StaticResource Heading}"
-                       Text="{Binding AppVersion}"
-                       HorizontalAlignment="Center"/>
-        </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,20,0,20" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding AppTitle}" Style="{StaticResource Heading}" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding AppVersion}" Style="{StaticResource SubHeading}" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{lex:Loc AppDescription}" 
+                               TextWrapping="Wrap" MaxWidth="420" Margin="0,10,0,0" 
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
 
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="3"
-                    VerticalAlignment="Bottom">
-            <Label Content="{Binding AppAuthor}"/>
-            <TextBlock Text="GitHub" 
-                       TextDecorations="Underline"
-                       Cursor="Hand">
-                <TextBlock.InputBindings>
-                    <MouseBinding Command="{Binding OpenLinkCommand}" 
-                                  MouseAction="LeftClick"/>
-                </TextBlock.InputBindings>
-            </TextBlock>
-        </StackPanel>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="3"
-                    Grid.Column="3"
-                    VerticalAlignment="Bottom">
-            <Button Content="OK" 
-                    IsDefault="True" 
-                    IsCancel="True"/>
-        </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding AppAuthor}" 
+                                   Style="{StaticResource Caption}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0" VerticalAlignment="Center">
+                        <Button Style="{StaticResource LinkButtonStyle}"
+                                Command="{Binding OpenLinkCommand}"
+                                Content="GitHub" />
+                    </StackPanel>
+
+                    <Button Grid.Column="2" 
+                            Content="OK"
+                            Width="80" 
+                            Height="30" 
+                            Margin="20,0,0,0"
+                            Style="{StaticResource BaseButton}" 
+                            IsDefault="True" 
+                            IsCancel="True" />
+                </Grid>
+
+            </Grid>
+        </Border>
     </Grid>
 </controls:TitleBarWindow>

@@ -73,6 +73,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CommandsResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Localization\Dialogs\AboutApp\AboutAppResources.Designer.cs">
+      <DependentUpon>AboutAppResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Localization\Dialogs\AddCanvas\AddCanvasResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -169,6 +174,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Commands\CommandsResources.ru-RU.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\AboutApp\AboutAppResources.resx">
+      <LastGenOutput>AboutAppResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\AddCanvas\AddCanvasResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
