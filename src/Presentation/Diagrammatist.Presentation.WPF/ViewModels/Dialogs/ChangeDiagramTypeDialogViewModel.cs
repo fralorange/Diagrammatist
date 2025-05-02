@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using MvvmDialogs;
+using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
@@ -23,10 +24,30 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         }
 
         /// <summary>
-        /// Gets or sets color.
+        /// Gets selected presets.
         /// </summary>
-        [ObservableProperty]
-        private DiagramsModel _diagramType;
+        public ObservableCollection<DiagramsModel> AvailableTypes { get; }
+
+        private DiagramsModel _selectedType;
+
+        /// <summary>
+        /// Gets or sets selected preset.
+        /// </summary>
+        public DiagramsModel SelectedType
+        {
+            get => _selectedType;
+            set
+            {
+                _selectedType = value;
+                OnPropertyChanged(nameof(SelectedTypeDescription));
+            }
+        }
+
+        /// <summary>
+        /// Gets selected type description.
+        /// </summary>
+        public string SelectedTypeDescription 
+            => $"{SelectedType}Desc";
 
         /// <summary>
         /// Initializes 'change diagram type' viewmodel.
@@ -36,7 +57,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         public ChangeDiagramTypeDialogViewModel(IAlertService alertService, DiagramsModel diagramType)
         {
             _alertService = alertService;
-            DiagramType = diagramType;
+
+            SelectedType = diagramType;
+
+            AvailableTypes = new ObservableCollection<DiagramsModel>(Enum.GetValues(typeof(DiagramsModel)).Cast<DiagramsModel>());
         }
 
         /// <summary>

@@ -481,6 +481,10 @@
 
     <Style TargetType="ListBox" BasedOn="{StaticResource BaseItemsControls}"/>
 
+    <Style TargetType="ListBox" x:Key="DialogListBox" BasedOn="{StaticResource BaseItemsControls}">
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    </Style>
+
     <Style TargetType="ListBoxItem" x:Key="CustomSelectionBox">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
@@ -745,6 +749,10 @@
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Background" Value="{StaticResource ShapeDefaultBackground}" />
         <Setter Property="Padding" Value="5" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="BorderFrame">
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
     </Style>
 
     <Style TargetType="Border" x:Key="InternalBorder" BasedOn="{StaticResource TextBorder}">

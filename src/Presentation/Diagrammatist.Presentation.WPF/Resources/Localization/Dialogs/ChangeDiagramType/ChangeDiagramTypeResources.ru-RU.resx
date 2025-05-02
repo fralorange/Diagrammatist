@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DiagramType" xml:space="preserve">
-    <value>Тип диаграммы</value>
+  <data name="ChangeDiagramInfo" xml:space="preserve">
+    <value>ИНФОРМАЦИЯ О ТИПЕ ДИАГРАММЫ:</value>
+  </data>
+  <data name="CustomDesc" xml:space="preserve">
+    <value>Позволяет создавать любые диаграммы в визуальном редакторе из набора готовых блоков.</value>
+  </data>
+  <data name="FlowchartDesc" xml:space="preserve">
+    <value>Предназначена для построения блок-схем и их проверки через встроенный симулятор.</value>
   </data>
 </root>

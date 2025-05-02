@@ -62,11 +62,29 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeDi
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Diagram Type.
+        ///   Ищет локализованную строку, похожую на DIAGRAM TYPE INFO:.
         /// </summary>
-        internal static string DiagramType {
+        internal static string ChangeDiagramInfo {
             get {
-                return ResourceManager.GetString("DiagramType", resourceCulture);
+                return ResourceManager.GetString("ChangeDiagramInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enables crafting arbitrary diagrams in a visual editor using a library of predefined blocks..
+        /// </summary>
+        internal static string CustomDesc {
+            get {
+                return ResourceManager.GetString("CustomDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Designed for constructing flowcharts and validating them using an integrated simulator..
+        /// </summary>
+        internal static string FlowchartDesc {
+            get {
+                return ResourceManager.GetString("FlowchartDesc", resourceCulture);
             }
         }
     }

@@ -403,7 +403,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             var dialogViewModel = new ChangeDiagramTypeDialogViewModel(_alertService, currentCanvas.Settings.Type);
 
             if (_dialogService.ShowDialog(this, dialogViewModel) == true
-                && dialogViewModel.DiagramType is { } diagram
+                && dialogViewModel.SelectedType is { } diagram
                 && diagram != currentCanvas.Settings.Type)
             {
                 Messenger.Send<UpdatedTypeMessage>(new(diagram));

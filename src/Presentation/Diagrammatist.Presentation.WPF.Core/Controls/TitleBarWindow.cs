@@ -165,7 +165,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             {
                 if (IsDialog)
                 {
-                    chrome.GlassFrameThickness = new Thickness(1, 0, 1, 1);
+                    chrome.GlassFrameThickness = new Thickness(0.1, 0, 0.1, 0.1);
                     chrome.NonClientFrameEdges = NonClientFrameEdges.Left | NonClientFrameEdges.Right | NonClientFrameEdges.Bottom;
                 }
             };

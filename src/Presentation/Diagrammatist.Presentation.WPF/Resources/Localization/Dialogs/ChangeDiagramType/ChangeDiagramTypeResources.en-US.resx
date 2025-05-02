@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DiagramType" xml:space="preserve">
-    <value>Diagram type:</value>
+  <data name="ChangeDiagramInfo" xml:space="preserve">
+    <value>DIAGRAM TYPE INFO:</value>
+  </data>
+  <data name="CustomDesc" xml:space="preserve">
+    <value>Enables crafting arbitrary diagrams in a visual editor using a library of predefined blocks.</value>
+  </data>
+  <data name="FlowchartDesc" xml:space="preserve">
+    <value>Designed for constructing flowcharts and validating them using an integrated simulator.</value>
   </data>
 </root>

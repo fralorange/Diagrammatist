@@ -8,9 +8,8 @@
                          xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core" 
                          xmlns:dialogs="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs" 
                          d:DataContext="{d:DesignInstance Type=dialogs:ChangeDiagramTypeDialogViewModel}"
-                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeDiagramType.ChangeDiagramTypeResources"
                          mc:Ignorable="d"
-                         Icon="{StaticResource AppIcon}"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeType}"
                          SizeToContent="WidthAndHeight"
                          WindowStartupLocation="CenterOwner"
@@ -20,50 +19,87 @@
                          ShowMinimizeButton="False"
                          ShowMaximizeButton="False">
     <Grid Style="{StaticResource Window}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
 
-        <UniformGrid Grid.Row="0"
-                     Margin="20"
-                     Columns="2">
-            <UniformGrid.Resources>
-                <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}">
-                    <Setter Property="Margin" Value="0,0,10,10" />
-                </Style>
-                <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}">
-                    <Setter Property="Margin" Value="10,10,0,0" />
-                </Style>
-            </UniformGrid.Resources>
-
-            <Label Content="{lex:Loc Diagrammatist.Presentation.WPF:ChangeDiagramType.ChangeDiagramTypeResources:DiagramType}"/>
-            <ComboBox ItemsSource="{Binding DiagramType, Converter={StaticResource EnumToCollectionConverter}, Mode=OneTime}"
-                      SelectedValue="{Binding DiagramType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{lex:Loc {Binding}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </UniformGrid>
-
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Grid.Row="1">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
-                    <Setter Property="Margin" Value="10" />
-                    <Setter Property="Padding" Value="5" />
-                </Style>
-            </StackPanel.Resources>
-
-            <Button Content="{lex:Loc OK}"
-                    Command="{Binding OkCommand}"
-                    IsDefault="True"/>
-
-            <Button Content="{lex:Loc Cancel}"
-                    IsCancel="True"/>
+        <StackPanel Grid.Column="0" 
+                    Margin="15">
+            <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:DiagramType}"
+                       Style="{StaticResource MenuAddBlock}"
+                       Margin="0 0 0 10" />
+            <Border Padding="10" 
+                    Background="{DynamicResource SecondaryBackground}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources">
+                    <ListBox ItemsSource="{Binding AvailableTypes}"
+                             SelectedItem="{Binding SelectedType}"
+                             ItemTemplateSelector="{StaticResource DiagramTemplateSelector}"
+                             ItemContainerStyle="{StaticResource PresetsSelectionBox}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             Style="{StaticResource DialogListBox}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"
+                                           ItemWidth="140"
+                                           ItemHeight="140"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </ScrollViewer>
+            </Border>
         </StackPanel>
+
+        <Grid Grid.Column="1" 
+              Background="{DynamicResource TitleBarBackground}"
+              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeDiagramType.ChangeDiagramTypeResources">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{lex:Loc ChangeDiagramInfo}"
+                       Style="{StaticResource MenuAddBlock}"
+                       FontWeight="Regular"
+                       Margin="15 15 0 10" />
+
+            <Border Grid.Row="1"
+                    Margin="15 0 15 10"
+                    Style="{StaticResource BorderFrame}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="{lex:Loc {Binding SelectedTypeDescription}}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource BaseBlock}"
+                               FontSize="14"
+                               Width="300"
+                               Margin="5"/>
+                </ScrollViewer>
+            </Border>
+
+            <Grid Grid.Row="2"
+                  Margin="0 0 20 20"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:OK}"
+                        Command="{Binding OkCommand}"
+                        IsDefault="True"
+                        Style="{StaticResource BaseButton}"
+                        VerticalAlignment="Center"/>
+                <Button Grid.Column="1"
+                        Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}"
+                        IsCancel="True"
+                        Style="{StaticResource BaseButton}"
+                        Margin="10 0 0 0"
+                        VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
     </Grid>
 </controls:TitleBarWindow>
