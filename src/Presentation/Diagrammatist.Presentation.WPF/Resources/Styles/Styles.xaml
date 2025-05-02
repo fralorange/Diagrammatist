@@ -865,6 +865,76 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
+    <Style TargetType="colorpicker:StandardColorPicker" x:Key="StandardColorPickerWithoutComboBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="colorpicker:StandardColorPicker">
+                    <Grid Name="MainGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="6*" />
+                            <RowDefinition Height="1.4*" />
+                            <RowDefinition Height="0.5*" />
+                            <RowDefinition Height="1.1*" MaxHeight="35" />
+                            <RowDefinition Height="4*" MaxHeight="110" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" MaxWidth="100" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <colorpicker:SquarePicker Grid.ColumnSpan="3" 
+                                                  Grid.RowSpan="2"
+                                                  Margin="10 5 10 35"
+                                                  VerticalAlignment="Stretch"
+                                                  PickerType="{TemplateBinding PickerType}"
+                                                  SmallChange="{TemplateBinding SmallChange}"
+                                                  ColorState="{Binding ColorState, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+
+                        <colorpicker:ColorDisplay Grid.RowSpan="3" 
+                                                  Grid.Row="1"
+                                                  Margin="0 0 30 0 "
+                                                  MaxWidth="80"
+                                                  VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  ColorState="{Binding ColorState, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                  SecondColorState="{Binding SecondColorState, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                  HintColorState="{Binding HintColorState, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                  UseHintColor="{Binding UseHintColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+
+                        <DockPanel Grid.Row="2" 
+                                   Grid.Column="1" 
+                                   Grid.RowSpan="2"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,10,30">
+                            <Label Content="Hex" />
+                            <colorpicker:HexColorTextBox ColorState="{Binding ColorState, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                         HexRepresentation="{TemplateBinding HexRepresentation}"
+                                                         ShowAlpha="{TemplateBinding ShowAlpha}" />
+                        </DockPanel>
+
+                        <colorpicker:ColorSliders Grid.Row="3"
+                                                  Grid.ColumnSpan="3" 
+                                                  Grid.RowSpan="3"
+                                                  ColorState="{Binding ColorState, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                  SmallChange="{TemplateBinding SmallChange}"
+                                                  ShowAlpha="{TemplateBinding ShowAlpha}"
+                                                  ShowFractionalPart="{TemplateBinding ShowFractionalPart}" >
+                            <colorpicker:ColorSliders.Resources>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+                                    <Setter Property="MinHeight" Value="20" />
+                                </Style>
+                            </colorpicker:ColorSliders.Resources>
+                        </colorpicker:ColorSliders>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+
     <Style TargetType="colorpicker:PortableColorPicker" x:Key="CustomPortableColorPicker">
         <Style.Resources>
             <Style TargetType="colorpicker:ColorDisplay">

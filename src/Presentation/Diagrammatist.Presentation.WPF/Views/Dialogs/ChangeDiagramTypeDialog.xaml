@@ -68,14 +68,12 @@
             <Border Grid.Row="1"
                     Margin="15 0 15 10"
                     Style="{StaticResource BorderFrame}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <TextBlock Text="{lex:Loc {Binding SelectedTypeDescription}}"
-                               TextWrapping="Wrap"
-                               Style="{StaticResource BaseBlock}"
-                               FontSize="14"
-                               Width="300"
-                               Margin="5"/>
-                </ScrollViewer>
+                <TextBlock Text="{lex:Loc {Binding SelectedTypeDescription}}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource BaseBlock}"
+                           FontSize="14"
+                           Width="200"
+                           Margin="5"/>
             </Border>
 
             <Grid Grid.Row="2"

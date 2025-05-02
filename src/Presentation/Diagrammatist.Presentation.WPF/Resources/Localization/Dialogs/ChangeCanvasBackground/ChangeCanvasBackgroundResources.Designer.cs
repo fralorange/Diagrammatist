@@ -62,7 +62,7 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeCa
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на New Background.
+        ///   Ищет локализованную строку, похожую на NEW BACKGROUND.
         /// </summary>
         internal static string Background {
             get {

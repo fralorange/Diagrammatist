@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using ColorPicker.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
 using System.Windows.Media;
@@ -19,11 +20,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             private set => SetProperty(ref _dialogResult, value);
         }
 
+        private readonly ColorState _colorState = new();
+
         /// <summary>
-        /// Gets or sets color.
+        /// Gets or sets the color state of the canvas background.
         /// </summary>
-        [ObservableProperty]
-        private Color _color;
+        public ColorState ColorState => _colorState;
+
+        /// <summary>
+        /// Gets or sets the color of the canvas background.
+        /// </summary>
+        public Color Color { get; set; }
 
         /// <summary>
         /// Initializes 'change canvas background' viewmodel.
@@ -31,7 +38,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// <param name="color"></param>
         public ChangeCanvasBackgroundDialogViewModel(Color color)
         {
-            Color = color;
+            ColorState.SetARGB(color.A, color.R, color.G, color.B);
         }
 
         /// <summary>

@@ -6,9 +6,9 @@
                          xmlns:lex="http://wpflocalizeextension.codeplex.com"
                          xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
                          xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core" xmlns:dialogs="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs" d:DataContext="{d:DesignInstance Type=dialogs:ChangeCanvasBackgroundDialogViewModel}"
+                         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
                          lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeCanvasBackground.ChangeCanvasBackgroundResources"
                          mc:Ignorable="d"
-                         Icon="{StaticResource AppIcon}"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeBackground}"
                          SizeToContent="WidthAndHeight"
                          WindowStartupLocation="CenterOwner"
@@ -19,31 +19,34 @@
                          ShowMaximizeButton="False">
     <Grid Style="{StaticResource Window}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <UniformGrid xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
-                     Grid.Row="0"
-                     Margin="20"
-                     Columns="2">
-            <UniformGrid.Resources>
-                <Style TargetType="Label" BasedOn="{StaticResource BaseLabel}">
-                    <Setter Property="Margin" Value="0,0,10,10" />
-                </Style>
-                <Style TargetType="colorpicker:PortableColorPicker" BasedOn="{StaticResource CustomPortableColorPicker}">
-                    <Setter Property="Margin" Value="10,10,0,0" />
-                </Style>
-            </UniformGrid.Resources>
-            <Label Content="{lex:Loc Background}"/>
-            <colorpicker:PortableColorPicker SelectedColor="{Binding Color, Mode=TwoWay}"
-                                             ShowAlpha="False"
-                                             ShowFractionalPart="False"/>
-        </UniformGrid>
+        <StackPanel Margin="20">
+            <TextBlock Text="{lex:Loc Background}" 
+                       Style="{StaticResource MenuAddBlock}" 
+                       FontWeight="SemiBold"
+                       FontStretch="Expanded"/>
+            <Rectangle Style="{StaticResource HorizontalCustomNeutralSeparator}"/>
+        </StackPanel>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Grid.Row="1">
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <colorpicker:StandardColorPicker Grid.Column="1"
+                                             SelectedColor="{Binding Color, Mode=OneWayToSource}"
+                                             ShowAlpha="False"
+                                             ShowFractionalPart="False"
+                                             Style="{StaticResource StandardColorPickerWithoutComboBox}"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
                     <Setter Property="Margin" Value="10" />
@@ -53,10 +56,10 @@
 
             <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:OK}"
                     Command="{Binding OkCommand}"
-                    IsDefault="True"/>
+                    IsDefault="True" />
 
             <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}"
-                    IsCancel="True"/>
+                    IsCancel="True" />
         </StackPanel>
     </Grid>
 </controls:TitleBarWindow>
