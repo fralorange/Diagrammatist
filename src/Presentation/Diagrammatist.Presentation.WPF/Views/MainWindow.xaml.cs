@@ -5,6 +5,7 @@ using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace Diagrammatist.Presentation.WPF.Views
 {
@@ -103,6 +104,17 @@ namespace Diagrammatist.Presentation.WPF.Views
         private void CloseWindow()
         {
             Close();
+        }
+
+        private CustomPopupPlacement[] PlacePopup(Size popupSize, Size targetSize, Point offset)
+        {
+            const double leftOffset = 25;
+
+            double x = targetSize.Width - popupSize.Width - leftOffset;
+            double y = -popupSize.Height;
+
+            var point = new Point(x, y);
+            return [new CustomPopupPlacement(point, PopupPrimaryAxis.Horizontal)];
         }
 
         private void OnWindowLoaded(object sender, RoutedEventArgs e)
