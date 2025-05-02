@@ -551,7 +551,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Grid>
+                    <Grid Background="Transparent">
                         <Border x:Name="SelectionVisual"
                                 BorderBrush="{StaticResource ItemSelectedBorderBrush}"
                                 BorderThickness="2" 
@@ -563,7 +563,8 @@
                                 Effect="{DynamicResource PrimarySelectionBoxEffect}">
                         </Border>
 
-                        <ContentPresenter/>
+                        <ContentPresenter HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"/>
                     </Grid>
 
                     <ControlTemplate.Triggers>

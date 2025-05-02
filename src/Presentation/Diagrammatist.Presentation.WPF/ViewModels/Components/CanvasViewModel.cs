@@ -183,7 +183,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             IsGridVisible = _userSettingsService.Get<bool>("GridVisible");
             IsGridSnapEnabled = _userSettingsService.Get<bool>("SnapToGrid");
-            IsAltGridSnapEnabled = _userSettingsService.Get<bool>("AltDisableGridSnap");
+            IsAltGridSnapEnabled = _userSettingsService.Get<bool>("AltGridSnap");
 
             IsActive = true;
         }
