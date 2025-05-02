@@ -20,13 +20,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             private set => SetProperty(ref _dialogResult, value);
         }
 
-        private readonly ColorState _colorState = new();
-
-        /// <summary>
-        /// Gets or sets the color state of the canvas background.
-        /// </summary>
-        public ColorState ColorState => _colorState;
-
         /// <summary>
         /// Gets or sets the color of the canvas background.
         /// </summary>
@@ -38,7 +31,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// <param name="color"></param>
         public ChangeCanvasBackgroundDialogViewModel(Color color)
         {
-            ColorState.SetARGB(color.A, color.R, color.G, color.B);
+            Color = color;
         }
 
         /// <summary>
