@@ -129,6 +129,9 @@
   <data name="DefaultFontSize" xml:space="preserve">
     <value>Default Font Size:</value>
   </data>
+  <data name="DoNotShowChangeDiagramTypeWarning" xml:space="preserve">
+    <value>Do not show warning when changing diagram types</value>
+  </data>
   <data name="en-US" xml:space="preserve">
     <value>English</value>
   </data>

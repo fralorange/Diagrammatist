@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using MvvmDialogs;
 using System.Collections.ObjectModel;
 
@@ -13,6 +16,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
     public partial class ChangeDiagramTypeDialogViewModel : ObservableObject, IModalDialogViewModel
     {
         private readonly IAlertService _alertService;
+        private readonly IUserSettingsService _userSettingsService;
 
         private bool? _dialogResult;
 
@@ -54,9 +58,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// </summary>
         /// <param name="alertService"></param>
         /// <param name="diagramType"></param>
-        public ChangeDiagramTypeDialogViewModel(IAlertService alertService, DiagramsModel diagramType)
+        public ChangeDiagramTypeDialogViewModel(IAlertService alertService,
+                                                IUserSettingsService userSettingsService,
+                                                DiagramsModel diagramType)
         {
             _alertService = alertService;
+            _userSettingsService = userSettingsService;
 
             SelectedType = diagramType;
 
@@ -69,10 +76,30 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [RelayCommand]
         private void Ok()
         {
-            // TO-DO: implement here _alertService RequestConfirmation with checkbox 'Don't show me again'.
-            // Do it when custom alert modals will be implemented.
+            var skipWarning = _userSettingsService.Get<bool>("DoNotShowChangeDiagramTypeWarning");
 
-            DialogResult = true;
+            if (skipWarning)
+            {
+                DialogResult = true;
+                return;
+            }
+
+            var localizedCaption = LocalizationHelper
+                .GetLocalizedValue<string>("Dialogs.ChangeDiagramType.ChangeDiagramTypeResources", "WarningCaption");
+            var localizedMessage = LocalizationHelper
+                .GetLocalizedValue<string>("Dialogs.ChangeDiagramType.ChangeDiagramTypeResources", "WarningMessage");
+
+            var response = _alertService.ShowWarning(localizedMessage, localizedCaption);
+
+            if (response.DoNotShowAgain)
+            {
+                _userSettingsService.Set("DoNotShowChangeDiagramTypeWarning", true);
+            }
+
+            if (response.Result == ConfirmationResult.Yes)
+            {
+                DialogResult = true;
+            }
         }
     }
 }

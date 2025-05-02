@@ -400,7 +400,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
                 return;
 
             var alertService = _serviceProvider.GetRequiredService<IAlertService>();
-            var dialogViewModel = new ChangeDiagramTypeDialogViewModel(alertService, currentCanvas.Settings.Type);
+            var userSettingsService = _serviceProvider.GetRequiredService<IUserSettingsService>();
+            var dialogViewModel = new ChangeDiagramTypeDialogViewModel(alertService, userSettingsService, currentCanvas.Settings.Type);
 
             if (_dialogService.ShowDialog(this, dialogViewModel) == true
                 && dialogViewModel.SelectedType is { } diagram

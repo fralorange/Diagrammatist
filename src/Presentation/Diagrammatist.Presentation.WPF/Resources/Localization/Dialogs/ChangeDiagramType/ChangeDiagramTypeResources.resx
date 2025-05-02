@@ -126,4 +126,10 @@
   <data name="FlowchartDesc" xml:space="preserve">
     <value>Designed for constructing flowcharts and validating them using an integrated simulator.</value>
   </data>
+  <data name="WarningMessage" xml:space="preserve">
+    <value>Changing the diagram type will erase all payload data (e.g., simulator settings). Do you wish to continue?</value>
+  </data>
+  <data name="WarningCaption" xml:space="preserve">
+    <value>Warning! Diagram Type Change</value>
+  </data>
 </root>

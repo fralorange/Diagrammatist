@@ -271,6 +271,12 @@
         <Setter Property="FontWeight" Value="Regular" />
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="MessageBlock" BasedOn="{StaticResource BaseBlock}">
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="MaxWidth" Value="350" />
+    </Style>
+
     <Style x:Key="SubHeading" TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -811,7 +817,7 @@
         <Setter Property="BorderThickness" Value="2" />
     </Style>
 
-    <Style TargetType="Border" x:Key="BorderFrame">
+    <Style TargetType="Border" x:Key="BorderFrame" BasedOn="{StaticResource DialogBorder}">
         <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
     </Style>
 

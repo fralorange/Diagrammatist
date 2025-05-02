@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeDiagramType {
+namespace Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Resources.Localization.Alert {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeDi
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ChangeDiagramTypeResources {
+    internal class AlertResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ChangeDiagramTypeResources() {
+        internal AlertResources() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeDi
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeDiagramType.C" +
-                            "hangeDiagramTypeResources", typeof(ChangeDiagramTypeResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Resources.Localization.Alert.A" +
+                            "lertResources", typeof(AlertResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,47 +62,47 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ChangeDi
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на DIAGRAM TYPE INFO:.
+        ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
-        internal static string ChangeDiagramInfo {
+        internal static string Cancel {
             get {
-                return ResourceManager.GetString("ChangeDiagramInfo", resourceCulture);
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Enables crafting arbitrary diagrams in a visual editor using a library of predefined blocks..
+        ///   Ищет локализованную строку, похожую на Continue.
         /// </summary>
-        internal static string CustomDesc {
+        internal static string Continue {
             get {
-                return ResourceManager.GetString("CustomDesc", resourceCulture);
+                return ResourceManager.GetString("Continue", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Designed for constructing flowcharts and validating them using an integrated simulator..
+        ///   Ищет локализованную строку, похожую на No.
         /// </summary>
-        internal static string FlowchartDesc {
+        internal static string No {
             get {
-                return ResourceManager.GetString("FlowchartDesc", resourceCulture);
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Warning! Diagram Type Change.
+        ///   Ищет локализованную строку, похожую на Don&apos;t show this message again.
         /// </summary>
-        internal static string WarningCaption {
+        internal static string Show {
             get {
-                return ResourceManager.GetString("WarningCaption", resourceCulture);
+                return ResourceManager.GetString("Show", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Changing the diagram type will erase all payload data (e.g., simulator settings). Do you wish to continue?.
+        ///   Ищет локализованную строку, похожую на Yes.
         /// </summary>
-        internal static string WarningMessage {
+        internal static string Yes {
             get {
-                return ResourceManager.GetString("WarningMessage", resourceCulture);
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

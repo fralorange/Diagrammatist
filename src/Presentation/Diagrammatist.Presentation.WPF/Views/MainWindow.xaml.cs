@@ -1,6 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Controls;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using System.ComponentModel;
 using System.Windows;
@@ -90,7 +91,7 @@ namespace Diagrammatist.Presentation.WPF.Views
                 var result = _alertService.RequestConfirmation(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppMessage"),
                     LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedAppCaption"));
 
-                if (result == MessageBoxResult.Yes && !viewModel.SaveAll() || result == MessageBoxResult.Cancel)
+                if (result == ConfirmationResult.Yes && !viewModel.SaveAll() || result == ConfirmationResult.Cancel)
                 {
                     e.Cancel = true;
                 }

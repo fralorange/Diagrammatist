@@ -9,6 +9,7 @@
                          xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
                          xmlns:lex="http://wpflocalizeextension.codeplex.com"
                          xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
                          lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:New}"
                          mc:Ignorable="d"

@@ -117,46 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AltSnapToGrid" xml:space="preserve">
-    <value>Инвертировать привязку сетки с помощью клавиши 'Alt'</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Подтвердить</value>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
   </data>
-  <data name="Dark" xml:space="preserve">
-    <value>Тёмная</value>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
   </data>
-  <data name="DefaultFontSize" xml:space="preserve">
-    <value>Размер шрифта по умолчанию:</value>
+  <data name="Show" xml:space="preserve">
+    <value>Don't show this message again</value>
   </data>
-  <data name="DoNotShowChangeDiagramTypeWarning" xml:space="preserve">
-    <value>Не показывать предупреждение при смене типов диаграмм</value>
-  </data>
-  <data name="en-US" xml:space="preserve">
-    <value>Английский</value>
-  </data>
-  <data name="InterfaceTab" xml:space="preserve">
-    <value>Интерфейс</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Язык: </value>
-  </data>
-  <data name="Light" xml:space="preserve">
-    <value>Светлая</value>
-  </data>
-  <data name="ru-RU" xml:space="preserve">
-    <value>Русский</value>
-  </data>
-  <data name="SnapToGrid" xml:space="preserve">
-    <value>Объект должен привязываться к сетке</value>
-  </data>
-  <data name="System" xml:space="preserve">
-    <value>Системная</value>
-  </data>
-  <data name="SystemTab" xml:space="preserve">
-    <value>Система</value>
-  </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Тема:</value>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

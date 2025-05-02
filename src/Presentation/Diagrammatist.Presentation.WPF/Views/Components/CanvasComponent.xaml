@@ -9,6 +9,7 @@
              xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>

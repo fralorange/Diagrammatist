@@ -98,6 +98,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Do not show warning when changing diagram types.
+        /// </summary>
+        internal static string DoNotShowChangeDiagramTypeWarning {
+            get {
+                return ResourceManager.GetString("DoNotShowChangeDiagramTypeWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на English.
         /// </summary>
         internal static string en_US {

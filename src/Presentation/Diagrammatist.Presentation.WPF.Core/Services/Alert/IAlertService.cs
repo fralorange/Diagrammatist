@@ -1,11 +1,12 @@
-﻿using System.Windows;
+﻿using Diagrammatist.Presentation.WPF.Core.Shared.Entities;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 
 namespace Diagrammatist.Presentation.WPF.Core.Services.Alert
 {
     /// <summary>
     /// An interface that used to alert user of some action (e.g. warning or some action confirmation).
     /// </summary>
-    public interface IAlertService 
+    public interface IAlertService
     {
         /// <summary>
         /// Shows simple error message to user.
@@ -18,7 +19,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Alert
         /// </summary>
         /// <param name="message">Confirmation message.</param>
         /// <param name="caption">Confirmation caption.</param>
-        /// <returns><see cref="MessageBoxResult"/> as a result of user choice.</returns>
-        MessageBoxResult RequestConfirmation(string message, string caption);
+        /// <returns><see cref="ConfirmationResult"/> as a result of user choice.</returns>
+        ConfirmationResult RequestConfirmation(string message, string caption);
+        /// <summary>
+        /// Shows warning message to user.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="caption"></param>
+        /// <returns></returns>
+        ConfirmationResponse ShowWarning(string message, string caption);
     }
 }

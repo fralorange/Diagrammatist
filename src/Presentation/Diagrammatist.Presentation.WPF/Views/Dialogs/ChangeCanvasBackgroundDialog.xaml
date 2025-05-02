@@ -7,6 +7,7 @@
                          xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
                          xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core" xmlns:dialogs="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs" d:DataContext="{d:DesignInstance Type=dialogs:ChangeCanvasBackgroundDialogViewModel}"
                          xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
                          lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeCanvasBackground.ChangeCanvasBackgroundResources"
                          mc:Ignorable="d"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeBackground}"

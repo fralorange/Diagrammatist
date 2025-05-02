@@ -118,5 +118,17 @@ namespace Diagrammatist.Presentation.WPF.Properties {
                 this["AltGridSnap"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DoNotShowChangeDiagramTypeWarning {
+            get {
+                return ((bool)(this["DoNotShowChangeDiagramTypeWarning"]));
+            }
+            set {
+                this["DoNotShowChangeDiagramTypeWarning"] = value;
+            }
+        }
     }
 }

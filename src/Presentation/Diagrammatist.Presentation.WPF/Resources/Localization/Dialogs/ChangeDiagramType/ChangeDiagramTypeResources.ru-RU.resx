@@ -126,4 +126,10 @@
   <data name="FlowchartDesc" xml:space="preserve">
     <value>Предназначена для построения блок-схем и их проверки через встроенный симулятор.</value>
   </data>
+  <data name="WarningMessage" xml:space="preserve">
+    <value>При смене типа диаграммы все данные о полезных нагрузках (например, симуляторе) будут удалены. Вы хотите продолжить?</value>
+  </data>
+  <data name="WarningCaption" xml:space="preserve">
+    <value>Внимание! Смена типа диаграммы</value>
+  </data>
 </root>

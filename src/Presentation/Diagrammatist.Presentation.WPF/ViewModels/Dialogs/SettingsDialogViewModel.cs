@@ -21,6 +21,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private string _initialTheme;
         private bool _initialSnapToGrid;
         private bool _initialAltGridSnap;
+        private bool _initialDoNotShowWarningForDiagramType;
 
         private readonly List<CultureInfo> _supportedCultures =
         [
@@ -121,6 +122,24 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             }
         }
 
+        // this naming and property management looks horrible, maybe fix in future?
+        private bool _selectedDoNotShowWarningForDiagramType;
+
+        /// <summary>
+        /// Gets or sets selected do not show warning for diagram type option.
+        /// </summary>
+        public bool SelectedDoNotShowWarningForDiagramType
+        {
+            get => _selectedDoNotShowWarningForDiagramType;
+            set
+            {
+                if (SetProperty(ref _selectedDoNotShowWarningForDiagramType, value))
+                {
+                    CheckHasChanges();
+                }
+            }
+        }
+
         private bool? _dialogResult;
 
         /// <inheritdoc/>
@@ -147,15 +166,17 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             AvailableLanguages = [.. _supportedCultures];
             AvailableThemes = [.. _supportedThemes];
 
-            _initialLanguage = _userSettingsService.Get("Culture", CultureInfo.CurrentUICulture)!; 
+            _initialLanguage = _userSettingsService.Get("Culture", CultureInfo.CurrentUICulture)!;
             _initialTheme = _userSettingsService.Get("Theme", "Light")!;
             _initialSnapToGrid = _userSettingsService.Get("SnapToGrid", true);
             _initialAltGridSnap = _userSettingsService.Get("AltGridSnap", true);
+            _initialDoNotShowWarningForDiagramType = _userSettingsService.Get("DoNotShowChangeDiagramTypeWarning", false);
 
             SelectedLanguage = CultureInfo.CurrentUICulture;
             SelectedTheme = _initialTheme;
             SelectedSnapToGrid = _initialSnapToGrid;
             SelectedAltGridSnap = _initialAltGridSnap;
+            SelectedDoNotShowWarningForDiagramType = _initialDoNotShowWarningForDiagramType;
         }
 
         private bool CanApply() => HasChanges;
@@ -164,7 +185,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             !_selectedLanguage.Equals(_initialLanguage)
             || _selectedTheme != _initialTheme
             || _selectedSnapToGrid != _initialSnapToGrid
-            || _selectedAltGridSnap != _initialAltGridSnap;
+            || _selectedAltGridSnap != _initialAltGridSnap
+            || _selectedDoNotShowWarningForDiagramType != _initialDoNotShowWarningForDiagramType;
 
         private void ApplyLanguage(CultureInfo culture)
         {
@@ -207,6 +229,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             _userSettingsService.Set("Theme", SelectedTheme);
             _userSettingsService.Set("SnapToGrid", SelectedSnapToGrid);
             _userSettingsService.Set("AltGridSnap", SelectedAltGridSnap);
+            _userSettingsService.Set("DoNotShowChangeDiagramTypeWarning", SelectedDoNotShowWarningForDiagramType);
             _userSettingsService.Save();
 
             DialogResult = true;
@@ -239,6 +262,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             _initialTheme = SelectedTheme;
             _initialSnapToGrid = SelectedSnapToGrid;
             _initialAltGridSnap = SelectedAltGridSnap;
+            _initialDoNotShowWarningForDiagramType = SelectedDoNotShowWarningForDiagramType;
 
             HasChanges = false;
         }

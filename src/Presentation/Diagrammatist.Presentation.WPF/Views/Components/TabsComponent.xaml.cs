@@ -1,9 +1,9 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.Views.Components
@@ -33,7 +33,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             InitializeComponent();
         }
 
-        private MessageBoxResult CloseFail()
+        private ConfirmationResult CloseFail()
         {
             return _alertService.RequestConfirmation(LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasMessage"),
                 LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "UnsavedCanvasCaption"));

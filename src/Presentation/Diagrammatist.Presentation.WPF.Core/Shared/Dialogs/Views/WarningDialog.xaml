@@ -1,0 +1,52 @@
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views.WarningDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF.Core"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Shared.Dialogs.Resources.Localization.Alert.AlertResources"
+                         d:DataContext="{d:DesignInstance Type=viewmodels:WarningDialogViewModel}"
+                         Title="{Binding Caption}"
+                         mc:Ignorable="d"
+                         WindowStartupLocation="CenterOwner"
+                         SizeToContent="WidthAndHeight"
+                         ResizeMode="NoResize"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False"
+                         IsDialog="True"
+                         ShowCenteredTitle="True">
+    <Border Style="{StaticResource DialogBorder}">
+        <StackPanel Background="{DynamicResource WindowBackground}">
+            <StackPanel Orientation="Horizontal"
+                        Margin="10">
+                <Image Source="{DynamicResource warningImage}"
+                       Width="48" 
+                       Height="48" 
+                       Margin="0 0 10 0"/>
+                <TextBlock Text="{Binding Message}" 
+                           Style="{StaticResource MessageBlock}"/>
+            </StackPanel>
+            <DockPanel Margin="10">
+                <CheckBox Content="{lex:Loc Show}" 
+                          IsChecked="{Binding DoNotShowAgain}" 
+                          DockPanel.Dock="Left"
+                          Margin="0 0 10 0"/>
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right" 
+                            DockPanel.Dock="Right">
+                    <Button Content="{lex:Loc Continue}" 
+                            Width="100" Margin="0 0 10 0" 
+                            Command="{Binding ContinueCommand}"/>
+                    <Button Content="{lex:Loc Cancel}" 
+                            Width="80" 
+                            Command="{Binding CancelCommand}" 
+                            IsCancel="True"/>
+                </StackPanel>
+            </DockPanel>
+        </StackPanel>
+    </Border>
+</controls:TitleBarWindow>
