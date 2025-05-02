@@ -18,7 +18,8 @@
                          ShowMaximizeButton="False"
                          ShowCenteredTitle="True"
                          IsDialog="True">
-    <Grid Width="500" 
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Width="500" 
           Background="{StaticResource SplashBackground}" 
           Effect="{StaticResource PrimaryGlowEffect}" >
         <Border CornerRadius="12" 
@@ -98,4 +99,5 @@
             </Grid>
         </Border>
     </Grid>
+    </Border>
 </controls:TitleBarWindow>

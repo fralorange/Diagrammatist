@@ -17,7 +17,8 @@
                          ShowCenteredTitle="True"
                          ShowMinimizeButton="False"
                          ShowMaximizeButton="False">
-    <Grid Style="{StaticResource Window}">
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Style="{StaticResource Window}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -62,4 +63,5 @@
                     IsCancel="True" />
         </StackPanel>
     </Grid>
+    </Border>
 </controls:TitleBarWindow>

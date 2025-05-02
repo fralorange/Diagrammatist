@@ -20,128 +20,133 @@
                          ShowMaximizeButton="False"
                          ShowCenteredTitle="True"
                          IsDialog="True">
-    <Grid Style="{StaticResource Window}"
-          Margin="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Style="{StaticResource Window}"
+              Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0">
-                <TextBlock Text="{lex:Loc DiagramType}"
-                           Style="{StaticResource MenuAddBlock}"
-                           Margin="15 15 0 10" />
-                <Border Padding="10" >
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListBox ItemsSource="{Binding AvailablePresets}"
-                                 ItemTemplateSelector="{StaticResource DiagramTemplateSelector}"
-                                 SelectedItem="{Binding SelectedPreset}"
-                                 ItemContainerStyle="{StaticResource PresetsSelectionBox}"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 Style="{StaticResource DialogListBox}">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal"
-                                               ItemWidth="150"
-                                               ItemHeight="150" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                        </ListBox>
-                    </ScrollViewer>
-                </Border>
-            </StackPanel>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{lex:Loc DiagramType}"
+                               Style="{StaticResource MenuAddBlock}"
+                               Margin="15 15 0 10" />
+                    <Border Padding="10" >
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ListBox ItemsSource="{Binding AvailablePresets}"
+                                     ItemTemplateSelector="{StaticResource DiagramTemplateSelector}"
+                                     SelectedItem="{Binding SelectedPreset}"
+                                     ItemContainerStyle="{StaticResource PresetsSelectionBox}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     Style="{StaticResource DialogListBox}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"
+                                                   ItemWidth="150"
+                                                   ItemHeight="150" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
 
-            <DockPanel Grid.Column="1" 
-                       Background="{DynamicResource TitleBarBackground}">
-                <TextBlock DockPanel.Dock="Top"
-                           Text="{lex:Loc AddDiagramInfo}"
-                           Style="{StaticResource MenuAddBlock}"
-                           FontWeight="Regular"
-                           Margin="15 15 0 10" />
+                <Border Grid.Column="1"
+                        Style="{StaticResource DialogBorder}"
+                        BorderThickness="2 0 0 0">
+                    <DockPanel Background="{DynamicResource TitleBarBackground}">
+                        <TextBlock DockPanel.Dock="Top"
+                                   Text="{lex:Loc AddDiagramInfo}"
+                                   Style="{StaticResource MenuAddBlock}"
+                                   FontWeight="Regular"
+                                   Margin="15 15 0 10" />
                 
-                <StackPanel DockPanel.Dock="Top"
-                            xmlns:adorners="http://gu.se/Adorners"
-                            Margin="20">
-                    <!-- File Name -->
-                    <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource UnderlineTextBoxStyle}"
-                             adorners:Watermark.Text="{lex:Loc FileName}"
-                             adorners:Watermark.VisibleWhen="Empty"/>
+                        <StackPanel DockPanel.Dock="Top"
+                                    xmlns:adorners="http://gu.se/Adorners"
+                                    Margin="20">
+                            <!-- File Name -->
+                            <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource UnderlineTextBoxStyle}"
+                                     adorners:Watermark.Text="{lex:Loc FileName}"
+                                     adorners:Watermark.VisibleWhen="Empty"/>
 
-                    <!-- Width + Units -->
-                    <Label Content="{lex:Loc Width}" Margin="0 10 0 0"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="WidthBox"
-                                 Width="80"
-                                 Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource BaseTextBoxInverted}"/>
-                        <ComboBox Width="100" Margin="5 0 0 0"
-                                  ItemsSource="{Binding UnitOptions}"
-                                  SelectedItem="{Binding SelectedUnit}"
-                                  Style="{StaticResource BaseComboBoxInverted}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{lex:Loc {Binding}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </StackPanel>
+                            <!-- Width + Units -->
+                            <Label Content="{lex:Loc Width}" Margin="0 10 0 0"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="WidthBox"
+                                         Width="80"
+                                         Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource BaseTextBoxInverted}"/>
+                                <ComboBox Width="100" Margin="5 0 0 0"
+                                          ItemsSource="{Binding UnitOptions}"
+                                          SelectedItem="{Binding SelectedUnit}"
+                                          Style="{StaticResource BaseComboBoxInverted}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{lex:Loc {Binding}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
 
-                    <!-- Height -->
-                    <Label Content="{lex:Loc Height}" Margin="0 10 0 0"/>
-                    <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource BaseTextBoxInverted}"
-                             Width="{Binding ActualWidth, ElementName=WidthBox}"
-                             Height="{Binding ActualHeight, ElementName=WidthBox}"
-                             HorizontalAlignment="Left"/>
+                            <!-- Height -->
+                            <Label Content="{lex:Loc Height}" Margin="0 10 0 0"/>
+                            <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource BaseTextBoxInverted}"
+                                     Width="{Binding ActualWidth, ElementName=WidthBox}"
+                                     Height="{Binding ActualHeight, ElementName=WidthBox}"
+                                     HorizontalAlignment="Left"/>
 
-                    <!-- Background Type + ColorPicker -->
-                    <Label Content="{lex:Loc Background}" Margin="0 10 0 0"/>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <ComboBox Width="150"
-                                  ItemsSource="{Binding BackgroundOptions}"
-                                  SelectedItem="{Binding SelectedBackgroundType, Mode=TwoWay}"
-                                  Style="{StaticResource BaseComboBoxInverted}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{lex:Loc {Binding}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <colorpicker:PortableColorPicker Margin="10 0 0 0"
-                                                         Style="{StaticResource CustomPortableColorPicker}"
-                                                         Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                                         SelectedColor="{Binding Background, Mode=TwoWay}"
-                                                         ShowAlpha="False"
-                                                         ShowFractionalPart="False">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="ColorChanged">
-                                    <i:InvokeCommandAction Command="{Binding ColorChangeCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </colorpicker:PortableColorPicker>
-                    </StackPanel>
-                </StackPanel>
+                            <!-- Background Type + ColorPicker -->
+                            <Label Content="{lex:Loc Background}" Margin="0 10 0 0"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ComboBox Width="150"
+                                          ItemsSource="{Binding BackgroundOptions}"
+                                          SelectedItem="{Binding SelectedBackgroundType, Mode=TwoWay}"
+                                          Style="{StaticResource BaseComboBoxInverted}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{lex:Loc {Binding}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <colorpicker:PortableColorPicker Margin="10 0 0 0"
+                                                                 Style="{StaticResource CustomPortableColorPicker}"
+                                                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                                                 SelectedColor="{Binding Background, Mode=TwoWay}"
+                                                                 ShowAlpha="False"
+                                                                 ShowFractionalPart="False">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="ColorChanged">
+                                            <i:InvokeCommandAction Command="{Binding ColorChangeCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </colorpicker:PortableColorPicker>
+                            </StackPanel>
+                        </StackPanel>
 
-                <StackPanel DockPanel.Dock="Bottom"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            Margin="20 100 20 20">
-                    <Button Content="{lex:Loc OK}"
-                            Command="{Binding OkCommand}"
-                            IsDefault="True"
-                            Style="{StaticResource BaseButton}"/>
-                    <Button Content="{lex:Loc Cancel}"
-                            IsCancel="True"
-                            Style="{StaticResource BaseButton}"
-                            Margin="10 0 0 0"/>
-                </StackPanel>
-            </DockPanel>
+                        <StackPanel DockPanel.Dock="Bottom"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    Margin="20 100 20 20">
+                            <Button Content="{lex:Loc OK}"
+                                    Command="{Binding OkCommand}"
+                                    IsDefault="True"
+                                    Style="{StaticResource BaseButton}"/>
+                            <Button Content="{lex:Loc Cancel}"
+                                    IsCancel="True"
+                                    Style="{StaticResource BaseButton}"
+                                    Margin="10 0 0 0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </controls:TitleBarWindow>

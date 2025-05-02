@@ -806,6 +806,11 @@
         <Setter Property="Padding" Value="5" />
     </Style>
 
+    <Style TargetType="Border" x:Key="DialogBorder">
+        <Setter Property="BorderBrush" Value="{DynamicResource DialogFrameStrokeRadial}" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+
     <Style TargetType="Border" x:Key="BorderFrame">
         <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
     </Style>
