@@ -80,6 +80,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Incomplete Flowchart.
+        /// </summary>
+        internal static string EndNodeCaption {
+            get {
+                return ResourceManager.GetString("EndNodeCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The ending node of the flowchart could not be determined..
+        /// </summary>
+        internal static string EndNodeMessage {
+            get {
+                return ResourceManager.GetString("EndNodeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на File.
         /// </summary>
         internal static string File {
@@ -121,6 +139,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         internal static string Simulator {
             get {
                 return ResourceManager.GetString("Simulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid Flowchart.
+        /// </summary>
+        internal static string StartNodeCaption {
+            get {
+                return ResourceManager.GetString("StartNodeCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The starting node of the flowchart could not be determined..
+        /// </summary>
+        internal static string StartNodeMessage {
+            get {
+                return ResourceManager.GetString("StartNodeMessage", resourceCulture);
             }
         }
         

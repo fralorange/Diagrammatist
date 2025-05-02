@@ -123,6 +123,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="EndNodeMessage" xml:space="preserve">
+    <value>The ending node of the flowchart could not be determined.</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
@@ -138,6 +141,12 @@
   <data name="Simulator" xml:space="preserve">
     <value>Simulator</value>
   </data>
+  <data name="StartNodeCaption" xml:space="preserve">
+    <value>Invalid Flowchart</value>
+  </data>
+  <data name="StartNodeMessage" xml:space="preserve">
+    <value>The starting node of the flowchart could not be determined.</value>
+  </data>
   <data name="StepBackward" xml:space="preserve">
     <value>Step Backward</value>
   </data>
@@ -146,5 +155,8 @@
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="EndNodeCaption" xml:space="preserve">
+    <value>Incomplete Flowchart</value>
   </data>
 </root>

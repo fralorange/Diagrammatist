@@ -427,7 +427,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             var payload = doc.GetPayloadData<SimulationContext>(key);
 
             var documentSerializationService = _serviceProvider.GetRequiredService<IDocumentSerializationService>();
-            var dialogViewModel = new SimulatorWindowViewModel(_dialogService, documentSerializationService, payload);
+            var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+
+            var terminated = false;
+
+            var dialogViewModel = new SimulatorWindowViewModel(
+                _dialogService, alertService, documentSerializationService, payload,
+                onTerminate: () => terminated = true);
+
             dialogViewModel.RequestApply += () =>
             {
                 if (dialogViewModel.NewContext is null)
@@ -439,8 +446,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
 
                 _trackableCommandManager.Execute(command);
             };
-            
-            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.NewContext is { } context)
+
+            if (!terminated && _dialogService.ShowDialog(this, dialogViewModel) == true && 
+                dialogViewModel.NewContext is { } context)
             {
                 var command = CommonUndoableHelper.CreateUndoableCommand(
                     () => doc.SetPayload(key, context), 

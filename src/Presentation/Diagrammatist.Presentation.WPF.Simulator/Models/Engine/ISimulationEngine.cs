@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
+﻿using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine
 {
@@ -11,6 +12,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine
         /// An event that occurs when current node changes.
         /// </summary>
         event EventHandler<SimulationNode?> CurrentNodeChanged;
+        /// <summary>
+        /// An event that occurs when simulation engine gets error.
+        /// </summary>
+        event EventHandler<SimulationErrorEventArgs>? ErrorOccurred;
         /// <summary>
         /// Gets simulation engine condition whether simulation was completed or not.
         /// </summary>

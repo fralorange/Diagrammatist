@@ -3,10 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Providers;
 using MvvmDialogs;
@@ -22,6 +25,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
     public partial class SimulatorWindowViewModel : ObservableRecipient, IModalDialogViewModel
     {
         private readonly ISimulationEngine _simulationEngine;
+        private readonly IAlertService _alertService;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="RequestOpen"]/*'/>
         public event Func<string>? RequestOpen;
@@ -87,11 +91,17 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// Initializes simulator view model.
         /// </summary>
         /// <param name="dialogService"></param>
+        /// <param name="alertService"></param>
+        /// <param name="documentSerializationService"></param>
         /// <exception cref="ArgumentException"></exception>
         public SimulatorWindowViewModel(IDialogService dialogService,
+                                        IAlertService alertService,
                                         IDocumentSerializationService documentSerializationService,
-                                        SimulationContext? payload = null)
+                                        SimulationContext? payload = null,
+                                        Action? onTerminate = null)
         {
+            _alertService = alertService;
+
             // Validation.
             var currentCanvas = Messenger.Send(new CurrentCanvasRequestMessage()).Response;
 
@@ -113,6 +123,17 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             _simulationEngine = factory.CreateEngine(Nodes, Connections, simIO, simContextProvider);
             _simulationEngine.CurrentNodeChanged += (sender, node) 
                 => CurrentNode = node;
+            _simulationEngine.ErrorOccurred += (sender, e) =>
+            {
+                var localizedMessage = LocalizationHelper
+                .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}Message");
+
+                var localizedCaption = LocalizationHelper
+                    .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}Caption");
+
+                _alertService.ShowError(localizedMessage, localizedCaption);
+                onTerminate?.Invoke(); 
+            };
             _simulationEngine.Initialize();
         }
 

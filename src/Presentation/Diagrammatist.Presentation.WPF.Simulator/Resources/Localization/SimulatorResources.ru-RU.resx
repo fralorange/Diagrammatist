@@ -123,6 +123,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="EndNodeMessage" xml:space="preserve">
+    <value>Конечный узел блок-схемы определить не удалось.</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>Файл</value>
   </data>
@@ -138,6 +141,12 @@
   <data name="Simulator" xml:space="preserve">
     <value>Симулятор</value>
   </data>
+  <data name="StartNodeCaption" xml:space="preserve">
+    <value>Неверная блок-схема</value>
+  </data>
+  <data name="StartNodeMessage" xml:space="preserve">
+    <value>Начальный узел блок-схемы определить не удалось.</value>
+  </data>
   <data name="StepBackward" xml:space="preserve">
     <value>Шаг назад</value>
   </data>
@@ -146,5 +155,8 @@
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Сброс</value>
+  </data>
+  <data name="EndNodeCaption" xml:space="preserve">
+    <value>Неполная блок-схема</value>
   </data>
 </root>

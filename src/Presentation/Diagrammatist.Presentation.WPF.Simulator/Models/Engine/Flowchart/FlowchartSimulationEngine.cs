@@ -3,9 +3,11 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
 using Diagrammatist.Presentation.WPF.Simulator.Managers;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 {
@@ -16,6 +18,9 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
     {
         /// <inheritdoc/>
         public event EventHandler<SimulationNode?> CurrentNodeChanged;
+        /// <inheritdoc/>
+        public event EventHandler<SimulationErrorEventArgs>? ErrorOccurred;
+
         // Simulation parameters.
         /// <inheritdoc/>
         public bool IsCompleted => CurrentNode == _endNode;
@@ -45,7 +50,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             }
         }
 
-        private FlowchartSimulationNode _endNode;
+        private FlowchartSimulationNode? _endNode;
+
+        private IEnumerable<FlowchartSimulationNode> _nodes;
+        private IEnumerable<ConnectionModel> _connections;
 
         /// <summary>
         /// Initializes flowchart simulation engine.
@@ -62,16 +70,18 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                                          LuaStateManager? luaStateManager = null)
 #pragma warning restore CS8618 
         {
-            BuildGraph(nodes, connections);
-
             _io = io;
             _contextProvider = contextProvider;
             _luaStateManager = (luaStateManager is not null) ? new LuaStateManager(luaStateManager) : new LuaStateManager();
+
+            _nodes = nodes;
+            _connections = connections;
         }
 
         /// <inheritdoc/>
         public void Initialize()
         {
+            BuildGraph();
             InitializeLua();
             ResetNode();
         }
@@ -489,22 +499,31 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         {
             _endNode = _graph.Values
                 .SelectMany(v => v)
-                .FirstOrDefault(fig => fig.Figure is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.StartEnd })
-                ?? throw new InvalidOperationException("The ending node of the flowchart could not be determined.");
+                .FirstOrDefault(fig => fig.Figure is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.StartEnd });
+
+            if (_endNode is null)
+            {
+                ShowError("EndNode");
+                return;
+            }
         }
 
         /// <summary>
         /// Builds graph.
         /// </summary>
-        /// <param name="nodes"></param>
-        /// <param name="connections"></param>
-        private void BuildGraph(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections)
+        private void BuildGraph()
         {
-            var figureToNode = nodes.ToDictionary(n => n.Figure);
+            var figureToNode = _nodes.ToDictionary(n => n.Figure);
 
-            var outgoing = BuildOutgoingConnections(figureToNode, connections);
-            var startNode = FindStartNode(nodes, connections)
-                ?? throw new InvalidOperationException("The starting node of the flowchart could not be determined.");
+            var outgoing = BuildOutgoingConnections(figureToNode, _connections);
+            var startNode = FindStartNode(_nodes, _connections);
+
+            if (startNode is null)
+            {
+                ShowError("StartNode");
+                return;
+            }
+
             _graph.Clear();
 
             TraverseFromStartNode(startNode, outgoing);
@@ -512,5 +531,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         }
 
         #endregion
+
+        private void ShowError(string message)
+        {
+            ErrorOccurred?.Invoke(this, new SimulationErrorEventArgs(message));
+        }
     }
 }
