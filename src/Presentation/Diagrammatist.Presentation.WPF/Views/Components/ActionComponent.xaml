@@ -5,11 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components"
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
+             xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Action.ActionResources"
+             behaviors:InputBindingBehavior.PropagateInputBindingsToWindow="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:ActionViewModel}"
              mc:Ignorable="d">
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Enter" 
+                    Command="{Binding ConfirmCommand}"/>
+        <KeyBinding Gesture="Esc" 
+                    Command="{Binding CancelCommand}"/>
+    </UserControl.InputBindings>
     <Border HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Margin="5,5,5,0">
