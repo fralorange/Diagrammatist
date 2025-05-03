@@ -31,7 +31,7 @@
 
             <TabControl Grid.Row="0" 
                         TabStripPlacement="Left" 
-                        Style="{StaticResource BaseTabControl}"
+                        Style="{StaticResource SettingsTabControl}"
                         BorderThickness="2 0 2 2">
                 <TabItem Header="{lex:Loc SystemTab}" 
                          Style="{StaticResource BaseTabItem}">

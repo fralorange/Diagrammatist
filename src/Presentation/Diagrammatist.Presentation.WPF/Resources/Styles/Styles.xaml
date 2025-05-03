@@ -1283,14 +1283,19 @@
     <Style x:Key="TabWindow" TargetType="Grid">
         <Setter Property="Background" Value="{DynamicResource TabBackground}" />
     </Style>
-    
+
     <Style x:Key="BaseTabControl" TargetType="TabControl">
-        <Setter Property="Background" Value="{StaticResource WindowBackground}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource DialogFrameStrokeRadial}"/>
+        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{DynamicResource FrameForeground}"/>
+    </Style>
+
+    <Style x:Key="SettingsTabControl" TargetType="TabControl">
+        <Setter Property="BorderBrush" Value="{DynamicResource DialogFrameStrokeRadial}"/>
+        <Setter Property="Background" Value="{StaticResource WindowBackground}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
@@ -1309,8 +1314,8 @@
                                 KeyboardNavigation.TabNavigation="Local"
                                 DockPanel.Dock="Bottom">
                             <ContentPresenter x:Name="PART_SelectedContentHost"
-                                              Margin="0"
-                                              ContentSource="SelectedContent" />
+                                      Margin="0"
+                                      ContentSource="SelectedContent" />
                         </Border>
                     </DockPanel>
 
