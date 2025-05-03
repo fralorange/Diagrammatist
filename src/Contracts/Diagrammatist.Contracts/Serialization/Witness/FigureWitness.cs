@@ -14,5 +14,6 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Witness
     [GenerateShape<TextFigure>]
     [GenerateShape<ContainerFigure>]
     [GenerateShape<FlowchartFigure>]
+    [GenerateShape<FlowLineFigure>]
     public partial class FigureWitness;
 }

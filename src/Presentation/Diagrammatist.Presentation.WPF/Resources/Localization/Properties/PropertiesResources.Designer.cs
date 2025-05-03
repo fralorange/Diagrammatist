@@ -71,6 +71,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Condition.
+        /// </summary>
+        internal static string Condition {
+            get {
+                return ResourceManager.GetString("Condition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Font size: .
         /// </summary>
         internal static string FontSize {
@@ -130,6 +139,24 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Properties {
         internal static string KeepAspectRatio {
             get {
                 return ResourceManager.GetString("KeepAspectRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Label font size:.
+        /// </summary>
+        internal static string LabelFontSize {
+            get {
+                return ResourceManager.GetString("LabelFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Label:.
+        /// </summary>
+        internal static string LineLabel {
+            get {
+                return ResourceManager.GetString("LineLabel", resourceCulture);
             }
         }
         

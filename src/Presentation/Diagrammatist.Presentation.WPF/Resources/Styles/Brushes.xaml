@@ -58,6 +58,8 @@
     <SolidColorBrush x:Key="ControlHoverBrush" Color="{DynamicResource ControlHover}"/>
     <SolidColorBrush x:Key="ControlPressedBrush" Color="{DynamicResource ControlPressed}"/>
     <SolidColorBrush x:Key="ControlFocusedBrush" Color="{DynamicResource ControlFocused}"/>
+    <SolidColorBrush x:Key="ControlReadOnlyBackgroundBrush" Color="{DynamicResource ControlReadOnlyBackground}"/>
+    <SolidColorBrush x:Key="ControlReadOnlyBorderBrush" Color="{DynamicResource ControlReadOnlyBorder}"/>
 
     <LinearGradientBrush x:Key="ScrollBarStroke"
                          StartPoint="0,0" 

@@ -7,6 +7,7 @@ using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Application.AppServices.Simulator.Serializer.Configuration;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Factories.Figures.Line;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Managers.Tabs;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Document;
@@ -167,6 +168,20 @@ namespace Diagrammatist.Presentation.WPF
         public static IServiceCollection AddDialogServices(this IServiceCollection services)
         {
             services.AddSingleton<IDialogService, DialogService>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds factories as Transient.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddFactories(this IServiceCollection services)
+        {
+            #region Figures
+            services.AddTransient<ILineFactory, LineFactory>();
+            #endregion
 
             return services;
         }

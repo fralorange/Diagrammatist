@@ -120,6 +120,9 @@
   <data name="Color" xml:space="preserve">
     <value>Цвет: </value>
   </data>
+  <data name="Condition" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
   <data name="FontSize" xml:space="preserve">
     <value>Размер шрифта: </value>
   </data>
@@ -140,6 +143,12 @@
   </data>
   <data name="KeepAspectRatio" xml:space="preserve">
     <value>Сохранять пропорции</value>
+  </data>
+  <data name="LabelFontSize" xml:space="preserve">
+    <value>Размер шрифта метки:</value>
+  </data>
+  <data name="LineLabel" xml:space="preserve">
+    <value>Метка:</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Название: </value>

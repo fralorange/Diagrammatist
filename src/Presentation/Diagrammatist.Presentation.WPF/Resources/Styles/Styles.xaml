@@ -375,6 +375,11 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="Opacity" Value="0.56"/>
                         </Trigger>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlReadOnlyBackgroundBrush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ControlReadOnlyBorderBrush}"/>
+                            <Setter TargetName="Border" Property="Opacity" Value="0.7" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

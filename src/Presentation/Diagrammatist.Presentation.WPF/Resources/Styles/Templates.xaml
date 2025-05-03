@@ -128,6 +128,32 @@
                                      HasArrow="{Binding HasArrow}"/>
     </DataTemplate>
 
+    <DataTemplate x:Key="CanvasFlowLineFigureTemplate">
+        <Grid>
+            <controls:ObservablePolyline Style="{StaticResource Line}"
+                                         Points="{Binding Points}"
+                                         PosX="{Binding PosX, Mode=OneWayToSource}"
+                                         PosY="{Binding PosY, Mode=OneWayToSource}"
+                                         Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                                         Stroke="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                                         StrokeThickness="{Binding Thickness}"
+                                         StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"
+                                         HasArrow="{Binding HasArrow}"/>
+            <TextBlock Text="{Binding Label}"
+                       Visibility="{Binding ShowConditionLabel, Converter={StaticResource BoolToVisibilityConverter}}"
+                       FontSize="{Binding LabelFontSize}"
+                       Style="{StaticResource BaseBlock}"
+                       Background="Transparent"
+                       Padding="2"
+                       IsHitTestVisible="False">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="{Binding LabelPosition.X}" 
+                                        Y="{Binding LabelPosition.Y}" />
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="CanvasTextFigureTemplate"
                   DataType="figures:TextFigureModel">
         <Border>
@@ -192,7 +218,8 @@
                                          LineFigureTemplate="{StaticResource CanvasLineFigureTemplate}"
                                          TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"
                                          ContainerFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"
-                                         FlowchartFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"/>
+                                         FlowchartFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"
+                                         FlowLineFigureTemplate="{StaticResource CanvasFlowLineFigureTemplate}"/>
     <!--#endregion-->
     <!--#region Properties-->
     <DataTemplate x:Key="BasePropertiesFigureTemplate"
@@ -238,6 +265,31 @@
                     <Slider Value="{Binding Thickness, Mode=TwoWay}" 
                             Minimum="1" 
                             Maximum="10"/>
+                </UniformGrid>
+                <CheckBox Content="{lex:Loc IsDashed}"
+                          IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
+                <CheckBox Content="{lex:Loc HasArrow}"
+                          IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PropertiesFlowLineFigureTemplate">
+        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
+            <StackPanel>
+                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
+                <UniformGrid Columns="2">
+                    <Label Content="{lex:Loc Thickness}"/>
+                    <Slider Value="{Binding Thickness, Mode=TwoWay}" 
+                            Minimum="1" 
+                            Maximum="10"/>
+                    <Label Content="{lex:Loc LineLabel}"/>
+                    <TextBox Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc LabelFontSize}"/>
+                    <TextBox Text="{Binding LabelFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="{lex:Loc Condition}"/>
+                    <TextBox Text="{Binding Condition}" 
+                             IsReadOnly="True"/>
                 </UniformGrid>
                 <CheckBox Content="{lex:Loc IsDashed}"
                           IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
@@ -301,7 +353,8 @@
                                          LineFigureTemplate="{StaticResource PropertiesLineFigureTemplate}"
                                          TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"
                                          ContainerFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"
-                                         FlowchartFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"/>
+                                         FlowchartFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"
+                                         FlowLineFigureTemplate="{StaticResource PropertiesFlowLineFigureTemplate}"/>
     <!--#endregion-->
     <!--#region Simulator-->
     <DataTemplate x:Key="SimulationNodeTemplate"

@@ -42,6 +42,8 @@
     <Color x:Key="ControlHover">#FFF0F0F0</Color>
     <Color x:Key="ControlPressed">#FFE0E0E0</Color>
     <Color x:Key="ControlFocused">#FFD0D0FF</Color>
+    <Color x:Key="ControlReadOnlyBackground">#FFF9F9F9</Color>
+    <Color x:Key="ControlReadOnlyBorder">#FFCCCCCC</Color>
 
     <Color x:Key="SplashBackgroundStartColor">#F0F0F0</Color>
     <Color x:Key="SplashBackgroundEndColor">#E0E0E0</Color>
