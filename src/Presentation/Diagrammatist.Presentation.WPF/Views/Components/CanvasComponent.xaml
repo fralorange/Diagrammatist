@@ -10,6 +10,7 @@
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+             lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
              mc:Ignorable="d"
              UseLayoutRounding="True"

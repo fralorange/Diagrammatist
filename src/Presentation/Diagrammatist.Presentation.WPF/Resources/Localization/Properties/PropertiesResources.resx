@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Color: </value>
   </data>
+  <data name="Common" xml:space="preserve">
+    <value>Common</value>
+  </data>
   <data name="Condition" xml:space="preserve">
     <value>Condition</value>
+  </data>
+  <data name="ContainerProperties" xml:space="preserve">
+    <value>Container Properties</value>
   </data>
   <data name="FontSize" xml:space="preserve">
     <value>Font size: </value>
@@ -159,11 +168,17 @@
   <data name="Rotation" xml:space="preserve">
     <value>Rotation: </value>
   </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
   <data name="Text" xml:space="preserve">
     <value>Text: </value>
   </data>
   <data name="TextColor" xml:space="preserve">
     <value>Text color: </value>
+  </data>
+  <data name="TextProperties" xml:space="preserve">
+    <value>Text Properties</value>
   </data>
   <data name="Thickness" xml:space="preserve">
     <value>Thickness: </value>

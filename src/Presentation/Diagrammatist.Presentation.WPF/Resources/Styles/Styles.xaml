@@ -257,11 +257,6 @@
     </Style>
     <!--#endregion-->
 
-    <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}" 
-           TargetType="{x:Type Control}">
-        <Setter Property="Control.Template" Value="{x:Null}" />
-    </Style>
-
     <Style TargetType="TextBlock" x:Key="BaseBlock">
         <Setter Property="Foreground" Value="{StaticResource FrameForeground}"/>
     </Style>
@@ -477,25 +472,23 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Checkmark Box -->
                         <Border x:Name="border"
-                            Grid.Column="0"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="2"
-                            Width="16"
-                            Height="16"
-                            Margin="0,0,4,0">
+                                Grid.Column="0"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2"
+                                Width="16"
+                                Height="16"
+                                Margin="0,0,4,0">
                             <Path x:Name="checkMark"
-                              Data="M 0 5 L 5 10 L 12 0"
-                              Stroke="{DynamicResource ControlFocusedBrush}"
-                              StrokeThickness="2"
-                              Visibility="Collapsed"
-                              Stretch="Uniform"/>
+                                  Data="M 0 5 L 5 10 L 12 0"
+                                  Stroke="{DynamicResource ControlFocusedBrush}"
+                                  StrokeThickness="2"
+                                  Visibility="Collapsed"
+                                  Stretch="Uniform"/>
                         </Border>
 
-                        <!-- Content -->
                         <ContentPresenter Grid.Column="1"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -563,6 +556,7 @@
 
     <Style TargetType="ListBoxItem" x:Key="CustomSelectionBox">
         <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -611,6 +605,7 @@
     <Style x:Key="ObjectTreeSelectionBox" TargetType="ListBoxItem">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Margin" Value="5,2"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -654,6 +649,7 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -1069,6 +1065,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="4"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -1713,5 +1710,161 @@
     <Style TargetType="Border" x:Key="SecondarySplashBackground" BasedOn="{StaticResource BaseSplashBackground}">
         <Setter Property="Margin" Value="15" />
         <Setter Property="Effect" Value="{DynamicResource PrimaryGlowEffect}" />
+    </Style>
+
+    <Style x:Key="SliderFilledRepeatButton" TargetType="RepeatButton">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Height="4"
+                            Background="{DynamicResource FrameStroke}"
+                            CornerRadius="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SliderEmptyRepeatButton" TargetType="RepeatButton">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Height="4"
+                            Background="{DynamicResource ControlBackgroundBrush}"
+                            CornerRadius="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Ellipse Width="12" Height="12"
+                             Fill="{DynamicResource FrameStroke}"
+                             Stroke="{DynamicResource FrameStroke}"
+                             StrokeThickness="1"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="SimpleSliderTemplate" TargetType="Slider">
+        <Grid VerticalAlignment="Center">
+            <Track x:Name="PART_Track"
+                   IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
+                   Maximum="{TemplateBinding Maximum}"
+                   Minimum="{TemplateBinding Minimum}"
+                   Value="{TemplateBinding Value}">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource SliderFilledRepeatButton}"
+                                  Command="Slider.DecreaseLarge"/>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource SliderThumbStyle}"/>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource SliderEmptyRepeatButton}"
+                                  Command="Slider.IncreaseLarge"/>
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="Slider" x:Key="BaseSlider">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template" Value="{StaticResource SimpleSliderTemplate}"/>
+        <Setter Property="MinHeight" Value="20"/>
+    </Style>
+
+    <Style TargetType="Slider" BasedOn="{StaticResource BaseSlider}"/>
+
+    <Style TargetType="Expander" x:Key="BaseExpander">
+        <Setter Property="Foreground" Value="{DynamicResource FrameForeground}"/>
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Expander">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="4">
+                        <DockPanel>
+                            <ToggleButton x:Name="HeaderToggle"
+                                          Style="{StaticResource BaseButton}"
+                                          Padding="0 0"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                          FontWeight="SemiBold"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          DockPanel.Dock="Top">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path x:Name="Arrow"
+                                          Data="M 0 0 L 8 8 L 16 0 Z"
+                                          Fill="{DynamicResource FrameStroke}"
+                                          Width="16" Height="8"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          Margin="0 0 5 0"/>
+                                    <TextBlock Style="{StaticResource BaseBlock}"
+                                               Text="{TemplateBinding Header}"/>
+                                </StackPanel>
+                            </ToggleButton>
+
+                            <ContentPresenter x:Name="Content"
+                                              Visibility="Collapsed"
+                                              ContentSource="Content"
+                                              Margin="0,4,0,0"/>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="Content" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Arrow" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger SourceName="HeaderToggle" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HeaderToggle" Property="Background" Value="{DynamicResource ControlHoverBrush}"/>
+                        </Trigger>
+                        <Trigger SourceName="HeaderToggle" Property="IsPressed" Value="True">
+                            <Setter TargetName="HeaderToggle" Property="Background" Value="{DynamicResource ControlPressedBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Expander" BasedOn="{StaticResource BaseExpander}"/>
+
+    <Style x:Key="PropLabelStyle" TargetType="Label" BasedOn="{StaticResource BaseLabel}">
+        <Setter Property="Margin" Value="0 0 8 4" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="PropTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+        <Setter Property="Margin" Value="0 0 0 4" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="PropExpanderStyle" TargetType="Expander" BasedOn="{StaticResource BaseExpander}">
+        <Setter Property="Margin" Value="0 0 5 8" />
     </Style>
 </ResourceDictionary>

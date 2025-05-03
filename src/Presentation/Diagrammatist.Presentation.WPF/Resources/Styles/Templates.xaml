@@ -221,131 +221,240 @@
                                          FlowchartFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"
                                          FlowLineFigureTemplate="{StaticResource CanvasFlowLineFigureTemplate}"/>
     <!--#endregion-->
-    <!--#region Properties-->
     <DataTemplate x:Key="BasePropertiesFigureTemplate"
-                  DataType="figures:FigureModel">
-        <UniformGrid Columns="2"
-                     lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <Label Content="{lex:Loc Name}"/>
-            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="{lex:Loc Rotation}"/>
-            <TextBox Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="{lex:Loc Color}"/>
-            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             ShowAlpha="False"
-                                             ShowFractionalPart="False"
-                                             Style="{StaticResource PortableColorSlider}"/>
-        </UniformGrid>
+                DataType="figures:FigureModel">
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Name}" />
+            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Rotation}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Color}" />
+            <colorpicker:PortableColorPicker Grid.Row="2" Grid.Column="1"
+                                       SelectedColor="{Binding BackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       ShowAlpha="False"
+                                       ShowFractionalPart="False"
+                                       Style="{StaticResource PortableColorSlider}" />
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesShapeFigureTemplate"
-                  DataType="figures:ShapeFigureModel">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Width}"/>
-                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Height}"/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc KeepAspectRatio}"
-                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+                DataType="figures:ShapeFigureModel">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc Size}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Width}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Height}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="{lex:Loc KeepAspectRatio}" IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}" Margin="0,4,0,0"/>
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesLineFigureTemplate"
                   DataType="figures:LineFigureModel">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Thickness}"/>
-                    <Slider Value="{Binding Thickness, Mode=TwoWay}" 
-                            Minimum="1" 
-                            Maximum="10"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc IsDashed}"
-                          IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
-                <CheckBox Content="{lex:Loc HasArrow}"
-                          IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc Appearance}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Thickness}" />
+                            <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Thickness, Mode=TwoWay}" Minimum="1" Maximum="10" Margin="0,0,0,4" />
+
+                            <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="{lex:Loc IsDashed}" IsChecked="{Binding IsDashed, Mode=TwoWay}" Margin="0,4,0,0" />
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="{lex:Loc HasArrow}" IsChecked="{Binding HasArrow, Mode=TwoWay}" Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="PropertiesFlowLineFigureTemplate">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Thickness}"/>
-                    <Slider Value="{Binding Thickness, Mode=TwoWay}" 
-                            Minimum="1" 
-                            Maximum="10"/>
-                    <Label Content="{lex:Loc LineLabel}"/>
-                    <TextBox Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc LabelFontSize}"/>
-                    <TextBox Text="{Binding LabelFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Condition}"/>
-                    <TextBox Text="{Binding Condition}" 
-                             IsReadOnly="True"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc IsDashed}"
-                          IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
-                <CheckBox Content="{lex:Loc HasArrow}"
-                          IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+    <DataTemplate x:Key="PropertiesFlowLineFigureTemplate"
+                  DataType="figures:FlowLineFigureModel">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc Appearance}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Thickness}" />
+                            <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Thickness, Mode=TwoWay}" Minimum="1" Maximum="10" Margin="0,0,0,4" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc LineLabel}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc LabelFontSize}" />
+                            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding LabelFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Condition}" />
+                            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Condition}" IsReadOnly="True" />
+
+                            <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="{lex:Loc IsDashed}" IsChecked="{Binding IsDashed, Mode=TwoWay}" Margin="0,4,0,0" />
+                            <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Content="{lex:Loc HasArrow}" IsChecked="{Binding HasArrow, Mode=TwoWay}" Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesTextFigureTemplate"
                   DataType="figures:TextFigureModel">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Text}"/>
-                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc FontSize}"/>
-                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc TextColor}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     ShowAlpha="False"
-                                                     ShowFractionalPart="False"
-                                                     Style="{StaticResource PortableColorSlider}"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc HasOutline}"
-                          IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
-                <CheckBox Content="{lex:Loc HasBackground}"
-                          IsChecked="{Binding HasBackground, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc TextProperties}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Text}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc FontSize}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc TextColor}" />
+                            <colorpicker:PortableColorPicker Grid.Row="2" Grid.Column="1"
+                                                             SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             ShowAlpha="False"
+                                                             ShowFractionalPart="False"
+                                                             Style="{StaticResource PortableColorSlider}" />
+
+                            <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Content="{lex:Loc HasOutline}" IsChecked="{Binding HasOutline, Mode=TwoWay}" Margin="0,4,0,0" />
+                            <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="{lex:Loc HasBackground}" IsChecked="{Binding HasBackground, Mode=TwoWay}" Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="PropertiesContainerFigureTemplate">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Width}"/>
-                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Height}"/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Text}"/>
-                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc FontSize}"/>
-                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc TextColor}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 ShowAlpha="False"
-                                 ShowFractionalPart="False"
-                                 Style="{StaticResource PortableColorSlider}"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc KeepAspectRatio}"
-                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+    <DataTemplate x:Key="PropertiesContainerFigureTemplate"
+                DataType="figures:ContainerFigureModel">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc ContainerProperties}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Width}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Height}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Text}" />
+                            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc FontSize}" />
+                            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc TextColor}" />
+                            <colorpicker:PortableColorPicker Grid.Row="4" Grid.Column="1"
+                                                             SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             ShowAlpha="False"
+                                                             ShowFractionalPart="False"
+                                                             Style="{StaticResource PortableColorSlider}" />
+
+                            <CheckBox Grid.Row="5" 
+                                      Grid.ColumnSpan="2" 
+                                      Content="{lex:Loc KeepAspectRatio}" 
+                                      IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}" 
+                                      Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
     <selector:FigureItemTemplateSelector x:Key="PropertiesFigureSelector"

@@ -62,6 +62,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Appearance.
+        /// </summary>
+        internal static string Appearance {
+            get {
+                return ResourceManager.GetString("Appearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Color: .
         /// </summary>
         internal static string Color {
@@ -71,11 +80,29 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Common.
+        /// </summary>
+        internal static string Common {
+            get {
+                return ResourceManager.GetString("Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Condition.
         /// </summary>
         internal static string Condition {
             get {
                 return ResourceManager.GetString("Condition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Container Properties.
+        /// </summary>
+        internal static string ContainerProperties {
+            get {
+                return ResourceManager.GetString("ContainerProperties", resourceCulture);
             }
         }
         
@@ -188,6 +215,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Size.
+        /// </summary>
+        internal static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Text: .
         /// </summary>
         internal static string Text {
@@ -202,6 +238,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Properties {
         internal static string TextColor {
             get {
                 return ResourceManager.GetString("TextColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Text Properties.
+        /// </summary>
+        internal static string TextProperties {
+            get {
+                return ResourceManager.GetString("TextProperties", resourceCulture);
             }
         }
         
