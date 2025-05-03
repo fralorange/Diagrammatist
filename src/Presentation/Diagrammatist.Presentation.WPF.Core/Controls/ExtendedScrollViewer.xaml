@@ -13,6 +13,17 @@
                           Loaded="OnScrollViewerLoaded"
                           HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                           VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}">
+                <ScrollViewer.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{DynamicResource AppThemeColor}" />
+                    <Style TargetType="ScrollViewer">
+                        <Style.Resources>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Effect" Value="{DynamicResource PrimarySelectionBoxEffect}" />
+                                <Setter Property="Stroke" Value="{DynamicResource WindowBackground}" />
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </ScrollViewer.Resources>
                 <Grid x:Name="grid"
                       RenderTransformOrigin="0.5,0.5"
                       Background="{TemplateBinding ContentBackground}">

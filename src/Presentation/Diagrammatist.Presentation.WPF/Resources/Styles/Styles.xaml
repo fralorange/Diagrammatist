@@ -1602,14 +1602,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-    <Style TargetType="controls:ExtendedScrollViewer">
-        <Style.Resources>
-            <Style TargetType="Rectangle">
-                <Setter Property="Visibility" Value="Collapsed" />
-            </Style>
-        </Style.Resources>
-    </Style>
     <!--#endregion-->
 
     <Style TargetType="ToolTip">
