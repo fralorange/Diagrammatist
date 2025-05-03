@@ -375,7 +375,8 @@
 
     <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
                                               SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
-                                              SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
+                                              SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"
+                                              SimulationAnnotationTemplate="{StaticResource CanvasTextFigureTemplate}"/>
 
     <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
                                                 SimulationNodeTemplate="{StaticResource ScriptTemplate}"

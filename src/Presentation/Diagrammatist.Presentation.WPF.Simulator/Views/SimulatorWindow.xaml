@@ -39,6 +39,7 @@
                 <Grid.Resources>
                     <CollectionViewSource x:Key="NodesCollection" Source="{Binding Nodes}"/>
                     <CollectionViewSource x:Key="ConnectionCollection" Source="{Binding Connections}"/>
+                    <CollectionViewSource x:Key="AnnotationsCollection" Source="{Binding Annotations}"/>
                 </Grid.Resources>
                 <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
                          ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
@@ -49,6 +50,7 @@
                         <CompositeCollection>
                             <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
                             <CollectionContainer Collection="{Binding Source={StaticResource ConnectionCollection}}"/>
+                            <CollectionContainer Collection="{Binding Source={StaticResource AnnotationsCollection}}"/>
                         </CompositeCollection>
                     </ListBox.ItemsSource>
                     <ListBox.ItemsPanel>

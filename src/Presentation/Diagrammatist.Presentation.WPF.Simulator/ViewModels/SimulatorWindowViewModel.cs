@@ -6,6 +6,7 @@ using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
@@ -67,6 +68,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// </summary>
         public ObservableCollection<ConnectionModel> Connections { get; }
 
+        /// <summary>
+        /// Gets annotations.
+        /// </summary>
+        public ObservableCollection<TextFigureModel> Annotations { get; }
+
         private bool? _dialogResult;
 
         /// <inheritdoc/>
@@ -114,6 +120,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             var createdNodes = factory.CreateNodes(currentCanvas.Figures, payload?.Nodes);
             Nodes = createdNodes.ToObservableCollection();
             Connections = currentCanvas.Connections;
+            Annotations = currentCanvas.Figures.OfType<TextFigureModel>().ToObservableCollection();
 
             // Simulation parameters.
             SimulationSize = new Size(currentCanvas.Settings.Width, currentCanvas.Settings.Height);

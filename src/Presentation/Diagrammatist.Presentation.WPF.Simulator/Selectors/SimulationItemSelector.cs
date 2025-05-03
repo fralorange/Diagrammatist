@@ -1,4 +1,5 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Selectors
         /// </summary>
         public DataTemplate? SimulationConnectionTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets simulation annotation template.
+        /// </summary>
+        public DataTemplate? SimulationAnnotationTemplate { get; set; }
+
         /// <inheritdoc/>
         public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
@@ -27,6 +33,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Selectors
             {
                 SimulationNode => SimulationNodeTemplate,
                 ConnectionModel => SimulationConnectionTemplate,
+                TextFigureModel => SimulationAnnotationTemplate,
                 _ => null,
             };
         }

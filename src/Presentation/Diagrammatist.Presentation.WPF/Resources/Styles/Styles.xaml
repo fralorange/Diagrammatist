@@ -1009,9 +1009,6 @@
         </Setter>
     </Style>
 
-
-
-
     <Style TargetType="colorpicker:PortableColorPicker" x:Key="CustomPortableColorPicker">
         <Style.Resources>
             <Style TargetType="colorpicker:ColorDisplay">
