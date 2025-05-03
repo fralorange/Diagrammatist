@@ -11,17 +11,28 @@
                          md:DialogServiceViews.IsRegistered="True"
                          d:DataContext="{d:DesignInstance Type=viewmodels:SimulatorWindowViewModel}"
                          Title="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Simulator}"
-                         Icon="{StaticResource AppIcon}"
                          mc:Ignorable="d"
                          WindowStartupLocation="CenterOwner"
-                         SizeToContent="WidthAndHeight"
-                         ResizeMode="NoResize"
+                         ResizeMode="CanResize"
                          Loaded="SimulatorLoaded"
                          ShowMinimizeButton="False"
                          ShowMaximizeButton="False"
                          ShowCenteredTitle="True"
-                         IsDialog="True">
-    <Grid Style="{StaticResource Window}">
+                         IsDialog="True"
+                         UseLayoutRounding="True"
+                         SnapsToDevicePixels="True">
+    <controls:TitleBarWindow.InputBindings>
+        <KeyBinding Gesture="Ctrl+1" 
+                    Command="{Binding ChangeMouseControlCommand}"
+                    CommandParameter="Select"/>
+        <KeyBinding Gesture="Ctrl+2" 
+                    Command="{Binding ChangeMouseControlCommand}"
+                    CommandParameter="Pan"/>
+    </controls:TitleBarWindow.InputBindings>
+
+    <Grid Style="{StaticResource Window}"
+          UseLayoutRounding="True"
+          SnapsToDevicePixels="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -30,84 +41,111 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0"
-                Style="{StaticResource InternalBorder}"
-                Padding="0">
+                Style="{StaticResource TextBorder}"
+                Padding="0"
+                BorderThickness="2 2 1 2"
+                Margin="10 10 0 10">
             <Grid>
                 <Grid.Resources>
                     <CollectionViewSource x:Key="NodesCollection" Source="{Binding Nodes}"/>
                     <CollectionViewSource x:Key="ConnectionCollection" Source="{Binding Connections}"/>
                     <CollectionViewSource x:Key="AnnotationsCollection" Source="{Binding Annotations}"/>
                 </Grid.Resources>
-                <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
-                         ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
-                         SelectedItem="{Binding SelectedNode}"
-                         PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
-                         Validation.ErrorTemplate="{x:Null}">
-                    <ListBox.ItemsSource>
-                        <CompositeCollection>
-                            <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
-                            <CollectionContainer Collection="{Binding Source={StaticResource ConnectionCollection}}"/>
-                            <CollectionContainer Collection="{Binding Source={StaticResource AnnotationsCollection}}"/>
-                        </CompositeCollection>
-                    </ListBox.ItemsSource>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Width, FallbackValue=0}"
-                                    Height="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Height, FallbackValue=0}"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-                <Border HorizontalAlignment="Left" 
+                <controls:ExtendedScrollViewer HorizontalScrollBarVisibility="Hidden"
+                                               VerticalScrollBarVisibility="Hidden"
+                                               x:Name="extScrollViewer"
+                                               IsPanEnabled="{Binding CurrentMouseControl, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
+                                               Cursor="{Binding CurrentMouseControl, Converter={StaticResource MouseModeToCursorConverter}}">
+                    <Grid Width="{Binding SimulationSpace.Width, FallbackValue=0}"
+                          Height="{Binding SimulationSpace.Height, FallbackValue=0}">
+                        <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
+                                 ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
+                                 SelectedItem="{Binding SelectedNode}"
+                                 PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
+                                 Validation.ErrorTemplate="{x:Null}">
+                            <ListBox.ItemsSource>
+                                <CompositeCollection>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource ConnectionCollection}}"/>
+                                    <CollectionContainer Collection="{Binding Source={StaticResource AnnotationsCollection}}"/>
+                                </CompositeCollection>
+                            </ListBox.ItemsSource>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Width, FallbackValue=0}"
+                                            Height="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.SimulationSize.Height, FallbackValue=0}"
+                                            UseLayoutRounding="True"
+                                            SnapsToDevicePixels="True"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </Grid>
+                </controls:ExtendedScrollViewer>
+                <Border HorizontalAlignment="Stretch"
                         VerticalAlignment="Bottom"
-                        BorderThickness="0 2 2 0"
+                        BorderThickness="0 2 0 0"
                         Margin="0"
                         Padding="0"
                         Style="{StaticResource InternalBorder}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Cursor="">
                         <StackPanel.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource MediaButton}">
-                                <Setter Property="Margin" Value="5 0" />
-                            </Style>
                             <Style TargetType="Path">
-                                <Setter Property="Fill" Value="{StaticResource FrameStroke}" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Stretch" Value="Uniform" />
+                                <Setter Property="Fill" Value="Transparent"/>
+                                <Setter Property="Stroke" Value="{DynamicResource FrameStroke}" />
+                                <Setter Property="StrokeThickness" Value="1.5" />
+                                <Setter Property="Width" Value="16"/>
+                                <Setter Property="Height" Value="16"/>
+                                <Setter Property="Stretch" Value="Uniform"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}"
-                                Command="{Binding ResetSimulationCommand}">
-                            <Path Data="M0,0 H1 V1 H0z"/>
-                        </Button>
 
-                        <Rectangle Style="{StaticResource VerticalCustomSeparator}"/>
-
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepBackward}"
-                                Command="{Binding StepBackwardCommand}">
+                        <Button Command="{Binding StepBackwardCommand}"
+                                Style="{StaticResource MediaButton}"
+                                ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepBackward}">
                             <Path Data="M1,0 L0.25,0.5 1,1 Z M0.1,0 L0.25,0 V1 H0.1z"/>
                         </Button>
 
-                        <Button ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepForward}"
-                                Command="{Binding StepForwardCommand}">
+                        <Rectangle Style="{StaticResource VerticalCustomSeparator}" />
+
+                        <Button Command="{Binding ResetSimulationCommand}"
+                                Style="{StaticResource MediaButton}"
+                                ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Stop}">
+                            <Path Data="M0,0 H1 V1 H0z"/>
+                        </Button>
+
+                        <Rectangle Style="{StaticResource VerticalCustomSeparator}" />
+
+                        <Button Command="{Binding StepForwardCommand}"
+                                Style="{StaticResource MediaButton}"
+                                ToolTip="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:StepForward}">
                             <Path Data="M0,0 L0.75,0.5 0,1 Z M0.9,0 L0.75,0 V1 H0.9z"/>
                         </Button>
+                        <Rectangle Style="{StaticResource VerticalCustomSeparator}" />
                     </StackPanel>
                 </Border>
             </Grid>
         </Border>
 
+        <!--#region Right panel-->
+        
         <Border Grid.Column="1"
                 Padding="0"
-                Style="{StaticResource InternalBorder}">
+                Style="{StaticResource TextBorder}"
+                BorderThickness="1 2 1 2"
+                Margin="0 10 0 10">
             <StackPanel Validation.ErrorTemplate="{x:Null}">
                 <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationSettings}" 
                            FontWeight="Bold"
-                           Margin="10"/>
+                           FontStretch="Expanded"
+                           Margin="10"
+                           HorizontalAlignment="Center"/>
 
-                <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+                <Rectangle Style="{StaticResource HorizontalCustomSeparator}"
+                           Height="2"/>
                 <ContentControl Margin="5 5 0 10"
                                 Content="{Binding SelectedNode}"
                                 ContentTemplateSelector="{StaticResource SimulationScriptSelector}"
@@ -115,9 +153,14 @@
             </StackPanel>
         </Border>
 
+        <!--#endregion-->
+        
+        <!--#region Buttons-->
+        
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1"
                     Grid.Column="1"
+                    Grid.ColumnSpan="2"
                     Margin="0 0 10 10"
                     HorizontalAlignment="Right">
             <StackPanel.Resources>
@@ -133,5 +176,50 @@
             <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:Apply}"
                     Command="{Binding ApplyCommand}"/>
         </StackPanel>
+
+        <Border Grid.Column="2"
+                Style="{StaticResource TextBorder}"
+                Margin="0 10 10 10"
+                BorderThickness="1 2 2 2"
+                VerticalAlignment="Stretch"
+                Width="50"
+                SnapsToDevicePixels="True"
+                UseLayoutRounding="True">
+            <StackPanel VerticalAlignment="Bottom">
+                <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+                <RadioButton Style="{StaticResource SimulatorToolButton}"
+                             GroupName="MouseControls"
+                             IsChecked="{Binding CurrentMouseControl, 
+                                         Converter={StaticResource EnumToBooleanConverter}, 
+                                         ConverterParameter=Select, 
+                                         Mode=OneWay}"
+                             Width="26"
+                             Height="26"
+                             Margin="5"
+                             Command="{Binding ChangeMouseControlCommand}"
+                             CommandParameter="Select">
+                    <Image Source="{StaticResource selectSimulatorImage}"
+                           Width="16" 
+                           Height="16"/>
+                </RadioButton>
+                <RadioButton Style="{StaticResource SimulatorToolButton}"
+                             GroupName="MouseControls"
+                             IsChecked="{Binding CurrentMouseControl, 
+                                         Converter={StaticResource EnumToBooleanConverter}, 
+                                         ConverterParameter=Pan, 
+                                         Mode=OneWay}"
+                             Width="26"
+                             Height="26"
+                             Margin="5 0"
+                             Command="{Binding ChangeMouseControlCommand}"
+                             CommandParameter="Pan" Cursor="">
+                    <Image Source="{StaticResource moveSimulatorImage}"
+                           Width="16" 
+                           Height="16"/>
+                </RadioButton>
+            </StackPanel>
+        </Border>
+        
+        <!--#endregion-->
     </Grid>
 </controls:TitleBarWindow>

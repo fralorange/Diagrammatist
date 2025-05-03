@@ -7,8 +7,8 @@ using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {

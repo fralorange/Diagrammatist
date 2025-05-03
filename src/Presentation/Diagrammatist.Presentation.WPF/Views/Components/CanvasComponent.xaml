@@ -11,7 +11,9 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             UseLayoutRounding="True"
+             SnapsToDevicePixels="True">
     <UserControl.Resources>
         <ControlTemplate TargetType="ListBox"
                          x:Key="UnscrollableListBox">
@@ -92,7 +94,9 @@
                                                  PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown"
                                                  PreviewKeyDown="OnExtendedCanvasPreviewKeyDown"
                                                  Loaded="OnExtendedCanvasLoaded"
-                                                 Focusable="True">
+                                                 Focusable="True"
+                                                 UseLayoutRounding="True"
+                                                 SnapsToDevicePixels="True">
                             <controls:ExtendedCanvas.ContextMenu>
                                 <ContextMenu lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                                     <MenuItem Header="{lex:Loc Paste}"

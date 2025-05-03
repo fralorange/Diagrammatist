@@ -1182,7 +1182,7 @@
 
     <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}"/>
 
-    <Style x:Key="BaseButton" TargetType="Button">
+    <Style x:Key="BaseButton" TargetType="{x:Type ButtonBase}">
         <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -1197,7 +1197,7 @@
         <Setter Property="MinHeight" Value="30"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Grid>
                         <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
@@ -1227,7 +1227,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="Button" BasedOn="{StaticResource BaseButton}" x:Key="ActionButton">
+    <Style TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource BaseButton}" x:Key="ActionButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="MinWidth" Value="24"/>
@@ -1272,10 +1272,37 @@
         </Setter>
     </Style>
 
+    <Style TargetType="RadioButton" BasedOn="{StaticResource ActionButton}" x:Key="SimulatorToolButton">
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ToolbarItemSelectedBackground}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ToolbarItemBorderSelected}"/>
+                <Setter Property="Opacity" Value="1.0"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="Button" BasedOn="{StaticResource ActionButton}" x:Key="MediaButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="8"/>
+        <Setter Property="Margin" Value="10 0" />
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Focusable" Value="False" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{DynamicResource MediaButtonMouseOverPrimaryEffect}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Effect" Value="{x:Null}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Effect" Value="{DynamicResource MediaButtonPressedEffect}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>

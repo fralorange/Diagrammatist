@@ -1,4 +1,4 @@
-﻿using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
+﻿using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using System.Globalization;
 using System.Windows.Data;
 

@@ -21,4 +21,18 @@
                       BlurRadius="6" 
                       Color="{DynamicResource ControlHover}"
                       Opacity="0.4"/>
+
+    <DropShadowEffect x:Key="MediaButtonMouseOverPrimaryEffect"
+                      Color="{DynamicResource DialogSecondaryBackground}" 
+                      BlurRadius="8" 
+                      Direction="270" 
+                      ShadowDepth="4" 
+                      Opacity="0.5"/>
+
+    <DropShadowEffect x:Key="MediaButtonPressedEffect" 
+                      Color="{DynamicResource DialogStroke}" 
+                      BlurRadius="10" 
+                      Direction="270" 
+                      ShadowDepth="5" 
+                      Opacity="0.7"/>
 </ResourceDictionary>

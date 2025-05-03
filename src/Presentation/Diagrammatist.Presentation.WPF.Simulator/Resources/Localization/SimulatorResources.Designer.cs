@@ -233,7 +233,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Simulation Settings.
+        ///   Ищет локализованную строку, похожую на SIMULATION SETTINGS.
         /// </summary>
         internal static string SimulationSettings {
             get {

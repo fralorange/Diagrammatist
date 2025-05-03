@@ -25,6 +25,8 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Views
             {
                 vm.RequestOpen += OpenFile;
             }
+
+            extScrollViewer.ZoomReset();
         }
 
         private void OnListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

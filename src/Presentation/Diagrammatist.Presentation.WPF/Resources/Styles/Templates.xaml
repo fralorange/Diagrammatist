@@ -307,26 +307,65 @@
     <DataTemplate x:Key="SimulationNodeTemplate"
                   DataType="node:SimulationNodeBase"
                   xmlns:converters="clr-namespace:Diagrammatist.Presentation.WPF.Resources.Converters">
-        <DataTemplate.Resources>
-            <converters:EqualityToBrushMultiConverter x:Key="EqualityToBrushMultiConverter" 
-                                                      HighlightBrush="{StaticResource ControlHighlightBrush}" 
-                                                      DefaultBrush="Transparent"/>
-        </DataTemplate.Resources>
         <Grid>
             <ContentControl Content="{Binding Figure}"
                         ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
-            <Border BorderThickness="2"
-                    Background="Transparent"
+
+            <Border Background="Transparent"
                     IsHitTestVisible="False">
-                <Border.BorderBrush>
-                    <MultiBinding Converter="{StaticResource EqualityToBrushMultiConverter}">
-                        <Binding Path="DataContext.CurrentNode" RelativeSource="{RelativeSource AncestorType=ListBox}"/>
-                        <Binding/>
-                    </MultiBinding>
-                </Border.BorderBrush>
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="0" ShadowDepth="0" Opacity="0" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource ObjectComparisonMultiConverter}">
+                                        <Binding Path="DataContext.CurrentNode" RelativeSource="{RelativeSource AncestorType=ListBox}"/>
+                                        <Binding />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness"
+                                                                To="3" Duration="0:0:0.3" />
+                                            <ColorAnimation Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                            To="{StaticResource ControlFocused}" Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                                             To="0.6" Duration="0:0:0.3"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                                             To="10" Duration="0:0:0.3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness"
+                                                            To="0" Duration="0:0:0.2" />
+                                            <ColorAnimation Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                        To="Transparent" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                                         To="0" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                                         To="0" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
             </Border>
         </Grid>
     </DataTemplate>
+
 
     <DataTemplate x:Key="SimulationConnectionTemplate"
                   DataType="connection:ConnectionModel">
@@ -338,14 +377,16 @@
                   DataType="node:SimulationNodeBase">
         <StackPanel>
             <TextBlock Text="Lua"
-                       FontWeight="Bold"/>
+                       FontWeight="Bold"
+                       Margin="5 0 0 0"/>
             <TextBox Text="{Binding LuaScript, 
                             Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged, 
                             ValidatesOnExceptions=True,
                             NotifyOnValidationError=True}"
                      Style="{StaticResource ScriptTextBox}"/>
-            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"
+                       Margin="0 10 0 0"/>
         </StackPanel>
     </DataTemplate>
 
@@ -356,7 +397,8 @@
             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ScriptTemplate}"/>
             <StackPanel Margin="0 5 0 5">
                 <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:File}"
-                           FontWeight="Bold"/>
+                           FontWeight="Bold"
+                           Margin="5 0 0 0"/>
                 <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:LoadFile}"
                         Command="{Binding DataContext.LoadFileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                         Margin="5"/>
@@ -369,7 +411,8 @@
                          FontSize="10"
                          Margin="5,0,5,0"/>
             </StackPanel>
-            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"
+                       Margin="0 10 0 0"/>
         </StackPanel>
     </DataTemplate>
 

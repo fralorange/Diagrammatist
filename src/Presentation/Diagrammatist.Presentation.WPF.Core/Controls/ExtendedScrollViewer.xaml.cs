@@ -60,6 +60,27 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 new PropertyMetadata(0.0, OnVerticalOffsetChanged));
 
         /// <summary>
+        /// Dependency property for the horizontal scroll bar visibility.
+        /// </summary>
+        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty =
+            DependencyProperty.Register(nameof(HorizontalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(ExtendedScrollViewer),
+                new PropertyMetadata(ScrollBarVisibility.Visible));
+
+        /// <summary>
+        /// Dependency property for the vertical scroll bar visibility.
+        /// </summary>
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty =
+            DependencyProperty.Register(nameof(VerticalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(ExtendedScrollViewer),
+                new PropertyMetadata(ScrollBarVisibility.Visible));
+
+        /// <summary>
+        /// Dependency property for the content background brush.
+        /// </summary>
+        public static readonly DependencyProperty ContentBackgroundProperty =
+            DependencyProperty.Register(nameof(ContentBackground), typeof(Brush), typeof(ExtendedScrollViewer), 
+                new PropertyMetadata(Brushes.Transparent));
+
+        /// <summary>
         /// Gets or sets the zoom level of the scroll viewer.
         /// </summary>
         public float Zoom
@@ -131,7 +152,33 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             set => SetValue(VerticalOffsetProperty, value);
         }
 
-        // === Internals ===
+        /// <summary>
+        /// Gets or sets the visibility of the horizontal scroll bar.
+        /// </summary>
+        public ScrollBarVisibility HorizontalScrollBarVisibility
+        {
+            get => (ScrollBarVisibility)GetValue(HorizontalScrollBarVisibilityProperty);
+            set => SetValue(HorizontalScrollBarVisibilityProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the visibility of the vertical scroll bar.
+        /// </summary>
+        public ScrollBarVisibility VerticalScrollBarVisibility
+        {
+            get => (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty);
+            set => SetValue(VerticalScrollBarVisibilityProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the background brush of the content area.
+        /// </summary>
+        public Brush ContentBackground
+        {
+            get => (Brush)GetValue(ContentBackgroundProperty);
+            set => SetValue(ContentBackgroundProperty, value);
+        }
+
         private ScrollViewer _sv;
         private Grid _grid;
         private ScaleTransform _scale;
@@ -155,17 +202,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         /// Zooms in the content of the scroll viewer.
         /// </summary>
         public void ZoomIn()  
-        { 
-            CenterContentRelatively(ZoomFactor); 
-            Zoom = CalculateZoom(ZoomFactor); 
+        {
+            ChangeZoom(ZoomFactor);
         }
         /// <summary>
         /// Zooms out the content of the scroll viewer.
         /// </summary>
         public void ZoomOut() 
-        { 
-            CenterContentRelatively(1f / ZoomFactor); 
-            Zoom = CalculateZoom(1f / ZoomFactor); 
+        {
+            ChangeZoom(1f / ZoomFactor);
         }
         /// <summary>
         /// Resets the zoom level to the default value (1.0).
@@ -178,12 +223,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         private void OnScrollViewerLoaded(object sender, RoutedEventArgs e)
         {
-            // find parts
             _sv    = (ScrollViewer)Template.FindName("scrollViewer", this);
             _grid  = (Grid)Template.FindName("grid", this);
             _scale = (ScaleTransform)Template.FindName("scaleTransform", this);
 
-            // subscribe all events
             _sv.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
             _sv.MouseMove                  += OnMouseMove;
             _sv.MouseLeftButtonUp          += OnMouseLeftButtonUp;
@@ -202,10 +245,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             };
         }
 
-        // Mouse handling (pan + zoom)
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!IsPanEnabled) return;
+            if (!IsPanEnabled)
+                return;
+
             _initialMousePos = e.GetPosition(_sv);
             _isDragging = true;
             _sv.CaptureMouse();
@@ -236,7 +280,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             if (!IsPanEnabled || Keyboard.Modifiers != ZoomModifier) return;
             e.Handled = true;
 
-            // remember mouse and center
             _lastMousePosOnTarget = e.GetPosition(_grid);
             var factor = e.Delta > 0 ? ZoomFactor : 1f / ZoomFactor;
             ChangeZoom(factor);
@@ -247,15 +290,30 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             if (e.PreviousSize == Size.Empty ||
                 e.PreviousSize.Width <= 0 ||
                 e.PreviousSize.Height <= 0 ||
-                Keyboard.Modifiers == ZoomModifier) return;
+                Keyboard.Modifiers == ZoomModifier)
+                return;
 
-            var horizRatio = _sv.HorizontalOffset / (_sv.ExtentWidth  - _sv.ViewportWidth);
-            var vertRatio  = _sv.VerticalOffset   / (_sv.ExtentHeight - _sv.ViewportHeight);
+            double maxScrollX = _sv.ExtentWidth - _sv.ViewportWidth;
+            double maxScrollY = _sv.ExtentHeight - _sv.ViewportHeight;
+
+            double horizRatio = maxScrollX > 0
+                ? _sv.HorizontalOffset / maxScrollX
+                : 0.0;
+            double vertRatio = maxScrollY > 0
+                ? _sv.VerticalOffset / maxScrollY
+                : 0.0;
 
             _sv.UpdateLayout();
 
-            var newH = horizRatio * (_sv.ExtentWidth  - _sv.ViewportWidth);
-            var newV = vertRatio  * (_sv.ExtentHeight - _sv.ViewportHeight);
+            maxScrollX = _sv.ExtentWidth - _sv.ViewportWidth;
+            maxScrollY = _sv.ExtentHeight - _sv.ViewportHeight;
+
+            double newH = maxScrollX > 0
+                ? horizRatio * maxScrollX
+                : 0.0;
+            double newV = maxScrollY > 0
+                ? vertRatio * maxScrollY
+                : 0.0;
 
             _sv.ScrollToHorizontalOffset(newH);
             _sv.ScrollToVerticalOffset(newV);
@@ -305,16 +363,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             _sv.ScrollToHorizontalOffset(_sv.ScrollableWidth/2);
             _sv.ScrollToVerticalOffset(_sv.ScrollableHeight/2);
-        }
-
-        private void CenterContentRelatively(float factor)
-        {
-            var centerVp = new Point(_sv.ViewportWidth/2, _sv.ViewportHeight/2);
-            var offset = new Point(
-                centerVp.X + _sv.HorizontalOffset - centerVp.X/factor,
-                centerVp.Y + _sv.VerticalOffset   - centerVp.Y/factor);
-            _sv.ScrollToHorizontalOffset(offset.X);
-            _sv.ScrollToVerticalOffset(offset.Y);
         }
 
         private float CalculateZoom(float factor)

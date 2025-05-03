@@ -136,7 +136,7 @@
     <value>Файл исходного кода Lua</value>
   </data>
   <data name="SimulationSettings" xml:space="preserve">
-    <value>Настройки симуляции</value>
+    <value>НАСТРОЙКИ СИМУЛЯЦИИ</value>
   </data>
   <data name="Simulator" xml:space="preserve">
     <value>Симулятор</value>

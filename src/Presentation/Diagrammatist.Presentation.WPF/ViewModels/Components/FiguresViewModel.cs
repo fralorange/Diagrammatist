@@ -13,7 +13,7 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using System.Collections.ObjectModel;
 using System.Windows;
 

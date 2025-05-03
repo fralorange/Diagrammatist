@@ -9,6 +9,7 @@ using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
@@ -41,6 +42,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         public event Action? RequestApply;
 
         /// <summary>
+        /// Gets or sets current mouse control type in simulation window.
+        /// </summary>
+        [ObservableProperty]
+        private MouseMode _currentMouseControl = MouseMode.Select;
+
+        /// <summary>
         /// Gets or sets current node in simulation.
         /// </summary>
         [ObservableProperty]
@@ -57,6 +64,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// </summary>
         [ObservableProperty]
         private Size _simulationSize;
+
+        /// <summary>
+        /// Gets or sets simulation space size.
+        /// </summary>
+        [ObservableProperty]
+        private Size _simulationSpace;
 
         /// <summary>
         /// Gets simulation nodes.
@@ -124,6 +137,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
 
             // Simulation parameters.
             SimulationSize = new Size(currentCanvas.Settings.Width, currentCanvas.Settings.Height);
+            SimulationSpace = new Size(currentCanvas.ImaginaryWidth, currentCanvas.ImaginaryHeight);
 
             var simIO = new SimulationDialogIOProvider(dialogService, this);
             var simContextProvider = new SimulationContextProvider(documentSerializationService);
@@ -202,6 +216,16 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             NewContext = new() { Nodes = Nodes, Connections = Connections };
             HasChanges = false;
             RequestApply?.Invoke();
+        }
+
+        /// <summary>
+        /// Changes mouse control type in simulation window.
+        /// </summary>
+        /// <param name="param"></param>
+        [RelayCommand]
+        private void ChangeMouseControl(string param)
+        {
+            CurrentMouseControl = Enum.TryParse(param, out MouseMode control) ? control : MouseMode.Select;
         }
 
         private void SelectedNode_PropertyChanged(object? sender, PropertyChangedEventArgs e)

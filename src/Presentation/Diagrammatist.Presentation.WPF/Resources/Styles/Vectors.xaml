@@ -105,6 +105,28 @@
     </DrawingImage>
     <!--#endregion-->
     
+    <!--#region Simulator-->
+    <DrawingImage x:Key="selectSimulatorImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                <GeometryDrawing Brush="{DynamicResource FrameStroke}" Geometry="F1 M24,24z M0,0z M1,7L1,3A1,1,0,0,1,2,2L6,2A1,1,0,0,1,6,4L3,4 3,7A1,1,0,0,1,1,7z M2,22L6,22A1,1,0,0,0,6,20L3,20 3,17A1,1,0,0,0,1,17L1,21A1,1,0,0,0,2,22z M23,17A1,1,0,0,0,21,17L21,20 18,20A1,1,0,0,0,18,22L22,22A1,1,0,0,0,23,21z M17,3A1,1,0,0,0,18,4L21,4 21,7A1,1,0,0,0,23,7L23,3A1,1,0,0,0,22,2L18,2A1,1,0,0,0,17,3z M10,22L14,22A1,1,0,0,0,14,20L10,20A1,1,0,0,0,10,22z M23,10.5A1,1,0,0,0,21,10.5L21,13.5A1,1,0,0,0,23,13.5z M2,14.5A1,1,0,0,0,3,13.5L3,10.5A1,1,0,0,0,1,10.5L1,13.5A1,1,0,0,0,2,14.5z M10,4L14,4A1,1,0,0,0,14,2L10,2A1,1,0,0,0,10,4z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="moveSimulatorImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M12,3L12,9 M12,3L9,6 M12,3L15,6 M12,15L12,21 M12,21L15,18 M12,21L9,18 M3,12L9,12 M3,12L6,15 M3,12L6,9 M15,12L21,12 M21,12L18,9 M21,12L18,15">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="{DynamicResource FrameStroke}" Thickness="2" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <!--#endregion-->
+    
     <!--#region Diagram presets-->
     <DrawingImage x:Key="CustomDiagramImage">
         <DrawingImage.Drawing>
