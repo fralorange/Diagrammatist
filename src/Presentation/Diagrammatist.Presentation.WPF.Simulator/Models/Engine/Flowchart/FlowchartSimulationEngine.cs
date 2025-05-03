@@ -7,7 +7,6 @@ using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 {
@@ -123,49 +122,76 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         {
             // Validation.
             if (IsCompleted)
+            {
+                ShowError("Completed");
                 return;
+            }
 
             // Main engine.
             if (CurrentNode is null || CurrentNode.Figure is not FlowchartFigureModel figure)
+            {
+                ShowError("UnforeseenError");
                 return;
+            }
 
             _history.Push(CurrentNode);
-
-            switch (figure.Subtype)
+            try
             {
-                case FlowchartSubtypeModel.StartEnd:
-                case FlowchartSubtypeModel.Connector:
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.Process:
-                    _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.InputOutput:
-                    HandleInputOutput();
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.Decision:
-                    MoveByDecision();
-                    break;
-                case FlowchartSubtypeModel.Preparation:
-                    HandleLoop();
-                    break;
-                case FlowchartSubtypeModel.PredefinedProcess:
-                    HandlePredefinedProcess();
-                    MoveToNext();
-                    break;
+                switch (figure.Subtype)
+                {
+                    case FlowchartSubtypeModel.StartEnd:
+                    case FlowchartSubtypeModel.Connector:
+                        MoveToNext();
+                        break;
+                    case FlowchartSubtypeModel.Process:
+                        _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
+                        MoveToNext();
+                        break;
+                    case FlowchartSubtypeModel.InputOutput:
+                        HandleInputOutput();
+                        break;
+                    case FlowchartSubtypeModel.Decision:
+                        MoveByDecision();
+                        break;
+                    case FlowchartSubtypeModel.Preparation:
+                        HandleLoop();
+                        break;
+                    case FlowchartSubtypeModel.PredefinedProcess:
+                        HandlePredefinedProcess();
+                        break;
+                }
+            }
+            catch (NLua.Exceptions.LuaScriptException)
+            {
+                ShowError("LuaError", CurrentNode);
+                return;
+            }
+            catch (Exception)
+            {
+                ShowError("UnforeseenError");
+                return;
             }
         }
 
         /// <inheritdoc/>
         public void StepBackward()
         {
-            if (_history.Count == 0)
-                return;
+            try
+            {
+                if (_history.Count == 0)
+                {
+                    ShowError("NoHistory");
+                    return;
+                }
 
-            CurrentNode = _history.Pop();
-            _luaStateManager.Undo();
+                CurrentNode = _history.Pop();
+
+                _luaStateManager.Undo();
+            }
+            catch (Exception)
+            {
+                ShowError("UnforeseenError");
+            }
         }
 
         /// <inheritdoc/>
@@ -189,12 +215,18 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         {
             var variableNames = args.Select(arg => arg.ToString()).Where(str => !string.IsNullOrEmpty(str)).ToList();
             if (variableNames is null || variableNames.Count == 0)
+            {
+                ShowError("VariableNames");
                 return;
+            }
 
             var values = _io.GetInput(variableNames!);
 
             if (values is null)
+            {
+                ShowError("ValuesNull");
                 return;
+            }
 
             var luaCode = string.Join("\n", values.Select(kv => $"{kv.Key} = {kv.Value}"));
             _luaStateManager.Execute(luaCode);
@@ -270,7 +302,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         private void MoveToNext()
         {
             if (CurrentNode is null || !_graph.TryGetValue(CurrentNode, out List<FlowchartSimulationNode>? value))
+            {
+                ShowError("NoNextNode");
                 return;
+            }
 
             CurrentNode = value.FirstOrDefault();
 
@@ -283,7 +318,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         private void MoveByDecision()
         {
             if (CurrentNode is null || !_graph.TryGetValue(CurrentNode, out List<FlowchartSimulationNode>? nextNodes))
+            {
+                ShowError("NoNextNode");
                 return;
+            }
 
             var result = _luaStateManager.Execute(CurrentNode.LuaScript).FirstOrDefault();
             var cond = result is bool b && b;
@@ -292,8 +330,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
         private void HandleInputOutput()
         {
-            if (CurrentNode == null || string.IsNullOrWhiteSpace(CurrentNode.LuaScript))
+            if (CurrentNode == null)
+            {
+                ShowError("UnforeseenError");
                 return;
+            }
 
             var script = CurrentNode.LuaScript;
 
@@ -302,15 +343,22 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                          script.Contains("return");
 
             if (!hasIO)
+            {
+                ShowError("LuaError", CurrentNode); 
                 return;
+            }
 
             _luaStateManager.ExecuteWithSnapshot(script);
+            MoveToNext();
         }
 
         private void HandleLoop()
         {
-            if (CurrentNode == null || string.IsNullOrWhiteSpace(CurrentNode.LuaScript))
+            if (CurrentNode == null)
+            {
+                ShowError("UnforeseenError");
                 return;
+            }
 
             var result = _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
             var res = result.FirstOrDefault();
@@ -330,8 +378,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
         private void HandlePredefinedProcess()
         {
-            if (CurrentNode is null)
+            if (CurrentNode == null)
+            {
+                ShowError("UnforeseenError");
                 return;
+            }
 
             var filePath = CurrentNode.ExternalFilePath;
             if (filePath?.EndsWith(".dgmf", StringComparison.OrdinalIgnoreCase) == true && _contextProvider.Load(filePath) is { } context)
@@ -362,6 +413,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
                 _luaStateManager.ExecuteFile(filePath);
             }
             _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
+            MoveToNext();
         }
 
         #endregion
@@ -535,6 +587,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         private void ShowError(string message)
         {
             ErrorOccurred?.Invoke(this, new SimulationErrorEventArgs(message));
+        }
+
+        private void ShowError(string message, FlowchartSimulationNode? node)
+        {
+            ErrorOccurred?.Invoke(this, new SimulationErrorEventArgs(message, node));
         }
     }
 }

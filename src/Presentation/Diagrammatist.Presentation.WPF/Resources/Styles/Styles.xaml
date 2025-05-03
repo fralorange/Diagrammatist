@@ -360,7 +360,7 @@
                             SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost"
                                       Margin="0"
-                                      VerticalAlignment="Center"/>
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -383,6 +383,16 @@
 
     <Style TargetType="TextBox" x:Key="BaseTextBoxInverted" BasedOn="{StaticResource BaseTextBox}">
         <Setter Property="Background" Value="{StaticResource WindowBackground}"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="ScriptTextBox" BasedOn="{StaticResource BaseTextBox}">
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="MinHeight" Value="160" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
     </Style>
     
     <Style TargetType="TextBox" x:Key="UnderlineTextBoxStyle" BasedOn="{StaticResource BaseTextBox}">

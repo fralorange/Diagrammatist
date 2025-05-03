@@ -13,12 +13,19 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args
         public string Message { get; }
 
         /// <summary>
+        /// Gets or sets simulation node that caused the error.
+        /// </summary>
+        public SimulationNode? Node { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SimulationErrorEventArgs"/> class.
         /// </summary>
         /// <param name="message"></param>
-        public SimulationErrorEventArgs(string message)
+        /// <param name="node"></param>
+        public SimulationErrorEventArgs(string message, SimulationNode? node = null)
         {
             Message = message;
+            Node = node;
         }
     }
 }

@@ -159,4 +159,58 @@
   <data name="EndNodeCaption" xml:space="preserve">
     <value>Incomplete Flowchart</value>
   </data>
+  <data name="CompletedMessage" xml:space="preserve">
+    <value>The simulation route is complete</value>
+  </data>
+  <data name="CompletedCaption" xml:space="preserve">
+    <value>Simulation complete</value>
+  </data>
+  <data name="UnforeseenErrorMessage" xml:space="preserve">
+    <value>There's been an unforeseen error. Restart the simulator.</value>
+  </data>
+  <data name="UnforeseenErrorCaption" xml:space="preserve">
+    <value>Unforeseen Error</value>
+  </data>
+  <data name="NoHistoryMessage" xml:space="preserve">
+    <value>Nothing to undo.</value>
+  </data>
+  <data name="NoHistoryCaption" xml:space="preserve">
+    <value> Undo Unavailable</value>
+  </data>
+  <data name="LuaErrorCaption" xml:space="preserve">
+    <value>Lua Error</value>
+  </data>
+  <data name="LuaErrorProcessMessage" xml:space="preserve">
+    <value>The Process block must contain non‑empty Lua code.</value>
+  </data>
+  <data name="LuaErrorInputOutputMessage" xml:space="preserve">
+    <value>The Input/Output block may only contain print(...), read(...) or return.</value>
+  </data>
+  <data name="LuaErrorDecisionMessage" xml:space="preserve">
+    <value>The Decision block must return a boolean value (return true or false).</value>
+  </data>
+  <data name="LuaErrorPreparationMessage" xml:space="preserve">
+    <value>The Preparation block must include at least one loop(...) call.</value>
+  </data>
+  <data name="LuaErrorPredefinedProcessMessage" xml:space="preserve">
+    <value>The Predefined Process block must contain valid Lua code.</value>
+  </data>
+  <data name="VariableNamesMessage" xml:space="preserve">
+    <value>Enter variable names in Lua code inside the input function using “varname”</value>
+  </data>
+  <data name="VariableNamesCaption" xml:space="preserve">
+    <value>No variable names</value>
+  </data>
+  <data name="ValuesNullMessage" xml:space="preserve">
+    <value>The entered values were not recognized.</value>
+  </data>
+  <data name="ValuesNullCaption" xml:space="preserve">
+    <value>Values are not recognized</value>
+  </data>
+  <data name="NoNextNodeMessage" xml:space="preserve">
+    <value>Unable to determine the next step. The current node is null or has no outgoing connections.</value>
+  </data>
+  <data name="NoNextNodeCaption" xml:space="preserve">
+    <value>Step Error</value>
+  </data>
 </root>

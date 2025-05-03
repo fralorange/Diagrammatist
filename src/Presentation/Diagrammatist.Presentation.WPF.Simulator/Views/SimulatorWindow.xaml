@@ -43,7 +43,8 @@
                 <ListBox ItemTemplateSelector="{StaticResource SimulationItemSelector}"
                          ItemContainerStyleSelector="{StaticResource SimulationItemStyleSelector}"
                          SelectedItem="{Binding SelectedNode}"
-                         PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown">
+                         PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
+                         Validation.ErrorTemplate="{x:Null}">
                     <ListBox.ItemsSource>
                         <CompositeCollection>
                             <CollectionContainer Collection="{Binding Source={StaticResource NodesCollection}}"/>
@@ -99,7 +100,7 @@
         <Border Grid.Column="1"
                 Padding="0"
                 Style="{StaticResource InternalBorder}">
-            <StackPanel>
+            <StackPanel Validation.ErrorTemplate="{x:Null}">
                 <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:SimulationSettings}" 
                            FontWeight="Bold"
                            Margin="10"/>
@@ -107,7 +108,8 @@
                 <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
                 <ContentControl Margin="5 5 0 10"
                                 Content="{Binding SelectedNode}"
-                                ContentTemplateSelector="{StaticResource SimulationScriptSelector}"/>
+                                ContentTemplateSelector="{StaticResource SimulationScriptSelector}"
+                                Validation.ErrorTemplate="{x:Null}"/>
             </StackPanel>
         </Border>
 

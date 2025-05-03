@@ -6,6 +6,7 @@ using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
@@ -121,18 +122,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             var simContextProvider = new SimulationContextProvider(documentSerializationService);
 
             _simulationEngine = factory.CreateEngine(Nodes, Connections, simIO, simContextProvider);
-            _simulationEngine.CurrentNodeChanged += (sender, node) 
+            _simulationEngine.CurrentNodeChanged += (sender, node)
                 => CurrentNode = node;
             _simulationEngine.ErrorOccurred += (sender, e) =>
             {
-                var localizedMessage = LocalizationHelper
-                .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}Message");
-
-                var localizedCaption = LocalizationHelper
-                    .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}Caption");
-
-                _alertService.ShowError(localizedMessage, localizedCaption);
-                onTerminate?.Invoke(); 
+                SimulationEngine_ErrorOccured(sender, e);
+                onTerminate?.Invoke();
             };
             _simulationEngine.Initialize();
         }
@@ -209,6 +204,19 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             {
                 HasChanges = true;
             }
+        }
+
+        private void SimulationEngine_ErrorOccured(object? sender, SimulationErrorEventArgs e)
+        {
+            var subtype = (e.Node?.Figure as FlowchartFigureModel)?.Subtype.ToString() ?? string.Empty;
+
+            var localizedMessage = LocalizationHelper
+                .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}{subtype}Message");
+
+            var localizedCaption = LocalizationHelper
+                .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}Caption");
+
+            _alertService.ShowError(localizedMessage, localizedCaption);
         }
 
         /// <summary>

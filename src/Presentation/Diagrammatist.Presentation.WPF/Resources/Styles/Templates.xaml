@@ -339,14 +339,12 @@
         <StackPanel>
             <TextBlock Text="Lua"
                        FontWeight="Bold"/>
-            <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     HorizontalScrollBarVisibility="Disabled"
-                     VerticalScrollBarVisibility="Auto"
-                     VerticalContentAlignment="Top"
-                     Margin="5"
-                     MinHeight="160"/>
+            <TextBox Text="{Binding LuaScript, 
+                            Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, 
+                            ValidatesOnExceptions=True,
+                            NotifyOnValidationError=True}"
+                     Style="{StaticResource ScriptTextBox}"/>
             <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
         </StackPanel>
     </DataTemplate>
