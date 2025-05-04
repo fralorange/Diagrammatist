@@ -55,4 +55,8 @@
 
     <Color x:Key="SelectedBorderColor">#FF6A4FCF</Color>
     <Color x:Key="SelectedBackgroundColor">#336A4FCF</Color>
+
+    <Color x:Key="HighlightTabBackground">#FFF0F0F0</Color>
+    <Color x:Key="HighlightTabBorder">#FFB4B4B4</Color>
+    <Color x:Key="HoverTabBackground">#FFE9E9E9</Color>
 </ResourceDictionary>

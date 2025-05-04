@@ -12,7 +12,12 @@
              mc:Ignorable="d">
     <ListBox ItemsSource="{Binding Canvases}"
              SelectedItem="{Binding SelectedCanvas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-             SelectionMode="Single">
+             SelectionMode="Single"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+             AllowDrop="True"
+             PreviewMouseMove="TabsListBox_PreviewMouseMove"
+             Drop="TabsListBox_Drop"
+             DragOver="TabsListBox_DragOver">
         <ListBox.Resources>
             <ContextMenu x:Key="CanvasMenu"
                          lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
@@ -22,7 +27,7 @@
             </ContextMenu>
         </ListBox.Resources>
         <ListBox.ItemContainerStyle>
-            <Style TargetType="ListBoxItem">
+            <Style TargetType="ListBoxItem" BasedOn="{StaticResource TabSelectionBox}">
                 <Setter Property="ContextMenu" Value="{StaticResource CanvasMenu}" />
             </Style>
         </ListBox.ItemContainerStyle>

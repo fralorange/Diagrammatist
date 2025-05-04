@@ -685,6 +685,35 @@
         </Setter>
     </Style>
 
+    <Style x:Key="TabSelectionBox" TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
+        <Setter Property="Padding" Value="6 2" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd"
+                                Background="{DynamicResource WindowBackground}"
+                                BorderBrush="{DynamicResource FrameStroke}"
+                                BorderThickness="1"
+                                Padding="4 2">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HighlightTabBackgroundBrush}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource HighlightTabBorderBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverTabBackgroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <Style TargetType="TreeView" BasedOn="{StaticResource BaseItemsControls}"/>
 

@@ -128,4 +128,8 @@
 
     <SolidColorBrush x:Key="ToolbarItemBorderSelected" Color="{DynamicResource ControlFocused}"/>
     <SolidColorBrush x:Key="ToolbarItemBorderHover" Color="{DynamicResource ControlHover}"/>
+
+    <SolidColorBrush x:Key="HighlightTabBackgroundBrush" Color="{DynamicResource HighlightTabBackground}"/>
+    <SolidColorBrush x:Key="HighlightTabBorderBrush" Color="{DynamicResource HighlightTabBorder}"/>
+    <SolidColorBrush x:Key="HoverTabBackgroundBrush" Color="{DynamicResource HoverTabBackground}"/>
 </ResourceDictionary>
