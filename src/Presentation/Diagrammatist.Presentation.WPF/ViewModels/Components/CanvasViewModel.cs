@@ -423,6 +423,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
+        /// Processes item position changing event.
+        /// </summary>
+        /// <param name="e">Position changed event arguments.</param>
+        [RelayCommand]
+        private void ItemPositionChanging(PositionChangingEventArgs e)
+        {
+            if (e.DataContext is FigureModel figure && Connections is not null)
+            {
+                _canvasServiceFacade.Interaction.MoveFigureVisuals(figure, e.OldPos, e.NewPos, Connections);
+            }
+        }
+
+        /// <summary>
         /// Archives different positions of an figure object.
         /// </summary>
         /// <remarks>
@@ -430,11 +443,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         /// <param name="e">Position changed event arguments.</param>
         [RelayCommand]
-        private void ItemPositionChange(PositionChangedEventArgs e)
+        private void ItemPositionChanged(PositionChangedEventArgs e)
         {
             if (e.DataContext is FigureModel figure && Connections is not null)
             {
-                _canvasServiceFacade.Interaction.MoveFigure(figure, e.OldPos, e.NewPos, Connections);
+                _canvasServiceFacade.Interaction.MoveFigure(figure, e.InitialPos, e.OldPos, e.NewPos, Connections);
             }
         }
 

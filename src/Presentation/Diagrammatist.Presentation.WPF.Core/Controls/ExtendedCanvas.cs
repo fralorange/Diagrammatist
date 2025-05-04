@@ -23,13 +23,19 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
     public class ExtendedCanvas : Canvas
     {
         private FrameworkElement? _selectedElement;
-        private Point? _initialElementPos;
+        private Point _initialElementPos;
+        private Point _lastReportedPos;
         private Cursor? _previousCursor;
 
         /// <summary>
         /// Occurs when any element position changes.
         /// </summary>
         public event EventHandler<PositionChangedEventArgs>? ItemPositionChanged;
+
+        /// <summary>
+        /// Occurs while any element is being moved.
+        /// </summary>
+        public event EventHandler<PositionChangingEventArgs>? ItemPositionChanging;
 
         public static readonly DependencyProperty IsGridVisibleProperty =
             DependencyProperty.Register(nameof(IsGridVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnGridChange));
@@ -186,9 +192,20 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         /// <param name="oldY">The previous Y-coordinate of the object.</param>
         /// <param name="newX">The new X-coordinate of the object.</param>
         /// <param name="newY">The new Y-coordinate of the object.</param>
-        protected virtual void OnItemPositionChanged(FrameworkElement item, double oldX, double oldY, double newX, double newY)
+        protected virtual void OnItemPositionChanged(FrameworkElement item,
+                                                     double oldX,
+                                                     double oldY,
+                                                     double newX,
+                                                     double newY,
+                                                     double initX,
+                                                     double initY)
         {
-            ItemPositionChanged?.Invoke(null, new PositionChangedEventArgs(item.DataContext, oldX, oldY, newX, newY));
+            ItemPositionChanged?.Invoke(null, new PositionChangedEventArgs(item.DataContext, oldX, oldY, newX, newY, initX, initY));
+        }
+
+        protected virtual void OnItemPositionChanging(FrameworkElement item, double oldX, double oldY, double newX, double newY)
+        {
+            ItemPositionChanging?.Invoke(this, new PositionChangingEventArgs(item.DataContext, oldX, oldY, newX, newY));
         }
         #endregion
         #region Mouse event handlers
@@ -208,6 +225,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
                 // Save item initial position
                 _initialElementPos = new(GetLeft(item), GetTop(item));
+                _lastReportedPos = _initialElementPos;
 
                 CaptureMouse();
             }
@@ -232,23 +250,32 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
                 if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
 
+                OnItemPositionChanging(_selectedElement!,
+                                           _lastReportedPos.X,
+                                           _lastReportedPos.Y,
+                                           newX,
+                                           newY);
+
                 ValidateAndSetElementPosition(_selectedElement!, newX, newY);
+
+                _lastReportedPos = new(newX, newY);
             }
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_selectedElement is not null && _initialElementPos is not null)
+            if (_selectedElement is not null)
             {
                 OnItemPositionChanged(_selectedElement,
-                                      _initialElementPos.Value.X,
-                                      _initialElementPos.Value.Y,
+                                      _lastReportedPos.X,
+                                      _lastReportedPos.Y,
                                       GetLeft(_selectedElement),
-                                      GetTop(_selectedElement));
+                                      GetTop(_selectedElement),
+                                      _initialElementPos.X,
+                                      _initialElementPos.Y);
 
                 _selectedElement = null;
                 Cursor = _previousCursor;
-                _initialElementPos = null;
 
                 ReleaseMouseCapture();
             }

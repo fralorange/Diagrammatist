@@ -108,7 +108,11 @@
                             </controls:ExtendedCanvas.ContextMenu>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="ItemPositionChanged">
-                                    <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                    <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangedCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                                           PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="ItemPositionChanging">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangingCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
                                                            PassEventArgsToCommand="True"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
