@@ -251,13 +251,13 @@
 
     <DataTemplate x:Key="PropertiesShapeFigureTemplate"
                 DataType="figures:ShapeFigureModel">
-        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
             <ScrollViewer>
                 <StackPanel>
                     <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
                     </Expander>
-                    <Expander Header="{lex:Loc Size}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                    <Expander Header="{lex:Loc Size}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <Grid Margin="8">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -285,13 +285,13 @@
 
     <DataTemplate x:Key="PropertiesLineFigureTemplate"
                   DataType="figures:LineFigureModel">
-        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
             <ScrollViewer>
                 <StackPanel>
                     <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
                     </Expander>
-                    <Expander Header="{lex:Loc Appearance}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                    <Expander Header="{lex:Loc Appearance}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <Grid Margin="8">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -317,13 +317,13 @@
 
     <DataTemplate x:Key="PropertiesFlowLineFigureTemplate"
                   DataType="figures:FlowLineFigureModel">
-        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
             <ScrollViewer>
                 <StackPanel>
                     <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
                     </Expander>
-                    <Expander Header="{lex:Loc Appearance}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                    <Expander Header="{lex:Loc Appearance}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <Grid Margin="8">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -361,13 +361,13 @@
 
     <DataTemplate x:Key="PropertiesTextFigureTemplate"
                   DataType="figures:TextFigureModel">
-        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
             <ScrollViewer>
                 <StackPanel>
                     <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
                     </Expander>
-                    <Expander Header="{lex:Loc TextProperties}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                    <Expander Header="{lex:Loc TextProperties}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <Grid Margin="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -405,13 +405,13 @@
 
     <DataTemplate x:Key="PropertiesContainerFigureTemplate"
                 DataType="figures:ContainerFigureModel">
-        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackgroundBrush}" Margin="0,0,0,8">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
             <ScrollViewer>
                 <StackPanel>
                     <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
                     </Expander>
-                    <Expander Header="{lex:Loc ContainerProperties}" IsExpanded="False" Style="{StaticResource PropExpanderStyle}">
+                    <Expander Header="{lex:Loc ContainerProperties}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
                         <Grid Margin="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />

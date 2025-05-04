@@ -52,5 +52,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
         /// </summary>
         /// <param name="figure">Target figure.</param>
         void BringForward(FigureModel figure);
+        /// <summary>
+        /// Copies style of figure.
+        /// </summary>
+        /// <param name="figure">Target figure.</param>
+        void CopyStyle(FigureModel figure);
+        /// <summary>
+        /// Pastes style of figure.
+        /// </summary>
+        /// <param name="figure">Target figure.</param>
+        void PasteStyle(FigureModel figure);
     }
 }

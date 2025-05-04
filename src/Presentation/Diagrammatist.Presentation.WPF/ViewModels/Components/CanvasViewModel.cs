@@ -422,6 +422,26 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _canvasServiceFacade.FigureManipulation.SendBackward(figure);
         }
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CopyStyle"]/*'/>
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
+        private void CopyStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _canvasServiceFacade.FigureManipulation.CopyStyle(SelectedFigure);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="PasteStyle"]/*'/>
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
+        private void PasteStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _canvasServiceFacade.FigureManipulation.PasteStyle(SelectedFigure);
+            }
+        }
+
         /// <summary>
         /// Processes item position changing event.
         /// </summary>

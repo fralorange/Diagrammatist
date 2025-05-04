@@ -94,6 +94,18 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart
             return new FlowLineFigureModel(this);
         }
 
+        /// <inheritdoc/>
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+
+            if (target is FlowLineFigureModel flowTarget)
+            {
+                flowTarget.Label = Label;
+                flowTarget.LabelFontSize = LabelFontSize;
+            }
+        }
+
         private void Initialize()
         {
             if (Points is INotifyCollectionChanged col)

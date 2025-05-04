@@ -102,6 +102,20 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         }
 
         /// <inheritdoc/>
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+
+            if (target is ShapeFigureModel shapeTarget)
+            {
+                shapeTarget.Width = Width;
+                shapeTarget.Height = Height;
+                shapeTarget.KeepAspectRatio = KeepAspectRatio;
+                shapeTarget.Data = new List<string>(Data);
+            }
+        }
+
+        /// <inheritdoc/>
         public void UpdateMagneticPoints()
         {
             if (Data.Any(string.IsNullOrEmpty))

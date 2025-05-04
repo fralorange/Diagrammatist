@@ -85,5 +85,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         /// </summary>
         /// <returns>A deep clone of the <see cref="FigureModel"/>.</returns>
         public abstract FigureModel Clone();
+
+        /// <summary>
+        /// Copies properties from this instance to the target instance.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="copyMetadata"></param>
+        public virtual void CopyPropertiesTo(FigureModel target)
+        {
+            target.Rotation = Rotation;
+            target.ZIndex = ZIndex;
+            target.BackgroundColor = BackgroundColor;
+        }
     }
 }

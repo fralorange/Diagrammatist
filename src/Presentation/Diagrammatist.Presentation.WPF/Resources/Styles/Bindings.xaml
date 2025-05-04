@@ -16,6 +16,11 @@
                   InputGestureText="Ctrl+D"
                   Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
         <Separator/>
+        <MenuItem Header="{lex:Loc CopyStyle}"
+                  Command="{Binding DataContext.CopyStyleCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <MenuItem Header="{lex:Loc PasteStyle}"
+                  Command="{Binding DataContext.PasteStyleCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <Separator/>
         <MenuItem Header="{lex:Loc BringForward}"
                   Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
