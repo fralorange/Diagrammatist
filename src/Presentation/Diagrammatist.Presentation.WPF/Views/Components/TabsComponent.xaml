@@ -6,22 +6,28 @@
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
              Visibility="{Binding HasCanvases, Converter={StaticResource BoolToVisibilityConverter}}"
              d:DataContext="{d:DesignInstance Type=viewmodels:TabsViewModel}"
              mc:Ignorable="d">
     <ListBox ItemsSource="{Binding Canvases}"
              SelectedItem="{Binding SelectedCanvas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-             SelectionMode="Single">
+             SelectionMode="Single"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+             AllowDrop="True"
+             PreviewMouseMove="TabsListBox_PreviewMouseMove"
+             Drop="TabsListBox_Drop"
+             DragOver="TabsListBox_DragOver">
         <ListBox.Resources>
             <ContextMenu x:Key="CanvasMenu"
                          lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                 <MenuItem Header="{lex:Loc Close}"
-                          Command="{Binding DataContext.CloseCanvasCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                          Command="{Binding DataContext.CloseDocumentCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
             </ContextMenu>
         </ListBox.Resources>
         <ListBox.ItemContainerStyle>
-            <Style TargetType="ListBoxItem">
+            <Style TargetType="ListBoxItem" BasedOn="{StaticResource TabSelectionBox}">
                 <Setter Property="ContextMenu" Value="{StaticResource CanvasMenu}" />
             </Style>
         </ListBox.ItemContainerStyle>

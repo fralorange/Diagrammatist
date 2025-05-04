@@ -2,9 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="AppThemeColor">#FF512BD4</Color>
     <Color x:Key="AppBackground">#FFFFFFFF</Color>
-    <Color x:Key="AppSecondaryBackground">#FFFFFFFF</Color>
+    <Color x:Key="AppSecondaryBackground">#FFE8E8E8</Color>
     <Color x:Key="AppTextColor">#FF242424</Color>
 
+    <Color x:Key="AppTabBackground">#FFFFFFFF</Color>
+    
     <Color x:Key="ButtonHoverBG">#AA512BD4</Color>
     <Color x:Key="ButtonPressedBG">#CC512BD4</Color>
 
@@ -40,4 +42,21 @@
     <Color x:Key="ControlHover">#FFF0F0F0</Color>
     <Color x:Key="ControlPressed">#FFE0E0E0</Color>
     <Color x:Key="ControlFocused">#FFD0D0FF</Color>
+    <Color x:Key="ControlReadOnlyBackground">#FFF9F9F9</Color>
+    <Color x:Key="ControlReadOnlyBorder">#FFCCCCCC</Color>
+
+    <Color x:Key="SplashBackgroundStartColor">#F0F0F0</Color>
+    <Color x:Key="SplashBackgroundEndColor">#E0E0E0</Color>
+    <Color x:Key="PrimaryGlowColor">#30007ACC</Color>
+    <Color x:Key="SecondaryGlowColor">#40007ACC</Color>
+    <Color x:Key="ProgressTextForeground">#606060</Color>
+    <Color x:Key="VersionTextForeground">#505050</Color>
+    <Color x:Key="DeveloperTextForeground">#404040</Color>
+
+    <Color x:Key="SelectedBorderColor">#FF6A4FCF</Color>
+    <Color x:Key="SelectedBackgroundColor">#336A4FCF</Color>
+
+    <Color x:Key="HighlightTabBackground">#FFF0F0F0</Color>
+    <Color x:Key="HighlightTabBorder">#FFB4B4B4</Color>
+    <Color x:Key="HoverTabBackground">#FFE9E9E9</Color>
 </ResourceDictionary>

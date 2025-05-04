@@ -15,20 +15,36 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Factories.Flowchart
     public class FlowchartSimulationFactory : ISimulationFactory
     {
         /// <inheritdoc/>
-        public IEnumerable<SimulationNodeBase> CreateNodes(IEnumerable<FigureModel> figures)
+        public IEnumerable<SimulationNode> CreateNodes(IEnumerable<FigureModel> figures, IEnumerable<SimulationNode>? existingNodes = null)
         {
+            var existingDict = existingNodes?
+                .OfType<FlowchartSimulationNode>()
+                .ToDictionary(n => n.Figure.Id) ?? [];
+
             return figures
                 .OfType<FlowchartFigureModel>()
-                .Select(f => new FlowchartSimulationNode { Figure = f });
+                .Select(f =>
+                {
+                    if (existingDict.TryGetValue(f.Id, out var existingNode))
+                    {
+                        existingNode.Figure = f;
+                        return existingNode;
+                    }
+                    return new FlowchartSimulationNode { Figure = f };
+                });
         }
 
         /// <inheritdoc/>
-        public ISimulationEngine CreateEngine(IEnumerable<SimulationNodeBase> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
+        public ISimulationEngine CreateEngine(IEnumerable<SimulationNode> nodes,
+                                              IEnumerable<ConnectionModel> connections,
+                                              ISimulationIO io,
+                                              ISimulationContextProvider contextProvider)
         {
             return new FlowchartSimulationEngine(
                 nodes.OfType<FlowchartSimulationNode>(),
                 connections,
-                io);
+                io,
+                contextProvider);
         }
     }
 }

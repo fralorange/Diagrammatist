@@ -2,7 +2,7 @@
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using ConnectionEntity = Diagrammatist.Domain.Connection.Connection;
+using ConnectionEntity = Diagrammatist.Domain.Connection.ConnectionData;
 
 namespace Diagrammatist.Presentation.WPF.Core.Mappers.Connection
 {
@@ -23,7 +23,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Connection
             {
                 SourceMagneticPoint = connection.SourceMagneticPoint?.ToModel(figures),
                 DestinationMagneticPoint = connection.DestinationMagneticPoint?.ToModel(figures),
-                Line = figures.OfType<LineFigureModel>().FirstOrDefault(line => connection.Line.Id == line.Id)!
+                Line = figures.OfType<LineFigureModel>().FirstOrDefault(line => connection.LineId == line.Id)!
             };
         }
 
@@ -39,7 +39,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Connection
             {
                 SourceMagneticPoint = connection.SourceMagneticPoint?.ToDomain(figures),
                 DestinationMagneticPoint = connection.DestinationMagneticPoint?.ToDomain(figures),
-                Line = figures.OfType<LineFigure>().FirstOrDefault(line => connection.Line.Id == line.Id)!
+                LineId = figures.OfType<LineFigure>().FirstOrDefault(line => connection.Line.Id == line.Id)?.Id ?? Guid.Empty,
             };
         }
     }

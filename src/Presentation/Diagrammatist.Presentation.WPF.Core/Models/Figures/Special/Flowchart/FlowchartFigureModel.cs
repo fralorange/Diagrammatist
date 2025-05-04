@@ -24,5 +24,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart
         {
             return new FlowchartFigureModel(this);
         }
+
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+        }
     }
 }

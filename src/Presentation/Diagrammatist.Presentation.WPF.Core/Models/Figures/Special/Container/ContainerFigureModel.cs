@@ -56,5 +56,18 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container
         {
             return new ContainerFigureModel(this);
         }
+
+        /// <inheritdoc/>
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+
+            if (target is ContainerFigureModel containerTarget)
+            {
+                containerTarget.Text = Text;
+                containerTarget.TextColor = TextColor;
+                containerTarget.FontSize = FontSize;
+            }
+        }
     }
 }

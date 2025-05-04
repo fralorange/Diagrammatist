@@ -62,7 +62,178 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Simulation Settings.
+        ///   Ищет локализованную строку, похожую на Apply.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulation complete.
+        /// </summary>
+        internal static string CompletedCaption {
+            get {
+                return ResourceManager.GetString("CompletedCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The simulation route is complete.
+        /// </summary>
+        internal static string CompletedMessage {
+            get {
+                return ResourceManager.GetString("CompletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incomplete Flowchart.
+        /// </summary>
+        internal static string EndNodeCaption {
+            get {
+                return ResourceManager.GetString("EndNodeCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The ending node of the flowchart could not be determined..
+        /// </summary>
+        internal static string EndNodeMessage {
+            get {
+                return ResourceManager.GetString("EndNodeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на File.
+        /// </summary>
+        internal static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Load File.
+        /// </summary>
+        internal static string LoadFile {
+            get {
+                return ResourceManager.GetString("LoadFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Lua source File.
+        /// </summary>
+        internal static string Lua {
+            get {
+                return ResourceManager.GetString("Lua", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Lua Error.
+        /// </summary>
+        internal static string LuaErrorCaption {
+            get {
+                return ResourceManager.GetString("LuaErrorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Decision block must return a boolean value (return true or false)..
+        /// </summary>
+        internal static string LuaErrorDecisionMessage {
+            get {
+                return ResourceManager.GetString("LuaErrorDecisionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Input/Output block may only contain print(...), read(...) or return..
+        /// </summary>
+        internal static string LuaErrorInputOutputMessage {
+            get {
+                return ResourceManager.GetString("LuaErrorInputOutputMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Predefined Process block must contain valid Lua code..
+        /// </summary>
+        internal static string LuaErrorPredefinedProcessMessage {
+            get {
+                return ResourceManager.GetString("LuaErrorPredefinedProcessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Preparation block must include at least one loop(...) call..
+        /// </summary>
+        internal static string LuaErrorPreparationMessage {
+            get {
+                return ResourceManager.GetString("LuaErrorPreparationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Process block must contain non‑empty Lua code..
+        /// </summary>
+        internal static string LuaErrorProcessMessage {
+            get {
+                return ResourceManager.GetString("LuaErrorProcessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на  Undo Unavailable.
+        /// </summary>
+        internal static string NoHistoryCaption {
+            get {
+                return ResourceManager.GetString("NoHistoryCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Nothing to undo..
+        /// </summary>
+        internal static string NoHistoryMessage {
+            get {
+                return ResourceManager.GetString("NoHistoryMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Step Error.
+        /// </summary>
+        internal static string NoNextNodeCaption {
+            get {
+                return ResourceManager.GetString("NoNextNodeCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unable to determine the next step. The current node is null or has no outgoing connections..
+        /// </summary>
+        internal static string NoNextNodeMessage {
+            get {
+                return ResourceManager.GetString("NoNextNodeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SIMULATION SETTINGS.
         /// </summary>
         internal static string SimulationSettings {
             get {
@@ -76,6 +247,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         internal static string Simulator {
             get {
                 return ResourceManager.GetString("Simulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid Flowchart.
+        /// </summary>
+        internal static string StartNodeCaption {
+            get {
+                return ResourceManager.GetString("StartNodeCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The starting node of the flowchart could not be determined..
+        /// </summary>
+        internal static string StartNodeMessage {
+            get {
+                return ResourceManager.GetString("StartNodeMessage", resourceCulture);
             }
         }
         
@@ -103,6 +292,60 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Resources.Localization {
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unforeseen Error.
+        /// </summary>
+        internal static string UnforeseenErrorCaption {
+            get {
+                return ResourceManager.GetString("UnforeseenErrorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на There&apos;s been an unforeseen error. Restart the simulator..
+        /// </summary>
+        internal static string UnforeseenErrorMessage {
+            get {
+                return ResourceManager.GetString("UnforeseenErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Values are not recognized.
+        /// </summary>
+        internal static string ValuesNullCaption {
+            get {
+                return ResourceManager.GetString("ValuesNullCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The entered values were not recognized..
+        /// </summary>
+        internal static string ValuesNullMessage {
+            get {
+                return ResourceManager.GetString("ValuesNullMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No variable names.
+        /// </summary>
+        internal static string VariableNamesCaption {
+            get {
+                return ResourceManager.GetString("VariableNamesCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter variable names in Lua code inside the input function using “varname”.
+        /// </summary>
+        internal static string VariableNamesMessage {
+            get {
+                return ResourceManager.GetString("VariableNamesMessage", resourceCulture);
             }
         }
     }

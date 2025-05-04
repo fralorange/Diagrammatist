@@ -12,7 +12,7 @@
 
   <PropertyGroup>
 	<AssemblyTitle>Diagrammatist</AssemblyTitle>
-	<Version>1.0.0</Version>
+	<Version>1.0.0-rc3</Version>
   </PropertyGroup>
 	
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -37,7 +37,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />
   </ItemGroup>
 
@@ -73,10 +73,30 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CommandsResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Localization\Dialogs\AboutApp\AboutAppResources.Designer.cs">
+      <DependentUpon>AboutAppResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Localization\Dialogs\AddCanvas\AddCanvasResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AddCanvasResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ChangeCanvasBackground\ChangeCanvasBackgroundResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChangeCanvasBackgroundResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ChangeCanvasSize\ChangeCanvasSizeResources.Designer.cs">
+      <DependentUpon>ChangeCanvasSizeResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.Designer.cs">
+      <DependentUpon>ChangeDiagramTypeResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Resources\Localization\Dialogs\Settings\SettingsResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -103,10 +123,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PropertiesResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Localization\Splash\SplashResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SplashResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Localization\Toolbar\ToolbarResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToolbarResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Dialogs\ChangeDiagramTypeDialog.xaml.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Dialogs\SettingsDialog.xaml.cs">
       <SubType>Code</SubType>
@@ -147,6 +175,10 @@
     <EmbeddedResource Update="Resources\Localization\Commands\CommandsResources.ru-RU.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\AboutApp\AboutAppResources.resx">
+      <LastGenOutput>AboutAppResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\AddCanvas\AddCanvasResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -157,6 +189,18 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\AddCanvas\AddCanvasResources.ru-RU.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeCanvasBackground\ChangeCanvasBackgroundResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ChangeCanvasBackgroundResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeCanvasSize\ChangeCanvasSizeResources.resx">
+      <LastGenOutput>ChangeCanvasSizeResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.resx">
+      <LastGenOutput>ChangeDiagramTypeResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\Settings\SettingsResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -214,6 +258,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Properties\PropertiesResources.ru-RU.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Splash\SplashResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SplashResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Toolbar\ToolbarResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

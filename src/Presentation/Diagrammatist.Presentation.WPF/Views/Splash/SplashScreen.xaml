@@ -1,0 +1,94 @@
+﻿<Window x:Class="Diagrammatist.Presentation.WPF.Views.Splash.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Splash"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="en"
+        lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+        lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Splash.SplashResources"
+        mc:Ignorable="d"
+        Title="SplashScreen" Height="450" Width="800"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="True">
+    <Grid>
+        <!-- Background with acrylic effect -->
+        <Border Style="{StaticResource PrimarySplashBackground}"/>
+        
+        <!-- Glow effect -->
+        <Border Style="{StaticResource SecondarySplashBackground}"/>
+
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Improved Animated Logo -->
+            <Viewbox Grid.Row="1" 
+                     Width="200" 
+                     Height="200" 
+                     Margin="0,0,0,30">
+                <Image Source="/Resources/Icon/appIcon.ico" Stretch="Uniform"
+                       RenderTransformOrigin="0.5 0.5"
+                       Opacity="0.7">
+                    <Image.RenderTransform>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Image.RenderTransform>
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard RepeatBehavior="Forever">
+                                    <!-- Pulse Animation -->
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="RenderTransform.ScaleX">
+                                        <LinearDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                                        <LinearDoubleKeyFrame KeyTime="0:0:2" Value="1.05"/>
+                                        <LinearDoubleKeyFrame KeyTime="0:0:4" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="RenderTransform.ScaleY">
+                                        <LinearDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                                        <LinearDoubleKeyFrame KeyTime="0:0:2" Value="1.05"/>
+                                        <LinearDoubleKeyFrame KeyTime="0:0:4" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+            </Viewbox>
+
+            <StackPanel Grid.Row="2" 
+                        Orientation="Vertical" 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,0,0,25">
+                <TextBlock x:Name="progressText" 
+                           Style="{StaticResource ProgressText}"/>
+
+                <!-- Progress Bar -->
+                <ProgressBar x:Name="progressBar" 
+                             Style="{StaticResource CustomProgressBar}"
+                             Width="360" 
+                             Margin="0,10,0,0"/>
+            </StackPanel>
+
+            <!-- Version and Personal Info -->
+            <StackPanel Grid.Row="3" 
+                        Orientation="Vertical"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,10,0">
+                <TextBlock Text="{Binding Source={StaticResource AppMetadata}, Path=Version, StringFormat={}v{0}}" 
+                           Style="{StaticResource VersionText}"/>
+                <TextBlock Text="{lex:Loc Develop}" 
+                           Style="{StaticResource DeveloperText}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources"
              d:DataContext="{d:DesignInstance Type=viewmodels:FiguresViewModel}"
              mc:Ignorable="d">
@@ -47,8 +48,8 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Margin" Value="2.5 2.5"/>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
+                    <Setter Property="Margin" Value="5"/>
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>

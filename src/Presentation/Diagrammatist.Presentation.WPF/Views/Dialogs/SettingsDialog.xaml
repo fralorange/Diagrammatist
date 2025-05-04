@@ -1,121 +1,79 @@
-﻿<Window x:Class="Diagrammatist.Presentation.WPF.Views.Dialogs.SettingsDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
-        xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
-        lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.Settings.SettingsResources"
-        Icon="../../Resources/Icon/appIcon.ico"
-        Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Preferences}"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"
-        SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize"
-        d:DataContext="{d:DesignInstance {x:Type vmd:SettingsDialogViewModel}}">
-    <WindowChrome.WindowChrome>
-        <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
-                  GlassFrameThickness="1,0,1,1"
-                  NonClientFrameEdges="Left,Right,Bottom"
-                  ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                  UseAeroCaptionButtons="False"/>
-    </WindowChrome.WindowChrome>
-
-    <DockPanel>
-        <Grid DockPanel.Dock="Top"
-              x:Name="titleBar"
-              Background="{DynamicResource TitleBarBackground}"
-              Height="{StaticResource TitleBarHeight}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <Image x:Name="icon"
-                   Grid.Column="0"
-                   Style="{StaticResource IconImage}"
-                   MouseDown="OnIconMouseDown"
-                   Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
-                   WindowChrome.IsHitTestVisibleInChrome="True"/>
-
-            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Foreground="{DynamicResource FrameForeground}" />
-
-            <Button Grid.Column="2"
-                    Click="OnCloseButtonClick"
-                    Style="{StaticResource TitleBarCloseButtonStyle}"
-                    ToolTip="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Close}"
-                    HorizontalAlignment="Right">
-                <Path Width="36"
-                      Height="32"
-                      Data="M 13,11 22,20 M 13,20 22,11"
-                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                      StrokeThickness="1"/>
-            </Button>
-        </Grid>
-        <Grid Width="650"
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Views.Dialogs.SettingsDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
+                         xmlns:vmd="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.Settings.SettingsResources"
+                         Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:Preferences}"
+                         mc:Ignorable="d"
+                         WindowStartupLocation="CenterOwner"
+                         SizeToContent="WidthAndHeight"
+                         ResizeMode="NoResize"
+                         d:DataContext="{d:DesignInstance {x:Type vmd:SettingsDialogViewModel}}"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False"
+                         ShowCenteredTitle="True"
+                         IsDialog="True">
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Width="650" 
               Height="750"
-              Style="{StaticResource Window}">
+              Style="{StaticResource TabWindow}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-        
+
             <TabControl Grid.Row="0" 
-                        TabStripPlacement="Left">
-                <TabItem Header="{lex:Loc SystemTab}">
+                        TabStripPlacement="Left" 
+                        Style="{StaticResource SettingsTabControl}"
+                        BorderThickness="2 0 2 2">
+                <TabItem Header="{lex:Loc SystemTab}" 
+                         Style="{StaticResource BaseTabItem}">
                     <Border Style="{StaticResource TabBorder}">
-                        <Grid Margin="10">
+                        <Grid Margin="20">
                             <Grid.Resources>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource BaseBlock}">
-                                    <Setter Property="Margin" Value="5" />
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
-
                                 <Style TargetType="ComboBox" BasedOn="{StaticResource BaseComboBox}">
                                     <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
                             </Grid.Resources>
-                        
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" MinWidth="120"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Row="0" 
-                                       Grid.Column="0" 
-                                       Text="{lex:Loc Language}"
-                                       Style="{StaticResource BaseBlock}"/>
-
+                                       Grid.Column="0"
+                                       Text="{lex:Loc Language}"/>
                             <ComboBox Grid.Row="0" 
                                       Grid.Column="1"
                                       ItemsSource="{Binding AvailableLanguages}"
                                       SelectedItem="{Binding SelectedLanguage}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding NativeName}"/>
+                                        <TextBlock Text="{lex:Loc {Binding}}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="1"
-                                       Grid.Column="0"
-                                       Text="{lex:Loc Theme}"
-                                       Style="{StaticResource BaseBlock}"/>
-
-                            <ComboBox Grid.Row="1"
-                                      Grid.Column="1"
+                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                       Text="{lex:Loc Theme}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="1"
                                       ItemsSource="{Binding AvailableThemes}"
                                       SelectedItem="{Binding SelectedTheme}">
                                 <ComboBox.ItemTemplate>
@@ -124,6 +82,53 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
+
+                            <Rectangle Grid.ColumnSpan="2"
+                                       Grid.Row="2"
+                                       Style="{StaticResource HorizontalCustomNeutralSeparator}"
+                                       Margin="0 10"/>
+                        </Grid>
+                    </Border>
+                </TabItem>
+                <TabItem Header="{lex:Loc InterfaceTab}"
+                         Style="{StaticResource BaseTabItem}">
+                    <Border Style="{StaticResource TabBorder}">
+                        <Grid Margin="20">
+                            <Grid.Resources>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource BaseCheckBox}">
+                                    <Setter Property="Margin" Value="5"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" 
+                                                  MinWidth="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.ColumnSpan="2"
+                                      Content="{lex:Loc SnapToGrid}"
+                                      IsChecked="{Binding SelectedSnapToGrid}"/>
+
+                            <CheckBox Grid.Row="1"
+                                      Grid.ColumnSpan="2"
+                                      Content="{lex:Loc AltSnapToGrid}"
+                                      IsChecked="{Binding SelectedAltGridSnap}"/>
+
+                            <Rectangle Grid.ColumnSpan="2"
+                                       Grid.Row="2"
+                                       Style="{StaticResource HorizontalCustomNeutralSeparator}"
+                                       Margin="0 10"/>
+
+                            <CheckBox Grid.Row="3"
+                                      Grid.ColumnSpan="2"
+                                      Content="{lex:Loc DoNotShowChangeDiagramTypeWarning}"
+                                      IsChecked="{Binding SelectedDoNotShowWarningForDiagramType}"/>
                         </Grid>
                     </Border>
                 </TabItem>
@@ -134,19 +139,20 @@
                         Grid.Row="1">
                 <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
-                        <Setter Property="Margin" Value="3" />
+                        <Setter Property="Margin" Value="5" />
                         <Setter Property="Padding" Value="5" />
                     </Style>
                 </StackPanel.Resources>
-
                 <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:OK}"
                         Command="{Binding OkCommand}"
                         IsDefault="True"/>
-
                 <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}"
                         Command="{Binding CancelCommand}"
                         IsCancel="True"/>
+                <Button Content="{lex:Loc Apply}"
+                        Command="{Binding ApplyCommand}"
+                        IsEnabled="{Binding HasChanges}"/>
             </StackPanel>
         </Grid>
-    </DockPanel>
-</Window>
+    </Border>
+</controls:TitleBarWindow>

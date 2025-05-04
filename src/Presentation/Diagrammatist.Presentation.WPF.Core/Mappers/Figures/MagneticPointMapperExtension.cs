@@ -20,7 +20,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         {
             return new MagneticPointModel
             {
-                Owner = figures.OfType<ShapeFigureModel>().FirstOrDefault(shape => magneticPoint.Owner.Id == shape.Id)!,
+                Owner = figures.OfType<ShapeFigureModel>().FirstOrDefault(shape => magneticPoint.OwnerId == shape.Id)!,
                 Position = new(magneticPoint.PosX, magneticPoint.PosY),
             };
         }
@@ -35,7 +35,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         {
             return new MagneticPoint
             {
-                Owner = figures.OfType<ShapeFigure>().FirstOrDefault(shape => magneticPoint.Owner.Id == shape.Id)!,
+                OwnerId = figures.OfType<ShapeFigure>().FirstOrDefault(shape => magneticPoint.Owner.Id == shape.Id)!.Id,
                 PosX = magneticPoint.Position.X,
                 PosY = magneticPoint.Position.Y,
             };

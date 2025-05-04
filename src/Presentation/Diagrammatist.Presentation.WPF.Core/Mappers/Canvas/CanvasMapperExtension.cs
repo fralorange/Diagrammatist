@@ -2,9 +2,6 @@
 using Diagrammatist.Presentation.WPF.Core.Mappers.Connection;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
-using Diagrammatist.Presentation.WPF.Core.Models.Connection;
-using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using System.Collections.ObjectModel;
 using CanvasEntity = Diagrammatist.Domain.Canvas.Canvas;
 
 namespace Diagrammatist.Presentation.WPF.Core.Mappers.Canvas

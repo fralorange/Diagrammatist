@@ -64,5 +64,18 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         {
             return new LineFigureModel(this);
         }
+
+        /// <inheritdoc/>
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+
+            if (target is LineFigureModel lineTarget)
+            {
+                lineTarget.Thickness = Thickness;
+                lineTarget.IsDashed = IsDashed;
+                lineTarget.HasArrow = HasArrow;
+            }
+        }
     }
 }

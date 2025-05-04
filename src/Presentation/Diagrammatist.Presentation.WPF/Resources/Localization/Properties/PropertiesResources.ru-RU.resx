@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Appearance" xml:space="preserve">
+    <value>Внешний вид</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Цвет: </value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>Общие</value>
+  </data>
+  <data name="Condition" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="ContainerProperties" xml:space="preserve">
+    <value>Свойства контейнера</value>
   </data>
   <data name="FontSize" xml:space="preserve">
     <value>Размер шрифта: </value>
@@ -141,6 +153,12 @@
   <data name="KeepAspectRatio" xml:space="preserve">
     <value>Сохранять пропорции</value>
   </data>
+  <data name="LabelFontSize" xml:space="preserve">
+    <value>Размер шрифта метки:</value>
+  </data>
+  <data name="LineLabel" xml:space="preserve">
+    <value>Метка:</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Название: </value>
   </data>
@@ -150,11 +168,17 @@
   <data name="Rotation" xml:space="preserve">
     <value>Поворот: </value>
   </data>
+  <data name="Size" xml:space="preserve">
+    <value>Размер</value>
+  </data>
   <data name="Text" xml:space="preserve">
     <value>Текст: </value>
   </data>
   <data name="TextColor" xml:space="preserve">
     <value>Цвет текста: </value>
+  </data>
+  <data name="TextProperties" xml:space="preserve">
+    <value>Свойства текста</value>
   </data>
   <data name="Thickness" xml:space="preserve">
     <value>Толщина: </value>

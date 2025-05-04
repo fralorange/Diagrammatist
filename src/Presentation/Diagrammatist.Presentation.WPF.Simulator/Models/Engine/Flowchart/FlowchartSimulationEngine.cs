@@ -2,9 +2,11 @@
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
 using Diagrammatist.Presentation.WPF.Simulator.Interfaces;
+using Diagrammatist.Presentation.WPF.Simulator.Managers;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node.Flowchart;
-using NLua;
+using System.Text.RegularExpressions;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 {
@@ -14,12 +16,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
     public partial class FlowchartSimulationEngine : ISimulationEngine
     {
         /// <inheritdoc/>
-        public event EventHandler<SimulationNodeBase?> CurrentNodeChanged;
+        public event EventHandler<SimulationNode?> CurrentNodeChanged;
+        /// <inheritdoc/>
+        public event EventHandler<SimulationErrorEventArgs>? ErrorOccurred;
+
+        // Simulation parameters.
+        /// <inheritdoc/>
+        public bool IsCompleted => CurrentNode == _endNode;
 
         private readonly ISimulationIO _io;
-        private Lua _lua;
+        private readonly ISimulationContextProvider _contextProvider;
+
+        private FlowchartSimulationEngine? _subEngine;
+        private string[] _simulateParameters;
+        // Lua
+        private readonly LuaStateManager _luaStateManager;
         // Nodes.
         private readonly Dictionary<FlowchartSimulationNode, List<FlowchartSimulationNode>> _graph = [];
+        private readonly Stack<FlowchartSimulationNode> _history = [];
 
         private FlowchartSimulationNode? _currentNode;
         private FlowchartSimulationNode? CurrentNode
@@ -35,74 +49,148 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             }
         }
 
-        private Stack<FlowchartSimulationNode> _history = [];
+        private FlowchartSimulationNode? _endNode;
+
+        private IEnumerable<FlowchartSimulationNode> _nodes;
+        private IEnumerable<ConnectionModel> _connections;
 
         /// <summary>
         /// Initializes flowchart simulation engine.
         /// </summary>
         /// <param name="nodes"></param>
         /// <param name="connections"></param>
+        /// <param name="io"></param>
+        /// <param name="contextProvider"></param>
 #pragma warning disable CS8618
-        public FlowchartSimulationEngine(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections, ISimulationIO io)
+        public FlowchartSimulationEngine(IEnumerable<FlowchartSimulationNode> nodes,
+                                         IEnumerable<ConnectionModel> connections,
+                                         ISimulationIO io,
+                                         ISimulationContextProvider contextProvider,
+                                         LuaStateManager? luaStateManager = null)
 #pragma warning restore CS8618 
         {
-            BuildGraph(nodes, connections);
-
             _io = io;
+            _contextProvider = contextProvider;
+            _luaStateManager = (luaStateManager is not null) ? new LuaStateManager(luaStateManager) : new LuaStateManager();
+
+            _nodes = nodes;
+            _connections = connections;
         }
 
         /// <inheritdoc/>
         public void Initialize()
         {
+            BuildGraph();
             InitializeLua();
             ResetNode();
         }
 
         /// <inheritdoc/>
+        public object[]? Simulate(params object[] args)
+        {
+            for (int i = 0; i < _simulateParameters.Length && i < args.Length; i++)
+            {
+                _luaStateManager.SetValue(_simulateParameters[i], args[i]);
+            }
+
+            // Iteration.
+            while (!IsCompleted)
+            {
+                StepForward();
+            }
+
+            if (_history.Count >= 2)
+            {
+                var lastBeforeEnd = _history.ElementAt(1);
+
+                if (lastBeforeEnd?.Figure is FlowchartFigureModel figure &&
+                    figure.Subtype == FlowchartSubtypeModel.InputOutput)
+                {
+                    var script = lastBeforeEnd.LuaScript;
+                    if (!string.IsNullOrWhiteSpace(script) && script.TrimStart().StartsWith("return"))
+                    {
+                        return _luaStateManager.Execute(script);
+                    }
+                }
+            }
+
+            return [];
+        }
+
+        /// <inheritdoc/>
         public void StepForward()
         {
-            if (CurrentNode == null || CurrentNode.Figure is not FlowchartFigureModel figure)
+            // Validation.
+            if (IsCompleted)
+            {
+                ShowError("Completed");
                 return;
+            }
+
+            // Main engine.
+            if (CurrentNode is null || CurrentNode.Figure is not FlowchartFigureModel figure)
+            {
+                ShowError("UnforeseenError");
+                return;
+            }
 
             _history.Push(CurrentNode);
-
-            switch (figure.Subtype)
+            try
             {
-                case FlowchartSubtypeModel.StartEnd:
-                case FlowchartSubtypeModel.Connector:
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.Process:
-                    _lua.DoString(CurrentNode.LuaScript);
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.InputOutput:
-                    HandleInputOutput();
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.Decision:
-                    MoveByDecision();
-                    break;
-                case FlowchartSubtypeModel.Preparation:
-                    HandleLoop();
-                    break;
-                case FlowchartSubtypeModel.PredefinedProcess:
-                    //HandlePredefinedProcess();
-                    MoveToNext();
-                    break;
-                case FlowchartSubtypeModel.Database:
-                    //HandleDatabase();
-                    MoveToNext();
-                    break;
+                switch (figure.Subtype)
+                {
+                    case FlowchartSubtypeModel.StartEnd:
+                    case FlowchartSubtypeModel.Connector:
+                        MoveToNext();
+                        break;
+                    case FlowchartSubtypeModel.Process:
+                        _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
+                        MoveToNext();
+                        break;
+                    case FlowchartSubtypeModel.InputOutput:
+                        HandleInputOutput();
+                        break;
+                    case FlowchartSubtypeModel.Decision:
+                        MoveByDecision();
+                        break;
+                    case FlowchartSubtypeModel.Preparation:
+                        HandleLoop();
+                        break;
+                    case FlowchartSubtypeModel.PredefinedProcess:
+                        HandlePredefinedProcess();
+                        break;
+                }
+            }
+            catch (NLua.Exceptions.LuaScriptException)
+            {
+                ShowError("LuaError", CurrentNode);
+                return;
+            }
+            catch (Exception)
+            {
+                ShowError("UnforeseenError");
+                return;
             }
         }
 
         /// <inheritdoc/>
         public void StepBackward()
         {
-            if (_history.Count > 0)
+            try
             {
+                if (_history.Count == 0)
+                {
+                    ShowError("NoHistory");
+                    return;
+                }
+
                 CurrentNode = _history.Pop();
+
+                _luaStateManager.Undo();
+            }
+            catch (Exception)
+            {
+                ShowError("UnforeseenError");
             }
         }
 
@@ -111,9 +199,10 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         {
             ResetNode();
 
-            _lua.Dispose();
-            InitializeLua();
+            _luaStateManager.Reset();
             _history.Clear();
+
+            InitializeLua();
         }
 
         #region Lua handlers
@@ -126,15 +215,21 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         {
             var variableNames = args.Select(arg => arg.ToString()).Where(str => !string.IsNullOrEmpty(str)).ToList();
             if (variableNames is null || variableNames.Count == 0)
+            {
+                ShowError("VariableNames");
                 return;
+            }
 
             var values = _io.GetInput(variableNames!);
 
             if (values is null)
+            {
+                ShowError("ValuesNull");
                 return;
+            }
 
             var luaCode = string.Join("\n", values.Select(kv => $"{kv.Key} = {kv.Value}"));
-            _lua.DoString(luaCode);
+            _luaStateManager.Execute(luaCode);
         }
 
         /// <summary>
@@ -164,11 +259,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             if (!double.TryParse(args[2]?.ToString(), out var to)) return false;
             var step = (args.Length >= 4 && double.TryParse(args[3]?.ToString(), out var s)) ? s : 1;
 
-            var val = _lua[varName] as double?;
+            var val = _luaStateManager.GetValue(varName) as double?;
 
             if (val is null)
             {
-                _lua[varName] = from;
+                _luaStateManager.SetValue(varName, from);
                 return true;
             }
 
@@ -176,11 +271,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
             if ((step > 0 && next > to) || (step < 0 && next < to))
             {
-                _lua[varName] = null;
+                _luaStateManager.SetValue(varName, null);
                 return false;
             }
 
-            _lua[varName] = next;
+            _luaStateManager.SetValue(varName, next);
             return true;
         }
 
@@ -188,11 +283,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
         private void InitializeLua()
         {
-            _lua = new Lua();
+            _luaStateManager.Initialize();
 
-            _lua.RegisterFunction("print", this, GetType().GetMethod(nameof(ShowOutput)));
-            _lua.RegisterFunction("read", this, GetType().GetMethod(nameof(GetInput)));
-            _lua.RegisterFunction("loop", this, GetType().GetMethod(nameof(Loop)));
+            _luaStateManager.RegisterFunctions(this,
+                nameof(ShowOutput),
+                nameof(GetInput),
+                nameof(Loop));
         }
 
         #region Node Handlers
@@ -206,43 +302,65 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
         private void MoveToNext()
         {
             if (CurrentNode is null || !_graph.TryGetValue(CurrentNode, out List<FlowchartSimulationNode>? value))
+            {
+                ShowError("NoNextNode");
                 return;
+            }
 
             CurrentNode = value.FirstOrDefault();
+
+            if (_subEngine is not null && _subEngine.IsCompleted)
+            {
+                _subEngine = null;
+            }
         }
 
         private void MoveByDecision()
         {
             if (CurrentNode is null || !_graph.TryGetValue(CurrentNode, out List<FlowchartSimulationNode>? nextNodes))
+            {
+                ShowError("NoNextNode");
                 return;
+            }
 
-            var result = _lua.DoString(CurrentNode.LuaScript).FirstOrDefault();
+            var result = _luaStateManager.Execute(CurrentNode.LuaScript).FirstOrDefault();
             var cond = result is bool b && b;
             CurrentNode = cond ? nextNodes.ElementAtOrDefault(0) : nextNodes.ElementAtOrDefault(1);
         }
 
         private void HandleInputOutput()
         {
-            if (CurrentNode == null || string.IsNullOrWhiteSpace(CurrentNode.LuaScript))
+            if (CurrentNode == null)
+            {
+                ShowError("UnforeseenError");
                 return;
+            }
 
             var script = CurrentNode.LuaScript;
 
             bool hasIO = script.Contains("read") ||
-                         script.Contains("print");
+                         script.Contains("print") ||
+                         script.Contains("return");
 
             if (!hasIO)
+            {
+                ShowError("LuaError", CurrentNode); 
                 return;
+            }
 
-            _lua.DoString(script);
+            _luaStateManager.ExecuteWithSnapshot(script);
+            MoveToNext();
         }
 
         private void HandleLoop()
         {
-            if (CurrentNode == null || string.IsNullOrWhiteSpace(CurrentNode.LuaScript))
+            if (CurrentNode == null)
+            {
+                ShowError("UnforeseenError");
                 return;
+            }
 
-            var result = _lua.DoString(CurrentNode.LuaScript);
+            var result = _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
             var res = result.FirstOrDefault();
 
             if (res is bool shouldContinue && shouldContinue)
@@ -260,17 +378,48 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
 
         private void HandlePredefinedProcess()
         {
-            // Implement .lua file with method? or smth like that
-            throw new NotImplementedException();
-        }
+            if (CurrentNode == null)
+            {
+                ShowError("UnforeseenError");
+                return;
+            }
 
-        private void HandleDatabase()
-        {
-            // implement sqlite or text file database operations?
-            throw new NotImplementedException();
+            var filePath = CurrentNode.ExternalFilePath;
+            if (filePath?.EndsWith(".dgmf", StringComparison.OrdinalIgnoreCase) == true && _contextProvider.Load(filePath) is { } context)
+            {
+                _subEngine = new FlowchartSimulationEngine(context.Nodes.OfType<FlowchartSimulationNode>(),
+                                                           context.Connections,
+                                                           _io,
+                                                           _contextProvider,
+                                                           _luaStateManager);
+                _subEngine.Initialize();
+
+                var startNode = FindStartNode(context.Nodes.OfType<FlowchartSimulationNode>(), context.Connections);
+
+                if (startNode is { Figure: FlowchartFigureModel { Text: { } signature } }
+                    && FunctionSignatureRegex().Match(signature) is { Success: true } match)
+                {
+                    var functionName = match.Groups[1].Value;
+                    var parameterNames = match.Groups[2].Value
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries); ;
+
+                    _luaStateManager.RegisterFunction(_subEngine, functionName, nameof(Simulate));
+
+                    _subEngine._simulateParameters = parameterNames;
+                }
+            }
+            else if (filePath?.EndsWith(".lua", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                _luaStateManager.ExecuteFile(filePath);
+            }
+            _luaStateManager.ExecuteWithSnapshot(CurrentNode.LuaScript);
+            MoveToNext();
         }
 
         #endregion
+
+        [GeneratedRegex(@"(\w+)\(([^)]*)\)")]
+        private static partial Regex FunctionSignatureRegex();
 
         #region Graph Builders
 
@@ -395,24 +544,54 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Flowchart
             }
         }
 
+        /// <summary>
+        /// Calculates end node.
+        /// </summary>
+        private void CalculateEndNode()
+        {
+            _endNode = _graph.Values
+                .SelectMany(v => v)
+                .FirstOrDefault(fig => fig.Figure is FlowchartFigureModel { Subtype: FlowchartSubtypeModel.StartEnd });
+
+            if (_endNode is null)
+            {
+                ShowError("EndNode");
+                return;
+            }
+        }
 
         /// <summary>
         /// Builds graph.
         /// </summary>
-        /// <param name="nodes"></param>
-        /// <param name="connections"></param>
-        private void BuildGraph(IEnumerable<FlowchartSimulationNode> nodes, IEnumerable<ConnectionModel> connections)
+        private void BuildGraph()
         {
-            var figureToNode = nodes.ToDictionary(n => n.Figure);
+            var figureToNode = _nodes.ToDictionary(n => n.Figure);
 
-            var outgoing = BuildOutgoingConnections(figureToNode, connections);
-            var startNode = FindStartNode(nodes, connections)
-                ?? throw new InvalidOperationException("The starting node of the flowchart could not be determined.");
+            var outgoing = BuildOutgoingConnections(figureToNode, _connections);
+            var startNode = FindStartNode(_nodes, _connections);
+
+            if (startNode is null)
+            {
+                ShowError("StartNode");
+                return;
+            }
+
             _graph.Clear();
 
             TraverseFromStartNode(startNode, outgoing);
+            CalculateEndNode();
         }
 
         #endregion
+
+        private void ShowError(string message)
+        {
+            ErrorOccurred?.Invoke(this, new SimulationErrorEventArgs(message));
+        }
+
+        private void ShowError(string message, FlowchartSimulationNode? node)
+        {
+            ErrorOccurred?.Invoke(this, new SimulationErrorEventArgs(message, node));
+        }
     }
 }

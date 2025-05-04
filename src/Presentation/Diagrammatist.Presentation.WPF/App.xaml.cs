@@ -1,9 +1,7 @@
-﻿using Diagrammatist.Presentation.WPF.Views;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Views;
+using Diagrammatist.Presentation.WPF.Views.Splash;
 using Microsoft.Extensions.DependencyInjection;
-using System.Globalization;
-using System.Windows;
-using WPFLocalizeExtension.Engine;
 using ApplicationEntity = System.Windows.Application;
 
 namespace Diagrammatist.Presentation.WPF
@@ -23,49 +21,49 @@ namespace Diagrammatist.Presentation.WPF
         /// </summary>
         public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="App"/> class.
+        /// </summary>
         public App()
         {
             Services = ConfigureServices();
-
-            ConfigureCulture();
         }
 
         private static ServiceProvider ConfigureServices()
         {
-            var services = new ServiceCollection();
-
-            services.AddStartupServices();
-            services.AddViewModels();
-
-            services.AddServices();
-            services.AddSerializers();
-            services.AddRepositories();
-
-            services.AddDialogServices();
-
-            services.AddManagers();
-
-            return services.BuildServiceProvider();
+            return new ServiceCollection()
+                .AddStartupServices()
+                .AddViewModels()
+                .AddServices()
+                .AddFacades()
+                .AddSerializers()
+                .AddRepositories()
+                .AddDialogServices()
+                .AddFactories()
+                .AddManagers()
+                .AddCulture()
+                .AddMappers()
+                .BuildServiceProvider();
         }
 
-        private static void ConfigureCulture()
-        {
-            var culture = new CultureInfo(WPF.Properties.Settings.Default.Culture);
-
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.CurrentCulture = culture;
-
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
-            CultureInfo.CurrentUICulture = culture;
-
-            LocalizeDictionary.Instance.SetCultureCommand.Execute(culture.ToString());
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
+        /// <inheritdoc/>
+        protected override async void OnStartup(System.Windows.StartupEventArgs e)
         {
             Current.ChangeTheme(WPF.Properties.Settings.Default.Theme);
 
-            Services.GetService<MainWindow>()?.Show();
+            var splash = Services.GetService<SplashScreen>();
+            splash!.Show();
+
+            var mainWindow = Services.GetService<MainWindow>();
+            var progress = new Progress<(int, string)>((progress) =>
+            {
+                splash!.UpdateProgress(progress.Item1, progress.Item2);
+            });
+
+            await mainWindow!.LoadAsync(progress);
+
+            splash.Close();
+            mainWindow.Show();
 
             base.OnStartup(e);
         }

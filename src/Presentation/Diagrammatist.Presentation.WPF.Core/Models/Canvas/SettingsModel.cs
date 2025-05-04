@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants;
 using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
@@ -10,17 +11,18 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
     {
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FileName"]/*'/>
         [ObservableProperty]
-        private string _fileName = string.Empty;
+        private string _fileName = SettingsConstants.DefaultFileName;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Width"]/*'/>
         [ObservableProperty]
-        private int _width;
+        private double _width = SettingsConstants.DefaultWidth;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Height"]/*'/>
         [ObservableProperty]
-        private int _height;
+        private double _height = SettingsConstants.DefaultHeight;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Background"]/*'/>
         [ObservableProperty]
         private Color _background;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DiagramType"]/*'/>
-        public DiagramsModel Type { get; set; }
+        [ObservableProperty]
+        private DiagramsModel _type = SettingsConstants.DefaultType;
     }
 }

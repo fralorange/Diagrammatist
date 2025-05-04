@@ -1,0 +1,68 @@
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Views.Dialogs.ChangeCanvasBackgroundDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core" xmlns:dialogs="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs" d:DataContext="{d:DesignInstance Type=dialogs:ChangeCanvasBackgroundDialogViewModel}"
+                         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeCanvasBackground.ChangeCanvasBackgroundResources"
+                         mc:Ignorable="d"
+                         Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeBackground}"
+                         SizeToContent="WidthAndHeight"
+                         WindowStartupLocation="CenterOwner"
+                         ResizeMode="NoResize"
+                         IsDialog="True"
+                         ShowCenteredTitle="True"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False">
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Style="{StaticResource Window}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="20">
+            <TextBlock Text="{lex:Loc Background}" 
+                       Style="{StaticResource MenuAddBlock}" 
+                       FontWeight="SemiBold"
+                       FontStretch="Expanded"/>
+            <Rectangle Style="{StaticResource HorizontalCustomNeutralSeparator}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <colorpicker:StandardColorPicker Grid.Column="1"
+                                             SelectedColor="{Binding Color, Mode=TwoWay}"
+                                             ShowAlpha="False"
+                                             ShowFractionalPart="False"
+                                             Style="{StaticResource StandardColorPickerWithoutComboBox}"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </StackPanel.Resources>
+
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:OK}"
+                    Command="{Binding OkCommand}"
+                    IsDefault="True" />
+
+            <Button Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}"
+                    IsCancel="True" />
+        </StackPanel>
+    </Grid>
+    </Border>
+</controls:TitleBarWindow>

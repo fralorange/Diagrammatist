@@ -1,0 +1,105 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:simulatorSelector="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Selectors;assembly=Diagrammatist.Presentation.WPF.Simulator"
+                    xmlns:selectors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core">
+    <!--#region Shared-->
+    <ContextMenu x:Key="ElementMenu"
+                 xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                 lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
+        <MenuItem Header="{lex:Loc Copy}"
+                  InputGestureText="Ctrl+C"
+                  Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <MenuItem Header="{lex:Loc Cut}"
+                  InputGestureText="Ctrl+X"
+                  Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <MenuItem Header="{lex:Loc Duplicate}"
+                  InputGestureText="Ctrl+D"
+                  Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <Separator/>
+        <MenuItem Header="{lex:Loc CopyStyle}"
+                  Command="{Binding DataContext.CopyStyleCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <MenuItem Header="{lex:Loc PasteStyle}"
+                  Command="{Binding DataContext.PasteStyleCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+        <Separator/>
+        <MenuItem Header="{lex:Loc BringForward}"
+                  Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+        <MenuItem Header="{lex:Loc SendBackward}"
+                  Command="{Binding DataContext.SendBackwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+        <Separator/>
+        <MenuItem Header="{lex:Loc Delete}"
+                  InputGestureText="Del"
+                  Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
+    </ContextMenu>
+
+    <Style x:Key="FigureItemBaseStyle" TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
+        <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="{Binding Rotation}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FigureItemStyle" TargetType="ListBoxItem" BasedOn="{StaticResource FigureItemBaseStyle}">
+        <Setter Property="ContextMenuService.IsEnabled" Value="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.IsNotBlocked}" />
+        <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}"/>
+    </Style>
+
+    <Style x:Key="MovableFigureItemBaseStyle" TargetType="ListBoxItem" BasedOn="{StaticResource FigureItemStyle}"
+           xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core">
+        <Setter Property="behaviors:CanvasMoveableBehavior.IsMovable" Value="True" />
+    </Style>
+
+    <Style x:Key="ImmovableFigureItemBaseStyle" TargetType="ListBoxItem" BasedOn="{StaticResource FigureItemStyle}"
+           xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core">
+        <Setter Property="behaviors:CanvasMoveableBehavior.IsMovable" Value="False" />
+    </Style>
+
+    <selectors:FigureItemStyleSelector x:Key="FigureItemStyleSelector"
+                                       MoveableFigureStyle="{StaticResource MovableFigureItemBaseStyle}"
+                                       ImmovableFigureStyle="{StaticResource ImmovableFigureItemBaseStyle}"/>
+    <!--#endregion-->
+    <!--#region Simulation-->
+    <Style x:Key="SimulationFigureBaseStyle" TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
+        <Setter Property="Tag" >
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource FigureModelExtractorMultiConverter}">
+                    <Binding Path="Figure"/>
+                    <Binding Path="Line"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Canvas.Left" Value="{Binding RelativeSource={RelativeSource Self}, Path=Tag.PosX}" />
+        <Setter Property="Canvas.Top" Value="{Binding RelativeSource={RelativeSource Self}, Path=Tag.PosY}" />
+        <Setter Property="Canvas.ZIndex" Value="{Binding RelativeSource={RelativeSource Self}, Path=Tag.ZIndex}" />
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="{Binding RelativeSource={RelativeSource Self}, Path=Tag.Rotation}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    
+
+    <Style x:Key="SimulationNodeStyle" TargetType="ListBoxItem" BasedOn="{StaticResource SimulationFigureBaseStyle}"/>
+    <Style x:Key="SimulationConnectionStyle" TargetType="ListBoxItem" BasedOn="{StaticResource SimulationFigureBaseStyle}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+    </Style>
+    <Style x:Key="SimulationAnnotationStyle" TargetType="ListBoxItem" BasedOn="{StaticResource FigureItemBaseStyle}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+    </Style>
+
+    <simulatorSelector:SimulationItemStyleSelector x:Key="SimulationItemStyleSelector"
+                                                   SimulationNodeStyle="{StaticResource SimulationNodeStyle}"
+                                                   SimulationConnectionStyle="{StaticResource SimulationConnectionStyle}"
+                                                   SimulationAnnotationStyle="{StaticResource SimulationAnnotationStyle}"/>
+    <!--#endregion-->
+</ResourceDictionary>

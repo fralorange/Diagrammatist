@@ -7,13 +7,14 @@
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Toolbar.ToolbarResources"
              behaviors:InputBindingBehavior.PropagateInputBindingsToWindow="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:ToolbarViewModel}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ControlTemplate x:Key="ToolTemplate" TargetType="ContentControl">
-            <Grid>
+            <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
@@ -47,7 +48,7 @@
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Clipboard}">
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding PasteCommand}"
-                        Style="{StaticResource ToolBase}">
+                        Style="{StaticResource LargeToolButton}">
                     <StackPanel>
                         <Image Source="{DynamicResource pasteDrawingImage}"
                                Style="{StaticResource Tool}"/>
@@ -57,7 +58,7 @@
                 </Button>
                 <StackPanel Orientation="Vertical">
                     <Button Command="{Binding CopyCommand}"
-                            Style="{StaticResource MiniToolBase}">
+                            Style="{StaticResource MiniToolButton}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource copyDrawingImage}"
                                    Style="{StaticResource MiniTool}"/>
@@ -66,7 +67,7 @@
                         </StackPanel>
                     </Button>
                     <Button Command="{Binding CutCommand}"
-                            Style="{StaticResource MiniToolBase}">
+                            Style="{StaticResource MiniToolButton}">
                         <DockPanel>
                             <Image Source="{DynamicResource cutDrawingImage}"
                                    Style="{StaticResource MiniTool}"
@@ -77,7 +78,7 @@
                         </DockPanel>
                     </Button>
                     <Button Command="{Binding DuplicateCommand}"
-                            Style="{StaticResource MiniToolBase}">
+                            Style="{StaticResource MiniToolButton}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource duplicateDrawingImage}"
                                    Style="{StaticResource MiniTool}"/>
@@ -91,34 +92,40 @@
         <Separator/>
         <ContentControl Template="{StaticResource ToolTemplate}" Tag="{lex:Loc Controls}">
             <StackPanel Orientation="Horizontal">
-                <Button ToolTip="Ctrl + 1"
-                        Style="{StaticResource ToolBase}"
-                        Command="{Binding ChangeModeCommand}"
-                        CommandParameter="Select">
+                <RadioButton ToolTip="Ctrl + 1"
+                             GroupName="MouseModes"
+                             IsChecked="{Binding CurrentMouseMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Select, Mode=OneWay}"
+                             Style="{StaticResource ToolButton}"
+                             Command="{Binding ChangeModeCommand}"
+                             CommandParameter="Select">
                     <StackPanel>
                         <Image Source="{DynamicResource selectDrawingImage}"
                                Style="{StaticResource Tool}"/>
                         <TextBlock Text="{lex:Loc SelectionMode}"
                                    Style="{StaticResource ToolLabel}"/>
                     </StackPanel>
-                </Button>
-                <Button ToolTip="Ctrl + 2"
-                        Style="{StaticResource ToolBase}"
-                        Command="{Binding ChangeModeCommand}"
-                        CommandParameter="Pan">
+                </RadioButton>
+                <RadioButton ToolTip="Ctrl + 2"
+                             GroupName="MouseModes"
+                             IsChecked="{Binding CurrentMouseMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Pan, Mode=OneWay}"
+                             Style="{StaticResource ToolButton}"
+                             Command="{Binding ChangeModeCommand}"
+                             CommandParameter="Pan">
                     <StackPanel>
                         <Image Source="{DynamicResource dragDrawingImage}"
                                Style="{StaticResource Tool}"/>
                         <TextBlock Text="{lex:Loc PanMode}"
                                    Style="{StaticResource ToolLabel}"/>
                     </StackPanel>
-                </Button>
-                <Button Content="{lex:Loc TransformMode}"
-                        Visibility="Collapsed"
-                        Style="{StaticResource ToolBase}"
-                        ToolTip="Ctrl + 3"
-                        Command="{Binding ChangeModeCommand}"
-                        CommandParameter="Transform"/>
+                </RadioButton>
+                <RadioButton Content="{lex:Loc TransformMode}"
+                             GroupName="MouseModes"
+                             Visibility="Collapsed"
+                             Style="{StaticResource ToolButton}"
+                             ToolTip="Ctrl + 3"
+                             IsChecked="{Binding CurrentMouseMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Transform, Mode=OneWay}"
+                             Command="{Binding ChangeModeCommand}"
+                             CommandParameter="Transform"/>
             </StackPanel>
         </ContentControl>
         <Separator/>

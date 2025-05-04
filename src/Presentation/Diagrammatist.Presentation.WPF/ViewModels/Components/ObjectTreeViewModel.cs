@@ -2,15 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.Undoable;
-using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
-using Diagrammatist.Presentation.WPF.Core.Models.Figures;
-using System.Collections.ObjectModel;
-using Diagrammatist.Presentation.WPF.Core.Services.Clipboard;
-using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
+using System.Collections.ObjectModel;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -19,9 +14,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
     /// </summary>
     public sealed partial class ObjectTreeViewModel : ObservableRecipient
     {
-        private readonly ITrackableCommandManager _trackableCommandManager;
-        private readonly IClipboardService<FigureModel> _clipboardManager;
-        private readonly IConnectionService _connectionService;
+        private readonly IFigureManipulationService _figureManipulationService;
 
         private ObservableCollection<FigureModel>? _figures;
 
@@ -60,11 +53,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [NotifyPropertyChangedRecipients]
         private FigureModel? _selectedFigure;
 
-        public ObjectTreeViewModel(ITrackableCommandManager trackableCommandManager, IClipboardService<FigureModel> clipboardManager, IConnectionService connectionManager)
+        public ObjectTreeViewModel(IFigureManipulationService figureManipulationService)
         {
-            _trackableCommandManager = trackableCommandManager;
-            _clipboardManager = clipboardManager;
-            _connectionService = connectionManager;
+            _figureManipulationService = figureManipulationService;
 
             IsActive = true;
         }
@@ -76,18 +67,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             if (Figures is null || Connections is null)
                 return;
 
-            var command = DeleteItemHelper.CreateDeleteItemCommand(Figures, figure, _connectionService, Connections);
-
-            _trackableCommandManager.Execute(command);
+            _figureManipulationService.Delete(figure, Figures, Connections);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="Copy"]/*'/>
         [RelayCommand]
         private void Copy()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && Figures is not null)
             {
-                CopyHelper.Copy(_clipboardManager, SelectedFigure);
+                _figureManipulationService.Copy(SelectedFigure);
             }
         }
 
@@ -95,15 +84,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void Cut()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && Figures is not null)
             {
-                var command = CutHelper.CreateCutCommand(
-                    _clipboardManager,
-                    Figures!,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure);
-
-                _trackableCommandManager.Execute(command);
+                _figureManipulationService.Cut(SelectedFigure, Figures);
             }
         }
 
@@ -111,15 +94,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void Duplicate()
         {
-            if (SelectedFigure is not null)
+            if (SelectedFigure is not null && Figures is not null)
             {
-                var command = DuplicateHelper.CreateDuplicateCommand(
-                    Figures!,
-                    () => SelectedFigure,
-                    figure => SelectedFigure = figure,
-                    figure => figure.Clone());
-
-                _trackableCommandManager.Execute(command);
+                _figureManipulationService.Duplicate(SelectedFigure, Figures);
             }
         }
 
@@ -127,28 +104,34 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         [RelayCommand]
         private void BringForwardItem(FigureModel figure)
         {
-            if (Figures is null)
-                return;
-
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: true);
-
-            _trackableCommandManager.Execute(command);
-
-            Figures?.Refresh();
+            _figureManipulationService.BringForward(figure);
         }
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="SendBackwardItem"]/*'/>
         [RelayCommand]
         private void SendBackwardItem(FigureModel figure)
         {
-            if (Figures is null)
-                return;
+            _figureManipulationService.SendBackward(figure);
+        }
 
-            var command = ZIndexAdjustmentHelper.CreateZIndexAdjustmentCommand(figure, forward: false);
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CopyStyle"]/*'/>
+        [RelayCommand]
+        private void CopyStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _figureManipulationService.CopyStyle(SelectedFigure);
+            }
+        }
 
-            _trackableCommandManager.Execute(command);
-
-            Figures?.Refresh();
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="PasteStyle"]/*'/>
+        [RelayCommand]
+        private void PasteStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _figureManipulationService.PasteStyle(SelectedFigure);
+            }
         }
 
         /// <inheritdoc/>

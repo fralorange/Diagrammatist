@@ -3,38 +3,45 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:figures="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Figures;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
+                    xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:selector="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Selectors;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:simulatorSelector="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Selectors;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:connection="clr-namespace:Diagrammatist.Presentation.WPF.Core.Models.Connection;assembly=Diagrammatist.Presentation.WPF.Core"
                     xmlns:node="clr-namespace:Diagrammatist.Presentation.WPF.Simulator.Models.Node;assembly=Diagrammatist.Presentation.WPF.Simulator"
                     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker">
-    <!--#region  Shared-->
-    <DataTemplate x:Key="MagneticPointsTemplate">
-        <ItemsControl ItemsSource="{Binding MagneticPoints}"
-                      Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
-                                       Path=DataContext.CurrentMouseMode, 
-                                       Converter={StaticResource MouseModeToVisibilityConverter}, 
-                                       FallbackValue=Collapsed}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Ellipse Style="{StaticResource MagneticPoint}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Setter Property="Canvas.Left" 
-                            Value="{Binding Position.X, Converter={StaticResource OffsetHalfEllipseConverter}}"/>
-                    <Setter Property="Canvas.Top" 
-                            Value="{Binding Position.Y, Converter={StaticResource OffsetHalfEllipseConverter}}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
+    <!--#region AddCanvas-->
+    <ControlTemplate x:Key="PresetItemTemplate" 
+                     TargetType="ContentControl">
+        <StackPanel>
+            <Border Margin="5"
+                    Padding="10"
+                    BorderBrush="{DynamicResource ControlBorderBrush}"
+                    BorderThickness="2"
+                    Width="90"
+                    Height="90">
+                <ContentPresenter/>
+            </Border>
+            <TextBlock Text="{lex:Loc {Binding}}"
+                       Style="{StaticResource PresetBlock}"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </ControlTemplate>
+    
+    <DataTemplate x:Key="CustomDiagramTemplate">
+        <ContentControl Template="{StaticResource PresetItemTemplate}">
+            <Image Source="{DynamicResource CustomDiagramImage}"/>
+        </ContentControl>
     </DataTemplate>
+
+    <DataTemplate x:Key="FlowchartTemplate">
+        <ContentControl Template="{StaticResource PresetItemTemplate}">
+            <Image Source="{DynamicResource FlowchartDiagramImage}"/>
+        </ContentControl>
+    </DataTemplate>
+
+    <selector:DiagramTemplateSelector x:Key="DiagramTemplateSelector"
+                                      CustomTemplate="{StaticResource CustomDiagramTemplate}"
+                                      FlowchartTemplate="{StaticResource FlowchartTemplate}"/>
     <!--#endregion-->
     <!--#region Toolbox-->
     <DataTemplate x:Key="ToolboxShapeFigureTemplate"
@@ -59,7 +66,9 @@
         <Border lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Figures.FiguresResources" 
                 ToolTip="{lex:Loc {Binding Name}}"
                 Style="{StaticResource ToolboxTextBorder}">
-            <TextBlock Text="{Binding Text}"/>
+            <TextBlock Text="{Binding Text}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
         </Border>
     </DataTemplate>
 
@@ -83,7 +92,11 @@
     <!--#region Canvas-->
     <DataTemplate x:Key="CanvasShapeFigureTemplate"
                   DataType="figures:ShapeFigureModel">
-        <Grid>
+        <Grid behaviors:MagneticPointsAdornerBehavior.AttachMagneticPoints="True"
+              behaviors:MagneticPointsAdornerBehavior.IsVisible="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                         Path=DataContext.CurrentMouseMode, 
+                         Converter={StaticResource MouseModeToBoolConverter}, 
+                         FallbackValue=False}">
             <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   Width="{Binding Width}"
@@ -99,7 +112,6 @@
                     </Style>
                 </Path.Style>
             </Path>
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MagneticPointsTemplate}"/>
         </Grid>
     </DataTemplate>
 
@@ -114,6 +126,32 @@
                                      StrokeThickness="{Binding Thickness}"
                                      StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"
                                      HasArrow="{Binding HasArrow}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CanvasFlowLineFigureTemplate">
+        <Grid>
+            <controls:ObservablePolyline Style="{StaticResource Line}"
+                                         Points="{Binding Points}"
+                                         PosX="{Binding PosX, Mode=OneWayToSource}"
+                                         PosY="{Binding PosY, Mode=OneWayToSource}"
+                                         Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                                         Stroke="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                                         StrokeThickness="{Binding Thickness}"
+                                         StrokeDashArray="{Binding IsDashed, Converter={StaticResource BoolToStrokeDashArrayConverter}}"
+                                         HasArrow="{Binding HasArrow}"/>
+            <TextBlock Text="{Binding Label}"
+                       Visibility="{Binding ShowConditionLabel, Converter={StaticResource BoolToVisibilityConverter}}"
+                       FontSize="{Binding LabelFontSize}"
+                       Style="{StaticResource BaseBlock}"
+                       Background="Transparent"
+                       Padding="2"
+                       IsHitTestVisible="False">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="{Binding LabelPosition.X}" 
+                                        Y="{Binding LabelPosition.Y}" />
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasTextFigureTemplate"
@@ -141,7 +179,11 @@
     </DataTemplate>
 
     <DataTemplate x:Key="CanvasContainerFigureTemplate">
-        <Grid>
+        <Grid behaviors:MagneticPointsAdornerBehavior.AttachMagneticPoints="True"
+              behaviors:MagneticPointsAdornerBehavior.IsVisible="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                       Path=DataContext.CurrentMouseMode, 
+                                       Converter={StaticResource MouseModeToBoolConverter}, 
+                                       FallbackValue=False}">
             <Path Data="{Binding Data, Converter={StaticResource DataToGeometryGroupConverter}}"
                   Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
                   Width="{Binding Width}"
@@ -167,8 +209,6 @@
                                VerticalAlignment="Center"/>
                 </Viewbox>
             </Border>
-
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MagneticPointsTemplate}"/>
         </Grid>
     </DataTemplate>
 
@@ -178,108 +218,243 @@
                                          LineFigureTemplate="{StaticResource CanvasLineFigureTemplate}"
                                          TextFigureTemplate="{StaticResource CanvasTextFigureTemplate}"
                                          ContainerFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"
-                                         FlowchartFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"/>
+                                         FlowchartFigureTemplate="{StaticResource CanvasContainerFigureTemplate}"
+                                         FlowLineFigureTemplate="{StaticResource CanvasFlowLineFigureTemplate}"/>
     <!--#endregion-->
-    <!--#region Properties-->
     <DataTemplate x:Key="BasePropertiesFigureTemplate"
-                  DataType="figures:FigureModel">
-        <UniformGrid Columns="2"
-                     lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <Label Content="{lex:Loc Name}"/>
-            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="{lex:Loc Rotation}"/>
-            <TextBox Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="{lex:Loc Color}"/>
-            <colorpicker:PortableColorPicker SelectedColor="{Binding BackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             ShowAlpha="False"
-                                             ShowFractionalPart="False"
-                                             Style="{StaticResource PortableColorSlider}"/>
-        </UniformGrid>
+                DataType="figures:FigureModel">
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Name}" />
+            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Rotation}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Color}" />
+            <colorpicker:PortableColorPicker Grid.Row="2" Grid.Column="1"
+                                       SelectedColor="{Binding BackgroundColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       ShowAlpha="False"
+                                       ShowFractionalPart="False"
+                                       Style="{StaticResource PortableColorSlider}" />
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesShapeFigureTemplate"
-                  DataType="figures:ShapeFigureModel">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Width}"/>
-                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Height}"/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc KeepAspectRatio}"
-                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+                DataType="figures:ShapeFigureModel">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc Size}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Width}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Height}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="{lex:Loc KeepAspectRatio}" IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}" Margin="0,4,0,0"/>
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesLineFigureTemplate"
                   DataType="figures:LineFigureModel">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Thickness}"/>
-                    <Slider Value="{Binding Thickness, Mode=TwoWay}" 
-                            Minimum="1" 
-                            Maximum="10"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc IsDashed}"
-                          IsChecked="{Binding IsDashed, Mode=TwoWay}"/>
-                <CheckBox Content="{lex:Loc HasArrow}"
-                          IsChecked="{Binding HasArrow, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc Appearance}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Thickness}" />
+                            <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Thickness, Mode=TwoWay}" Minimum="1" Maximum="10" Margin="0,0,0,4" />
+
+                            <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="{lex:Loc IsDashed}" IsChecked="{Binding IsDashed, Mode=TwoWay}" Margin="0,4,0,0" />
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="{lex:Loc HasArrow}" IsChecked="{Binding HasArrow, Mode=TwoWay}" Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PropertiesFlowLineFigureTemplate"
+                  DataType="figures:FlowLineFigureModel">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc Appearance}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Thickness}" />
+                            <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Thickness, Mode=TwoWay}" Minimum="1" Maximum="10" Margin="0,0,0,4" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc LineLabel}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc LabelFontSize}" />
+                            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding LabelFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Condition}" />
+                            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Condition}" IsReadOnly="True" />
+
+                            <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="{lex:Loc IsDashed}" IsChecked="{Binding IsDashed, Mode=TwoWay}" Margin="0,4,0,0" />
+                            <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Content="{lex:Loc HasArrow}" IsChecked="{Binding HasArrow, Mode=TwoWay}" Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="PropertiesTextFigureTemplate"
                   DataType="figures:TextFigureModel">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Text}"/>
-                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc FontSize}"/>
-                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc TextColor}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     ShowAlpha="False"
-                                                     ShowFractionalPart="False"
-                                                     Style="{StaticResource PortableColorSlider}"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc HasOutline}"
-                          IsChecked="{Binding HasOutline, Mode=TwoWay}"/>
-                <CheckBox Content="{lex:Loc HasBackground}"
-                          IsChecked="{Binding HasBackground, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc TextProperties}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Text}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc FontSize}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc TextColor}" />
+                            <colorpicker:PortableColorPicker Grid.Row="2" Grid.Column="1"
+                                                             SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             ShowAlpha="False"
+                                                             ShowFractionalPart="False"
+                                                             Style="{StaticResource PortableColorSlider}" />
+
+                            <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Content="{lex:Loc HasOutline}" IsChecked="{Binding HasOutline, Mode=TwoWay}" Margin="0,4,0,0" />
+                            <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="{lex:Loc HasBackground}" IsChecked="{Binding HasBackground, Mode=TwoWay}" Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
-    <DataTemplate x:Key="PropertiesContainerFigureTemplate">
-        <ScrollViewer lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Properties.PropertiesResources">
-            <StackPanel>
-                <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}"/>
-                <UniformGrid Columns="2">
-                    <Label Content="{lex:Loc Width}"/>
-                    <TextBox Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Height}"/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc Text}"/>
-                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc FontSize}"/>
-                    <TextBox Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="{lex:Loc TextColor}"/>
-                    <colorpicker:PortableColorPicker SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 ShowAlpha="False"
-                                 ShowFractionalPart="False"
-                                 Style="{StaticResource PortableColorSlider}"/>
-                </UniformGrid>
-                <CheckBox Content="{lex:Loc KeepAspectRatio}"
-                          IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}"/>
-            </StackPanel>
-        </ScrollViewer>
+    <DataTemplate x:Key="PropertiesContainerFigureTemplate"
+                DataType="figures:ContainerFigureModel">
+        <Border Padding="12" CornerRadius="4" Background="{DynamicResource WindowBackground}" Margin="0,0,0,8">
+            <ScrollViewer>
+                <StackPanel>
+                    <Expander Header="{lex:Loc Common}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <ContentPresenter ContentTemplate="{StaticResource BasePropertiesFigureTemplate}" />
+                    </Expander>
+                    <Expander Header="{lex:Loc ContainerProperties}" IsExpanded="True" Style="{StaticResource PropExpanderStyle}">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Width}" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Height}" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc Text}" />
+                            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc FontSize}" />
+                            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource PropTextBoxStyle}" Text="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource PropLabelStyle}" Content="{lex:Loc TextColor}" />
+                            <colorpicker:PortableColorPicker Grid.Row="4" Grid.Column="1"
+                                                             SelectedColor="{Binding TextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             ShowAlpha="False"
+                                                             ShowFractionalPart="False"
+                                                             Style="{StaticResource PortableColorSlider}" />
+
+                            <CheckBox Grid.Row="5" 
+                                      Grid.ColumnSpan="2" 
+                                      Content="{lex:Loc KeepAspectRatio}" 
+                                      IsChecked="{Binding KeepAspectRatio, Mode=TwoWay}" 
+                                      Margin="0,4,0,0" />
+                        </Grid>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </DataTemplate>
 
     <selector:FigureItemTemplateSelector x:Key="PropertiesFigureSelector"
@@ -287,29 +462,72 @@
                                          LineFigureTemplate="{StaticResource PropertiesLineFigureTemplate}"
                                          TextFigureTemplate="{StaticResource PropertiesTextFigureTemplate}"
                                          ContainerFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"
-                                         FlowchartFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"/>
+                                         FlowchartFigureTemplate="{StaticResource PropertiesContainerFigureTemplate}"
+                                         FlowLineFigureTemplate="{StaticResource PropertiesFlowLineFigureTemplate}"/>
     <!--#endregion-->
     <!--#region Simulator-->
     <DataTemplate x:Key="SimulationNodeTemplate"
                   DataType="node:SimulationNodeBase"
                   xmlns:converters="clr-namespace:Diagrammatist.Presentation.WPF.Resources.Converters">
-        <DataTemplate.Resources>
-            <converters:EqualityToBrushMultiConverter x:Key="EqualityToBrushMultiConverter" 
-                                                      HighlightBrush="{StaticResource ControlHighlightBrush}" 
-                                                      DefaultBrush="Transparent"/>
-        </DataTemplate.Resources>
-        <Border BorderThickness="2">
-            <Border.BorderBrush>
-                <MultiBinding Converter="{StaticResource EqualityToBrushMultiConverter}">
-                    <Binding Path="DataContext.CurrentNode" 
-                             RelativeSource="{RelativeSource AncestorType=ListBox}"/>
-                    <Binding/>
-                </MultiBinding>
-            </Border.BorderBrush>
+        <Grid>
             <ContentControl Content="{Binding Figure}"
-                            ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
-        </Border>
+                        ContentTemplateSelector="{StaticResource CanvasFiguresSelector}"/>
+
+            <Border Background="Transparent"
+                    IsHitTestVisible="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="0" ShadowDepth="0" Opacity="0" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource ObjectComparisonMultiConverter}">
+                                        <Binding Path="DataContext.CurrentNode" RelativeSource="{RelativeSource AncestorType=ListBox}"/>
+                                        <Binding />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness"
+                                                                To="3" Duration="0:0:0.3" />
+                                            <ColorAnimation Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                            To="{StaticResource ControlFocused}" Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                                             To="0.6" Duration="0:0:0.3"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                                             To="10" Duration="0:0:0.3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness"
+                                                            To="0" Duration="0:0:0.2" />
+                                            <ColorAnimation Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                        To="Transparent" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                                         To="0" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.BlurRadius)"
+                                                         To="0" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+        </Grid>
     </DataTemplate>
+
 
     <DataTemplate x:Key="SimulationConnectionTemplate"
                   DataType="connection:ConnectionModel">
@@ -321,28 +539,52 @@
                   DataType="node:SimulationNodeBase">
         <StackPanel>
             <TextBlock Text="Lua"
-                       FontWeight="Bold"/>
-            <TextBox Text="{Binding LuaScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     HorizontalScrollBarVisibility="Disabled"
-                     VerticalScrollBarVisibility="Auto"
-                     VerticalContentAlignment="Top"
-                     Margin="5"
-                     MinHeight="160"/>
-            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"/>
+                       FontWeight="Bold"
+                       Margin="5 0 0 0"/>
+            <TextBox Text="{Binding LuaScript, 
+                            Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, 
+                            ValidatesOnExceptions=True,
+                            NotifyOnValidationError=True}"
+                     Style="{StaticResource ScriptTextBox}"/>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"
+                       Margin="0 10 0 0"/>
         </StackPanel>
     </DataTemplate>
-    
+
+    <DataTemplate x:Key="ScriptFileTemplate"
+                  DataType="node:SimulationNodeBase"
+                  xmlns:adorners="http://gu.se/Adorners">
+        <StackPanel>
+            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ScriptTemplate}"/>
+            <StackPanel Margin="0 5 0 5">
+                <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:File}"
+                           FontWeight="Bold"
+                           Margin="5 0 0 0"/>
+                <Button Content="{lex:Loc Diagrammatist.Presentation.WPF.Simulator:Resources.Localization.SimulatorResources:LoadFile}"
+                        Command="{Binding DataContext.LoadFileCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Margin="5"/>
+                <TextBox Text="{Binding ExternalFilePath}"
+                         adorners:Watermark.Text="C:\Users\User\example.dgmf"
+                         adorners:Watermark.VisibleWhen="Empty"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         FontStyle="Italic"
+                         FontSize="10"
+                         Margin="5,0,5,0"/>
+            </StackPanel>
+            <Rectangle Style="{StaticResource HorizontalCustomSeparator}"
+                       Margin="0 10 0 0"/>
+        </StackPanel>
+    </DataTemplate>
+
     <simulatorSelector:SimulationItemSelector x:Key="SimulationItemSelector"
                                               SimulationNodeTemplate="{StaticResource SimulationNodeTemplate}"
-                                              SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"/>
-
-    <simulatorSelector:SimulationItemStyleSelector x:Key="SimulationItemStyleSelector"
-                                                   SimulationNodeStyle="{StaticResource SimulationNodeStyle}"
-                                                   SimulationConnectionStyle="{StaticResource SimulationConnectionStyle}"/>
+                                              SimulationConnectionTemplate="{StaticResource SimulationConnectionTemplate}"
+                                              SimulationAnnotationTemplate="{StaticResource CanvasTextFigureTemplate}"/>
 
     <simulatorSelector:SimulationScriptSelector x:Key="SimulationScriptSelector"
-                                                FlowchartSimulationNodeTemplate="{StaticResource ScriptTemplate}"/>
+                                                SimulationNodeTemplate="{StaticResource ScriptTemplate}"
+                                                SimulationFileNodeTemplate="{StaticResource ScriptFileTemplate}"/>
     <!--#endregion-->
 </ResourceDictionary>

@@ -58,5 +58,77 @@ namespace Diagrammatist.Presentation.WPF.Properties {
                 this["Theme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public double LeftPanelWidth {
+            get {
+                return ((double)(this["LeftPanelWidth"]));
+            }
+            set {
+                this["LeftPanelWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public double RightPanelWidth {
+            get {
+                return ((double)(this["RightPanelWidth"]));
+            }
+            set {
+                this["RightPanelWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public double BottomPanelHeight {
+            get {
+                return ((double)(this["BottomPanelHeight"]));
+            }
+            set {
+                this["BottomPanelHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SnapToGrid {
+            get {
+                return ((bool)(this["SnapToGrid"]));
+            }
+            set {
+                this["SnapToGrid"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AltGridSnap {
+            get {
+                return ((bool)(this["AltGridSnap"]));
+            }
+            set {
+                this["AltGridSnap"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DoNotShowChangeDiagramTypeWarning {
+            get {
+                return ((bool)(this["DoNotShowChangeDiagramTypeWarning"]));
+            }
+            set {
+                this["DoNotShowChangeDiagramTypeWarning"] = value;
+            }
+        }
     }
 }

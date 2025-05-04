@@ -1,13 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Diagrammatist.Presentation.WPF.Core.Commands.Helpers.General;
-using Diagrammatist.Presentation.WPF.Core.Commands.Managers;
+using Diagrammatist.Application.AppServices.Document.Services;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
+using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;
 using System.Configuration;
 
@@ -26,6 +31,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
     {
         private readonly IDialogService _dialogService;
         private readonly ITrackableCommandManager _trackableCommandManager;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Occurs when a request is made to close the current canvas.
@@ -61,7 +67,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuZoomResetCommand),
             nameof(MenuEnableGridCommand),
             nameof(MenuSimulatorCommand),
-            nameof(MenuChangeSizeCommand))]
+            nameof(MenuChangeSizeCommand),
+            nameof(MenuChangeBackgroundCommand),
+            nameof(MenuChangeTypeCommand))]
         private bool _hasCanvasFlag;
         /// <summary>
         /// Gets or sets 'has custom canvas' flag.
@@ -99,13 +107,24 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuZoomOutCommand),
             nameof(MenuZoomResetCommand),
             nameof(MenuSimulatorCommand),
-            nameof(MenuChangeSizeCommand))]
+            nameof(MenuChangeSizeCommand),
+            nameof(MenuChangeBackgroundCommand),
+            nameof(MenuChangeTypeCommand))]
         private bool _isBlocked;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
         public bool IsNotBlocked => !IsBlocked;
         #endregion
 
-        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager)
+        /// <summary>
+        /// Initializes main view model.
+        /// </summary>
+        /// <remarks>
+        /// This view model acts as adviser between all components..
+        /// </remarks>
+        /// <param name="alertService"></param>
+        /// <param name="dialogService"></param>
+        /// <param name="trackableCommandManager"></param>
+        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IServiceProvider serviceProvider)
         {
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
@@ -113,6 +132,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             ConfigureEvents();
 
             IsActive = true;
+            _serviceProvider = serviceProvider;
         }
 
         private void ConfigureEvents()
@@ -328,7 +348,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         }
 
         #endregion
-        #region Canvas
+        #region Diagram
 
         /// <summary>
         /// Changes size of the current selected canvas through dialog window from menu button.
@@ -349,6 +369,48 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Changes background of the current selected canvas through dialog window from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuChangeBackground()
+        {
+            var currentCanvas = Messenger.Send<CurrentCanvasRequestMessage>().Response;
+
+            if (currentCanvas is null)
+                return;
+
+            var dialogViewModel = new ChangeCanvasBackgroundDialogViewModel(currentCanvas.Settings.Background);
+
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.Color is { } background)
+            {
+                Messenger.Send<UpdatedBackgroundMessage>(new(background));
+            }
+        }
+
+        /// <summary>
+        /// Changes diagram type of the current diagram through dialog window from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuChangeType()
+        {
+            var currentCanvas = Messenger.Send<CurrentCanvasRequestMessage>().Response;
+
+            if (currentCanvas is null)
+                return;
+
+            var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+            var userSettingsService = _serviceProvider.GetRequiredService<IUserSettingsService>();
+            var dialogViewModel = new ChangeDiagramTypeDialogViewModel(alertService, userSettingsService, currentCanvas.Settings.Type);
+
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true
+                && dialogViewModel.SelectedType is { } diagram
+                && diagram != currentCanvas.Settings.Type)
+            {
+                Messenger.Send<UpdatedTypeMessage>(new(diagram));
+            }
+        }
+
         #endregion
         #region Tools
         /// <summary>
@@ -357,9 +419,43 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand(CanExecute = nameof(MenuWithNotCustomCanvasCanExecute))]
         private void MenuSimulator()
         {
-            var dialogViewModel = new SimulatorWindowViewModel(_dialogService);
+            var key = "Simulation";
+            var doc = Messenger.Send<CurrentDocumentRequestMessage>().Response;
 
-            _dialogService.ShowDialog(this, dialogViewModel);
+            if (doc is null) return;
+
+            var payload = doc.GetPayloadData<SimulationContext>(key);
+
+            var documentSerializationService = _serviceProvider.GetRequiredService<IDocumentSerializationService>();
+            var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+
+            var terminated = false;
+
+            var dialogViewModel = new SimulatorWindowViewModel(
+                _dialogService, alertService, documentSerializationService, payload,
+                onTerminate: () => terminated = true);
+
+            dialogViewModel.RequestApply += () =>
+            {
+                if (dialogViewModel.NewContext is null)
+                    return;
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => doc.SetPayload(key, dialogViewModel.NewContext),
+                    () => doc.SetPayload(key, payload));
+
+                _trackableCommandManager.Execute(command);
+            };
+
+            if (!terminated && _dialogService.ShowDialog(this, dialogViewModel) == true && 
+                dialogViewModel.NewContext is { } context)
+            {
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => doc.SetPayload(key, context), 
+                    () => doc.SetPayload(key, payload));
+
+                _trackableCommandManager.Execute(command);
+            }
         }
 
         /// <summary>
@@ -368,7 +464,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand]
         private void MenuPreferences()
         {
-            var dialogViewModel = new SettingsDialogViewModel();
+            var userSettingsService = _serviceProvider.GetRequiredService<IUserSettingsService>();
+            var dialogViewModel = new SettingsDialogViewModel(userSettingsService);
 
             _dialogService.ShowDialog(this, dialogViewModel);
         }
@@ -436,13 +533,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             {
                 switch (m.Item1)
                 {
-                    case MenuFlags.HasCanvas:
+                    case ActionFlags.HasCanvas:
                         HasCanvasFlag = m.Item2;
                         break;
-                    case MenuFlags.HasCustomCanvas:
+                    case ActionFlags.HasCustomCanvas:
                         HasCustomCanvasFlag = m.Item2;
                         break;
-                    case MenuFlags.IsBlocked:
+                    case ActionFlags.IsBlocked:
                         IsBlocked = m.Item2;
                         break;
                 }

@@ -118,6 +118,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
 
             var magneticPoint = GetNearestMagneticPoint(currentPoint, magneticPoints);
             currentPoint = magneticPoint?.Position ?? currentPoint;
+            currentPoint = GetSnappedToAxis(currentPoint, magneticPoints);
 
             if (_line.Points.Count == 1)
             {
@@ -183,9 +184,60 @@ namespace Diagrammatist.Presentation.WPF.Core.Renderers.Line
             var snappedX = point.X;
             var snappedY = point.Y;
 
-            GridHelper.SnapCoordinatesToGrid(new Thickness(0), ref snappedX, ref snappedY, _gridStep);
+            GridHelper.SnapCoordinatesToGrid(ref snappedX, ref snappedY, _gridStep);
 
             return new Point(snappedX, snappedY);
+        }
+
+        private Point GetSnappedToAxis(Point currentPoint, IEnumerable<MagneticPointModel> magneticPoints)
+        {
+            const double activationThreshold = 20;
+            const double movementDirectionTolerance = 0.3;
+
+            if (_line is null || _line.Points.Count < 2)
+                return currentPoint;
+
+            var previousPoint = _line.Points[^2];
+            var movementVector = new Vector(currentPoint.X - previousPoint.X, currentPoint.Y - previousPoint.Y);
+
+            if (movementVector.Length == 0)
+                return currentPoint;
+
+            var normalized = movementVector;
+            normalized.Normalize();
+
+            var isMostlyHorizontal = Math.Abs(normalized.Y) < movementDirectionTolerance;
+            var isMostlyVertical = Math.Abs(normalized.X) < movementDirectionTolerance;
+
+            MagneticPointModel? nearestPoint = null;
+            var minDistance = double.MaxValue;
+
+            foreach (var magneticPoint in magneticPoints)
+            {
+                var deltaX = Math.Abs(currentPoint.X - magneticPoint.Position.X);
+                var deltaY = Math.Abs(currentPoint.Y - magneticPoint.Position.Y);
+
+                if (isMostlyHorizontal && deltaX < minDistance && deltaX < activationThreshold)
+                {
+                    minDistance = deltaX;
+                    nearestPoint = magneticPoint;
+                }
+                else if (isMostlyVertical && deltaY < minDistance && deltaY < activationThreshold)
+                {
+                    minDistance = deltaY;
+                    nearestPoint = magneticPoint;
+                }
+            }
+
+            if (nearestPoint is not null)
+            {
+                if (isMostlyHorizontal)
+                    currentPoint = new Point(nearestPoint.Position.X, currentPoint.Y); // <- snap to X, ignore Y
+                else if (isMostlyVertical)
+                    currentPoint = new Point(currentPoint.X, nearestPoint.Position.Y); // <- snap to Y, ignore X
+            }
+
+            return currentPoint;
         }
 
         private MagneticPointModel? GetNearestMagneticPoint(Point point, IEnumerable<MagneticPointModel> magneticPoints, double threshold = 10)

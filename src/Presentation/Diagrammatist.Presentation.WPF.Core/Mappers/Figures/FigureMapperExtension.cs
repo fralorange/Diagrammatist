@@ -53,6 +53,22 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
             target.KeepAspectRatio = source.KeepAspectRatio;
         }
 
+        private static void MapLineProperties(LineFigureModel target, LineFigure source)
+        {
+            target.Points = source.Points.Select(p => new System.Windows.Point(p.X, p.Y)).ToObservableCollection();
+            target.Thickness = source.Thickness;
+            target.IsDashed = source.IsDashed;
+            target.HasArrow = source.HasArrow;
+        }
+
+        private static void MapLineProperties(LineFigure target, LineFigureModel source)
+        {
+            target.Points = source.Points.Select(p => new System.Drawing.PointF((float)p.X, (float)p.Y)).ToList();
+            target.Thickness = source.Thickness;
+            target.IsDashed = source.IsDashed;
+            target.HasArrow = source.HasArrow;
+        }
+
         /// <summary>
         /// Map shape figure from domain to model.
         /// </summary>
@@ -75,7 +91,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         public static ShapeFigure ToDomain(this ShapeFigureModel model)
         {
             var domain = new ShapeFigure();
-            
+
             MapShapeProperties(domain, model);
             MapCommonProperties(domain, model);
             return domain;
@@ -88,14 +104,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         /// <returns><see cref="LineFigureModel"/></returns>
         public static LineFigureModel ToModel(this LineFigure figure)
         {
-            var model = new LineFigureModel
-            {
-                Points = figure.Points.Select(p => new System.Windows.Point(p.X, p.Y)).ToObservableCollection(),
-                Thickness = figure.Thickness,
-                IsDashed = figure.IsDashed,
-                HasArrow = figure.HasArrow,
-            };
+            var model = new LineFigureModel();
 
+            MapLineProperties(model, figure);
             MapCommonProperties(model, figure);
             return model;
         }
@@ -107,15 +118,52 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
         /// <returns><see cref="LineFigure"/></returns>
         public static LineFigure ToDomain(this LineFigureModel model)
         {
-            var domain = new LineFigure
+            var domain = new LineFigure();
+
+            MapLineProperties(domain, model);
+            MapCommonProperties(domain, model);
+            return domain;
+        }
+
+        /// <summary>
+        /// Map flow line figure from domain to model.
+        /// </summary>
+        /// <param name="figure"></param>
+        /// <returns></returns>
+        public static FlowLineFigureModel ToModel(this FlowLineFigure figure)
+        {
+            var model = new FlowLineFigureModel
             {
-                Points = model.Points.Select(p => new System.Drawing.PointF((float)p.X, (float)p.Y)).ToList(),
-                Thickness = model.Thickness,
-                IsDashed = model.IsDashed,
-                HasArrow = model.HasArrow,
+                Condition = (FlowConditionModel)Enum.Parse(typeof(FlowConditionModel), figure.Condition.ToString()),
+                Label = figure.Label,
+                LabelFontSize = figure.LabelFontSize
             };
 
+            MapLineProperties(model, figure);
+            MapCommonProperties(model, figure);
+
+            return model;
+        }
+
+        /// <summary>
+        /// Map flow line figure from model to domain.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static FlowLineFigure ToDomain(this FlowLineFigureModel model)
+        {
+            var domain = new FlowLineFigure
+            {
+                Condition = (FlowCondition)Enum.Parse(typeof(FlowCondition), model.Condition.ToString()),
+                Label = model.Label,
+                LabelFontSize = model.LabelFontSize,
+                LabelPositionX = model.LabelPosition.X,
+                LabelPositionY = model.LabelPosition.Y
+            };
+
+            MapLineProperties(domain, model);
             MapCommonProperties(domain, model);
+
             return domain;
         }
 
@@ -255,6 +303,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
                 FlowchartFigure flowchartFigure => flowchartFigure.ToModel(),
                 ContainerFigure containerFigure => containerFigure.ToModel(),
                 ShapeFigure shapeFigure => shapeFigure.ToModel(),
+                FlowLineFigure flowLineFigure => flowLineFigure.ToModel(),
                 LineFigure lineFigure => lineFigure.ToModel(),
                 TextFigure textFigure => textFigure.ToModel(),
                 _ => throw new ArgumentException("Unsupported figure type", nameof(figure))
@@ -274,6 +323,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Mappers.Figures
                 FlowchartFigureModel flowchartFigureModel => flowchartFigureModel.ToDomain(),
                 ContainerFigureModel containerFigureModel => containerFigureModel.ToDomain(),
                 ShapeFigureModel shapeFigureModel => shapeFigureModel.ToDomain(),
+                FlowLineFigureModel flowLineFigureModel => flowLineFigureModel.ToDomain(),
                 LineFigureModel lineFigureModel => lineFigureModel.ToDomain(),
                 TextFigureModel textFigureModel => textFigureModel.ToDomain(),
                 _ => throw new ArgumentException("Unsupported figure model type", nameof(model))

@@ -9,8 +9,12 @@
              xmlns:behaviors="clr-namespace:Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;assembly=Diagrammatist.Presentation.WPF.Core"
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+             lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources"
              d:DataContext="{d:DesignInstance Type=viewmodels:CanvasViewModel}"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             UseLayoutRounding="True"
+             SnapsToDevicePixels="True">
     <UserControl.Resources>
         <ControlTemplate TargetType="ListBox"
                          x:Key="UnscrollableListBox">
@@ -33,8 +37,8 @@
                     CommandParameter="{Binding SelectedFigure}"/>
     </UserControl.InputBindings>
 
-    <controls:ExtendedScrollViewer HorizontalScrollBarVisibility="Visible"
-                                   VerticalScrollBarVisibility="Visible"
+    <controls:ExtendedScrollViewer VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
+                                   HorizontalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"
                                    Focusable="False"
                                    IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
                                    Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}"
@@ -44,36 +48,11 @@
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
             <ListBox ItemsSource="{Binding Figures}"
                      ItemTemplateSelector="{StaticResource CanvasFiguresSelector}"
+                     ItemContainerStyleSelector="{StaticResource FigureItemStyleSelector}"
                      SelectedItem="{Binding SelectedFigure}"
                      Template="{StaticResource UnscrollableListBox}"
                      PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
-                     x:Name="itemsHolder">
-                <ListBox.Resources>
-                    <ContextMenu x:Key="ElementMenu"
-                                 lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
-                        <MenuItem Header="{lex:Loc Copy}"
-                                  InputGestureText="Ctrl+C"
-                                  Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                        <MenuItem Header="{lex:Loc Cut}"
-                                  InputGestureText="Ctrl+X"
-                                  Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                        <MenuItem Header="{lex:Loc Duplicate}"
-                                  InputGestureText="Ctrl+D"
-                                  Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc BringForward}"
-                                  Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <MenuItem Header="{lex:Loc SendBackward}"
-                                  Command="{Binding DataContext.SendBackwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Delete}"
-                                  InputGestureText="Del"
-                                  Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                    </ContextMenu>
-                </ListBox.Resources>
+                     Loaded="OnListBoxLoaded">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=0}"
@@ -81,6 +60,8 @@
                                                  Background="{Binding DataContext.CurrentCanvas.Settings.Background, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource ColorToBrushConverter}, FallbackValue=Transparent}"
                                                  IsElementPanEnabled="{Binding DataContext.CurrentMouseMode, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Select', FallbackValue=False}"
                                                  IsGridVisible="{Binding DataContext.IsGridVisible, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
+                                                 AltSnapToGrid="{Binding DataContext.IsAltGridSnapEnabled, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=False}"
+                                                 SnapToGrid="{Binding DataContext.IsGridSnapEnabled, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=True}"
                                                  IsBorderVisible="{Binding DataContext.CurrentCanvas, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource NullToBooleanConverter}, FallbackValue=False}"
                                                  GridLineColor="{DynamicResource FrameStroke}"
                                                  ContextMenuService.IsEnabled="{Binding DataContext.IsNotBlocked, RelativeSource={RelativeSource AncestorType=ListBox}}"
@@ -89,7 +70,9 @@
                                                  PreviewMouseRightButtonDown="OnExtendedCanvasPreviewMouseRightButtonDown"
                                                  PreviewKeyDown="OnExtendedCanvasPreviewKeyDown"
                                                  Loaded="OnExtendedCanvasLoaded"
-                                                 Focusable="True">
+                                                 Focusable="True"
+                                                 UseLayoutRounding="True"
+                                                 SnapsToDevicePixels="True">
                             <controls:ExtendedCanvas.ContextMenu>
                                 <ContextMenu lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
                                     <MenuItem Header="{lex:Loc Paste}"
@@ -100,40 +83,25 @@
                             </controls:ExtendedCanvas.ContextMenu>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="ItemPositionChanged">
-                                    <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangeCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                    <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangedCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                                           PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="ItemPositionChanging">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.ItemPositionChangingCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
                                                            PassEventArgsToCommand="True"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </controls:ExtendedCanvas>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource CustomSelectionBox}">
-                        <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
-                        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
-                        <Setter Property="RenderTransform">
-                            <Setter.Value>
-                                <RotateTransform Angle="{Binding Rotation}"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="ContextMenuService.IsEnabled" Value="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.IsNotBlocked}" />
-                        <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
             </ListBox>
 
-            <Canvas x:Name="drawingCanvas"
-                    Width="{Binding CurrentCanvas.Settings.Width}"
+            <Canvas Width="{Binding CurrentCanvas.Settings.Width}"
                     Height="{Binding CurrentCanvas.Settings.Height}"
                     Background="Transparent"
                     ClipToBounds="True"
-                    IsHitTestVisible="False"/>
+                    IsHitTestVisible="False"
+                    Loaded="OnCanvasLoaded"/>
         </Grid>
-        <i:Interaction.Behaviors>
-            <behaviors:ScrollViewerBehavior VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
-                                            HorizontalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"/>
-        </i:Interaction.Behaviors>
     </controls:ExtendedScrollViewer>
 </UserControl>

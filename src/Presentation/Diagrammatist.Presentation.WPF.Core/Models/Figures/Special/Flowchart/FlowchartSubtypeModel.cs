@@ -33,13 +33,5 @@
         /// A predefined process suptype.
         /// </summary>
         PredefinedProcess,
-        /// <summary>
-        /// A document subtybe.
-        /// </summary>
-        Document,
-        /// <summary>
-        /// A database subtype.
-        /// </summary>
-        Database,
     }
 }

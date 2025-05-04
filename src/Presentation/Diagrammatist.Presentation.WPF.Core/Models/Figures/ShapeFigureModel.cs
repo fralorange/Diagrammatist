@@ -56,6 +56,19 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
             }
         }
 
+        /// <inheritdoc/>
+        public override double Rotation 
+        { 
+            get => base.Rotation; 
+            set 
+            {
+                if (SetProperty(ref _rotation, value))
+                {
+                    UpdateMagneticPoints();
+                }
+            } 
+        }
+
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureShapeData"]/*'/>
         public List<string> Data { get; set; } = [];
 
@@ -78,12 +91,28 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
             Height = source.Height;
             KeepAspectRatio = source.KeepAspectRatio;
             Data = new(source.Data);
+
+            UpdateMagneticPoints();
         }
 
         /// <inheritdoc/>
         public override FigureModel Clone()
         {
             return new ShapeFigureModel(this);
+        }
+
+        /// <inheritdoc/>
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+
+            if (target is ShapeFigureModel shapeTarget)
+            {
+                shapeTarget.Width = Width;
+                shapeTarget.Height = Height;
+                shapeTarget.KeepAspectRatio = KeepAspectRatio;
+                shapeTarget.Data = new List<string>(Data);
+            }
         }
 
         /// <inheritdoc/>
@@ -102,9 +131,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
                 geometryGroup.Children.Add(geometry);
             }
 
-            var combinedGeometry = geometryGroup.GetOutlinedPathGeometry();
-
-            var points = FigureSnapHelper.GetMagneticPoints(combinedGeometry, Width, Height, KeepAspectRatio);
+            var points = FigureSnapHelper.GetMagneticPoints(geometryGroup, Width, Height, KeepAspectRatio, Rotation);
 
             foreach (var point in points)
             {
