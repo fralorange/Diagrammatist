@@ -11,6 +11,7 @@
             <ScrollViewer x:Name="scrollViewer"
                           Cursor="{TemplateBinding Cursor}"
                           Loaded="OnScrollViewerLoaded"
+                          Focusable="{TemplateBinding Focusable}"
                           HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
                           VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}">
                 <ScrollViewer.Resources>
