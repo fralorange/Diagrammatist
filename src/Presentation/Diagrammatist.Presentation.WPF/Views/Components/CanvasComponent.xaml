@@ -48,36 +48,11 @@
               Height="{Binding CurrentCanvas.ImaginaryHeight, FallbackValue=0}">
             <ListBox ItemsSource="{Binding Figures}"
                      ItemTemplateSelector="{StaticResource CanvasFiguresSelector}"
+                     ItemContainerStyleSelector="{StaticResource FigureItemStyleSelector}"
                      SelectedItem="{Binding SelectedFigure}"
                      Template="{StaticResource UnscrollableListBox}"
                      PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
                      Loaded="OnListBoxLoaded">
-                <ListBox.Resources>
-                    <ContextMenu x:Key="ElementMenu"
-                                 lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Commands.CommandsResources">
-                        <MenuItem Header="{lex:Loc Copy}"
-                                  InputGestureText="Ctrl+C"
-                                  Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                        <MenuItem Header="{lex:Loc Cut}"
-                                  InputGestureText="Ctrl+X"
-                                  Command="{Binding DataContext.CutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                        <MenuItem Header="{lex:Loc Duplicate}"
-                                  InputGestureText="Ctrl+D"
-                                  Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc BringForward}"
-                                  Command="{Binding DataContext.BringForwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <MenuItem Header="{lex:Loc SendBackward}"
-                                  Command="{Binding DataContext.SendBackwardItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Delete}"
-                                  InputGestureText="Del"
-                                  Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.DataContext}"/>
-                    </ContextMenu>
-                </ListBox.Resources>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=0}"
@@ -119,12 +94,6 @@
                         </controls:ExtendedCanvas>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource FigureItemBaseStyle}">
-                        <Setter Property="ContextMenuService.IsEnabled" Value="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.IsNotBlocked}" />
-                        <Setter Property="ContextMenu" Value="{StaticResource ElementMenu}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
             </ListBox>
 
             <Canvas Width="{Binding CurrentCanvas.Settings.Width}"

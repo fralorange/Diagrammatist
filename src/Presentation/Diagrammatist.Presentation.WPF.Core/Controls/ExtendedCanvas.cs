@@ -1,6 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -211,7 +212,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         #region Mouse event handlers
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsElementPanEnabled && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item)
+            if (IsElementPanEnabled
+                && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item
+                && CanvasMoveableBehavior.GetIsMovable(item))
             {
                 _selectedElement = item;
 
@@ -251,10 +254,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
 
                 OnItemPositionChanging(_selectedElement!,
-                                           _lastReportedPos.X,
-                                           _lastReportedPos.Y,
-                                           newX,
-                                           newY);
+                                       _lastReportedPos.X,
+                                       _lastReportedPos.Y,
+                                       newX,
+                                       newY);
 
                 ValidateAndSetElementPosition(_selectedElement!, newX, newY);
 
