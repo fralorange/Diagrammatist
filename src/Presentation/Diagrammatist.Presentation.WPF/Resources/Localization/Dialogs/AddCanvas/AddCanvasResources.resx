@@ -117,31 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddDiagramInfo" xml:space="preserve">
+    <value>DIAGRAM SETUP</value>
+  </data>
   <data name="Background" xml:space="preserve">
-    <value>Background color: </value>
+    <value>Background Color</value>
+  </data>
+  <data name="BlackBG" xml:space="preserve">
+    <value>Black Background</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Centimeters" xml:space="preserve">
+    <value>Centimeters</value>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>Custom</value>
   </data>
+  <data name="CustomBG" xml:space="preserve">
+    <value>Custom</value>
+  </data>
   <data name="DiagramType" xml:space="preserve">
-    <value>Diagram type:</value>
+    <value>DIAGRAM TYPES</value>
   </data>
   <data name="FileName" xml:space="preserve">
-    <value>File name: </value>
+    <value>File Name</value>
   </data>
   <data name="Flowchart" xml:space="preserve">
     <value>Flowchart</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Height: </value>
+    <value>Height</value>
+  </data>
+  <data name="Inches" xml:space="preserve">
+    <value>Inches</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>Pixels</value>
+  </data>
+  <data name="WhiteBG" xml:space="preserve">
+    <value>White Background</value>
+  </data>
   <data name="Width" xml:space="preserve">
-    <value>Width: </value>
+    <value>Width</value>
   </data>
 </root>

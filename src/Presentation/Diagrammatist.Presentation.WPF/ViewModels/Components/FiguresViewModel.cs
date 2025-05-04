@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Figures.Services;
+using Diagrammatist.Presentation.WPF.Core.Factories.Figures.Line;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
@@ -13,7 +14,8 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
+using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -27,6 +29,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly IFigureService _figureService;
         private readonly IConnectionService _connectionService;
         private readonly IFigurePlacementService _figurePlacementService;
+        private readonly ILineFactory _lineFactory;
 
         /// <summary>
         /// Occurs when a requested user input confirmed.
@@ -101,15 +104,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// Initializes a new figures view model.
         /// </summary>
         /// <param name="figureService">A figure service.</param>
-        /// <param name="trackableCommandManager">A command manager.</param>
         /// <param name="connectionManager">A connection manager.</param>
+        /// <param name="figurePlacementService"></param>
+        /// <param name="lineFactory"></param>
         public FiguresViewModel(IFigureService figureService,
                                 IConnectionService connectionManager,
-                                IFigurePlacementService figurePlacementService)
+                                IFigurePlacementService figurePlacementService,
+                                ILineFactory lineFactory)
         {
             _figureService = figureService;
             _connectionService = connectionManager;
             _figurePlacementService = figurePlacementService;
+            _lineFactory = lineFactory;
 
             IsActive = true;
         }
@@ -223,7 +229,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 return;
             }
 
-            if (figureTemplate is LineFigureModel)
+            if (figureTemplate is LineFigureModel lineTemplate)
             {
                 var previousMouseMode = CurrentMouseMode;
 
@@ -243,8 +249,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 var mStart = result.Value.start;
                 var mEnd = result.Value.end;
 
-                var figure = CloneAndRename((LineFigureModel)figureTemplate);
+                var figure = _lineFactory.CreateLine(
+                    lineTemplate,
+                    mStart,
+                    mEnd,
+                    CanvasConnections
+                );
 
+                figure.Name = GetUniqueFigureName(GetTranslatedFigureName(figure.Name));
                 figure.Points = result.Value.points.ToObservableCollection();
 
                 if (mStart is not null || mEnd is not null)
@@ -261,9 +273,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
             }
-            else if (figureTemplate is ShapeFigureModel figureModel)
+            else if (figureTemplate is ShapeFigureModel shapeTemplate)
             {
-                var figure = CloneAndRename((ShapeFigureModel)figureTemplate);
+                var figure = CloneAndRename(shapeTemplate);
 
                 figure!.UpdateMagneticPoints();
 

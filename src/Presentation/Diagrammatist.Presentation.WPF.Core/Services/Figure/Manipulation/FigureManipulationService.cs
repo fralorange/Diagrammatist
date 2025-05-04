@@ -113,6 +113,33 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
             _commandManager.Execute(command);
         }
 
+        /// <inheritdoc/>
+        public void CopyStyle(FigureModel figure)
+        {
+            _clipboardService.CopyToClipboard(figure, "Style");
+        }
+
+        /// <inheritdoc/>
+        public void PasteStyle(FigureModel figure)
+        {
+            if (_clipboardService.GetFromClipboard("Style")?.Clone() is not { } figureTemplate)
+                return;
+
+            var initialFigure = figure.Clone();
+
+            var command = CommonUndoableHelper.CreateUndoableCommand(
+                () =>
+                {
+                    figureTemplate.CopyPropertiesTo(figure);
+                },
+                () =>
+                {
+                    initialFigure.CopyPropertiesTo(figure);
+                });
+
+            _commandManager.Execute(command);
+        }
+
         public void SendBackward(FigureModel figure)
         {
             AdjustZIndex(figure, -1);

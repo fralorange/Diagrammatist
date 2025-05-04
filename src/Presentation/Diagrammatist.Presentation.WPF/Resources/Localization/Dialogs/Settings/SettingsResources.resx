@@ -117,14 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AltSnapToGrid" xml:space="preserve">
+    <value>Invert grid snapping with the ‘Alt’ key</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="Dark" xml:space="preserve">
     <value>Dark</value>
+  </data>
+  <data name="DefaultFontSize" xml:space="preserve">
+    <value>Default Font Size:</value>
+  </data>
+  <data name="DoNotShowChangeDiagramTypeWarning" xml:space="preserve">
+    <value>Do not show warning when changing diagram types</value>
+  </data>
+  <data name="en-US" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="InterfaceTab" xml:space="preserve">
+    <value>Interface</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language: </value>
   </data>
   <data name="Light" xml:space="preserve">
     <value>Light</value>
+  </data>
+  <data name="ru-RU" xml:space="preserve">
+    <value>Russian</value>
+  </data>
+  <data name="SnapToGrid" xml:space="preserve">
+    <value>The object must snap to the grid</value>
   </data>
   <data name="System" xml:space="preserve">
     <value>System</value>

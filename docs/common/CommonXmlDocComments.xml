@@ -412,6 +412,16 @@
 			</summary>
 			<param name="figure">Target figure.</param>
 		</Member>
+		<Member name="CopyStyle">
+			<summary>
+				Copies item style to clipboard.
+			</summary>
+		</Member>
+		<Member name="PasteStyle">
+			<summary>
+				Pastes item style from clipboard.
+			</summary>
+		</Member>
 		<Member name="Paste">
 			<summary>
 				Pastes object from clipboard if there's any.

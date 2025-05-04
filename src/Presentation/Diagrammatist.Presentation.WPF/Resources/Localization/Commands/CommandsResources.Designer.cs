@@ -88,6 +88,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Commands {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Copy Style.
+        /// </summary>
+        internal static string CopyStyle {
+            get {
+                return ResourceManager.GetString("CopyStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cut.
         /// </summary>
         internal static string Cut {
@@ -120,6 +129,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Commands {
         internal static string Paste {
             get {
                 return ResourceManager.GetString("Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Paste Style.
+        /// </summary>
+        internal static string PasteStyle {
+            get {
+                return ResourceManager.GetString("PasteStyle", resourceCulture);
             }
         }
         

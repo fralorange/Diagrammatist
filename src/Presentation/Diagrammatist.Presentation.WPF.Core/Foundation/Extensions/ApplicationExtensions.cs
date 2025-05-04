@@ -43,6 +43,26 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
             WeakReferenceMessenger.Default.Send(new ThemeChangedMessage(themeName));
         }
 
+        /// <summary>
+        /// Gets the current theme of the application.
+        /// </summary>
+        /// <param name="application">The application instance.</param>
+        public static string GetCurrentTheme(this ApplicationEnt application)
+        {
+            var mergedDictionaries = ApplicationEnt.Current.Resources.MergedDictionaries;
+
+            var currentTheme = mergedDictionaries
+                .FirstOrDefault(dict => dict.Source?.ToString().Contains("Colors") == true);
+
+            if (currentTheme?.Source == null)
+                return "Unknown";
+
+            var sourcePath = currentTheme.Source.ToString();
+            var themeName = sourcePath.Split('/').LastOrDefault()?.Replace(".xaml", "");
+
+            return themeName ?? "Unknown";
+        }
+
         private static void ReplaceResource(Collection<ResourceDictionary> mergedDictionaries, ResourceDictionary oldResource, string newResourcePath)
         {
             var index = mergedDictionaries.IndexOf(oldResource);

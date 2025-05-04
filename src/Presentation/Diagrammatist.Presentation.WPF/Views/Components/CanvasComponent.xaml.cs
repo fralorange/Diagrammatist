@@ -4,8 +4,8 @@ using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.Core.Renderers.Line;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System.Windows;
@@ -24,6 +24,8 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
     public partial class CanvasComponent : UserControl
     {
         private LineDrawer _lineDrawer;
+        private Canvas _drawingCanvas;
+        private ListBox _itemsHolder;
 
 #pragma warning disable CS8618
         public CanvasComponent()
@@ -47,6 +49,20 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         }
 
         #region Event handlers
+
+        /// <summary>
+        /// Sets items holder to the field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnListBoxLoaded(object sender, RoutedEventArgs e) => _itemsHolder = (sender as ListBox)!;
+
+        /// <summary>
+        /// Sets drawing canvas to the field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnCanvasLoaded(object sender, RoutedEventArgs e) => _drawingCanvas = (sender as Canvas)!;
 
         /// <summary>
         /// Disables selection when clicked outside of an object.
@@ -74,7 +90,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    _lineDrawer = new LineDrawer(drawingCanvas, canvas.GridStep);
+                    _lineDrawer = new LineDrawer(_drawingCanvas, canvas.GridStep);
 
                     _lineDrawer.RequestEarlyExit += actionViewModel.EarlyConfirm;
                     actionViewModel.RequestEndDrawing += _lineDrawer.EndDrawing;
@@ -218,13 +234,13 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 Filter = "PNG|*.png",
             };
 
-            FocusHelper.ClearFocusAndSelection(itemsHolder);
+            FocusHelper.ClearFocusAndSelection(_itemsHolder);
 
             if (saveFileDialog.ShowDialog() == true)
             {
                 string filePath = saveFileDialog.FileName;
 
-                var canvas = itemsHolder.GetVisualDescendant<ExtendedCanvas>();
+                var canvas = _itemsHolder.GetVisualDescendant<ExtendedCanvas>();
 
                 canvas?.Export(filePath);
             }

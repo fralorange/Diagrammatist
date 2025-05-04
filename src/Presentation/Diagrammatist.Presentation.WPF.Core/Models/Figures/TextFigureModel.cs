@@ -80,5 +80,20 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         {
             return new TextFigureModel(this);
         }
+
+        /// <inheritdoc/>
+        public override void CopyPropertiesTo(FigureModel target)
+        {
+            base.CopyPropertiesTo(target);
+
+            if (target is TextFigureModel textTarget)
+            {
+                textTarget.Text = Text;
+                textTarget.TextColor = TextColor;
+                textTarget.FontSize = FontSize;
+                textTarget.HasOutline = HasOutline;
+                textTarget.HasBackground = HasBackground;
+            }
+        }
     }
 }

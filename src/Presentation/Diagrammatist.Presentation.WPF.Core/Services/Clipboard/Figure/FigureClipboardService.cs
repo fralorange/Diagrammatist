@@ -15,6 +15,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure
 
         private readonly IFigureSerializationService _figureSerializationService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FigureClipboardService"/> class.
+        /// </summary>
+        /// <param name="figureSerializationService"></param>
         public FigureClipboardService(IFigureSerializationService figureSerializationService)
         {
             _figureSerializationService = figureSerializationService;
@@ -22,18 +26,22 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure
 
         /// <inheritdoc/>
         /// <param name="obj">Target figure.</param>
-        public void CopyToClipboard(FigureModel obj)
+        public void CopyToClipboard(FigureModel obj, string key = "")
         {
+            var format = $"{FigureClipboardFormat}{key}";
+
             var dataObject = new DataObject();
-            dataObject.SetData(FigureClipboardFormat, _figureSerializationService.Serialize(obj.ToDomain()));
+            dataObject.SetData(format, _figureSerializationService.Serialize(obj.ToDomain()));
             ClipboardInstance.SetDataObject(dataObject, true);
         }
 
         /// <inheritdoc/>
         /// <returns>a <see cref="FigureModel"/>.</returns>
-        public FigureModel? GetFromClipboard()
+        public FigureModel? GetFromClipboard(string key = "")
         {
-            if (ClipboardInstance.ContainsData(FigureClipboardFormat) && ClipboardInstance.GetData(FigureClipboardFormat) is byte[] data)
+            var format = $"{FigureClipboardFormat}{key}";
+
+            if (ClipboardInstance.ContainsData(format) && ClipboardInstance.GetData(format) is byte[] data)
             {
                 return _figureSerializationService.Deserialize(data)?.ToModel();
             }

@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Apply" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
+  </data>
+  <data name="EndNodeMessage" xml:space="preserve">
+    <value>Конечный узел блок-схемы определить не удалось.</value>
   </data>
   <data name="File" xml:space="preserve">
     <value>Файл</value>
@@ -130,10 +136,16 @@
     <value>Файл исходного кода Lua</value>
   </data>
   <data name="SimulationSettings" xml:space="preserve">
-    <value>Настройки симуляции</value>
+    <value>НАСТРОЙКИ СИМУЛЯЦИИ</value>
   </data>
   <data name="Simulator" xml:space="preserve">
     <value>Симулятор</value>
+  </data>
+  <data name="StartNodeCaption" xml:space="preserve">
+    <value>Неверная блок-схема</value>
+  </data>
+  <data name="StartNodeMessage" xml:space="preserve">
+    <value>Начальный узел блок-схемы определить не удалось.</value>
   </data>
   <data name="StepBackward" xml:space="preserve">
     <value>Шаг назад</value>
@@ -143,5 +155,62 @@
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Сброс</value>
+  </data>
+  <data name="EndNodeCaption" xml:space="preserve">
+    <value>Неполная блок-схема</value>
+  </data>
+  <data name="CompletedMessage" xml:space="preserve">
+    <value>Маршрут симуляции завершен</value>
+  </data>
+  <data name="CompletedCaption" xml:space="preserve">
+    <value>Симуляция завершена</value>
+  </data>
+  <data name="UnforeseenErrorMessage" xml:space="preserve">
+    <value>Произошла непредвиденная ошибка. Перезапустите симулятор.</value>
+  </data>
+  <data name="UnforeseenErrorCaption" xml:space="preserve">
+    <value>Непредвиденная ошибка</value>
+  </data>
+  <data name="NoHistoryMessage" xml:space="preserve">
+    <value>Нет шагов для отката.</value>
+  </data>
+  <data name="NoHistoryCaption" xml:space="preserve">
+    <value>Откат недоступен</value>
+  </data>
+  <data name="LuaErrorCaption" xml:space="preserve">
+    <value>Ошибка Lua</value>
+  </data>
+  <data name="LuaErrorProcessMessage" xml:space="preserve">
+    <value>Блок «Процесс» должен содержать непустой Lua‑код.</value>
+  </data>
+  <data name="LuaErrorInputOutputMessage" xml:space="preserve">
+    <value>Блок ввода/вывода может содержать только вызовы print(...), read(...) или return.</value>
+  </data>
+  <data name="LuaErrorDecisionMessage" xml:space="preserve">
+    <value>Блок «Решение» должен возвращать логическое значение (return true или false).</value>
+  </data>
+  <data name="LuaErrorPreparationMessage" xml:space="preserve">
+    <value>Блок «Подготовка» должен содержать как минимум один вызов loop(...).</value>
+  </data>
+  <data name="LuaErrorPredefinedProcessMessage" xml:space="preserve">
+    <value>Предопределённый блок должен содержать корректный Lua‑код.</value>
+  </data>
+  <data name="VariableNamesMessage" xml:space="preserve">
+    <value>Введите имена переменных в код Lua внутри функции input с помощью "varname".</value>
+  </data>
+  <data name="VariableNamesCaption" xml:space="preserve">
+    <value>Отсутствие имен переменных</value>
+  </data>
+  <data name="ValuesNullMessage" xml:space="preserve">
+    <value>Введённые значения не были распознаны.</value>
+  </data>
+  <data name="ValuesNullCaption" xml:space="preserve">
+    <value>Значения не распознаны</value>
+  </data>
+  <data name="NoNextNodeMessage" xml:space="preserve">
+    <value>Не удалось определить следующий шаг. Текущий узел отсутствует или не имеет выходящих связей.</value>
+  </data>
+  <data name="NoNextNodeCaption" xml:space="preserve">
+    <value>Ошибка перехода</value>
   </data>
 </root>

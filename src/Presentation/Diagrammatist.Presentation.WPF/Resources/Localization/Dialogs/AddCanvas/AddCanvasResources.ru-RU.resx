@@ -117,31 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddDiagramInfo" xml:space="preserve">
+    <value>НАСТРОЙКА ДИАГРАММЫ</value>
+  </data>
   <data name="Background" xml:space="preserve">
-    <value>Цвет фона: </value>
+    <value>Цвет фона</value>
+  </data>
+  <data name="BlackBG" xml:space="preserve">
+    <value>Чёрный фон</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="Centimeters" xml:space="preserve">
+    <value>Сантиметры</value>
+  </data>
   <data name="Custom" xml:space="preserve">
     <value>Заказная</value>
   </data>
+  <data name="CustomBG" xml:space="preserve">
+    <value>Пользовательский</value>
+  </data>
   <data name="DiagramType" xml:space="preserve">
-    <value>Тип диаграммы: </value>
+    <value>ТИПЫ ДИАГРАММ</value>
   </data>
   <data name="FileName" xml:space="preserve">
-    <value>Имя диаграммы: </value>
+    <value>Название диаграммы</value>
   </data>
   <data name="Flowchart" xml:space="preserve">
     <value>Блок-схема</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Высота: </value>
+    <value>Высота</value>
+  </data>
+  <data name="Inches" xml:space="preserve">
+    <value>Дюймы</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>Пиксели</value>
+  </data>
+  <data name="WhiteBG" xml:space="preserve">
+    <value>Белый фон</value>
+  </data>
   <data name="Width" xml:space="preserve">
-    <value>Ширина: </value>
+    <value>Ширина</value>
   </data>
 </root>

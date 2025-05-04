@@ -1,14 +1,38 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <DropShadowEffect x:Key="PrimaryGlowEffect" 
-                        BlurRadius="30" 
-                        Color="{DynamicResource PrimaryGlowColor}"
-                        Opacity="0.5"
-                        Direction="270"/>
+                      BlurRadius="30" 
+                      Color="{DynamicResource PrimaryGlowColor}"
+                      Opacity="0.5"
+                      Direction="270"/>
 
     <DropShadowEffect x:Key="SecondaryGlowEffect" 
-                        BlurRadius="12" 
-                        Color="{DynamicResource SecondaryGlowColor}"
-                        Opacity="0.4"
-                        Direction="270"/>
+                      BlurRadius="12" 
+                      Color="{DynamicResource SecondaryGlowColor}"
+                      Opacity="0.4"
+                      Direction="270"/>
+
+    <DropShadowEffect x:Key="PrimarySelectionBoxEffect"
+                      BlurRadius="8" 
+                      Color="{DynamicResource SelectedBorderColor}"
+                      Opacity="0.6"/>
+
+    <DropShadowEffect x:Key="HoverSelectionBoxEffect"
+                      BlurRadius="6" 
+                      Color="{DynamicResource ControlHover}"
+                      Opacity="0.4"/>
+
+    <DropShadowEffect x:Key="MediaButtonMouseOverPrimaryEffect"
+                      Color="{DynamicResource DialogSecondaryBackground}" 
+                      BlurRadius="8" 
+                      Direction="270" 
+                      ShadowDepth="4" 
+                      Opacity="0.5"/>
+
+    <DropShadowEffect x:Key="MediaButtonPressedEffect" 
+                      Color="{DynamicResource DialogStroke}" 
+                      BlurRadius="10" 
+                      Direction="270" 
+                      ShadowDepth="5" 
+                      Opacity="0.7"/>
 </ResourceDictionary>

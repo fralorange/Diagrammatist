@@ -3,14 +3,21 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Flowchart;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Engine;
+using Diagrammatist.Presentation.WPF.Simulator.Models.Engine.Args;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Node;
 using Diagrammatist.Presentation.WPF.Simulator.Providers;
 using MvvmDialogs;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
@@ -21,9 +28,24 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
     public partial class SimulatorWindowViewModel : ObservableRecipient, IModalDialogViewModel
     {
         private readonly ISimulationEngine _simulationEngine;
+        private readonly IAlertService _alertService;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="RequestOpen"]/*'/>
         public event Func<string>? RequestOpen;
+
+        /// <summary>
+        /// Occurs when user wants to apply changes.
+        /// </summary>
+        /// <remarks>
+        /// This event marks current file as 'has changes'.
+        /// </remarks>
+        public event Action? RequestApply;
+
+        /// <summary>
+        /// Gets or sets current mouse control type in simulation window.
+        /// </summary>
+        [ObservableProperty]
+        private MouseMode _currentMouseControl = MouseMode.Select;
 
         /// <summary>
         /// Gets or sets current node in simulation.
@@ -44,6 +66,12 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         private Size _simulationSize;
 
         /// <summary>
+        /// Gets or sets simulation space size.
+        /// </summary>
+        [ObservableProperty]
+        private Size _simulationSpace;
+
+        /// <summary>
         /// Gets simulation nodes.
         /// </summary>
         public ObservableCollection<SimulationNode> Nodes { get; }
@@ -52,6 +80,11 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// Gets connections.
         /// </summary>
         public ObservableCollection<ConnectionModel> Connections { get; }
+
+        /// <summary>
+        /// Gets annotations.
+        /// </summary>
+        public ObservableCollection<TextFigureModel> Annotations { get; }
 
         private bool? _dialogResult;
 
@@ -63,6 +96,13 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets the change state of the current simulation.
+        /// </summary>
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(ApplyCommand))]
+        private bool _hasChanges;
+
+        /// <summary>
         /// Gets or sets new context, if user confirmed changes.
         /// </summary>
         public SimulationContext? NewContext { get; private set; }
@@ -71,11 +111,17 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         /// Initializes simulator view model.
         /// </summary>
         /// <param name="dialogService"></param>
+        /// <param name="alertService"></param>
+        /// <param name="documentSerializationService"></param>
         /// <exception cref="ArgumentException"></exception>
         public SimulatorWindowViewModel(IDialogService dialogService,
+                                        IAlertService alertService,
                                         IDocumentSerializationService documentSerializationService,
-                                        SimulationContext? payload = null)
+                                        SimulationContext? payload = null,
+                                        Action? onTerminate = null)
         {
+            _alertService = alertService;
+
             // Validation.
             var currentCanvas = Messenger.Send(new CurrentCanvasRequestMessage()).Response;
 
@@ -87,18 +133,27 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
             var createdNodes = factory.CreateNodes(currentCanvas.Figures, payload?.Nodes);
             Nodes = createdNodes.ToObservableCollection();
             Connections = currentCanvas.Connections;
+            Annotations = currentCanvas.Figures.OfType<TextFigureModel>().ToObservableCollection();
 
             // Simulation parameters.
             SimulationSize = new Size(currentCanvas.Settings.Width, currentCanvas.Settings.Height);
+            SimulationSpace = new Size(currentCanvas.ImaginaryWidth, currentCanvas.ImaginaryHeight);
 
             var simIO = new SimulationDialogIOProvider(dialogService, this);
             var simContextProvider = new SimulationContextProvider(documentSerializationService);
 
             _simulationEngine = factory.CreateEngine(Nodes, Connections, simIO, simContextProvider);
-            _simulationEngine.CurrentNodeChanged += (sender, node) 
+            _simulationEngine.CurrentNodeChanged += (sender, node)
                 => CurrentNode = node;
+            _simulationEngine.ErrorOccurred += (sender, e) =>
+            {
+                SimulationEngine_ErrorOccured(sender, e);
+                onTerminate?.Invoke();
+            };
             _simulationEngine.Initialize();
         }
+
+        private bool CanApply() => HasChanges;
 
         /// <summary>
         /// Takes one step forward in simulation window.
@@ -150,6 +205,69 @@ namespace Diagrammatist.Presentation.WPF.Simulator.ViewModels
         {
             NewContext = new() { Nodes = Nodes, Connections = Connections };
             DialogResult = true;
+        }
+
+        /// <summary>
+        /// Applies changes.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanApply))]
+        private void Apply()
+        {
+            NewContext = new() { Nodes = Nodes, Connections = Connections };
+            HasChanges = false;
+            RequestApply?.Invoke();
+        }
+
+        /// <summary>
+        /// Changes mouse control type in simulation window.
+        /// </summary>
+        /// <param name="param"></param>
+        [RelayCommand]
+        private void ChangeMouseControl(string param)
+        {
+            CurrentMouseControl = Enum.TryParse(param, out MouseMode control) ? control : MouseMode.Select;
+        }
+
+        private void SelectedNode_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SimulationNode.LuaScript) ||
+                e.PropertyName == nameof(SimulationNode.ExternalFilePath))
+            {
+                HasChanges = true;
+            }
+        }
+
+        private void SimulationEngine_ErrorOccured(object? sender, SimulationErrorEventArgs e)
+        {
+            var subtype = (e.Node?.Figure as FlowchartFigureModel)?.Subtype.ToString() ?? string.Empty;
+
+            var localizedMessage = LocalizationHelper
+                .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}{subtype}Message");
+
+            var localizedCaption = LocalizationHelper
+                .GetLocalizedValue<string>("SimulatorResources", $"{e.Message}Caption");
+
+            _alertService.ShowError(localizedMessage, localizedCaption);
+        }
+
+        /// <summary>
+        /// Handles selected node changing.
+        /// </summary>
+        /// <remarks>
+        /// Occurs when selected node changes.
+        /// </remarks>
+        /// <param name="value"></param>
+        partial void OnSelectedNodeChanged(SimulationNode? oldValue, SimulationNode? newValue)
+        {
+            if (oldValue is not null)
+            {
+                oldValue.PropertyChanged -= SelectedNode_PropertyChanged;
+            }
+
+            if (newValue is not null)
+            {
+                newValue.PropertyChanged += SelectedNode_PropertyChanged;
+            }
         }
     }
 }

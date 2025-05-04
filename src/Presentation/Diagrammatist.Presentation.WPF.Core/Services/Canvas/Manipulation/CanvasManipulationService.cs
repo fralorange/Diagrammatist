@@ -38,5 +38,13 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation
 
             settings.Background = background;
         }
+
+        /// <inheritdoc/>
+        public void UpdateCanvas(CanvasModel canvas, DiagramsModel type)
+        {
+            var settings = canvas.Settings;
+
+            settings.Type = type;
+        }
     }
 }

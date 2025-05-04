@@ -28,7 +28,10 @@ namespace Diagrammatist.Application.AppServices.Figures.Serializer.Configuration
             var containerFigureMapping = new DerivedShapeMapping<ContainerFigure>();
             containerFigureMapping.Add<FlowchartFigure, FigureWitness>(nameof(FlowchartFigure));
 
-            return [figureMapping, shapeFigureMapping, containerFigureMapping];
+            var lineFigureMapping = new DerivedShapeMapping<LineFigure>();
+            lineFigureMapping.Add<FlowLineFigure, FigureWitness>(nameof(LineFigure));
+
+            return [figureMapping, shapeFigureMapping, containerFigureMapping, lineFigureMapping];
         }
 
         /// <summary>

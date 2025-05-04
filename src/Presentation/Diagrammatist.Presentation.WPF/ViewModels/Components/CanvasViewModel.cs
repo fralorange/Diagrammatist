@@ -7,18 +7,18 @@ using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
-using Diagrammatist.Presentation.WPF.Core.Mappers.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
-using Diagrammatist.Presentation.WPF.ViewModels.Components.Enums.Modes;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -30,6 +30,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private readonly ITrackableCommandManager _trackableCommandManager;
         private readonly ICanvasServiceFacade _canvasServiceFacade;
         private readonly IDocumentSerializationService _documentSerializationService;
+        private readonly IUserSettingsService _userSettingsService;
 
         /// <summary>
         /// Occurs when a request is made to zoom current window in.
@@ -128,7 +129,25 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This property used to determine whether grid is visible for user or not.
         /// </remarks>
         [ObservableProperty]
-        private bool _isGridVisible = Properties.Settings.Default.GridVisible;
+        private bool _isGridVisible;
+
+        /// <summary>
+        /// Gets or sets snap to grid option.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether snap to grid is enabled or not.
+        /// </remarks>
+        [ObservableProperty]
+        private bool _isGridSnapEnabled;
+
+        /// <summary>
+        /// Gets or sets alt disable grid snap option.
+        /// </summary>
+        /// <remarks>
+        /// This property used to determine whether alt disable grid snap is enabled or not.
+        /// </remarks>
+        [ObservableProperty]
+        private bool _isAltGridSnapEnabled;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsBlocked"]/*'/>
         [ObservableProperty]
@@ -148,17 +167,23 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         public CanvasViewModel(ITrackableCommandManager trackableCommandManager,
                                ICanvasServiceFacade canvasServiceFacade,
-                               IDocumentSerializationService documentSerializationService)
+                               IDocumentSerializationService documentSerializationService,
+                               IUserSettingsService userSettingsService)
         {
             _trackableCommandManager = trackableCommandManager;
             _canvasServiceFacade = canvasServiceFacade;
             _documentSerializationService = documentSerializationService;
+            _userSettingsService = userSettingsService;
 
             _trackableCommandManager.StateChanged += (_, _) =>
             {
                 if (CurrentCanvas != null)
                     CurrentCanvas.HasChanges = _trackableCommandManager.HasChanges;
             };
+
+            IsGridVisible = _userSettingsService.Get<bool>("GridVisible");
+            IsGridSnapEnabled = _userSettingsService.Get<bool>("SnapToGrid");
+            IsAltGridSnapEnabled = _userSettingsService.Get<bool>("AltGridSnap");
 
             IsActive = true;
         }
@@ -237,8 +262,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             IsGridVisible = !IsGridVisible;
             // Save client-prefs.
-            Properties.Settings.Default.GridVisible = IsGridVisible;
-            Properties.Settings.Default.Save();
+            _userSettingsService.Set("GridVisible", IsGridVisible);
+            _userSettingsService.Save();
         }
 
         /// <summary>
@@ -263,6 +288,60 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                         ZoomReset();
                     }
                 );
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <summary>
+        /// Updates current canvas background.
+        /// </summary>
+        /// <param name="newBG"></param>
+        private void UpdateCanvasBackground(Color newBG)
+        {
+            if (CurrentCanvas is not null)
+            {
+                var oldBG = CurrentCanvas.Settings.Background;
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () => _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, newBG),
+                    () => _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, oldBG));
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <summary>
+        /// Updates current diagram (canvas) type.
+        /// </summary>
+        /// <param name="newDiagramType"></param>
+        private void UpdateCanvasDiagramType(DiagramsModel newDiagramType)
+        {
+            if (CurrentCanvas is not null)
+            {
+                var oldDiagramType = CurrentCanvas.Settings.Type;
+                var currentDoc = Messenger.Send<CurrentDocumentRequestMessage>().Response;
+                var payloads = currentDoc?.Payloads.ToDictionary();
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () =>
+                    {
+                        _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, newDiagramType);
+                        if (payloads is not null)
+                        {
+                            currentDoc!.SetPayloads([]);
+                        }
+                        Messenger.Send<Tuple<string, bool>>(new(ActionFlags.HasCustomCanvas, newDiagramType is DiagramsModel.Custom));
+                    },
+                    () =>
+                    {
+                        _canvasServiceFacade.Manipulation.UpdateCanvas(CurrentCanvas, oldDiagramType);
+                        if (payloads is not null)
+                        {
+                            currentDoc!.SetPayloads(payloads);
+                        }
+                        Messenger.Send<Tuple<string, bool>>(new(ActionFlags.HasCustomCanvas, oldDiagramType is DiagramsModel.Custom));
+                    });
 
                 _trackableCommandManager.Execute(command);
             }
@@ -343,6 +422,39 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _canvasServiceFacade.FigureManipulation.SendBackward(figure);
         }
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CopyStyle"]/*'/>
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
+        private void CopyStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _canvasServiceFacade.FigureManipulation.CopyStyle(SelectedFigure);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="PasteStyle"]/*'/>
+        [RelayCommand(CanExecute = nameof(MenuIsNotBlocked))]
+        private void PasteStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _canvasServiceFacade.FigureManipulation.PasteStyle(SelectedFigure);
+            }
+        }
+
+        /// <summary>
+        /// Processes item position changing event.
+        /// </summary>
+        /// <param name="e">Position changed event arguments.</param>
+        [RelayCommand]
+        private void ItemPositionChanging(PositionChangingEventArgs e)
+        {
+            if (e.DataContext is FigureModel figure && Connections is not null)
+            {
+                _canvasServiceFacade.Interaction.MoveFigureVisuals(figure, e.OldPos, e.NewPos, Connections);
+            }
+        }
+
         /// <summary>
         /// Archives different positions of an figure object.
         /// </summary>
@@ -351,11 +463,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// </remarks>
         /// <param name="e">Position changed event arguments.</param>
         [RelayCommand]
-        private void ItemPositionChange(PositionChangedEventArgs e)
+        private void ItemPositionChanged(PositionChangedEventArgs e)
         {
             if (e.DataContext is FigureModel figure && Connections is not null)
             {
-                _canvasServiceFacade.Interaction.MoveFigure(figure, e.OldPos, e.NewPos, Connections);
+                _canvasServiceFacade.Interaction.MoveFigure(figure, e.InitialPos, e.OldPos, e.NewPos, Connections);
             }
         }
 
@@ -383,10 +495,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
                 Connections = CurrentCanvas?.Connections;
             });
-            // Change canvas size
+            // Change canvas size.
             Messenger.Register<CanvasViewModel, UpdatedSizeMessage>(this, (r, m) =>
             {
                 UpdateCanvasSize(m.Value);
+            });
+            // Change canvas background.
+            Messenger.Register<CanvasViewModel, UpdatedBackgroundMessage>(this, (r, m) =>
+            {
+                UpdateCanvasBackground(m.Value);
+            });
+            // Change canvas diagram type.
+            Messenger.Register<CanvasViewModel, UpdatedTypeMessage>(this, (r, m) =>
+            {
+                UpdateCanvasDiagramType(m.Value);
             });
             // Change mouse mode.
             Messenger.Register<CanvasViewModel, PropertyChangedMessage<MouseMode>>(this, (r, m) =>
@@ -403,12 +525,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 m.Reply(r.CurrentCanvas);
             });
-            // Register menu flags.
+            // Register action flags.
             Messenger.Register<CanvasViewModel, Tuple<string, bool>>(this, (r, m) =>
             {
                 switch (m.Item1)
                 {
-                    case MenuFlags.IsBlocked: IsBlocked = m.Item2; break;
+                    case ActionFlags.IsBlocked: IsBlocked = m.Item2; break;
+                    case ActionFlags.IsGridSnapEnabled: IsGridSnapEnabled = m.Item2; break;
+                    case ActionFlags.IsAltGridSnapEnabled: IsAltGridSnapEnabled = m.Item2; break;
                 }
             });
             // Register menu commands.

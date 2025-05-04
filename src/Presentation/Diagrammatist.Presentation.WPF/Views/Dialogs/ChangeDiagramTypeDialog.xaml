@@ -1,0 +1,109 @@
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Views.Dialogs.ChangeDiagramTypeDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core" 
+                         xmlns:dialogs="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs" 
+                         d:DataContext="{d:DesignInstance Type=dialogs:ChangeDiagramTypeDialogViewModel}"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeDiagramType.ChangeDiagramTypeResources"
+                         mc:Ignorable="d"
+                         Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ChangeType}"
+                         SizeToContent="WidthAndHeight"
+                         WindowStartupLocation="CenterOwner"
+                         ResizeMode="NoResize"
+                         IsDialog="True"
+                         ShowCenteredTitle="True"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False">
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Style="{StaticResource Window}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" 
+                    Margin="15">
+                <TextBlock Text="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:DiagramType}"
+                       Style="{StaticResource MenuAddBlock}"
+                       Margin="0 0 0 10" />
+                <Border Padding="10" 
+                    Background="{DynamicResource SecondaryBackground}">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.AddCanvas.AddCanvasResources">
+                        <ListBox ItemsSource="{Binding AvailableTypes}"
+                             SelectedItem="{Binding SelectedType}"
+                             ItemTemplateSelector="{StaticResource DiagramTemplateSelector}"
+                             ItemContainerStyle="{StaticResource PresetsSelectionBox}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             Style="{StaticResource DialogListBox}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"
+                                           ItemWidth="140"
+                                           ItemHeight="140"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </ScrollViewer>
+                </Border>
+            </StackPanel>
+
+            <Border Grid.Column="1"
+                    BorderThickness="2 0 0 0"
+                    Style="{StaticResource DialogBorder}">
+                <Grid Background="{DynamicResource TitleBarBackground}"
+                  lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ChangeDiagramType.ChangeDiagramTypeResources">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{lex:Loc ChangeDiagramInfo}"
+                       Style="{StaticResource MenuAddBlock}"
+                       FontWeight="Regular"
+                       Margin="15 15 0 10" />
+
+                    <Border Grid.Row="1"
+                            Margin="15 0 15 10"
+                            Style="{StaticResource BorderFrame}">
+                        <TextBlock Text="{lex:Loc {Binding SelectedTypeDescription}}"
+                           TextWrapping="Wrap"
+                           Style="{StaticResource BaseBlock}"
+                           FontSize="14"
+                           Width="200"
+                           Margin="5"/>
+                    </Border>
+
+                    <Grid Grid.Row="2"
+                  Margin="0 0 20 20"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                        Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:OK}"
+                        Command="{Binding OkCommand}"
+                        IsDefault="True"
+                        Style="{StaticResource BaseButton}"
+                        VerticalAlignment="Center"/>
+                        <Button Grid.Column="1"
+                        Content="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.Dialogs.AddCanvas.AddCanvasResources:Cancel}"
+                        IsCancel="True"
+                        Style="{StaticResource BaseButton}"
+                        Margin="10 0 0 0"
+                        VerticalAlignment="Center"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</controls:TitleBarWindow>

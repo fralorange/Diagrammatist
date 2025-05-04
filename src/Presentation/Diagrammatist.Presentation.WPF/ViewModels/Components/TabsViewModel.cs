@@ -11,10 +11,10 @@ using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Models.Document;
 using Diagrammatist.Presentation.WPF.Core.Services.Canvas.Manipulation;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
 using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
@@ -51,7 +51,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when app can't close canvas (e.g. when changes haven't been saved).
         /// </remarks>
-        public event Func<MessageBoxResult>? CloseFailed;
+        public event Func<ConfirmationResult>? CloseFailed;
 
         /// <summary>
         /// Gets or sets collection of <see cref="CanvasModel"/>.
@@ -178,11 +178,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
             var closeResult = CloseFailed();
 
-            if (closeResult == MessageBoxResult.Cancel) return;
+            if (closeResult == ConfirmationResult.Cancel) return;
 
             SelectedCanvas = target;
 
-            if (closeResult == MessageBoxResult.Yes && !Messenger.Send(new SaveRequestMessage()))
+            if (closeResult == ConfirmationResult.Yes && !Messenger.Send(new SaveRequestMessage()))
             {
                 return;
             }
@@ -275,8 +275,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         partial void OnSelectedCanvasChanged(CanvasModel? value)
         {
-            Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCanvas, value is not null));
-            Messenger.Send(new Tuple<string, bool>(MenuFlags.HasCustomCanvas, value?.Settings.Type is DiagramsModel.Custom));
+            Messenger.Send(new Tuple<string, bool>(ActionFlags.HasCanvas, value is not null));
+            Messenger.Send(new Tuple<string, bool>(ActionFlags.HasCustomCanvas, value?.Settings.Type is DiagramsModel.Custom));
 
             var doc = _tabsManager.Get(value);
             _trackableCommandManager.UpdateContent(doc);

@@ -3,33 +3,28 @@
 namespace Diagrammatist.Presentation.WPF.Core.Controls.Args
 {
     /// <summary>
-    /// A class that derives from <see cref="EventArgs"/> and represents data for an event that occurs when an object position changes.
+    /// A class that derives from <see cref="PositionChangingEventArgs"/> 
+    /// and represents data for an event that occurs when an object position changes.
     /// </summary>
-    public class PositionChangedEventArgs : EventArgs
+    public class PositionChangedEventArgs : PositionChangingEventArgs
     {
         /// <summary>
-        /// Gets a data context of a visual.
+        /// Gets or sets initial position of an object.
         /// </summary>
-        public object? DataContext { get; }
-
-        /// <summary>
-        /// Gets an old position of an object.
-        /// </summary>
-        public Point OldPos { get; }
-
-        /// <summary>
-        /// Gets a new position of an object.
-        /// </summary>
-        public Point NewPos { get; }
+        public Point InitialPos { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="PositionChangedEventArgs"/> class with the specified do and undo actions.
         /// </summary>
-        public PositionChangedEventArgs(object? dataContext, double oldX, double oldY, double newX, double newY)
+        /// <param name="dataContext"></param>
+        /// <param name="oldX"></param>
+        /// <param name="oldY"></param>
+        /// <param name="newX"></param>
+        /// <param name="newY"></param>
+        public PositionChangedEventArgs(object? dataContext, double oldX, double oldY, double newX, double newY, double initX, double initY) 
+            : base(dataContext, oldX, oldY, newX, newY)
         {
-            DataContext = dataContext;
-            OldPos = new(oldX, oldY);
-            NewPos = new(newX, newY);
+            InitialPos = new(initX, initY);
         }
     }
 }

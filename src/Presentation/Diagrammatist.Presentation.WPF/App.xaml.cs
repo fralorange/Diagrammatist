@@ -21,6 +21,9 @@ namespace Diagrammatist.Presentation.WPF
         /// </summary>
         public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="App"/> class.
+        /// </summary>
         public App()
         {
             Services = ConfigureServices();
@@ -36,12 +39,14 @@ namespace Diagrammatist.Presentation.WPF
                 .AddSerializers()
                 .AddRepositories()
                 .AddDialogServices()
+                .AddFactories()
                 .AddManagers()
                 .AddCulture()
                 .AddMappers()
                 .BuildServiceProvider();
         }
 
+        /// <inheritdoc/>
         protected override async void OnStartup(System.Windows.StartupEventArgs e)
         {
             Current.ChangeTheme(WPF.Properties.Settings.Default.Theme);

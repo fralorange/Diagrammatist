@@ -5,6 +5,8 @@
     <ObjectDataProvider x:Key="AppMetadata" 
                         ObjectType="{x:Type local:AppMetadata}"/>
 
+    <BitmapImage x:Key="AppIcon" UriSource="/Resources/Icon/appIcon.ico"/>
+
     <sys:String x:Key="HelpUrl">https://github.com/fralorange/Diagrammatist/wiki</sys:String>
     <sys:String x:Key="HubUrl">https://github.com/fralorange/Diagrammatist</sys:String>
 

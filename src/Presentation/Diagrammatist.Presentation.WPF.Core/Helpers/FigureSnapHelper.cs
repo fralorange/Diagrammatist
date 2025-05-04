@@ -13,15 +13,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Helpers
         /// <summary>
         /// Gets magnetic points.
         /// </summary>
-        /// <param name="geometry">Geometry from which points are extracted.</param>
+        /// <param name="group">Geometry from which points are extracted.</param>
         /// <param name="pathWidth">Width to scale the geometry to.</param>
         /// <param name="pathHeight">Height to scale the geometry to.</param>
         /// <param name="keepAspectRatio">Whether to keep aspect ratio during scaling.</param>
+        /// <param name="rotation">Rotation to rotate the geometry to.</param>
         /// <returns><see cref="List{T}"/> of <see cref="Point"/> objects.</returns>
-        public static List<Point> GetMagneticPoints(Geometry geometry, double pathWidth, double pathHeight, bool keepAspectRatio)
+        public static List<Point> GetMagneticPoints(GeometryGroup group, double pathWidth, double pathHeight, bool keepAspectRatio, double rotation)
         {
             var points = new List<Point>();
-            var flattened = geometry.GetOutlinedPathGeometry();
+            var flattened = group.GetOutlinedPathGeometry();
             Rect bounds = flattened.Bounds;
 
             // Calculate scale factors and offsets
@@ -48,7 +49,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Helpers
             var filteredPoints = new List<Point>();
             foreach (var point in points)
             {
-                var scaledPoint = new Point((point.X - bounds.X) * scaleX + offsetX, (point.Y - bounds.Y) * scaleY + offsetY);
+                var scaledPoint = new Point((point.X - bounds.X) * scaleX + offsetX,
+                                            (point.Y - bounds.Y) * scaleY + offsetY);
+
+                scaledPoint = RotatePoint(scaledPoint, pathWidth, pathHeight, rotation);
+
                 bool isDuplicate = filteredPoints.Any(p =>
                     Math.Abs(p.X - scaledPoint.X) < tolerance &&
                     Math.Abs(p.Y - scaledPoint.Y) < tolerance);
@@ -199,6 +204,24 @@ namespace Diagrammatist.Presentation.WPF.Core.Helpers
                 vertices.Add(points[i + 2]);
                 current = points[i + 2];
             }
+        }
+
+        private static Point RotatePoint(Point point, double width, double height, double degrees)
+        {
+            double radians = degrees * Math.PI / 180.0;
+            double centerX = width / 2.0;
+            double centerY = height / 2.0;
+
+            double dx = point.X - centerX;
+            double dy = point.Y - centerY;
+
+            double cos = Math.Cos(radians);
+            double sin = Math.Sin(radians);
+
+            double rotatedX = dx * cos - dy * sin + centerX;
+            double rotatedY = dx * sin + dy * cos + centerY;
+
+            return new Point(rotatedX, rotatedY);
         }
     }
 }

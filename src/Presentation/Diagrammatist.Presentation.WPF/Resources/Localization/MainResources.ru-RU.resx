@@ -120,8 +120,8 @@
   <data name="AboutApp" xml:space="preserve">
     <value>О приложении</value>
   </data>
-  <data name="Canvas" xml:space="preserve">
-    <value>Холст</value>
+  <data name="Diagram" xml:space="preserve">
+    <value>Диаграмма</value>
   </data>
   <data name="ChangeSize" xml:space="preserve">
     <value>Изменить размер холста</value>
@@ -203,5 +203,11 @@
   </data>
   <data name="Simulator" xml:space="preserve">
     <value>Симулятор</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Изменить тип диаграммы</value>
+  </data>
+  <data name="ChangeBackground" xml:space="preserve">
+    <value>Изменить фон холста</value>
   </data>
 </root>

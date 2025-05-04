@@ -27,7 +27,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Canvas.Interaction
         }
 
         /// <inheritdoc/>
-        public void MoveFigure(FigureModel figure, Point oldPos, Point newPos, ICollection<ConnectionModel> connections)
+        public void MoveFigure(FigureModel figure, Point initPos, Point oldPos, Point newPos, ICollection<ConnectionModel> connections)
         {
             if (figure == null)
                 return;
@@ -39,16 +39,50 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Canvas.Interaction
                 {
                     SetFigurePosition(figure, newPos);
                     UpdateConnections(figure, newPos, oldPos, connections);
+                    oldPos = initPos;
                     lineUpdater?.Invoke(false);
                 },
                 () =>
                 {
-                    SetFigurePosition(figure, oldPos);
-                    UpdateConnections(figure, oldPos, newPos, connections);
+                    SetFigurePosition(figure, initPos);
+                    UpdateConnections(figure, initPos, newPos, connections);
                     lineUpdater?.Invoke(true);
                 });
 
             _commandManager.Execute(command);
+        }
+
+        /// <inheritdoc/>
+        public void MoveFigureVisuals(FigureModel figure, Point oldPos, Point newPos, ICollection<ConnectionModel> connections)
+        {
+            if (figure is not ShapeFigureModel shapeFigure || connections == null)
+                return;
+
+            var deltaX = newPos.X - oldPos.X;
+            var deltaY = newPos.Y - oldPos.Y;
+
+            var shapeConnections = _connectionService.GetConnections(connections, shapeFigure);
+
+            foreach (var connection in shapeConnections)
+            {
+                var source = connection.SourceMagneticPoint;
+                var dest = connection.DestinationMagneticPoint;
+
+                var isSource = source?.Owner == shapeFigure;
+                var currentPoint = isSource ? source!.Position : dest!.Position;
+                var newPoint = new Point(currentPoint.X + deltaX, currentPoint.Y + deltaY);
+
+                if (isSource)
+                {
+                    source!.Position = newPoint;
+                    connection.Line.Points[0] = newPoint;
+                }
+                else
+                {
+                    dest!.Position = newPoint;
+                    connection.Line.Points[^1] = newPoint;
+                }
+            }
         }
 
         private void SetFigurePosition(FigureModel figure, Point pos)

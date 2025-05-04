@@ -7,6 +7,7 @@ using Diagrammatist.Application.AppServices.Figures.Services;
 using Diagrammatist.Application.AppServices.Simulator.Serializer.Configuration;
 using Diagrammatist.Infrastructure.DataAccess.Contexts.Figures.Repositories;
 using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Factories.Figures.Line;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Managers.Tabs;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Document;
@@ -19,6 +20,9 @@ using Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
+using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.Core.Services.Sound;
+using Diagrammatist.Presentation.WPF.Properties;
 using Diagrammatist.Presentation.WPF.Simulator.Mappers;
 using Diagrammatist.Presentation.WPF.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
@@ -94,6 +98,12 @@ namespace Diagrammatist.Presentation.WPF
             services.AddTransient<IAlertService, AlertService>();
             services.AddTransient<IClipboardService<FigureModel>, FigureClipboardService>();
             services.AddTransient<IConnectionService, ConnectionService>();
+            services.AddTransient<ISoundService, SoundService>();
+            services.AddSingleton<IUserSettingsService>(sp =>
+            {
+                var storage = new PropertiesSettingsStorage();
+                return new UserSettingsService(storage);
+            });
             #endregion
             return services;
         }
@@ -158,6 +168,20 @@ namespace Diagrammatist.Presentation.WPF
         public static IServiceCollection AddDialogServices(this IServiceCollection services)
         {
             services.AddSingleton<IDialogService, DialogService>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds factories as Transient.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddFactories(this IServiceCollection services)
+        {
+            #region Figures
+            services.AddTransient<ILineFactory, LineFactory>();
+            #endregion
 
             return services;
         }

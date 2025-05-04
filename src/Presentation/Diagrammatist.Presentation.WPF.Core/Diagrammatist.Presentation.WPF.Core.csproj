@@ -21,4 +21,28 @@
     <ProjectReference Include="..\..\Infrastructure\Diagrammatist.Infrastructure.DataAccess\Diagrammatist.Infrastructure.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Shared\Dialogs\Resources\Localization\Alert\AlertResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AlertResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Shared\Dialogs\Views\ConfirmationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Shared\Dialogs\Views\WarningDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Shared\Dialogs\Views\ErrorDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Shared\Dialogs\Resources\Localization\Alert\AlertResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AlertResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

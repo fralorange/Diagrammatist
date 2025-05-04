@@ -29,15 +29,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         [ObservableProperty]
         private double _posY;
 
-        private double _rotation;
+        protected double _rotation;
 
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="FigureRotation"]/*'/>
-        public double Rotation
+        public virtual double Rotation
         {
             get => _rotation;
             set => SetProperty(ref _rotation, value);
         }
-
 
         private double _zIndex;
 
@@ -86,5 +85,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
         /// </summary>
         /// <returns>A deep clone of the <see cref="FigureModel"/>.</returns>
         public abstract FigureModel Clone();
+
+        /// <summary>
+        /// Copies properties from this instance to the target instance.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="copyMetadata"></param>
+        public virtual void CopyPropertiesTo(FigureModel target)
+        {
+            target.Rotation = Rotation;
+            target.ZIndex = ZIndex;
+            target.BackgroundColor = BackgroundColor;
+        }
     }
 }

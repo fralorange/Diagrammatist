@@ -81,17 +81,25 @@ namespace Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors
                     var adornerLayer = AdornerLayer.GetAdornerLayer(elem);
                     if (adornerLayer is not null && elem.DataContext is ShapeFigureModel model)
                     {
-                        var adorner = new MagneticPointsAdorner(elem, model.MagneticPoints.Select(mp => mp.Position))
+                        if (_adorners.TryGetValue(elem, out var existingAdorner))
                         {
-                            IsVisible = GetIsVisible(elem)
-                        };
-                        adornerLayer.Add(adorner);
-
-                        _adorners[elem] = adorner; 
+                            existingAdorner.UpdatePoints(model.MagneticPoints.Select(mp => mp.Position).ToList());
+                            existingAdorner.IsVisible = GetIsVisible(elem); 
+                        }
+                        else
+                        {
+                            var adorner = new MagneticPointsAdorner(elem, model.MagneticPoints.Select(mp => mp.Position).ToList())
+                            {
+                                IsVisible = GetIsVisible(elem)
+                            };
+                            adornerLayer.Add(adorner);
+                            _adorners[elem] = adorner;
+                        }
                     }
                 };
             }
         }
+
 
         private static void OnIsVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

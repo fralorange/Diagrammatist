@@ -1,6 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,13 +24,19 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
     public class ExtendedCanvas : Canvas
     {
         private FrameworkElement? _selectedElement;
-        private Point? _initialElementPos;
+        private Point _initialElementPos;
+        private Point _lastReportedPos;
         private Cursor? _previousCursor;
 
         /// <summary>
         /// Occurs when any element position changes.
         /// </summary>
         public event EventHandler<PositionChangedEventArgs>? ItemPositionChanged;
+
+        /// <summary>
+        /// Occurs while any element is being moved.
+        /// </summary>
+        public event EventHandler<PositionChangingEventArgs>? ItemPositionChanging;
 
         public static readonly DependencyProperty IsGridVisibleProperty =
             DependencyProperty.Register(nameof(IsGridVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnGridChange));
@@ -42,8 +49,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+        
         public static readonly DependencyProperty IsBorderVisibleProperty =
             DependencyProperty.Register(nameof(IsBorderVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnBorderChange));
+        
+        public static readonly DependencyProperty SnapToGridProperty =
+            DependencyProperty.RegisterAttached(nameof(SnapToGrid), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty AltSnapToGridProperty =
+            DependencyProperty.RegisterAttached(nameof(AltSnapToGrid), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(false));
 
 
         /// <summary>
@@ -91,6 +105,27 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             set => SetValue(IsBorderVisibleProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the snap to grid parameter.
+        /// </summary>
+        public bool SnapToGrid
+        {
+            get { return (bool)GetValue(SnapToGridProperty); }
+            set { SetValue(SnapToGridProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the alter snap to grid parameter.
+        /// </summary>
+        public bool AltSnapToGrid
+        {
+            get { return (bool)GetValue(AltSnapToGridProperty); }
+            set { SetValue(AltSnapToGridProperty, value); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ExtendedCanvas"/> class.
+        /// </summary>
         public ExtendedCanvas()
         {
             PreviewMouseLeftButtonDown += OnMouseLeftButtonDown;
@@ -158,15 +193,28 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         /// <param name="oldY">The previous Y-coordinate of the object.</param>
         /// <param name="newX">The new X-coordinate of the object.</param>
         /// <param name="newY">The new Y-coordinate of the object.</param>
-        protected virtual void OnItemPositionChanged(FrameworkElement item, double oldX, double oldY, double newX, double newY)
+        protected virtual void OnItemPositionChanged(FrameworkElement item,
+                                                     double oldX,
+                                                     double oldY,
+                                                     double newX,
+                                                     double newY,
+                                                     double initX,
+                                                     double initY)
         {
-            ItemPositionChanged?.Invoke(null, new PositionChangedEventArgs(item.DataContext, oldX, oldY, newX, newY));
+            ItemPositionChanged?.Invoke(null, new PositionChangedEventArgs(item.DataContext, oldX, oldY, newX, newY, initX, initY));
+        }
+
+        protected virtual void OnItemPositionChanging(FrameworkElement item, double oldX, double oldY, double newX, double newY)
+        {
+            ItemPositionChanging?.Invoke(this, new PositionChangingEventArgs(item.DataContext, oldX, oldY, newX, newY));
         }
         #endregion
         #region Mouse event handlers
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsElementPanEnabled && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item)
+            if (IsElementPanEnabled
+                && (e.Source as DependencyObject)?.GetVisualAncestor<ListBoxItem>() is ListBoxItem item
+                && CanvasMoveableBehavior.GetIsMovable(item))
             {
                 _selectedElement = item;
 
@@ -180,6 +228,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
                 // Save item initial position
                 _initialElementPos = new(GetLeft(item), GetTop(item));
+                _lastReportedPos = _initialElementPos;
 
                 CaptureMouse();
             }
@@ -196,25 +245,40 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
                 TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY);
 
-                GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
+                bool altPressed =
+                    Keyboard.IsKeyDown(Key.LeftAlt) ||
+                    Keyboard.IsKeyDown(Key.RightAlt);
+
+                bool shouldSnap = SnapToGrid ^ (AltSnapToGrid && altPressed);
+
+                if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
+
+                OnItemPositionChanging(_selectedElement!,
+                                       _lastReportedPos.X,
+                                       _lastReportedPos.Y,
+                                       newX,
+                                       newY);
 
                 ValidateAndSetElementPosition(_selectedElement!, newX, newY);
+
+                _lastReportedPos = new(newX, newY);
             }
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_selectedElement is not null && _initialElementPos is not null)
+            if (_selectedElement is not null)
             {
                 OnItemPositionChanged(_selectedElement,
-                                      _initialElementPos.Value.X,
-                                      _initialElementPos.Value.Y,
+                                      _lastReportedPos.X,
+                                      _lastReportedPos.Y,
                                       GetLeft(_selectedElement),
-                                      GetTop(_selectedElement));
+                                      GetTop(_selectedElement),
+                                      _initialElementPos.X,
+                                      _initialElementPos.Y);
 
                 _selectedElement = null;
                 Cursor = _previousCursor;
-                _initialElementPos = null;
 
                 ReleaseMouseCapture();
             }
@@ -318,10 +382,33 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         private void EnsureElementInsideCanvas(ref double x, ref double y, FrameworkElement? elem = null)
         {
             elem ??= _selectedElement;
+            if (elem == null) return;
 
-            x = Math.Max(0, Math.Min(x, ActualWidth - elem!.ActualWidth));
-            y = Math.Max(0, Math.Min(y, ActualHeight - elem!.ActualHeight));
+            // Initial rectangle of the element (in its local coordinates)
+            var rect = new Rect(0, 0, elem.ActualWidth, elem.ActualHeight);
+
+            // Rotation matrix around the center of the element
+            var center = new Point(elem.ActualWidth / 2, elem.ActualHeight / 2);
+            var rotate = new RotateTransform
+            {
+                Angle = (elem.RenderTransform as RotateTransform)?.Angle ?? 0,
+                CenterX = center.X,
+                CenterY = center.Y
+            };
+
+            // Getting axis-oriented (AABB) rectangle after rotation
+            var rotatedBounds = rotate.TransformBounds(rect);
+
+            // Calculate the bounds of allowable x,y coordinates (element position is given by its local left-top corner)
+            double leftBound = -rotatedBounds.X;
+            double topBound = -rotatedBounds.Y;
+            double rightBound = ActualWidth - rotatedBounds.Width - rotatedBounds.X;
+            double bottomBound = ActualHeight - rotatedBounds.Height - rotatedBounds.Y;
+
+            x = Math.Max(leftBound, Math.Min(x, rightBound));
+            y = Math.Max(topBound, Math.Min(y, bottomBound));
         }
+
         #endregion
         #region Event handlers
         private static void OnGridChange(DependencyObject d, DependencyPropertyChangedEventArgs e)

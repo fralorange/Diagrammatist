@@ -19,6 +19,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Interactions.Selectors
         /// Gets or sets line figure template.
         /// </summary>
         public DataTemplate? LineFigureTemplate { get; set; }
+
+        /// <summary>
+        /// Gets or sets flow line figure template.
+        /// </summary>
+        public DataTemplate? FlowLineFigureTemplate { get; set; }
         /// <summary>
         /// Gets or sets text figure template.
         /// </summary>
@@ -40,6 +45,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Interactions.Selectors
                 FlowchartFigureModel => FlowchartFigureTemplate,
                 ContainerFigureModel => ContainerFigureTemplate,
                 ShapeFigureModel => ShapeFigureTemplate,
+                FlowLineFigureModel => FlowLineFigureTemplate,
                 LineFigureModel => LineFigureTemplate,
                 TextFigureModel => TextFigureTemplate,
                 _ => null

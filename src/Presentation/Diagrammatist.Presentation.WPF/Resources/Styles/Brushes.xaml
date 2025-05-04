@@ -37,8 +37,8 @@
     <SolidColorBrush x:Key="FrameForeground" Color="{DynamicResource AppTextColor}"/>
 
     <SolidColorBrush x:Key="WindowBackground" Color="{DynamicResource AppSecondaryBackground}"/>
+    <SolidColorBrush x:Key="TabBackground" Color="{DynamicResource AppTabBackground}"/>
 
-    <SolidColorBrush x:Key="DialogFrameStroke" Color="{DynamicResource AppDialogStroke}"/>
     <RadialGradientBrush x:Key="DialogFrameStrokeRadial">
         <GradientStop Color="{DynamicResource DialogStroke}"/>
         <GradientStop Color="{DynamicResource DialogStroke}"/>
@@ -58,6 +58,8 @@
     <SolidColorBrush x:Key="ControlHoverBrush" Color="{DynamicResource ControlHover}"/>
     <SolidColorBrush x:Key="ControlPressedBrush" Color="{DynamicResource ControlPressed}"/>
     <SolidColorBrush x:Key="ControlFocusedBrush" Color="{DynamicResource ControlFocused}"/>
+    <SolidColorBrush x:Key="ControlReadOnlyBackgroundBrush" Color="{DynamicResource ControlReadOnlyBackground}"/>
+    <SolidColorBrush x:Key="ControlReadOnlyBorderBrush" Color="{DynamicResource ControlReadOnlyBorder}"/>
 
     <LinearGradientBrush x:Key="ScrollBarStroke"
                          StartPoint="0,0" 
@@ -105,10 +107,10 @@
         <GradientStop Color="{DynamicResource ControlHover}" Offset="1.0"/>
     </RadialGradientBrush>
     <RadialGradientBrush x:Key="ItemSelectedBorderBrush">
-        <GradientStop Color="{DynamicResource ControlFocused}" Offset="0.1"/>
-        <GradientStop Color="{DynamicResource ControlFocused}" Offset="1.0"/>
+        <GradientStop Color="{DynamicResource SelectedBorderColor}" Offset="0.1"/>
+        <GradientStop Color="{DynamicResource SelectedBorderColor}" Offset="1.0"/>
     </RadialGradientBrush>
-    <SolidColorBrush x:Key="ItemSelectionBackground" Color="{DynamicResource ControlHighlight}" Opacity="0.1"/>
+    <SolidColorBrush x:Key="ItemSelectionBackground" Color="{DynamicResource SelectedBackgroundColor}"/>
 
     <LinearGradientBrush x:Key="SplashBackground" 
                            StartPoint="0,0" 
@@ -120,4 +122,14 @@
     <SolidColorBrush x:Key="ProgressTextBrush" Color="{DynamicResource ProgressTextForeground}"/>
     <SolidColorBrush x:Key="VersionTextBrush" Color="{DynamicResource VersionTextForeground}"/>
     <SolidColorBrush x:Key="DeveloperTextBrush" Color="{DynamicResource DeveloperTextForeground}"/>
+
+    <SolidColorBrush x:Key="ToolbarItemSelectedBackground" Color="{DynamicResource ControlFocused}" Opacity="0.15"/>
+    <SolidColorBrush x:Key="ToolbarItemHoverBackground" Color="{DynamicResource ControlHover}" Opacity="0.1"/>
+
+    <SolidColorBrush x:Key="ToolbarItemBorderSelected" Color="{DynamicResource ControlFocused}"/>
+    <SolidColorBrush x:Key="ToolbarItemBorderHover" Color="{DynamicResource ControlHover}"/>
+
+    <SolidColorBrush x:Key="HighlightTabBackgroundBrush" Color="{DynamicResource HighlightTabBackground}"/>
+    <SolidColorBrush x:Key="HighlightTabBorderBrush" Color="{DynamicResource HighlightTabBorder}"/>
+    <SolidColorBrush x:Key="HoverTabBackgroundBrush" Color="{DynamicResource HoverTabBackground}"/>
 </ResourceDictionary>

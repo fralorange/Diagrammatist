@@ -1,44 +1,26 @@
-﻿<Window x:Class="Diagrammatist.Presentation.WPF.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views"
-        xmlns:vm="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels"
-        xmlns:components="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components"
-        xmlns:md="clr-namespace:MvvmDialogs;assembly=MvvmDialogs"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        lex:LocalizeDictionary.DesignCulture="en"
-        lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
-        lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.MainResources"
-        md:DialogServiceViews.IsRegistered="True"
-        Icon="../Resources/Icon/appIcon.ico"
-        Title="Diagrammatist"
-        MinWidth="985"
-        MinHeight="557"
-        BorderThickness="{Binding RelativeSource={RelativeSource Mode=Self}, Path=WindowState, Converter={StaticResource WindowStateToThicknessConverter}}"
-        ResizeMode="CanResize"
-        WindowStyle="SingleBorderWindow"
-        Style="{StaticResource BaseWindow}"
-        x:Name="window"
-        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
-        mc:Ignorable="d"
-        Loaded="OnWindowLoaded">
-    <WindowChrome.WindowChrome>
-        <WindowChrome CornerRadius="{x:Static SystemParameters.WindowCornerRadius}"
-                      GlassFrameThickness="1,0,1,1"
-                      NonClientFrameEdges="Left,Right,Bottom"
-                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                      UseAeroCaptionButtons="False">
-            <WindowChrome.CaptionHeight>
-                <MultiBinding Converter="{StaticResource CaptionHeightMultiConverter}">
-                    <Binding ElementName="titleBar" Path="ActualHeight"/>
-                    <Binding ElementName="window" Path="BorderThickness.Top"/>
-                </MultiBinding>
-            </WindowChrome.CaptionHeight>
-        </WindowChrome>
-    </WindowChrome.WindowChrome>
-
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Views.MainWindow"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views"
+                         xmlns:vm="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels"
+                         xmlns:components="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core"
+                         xmlns:md="clr-namespace:MvvmDialogs;assembly=MvvmDialogs"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         lex:LocalizeDictionary.DesignCulture="en"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.MainResources"
+                         md:DialogServiceViews.IsRegistered="True"
+                         Icon="{StaticResource AppIcon}"
+                         Title="{Binding Source={StaticResource AppMetadata}, Path=Title}"
+                         MinWidth="985"
+                         MinHeight="557"
+                         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+                         mc:Ignorable="d"
+                         Loaded="OnWindowLoaded"
+                         Background="Transparent">
     <Window.Resources>
         <!--#region GridSplitters-->
         <Style TargetType="GridSplitter" x:Key="Base">
@@ -81,241 +63,177 @@
         <KeyBinding Gesture="Ctrl+F1" 
                     Command="{Binding MenuHelpCommand}"/>
     </Window.InputBindings>
-   
-    <!--#region TitleBar-->
-    <DockPanel>
-        <Grid DockPanel.Dock="Top"
-              x:Name="titleBar"
-              MinHeight="{StaticResource TitleBarHeight}"
-              Background="{DynamicResource TitleBarBackground}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" 
-                                  MinWidth="40" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
 
-            <Image x:Name="icon"
-                   Grid.Column="0"
-                   Style="{StaticResource IconImage}"
-                   MouseDown="OnIconMouseDown"
-                   Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Icon}"
-                   WindowChrome.IsHitTestVisibleInChrome="True"/>
+    <controls:TitleBarWindow.TitleBarMenuContent>
+        <Menu Background="Transparent">
+            <MenuItem Header="{lex:Loc File}">
+                <MenuItem Header="{lex:Loc New}"
+                          InputGestureText="Ctrl+N"
+                          Command="{Binding MenuNewCommand}"/>
+                <MenuItem Header="{lex:Loc Open}"
+                          InputGestureText="Ctrl+O"
+                          Command="{Binding MenuOpenCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc Close}"
+                          Command="{Binding MenuCloseCommand}"/>
+                <MenuItem Header="{lex:Loc CloseAll}"
+                          Command="{Binding MenuCloseAllCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc Save}"
+                          InputGestureText="Ctrl+S"
+                          Command="{Binding MenuSaveCommand}"/>
+                <MenuItem Header="{lex:Loc SaveAs}"
+                          InputGestureText="Ctrl+Shift+S"
+                          Command="{Binding MenuSaveAsCommand}"/>
+                <MenuItem Header="{lex:Loc SaveAll}"
+                          Command="{Binding MenuSaveAllCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc Export}"
+                          Command="{Binding MenuExportCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc Exit}"
+                          InputGestureText="Alt+F4"
+                          Command="{Binding MenuExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc Edit}">
+                <MenuItem Header="{lex:Loc Undo}"
+                          InputGestureText="Ctrl+Z"
+                          Command="{Binding MenuUndoCommand}"/>
+                <MenuItem Header="{lex:Loc Redo}"
+                          InputGestureText="Ctrl+Y"
+                          Command="{Binding MenuRedoCommand}"/>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc View}">
+                <MenuItem Header="{lex:Loc ZoomIn}"
+                          InputGestureText="Ctrl++"
+                          Command="{Binding MenuZoomInCommand}"/>
+                <MenuItem Header="{lex:Loc ZoomOut}"
+                          InputGestureText="Ctrl+-"
+                          Command="{Binding MenuZoomOutCommand}"/>
+                <MenuItem Header="{lex:Loc ResetZoom}"
+                          InputGestureText="Ctrl+0"
+                          Command="{Binding MenuZoomResetCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc Grid}"
+                          Command="{Binding MenuEnableGridCommand}"
+                          IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc Diagram}">
+                <MenuItem Header="{lex:Loc ChangeSize}"
+                          Command="{Binding MenuChangeSizeCommand}"/>
+                <MenuItem Header="{lex:Loc ChangeBackground}"
+                          Command="{Binding MenuChangeBackgroundCommand}"/>
+                <MenuItem Header="{lex:Loc ChangeType}"
+                          Command="{Binding MenuChangeTypeCommand}"/>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc Tools}">
+                <MenuItem Header="{lex:Loc Simulator}"
+                          Command="{Binding MenuSimulatorCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc Preferences}"
+                          Command="{Binding MenuPreferencesCommand}"/>
+            </MenuItem>
+            <MenuItem Header="{lex:Loc Help}">
+                <MenuItem Header="{lex:Loc ViewHelp}"
+                          InputGestureText="Ctrl+F1"
+                          Command="{Binding MenuHelpCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc AboutApp}"
+                          Command="{Binding MenuAboutCommand}"/>
+            </MenuItem>
+        </Menu>
+    </controls:TitleBarWindow.TitleBarMenuContent>
 
-            <DockPanel Grid.Column="1"
-                       HorizontalAlignment="Stretch">
-                <Menu VerticalAlignment="Center"
-                      Background="Transparent"
-                      DockPanel.Dock="Left"
-                      WindowChrome.IsHitTestVisibleInChrome="True">
-                    <MenuItem Header="{lex:Loc File}">
-                        <MenuItem Header="{lex:Loc New}"
-                                  InputGestureText="Ctrl+N"
-                                  Command="{Binding MenuNewCommand}"/>
-                        <MenuItem Header="{lex:Loc Open}"
-                                  InputGestureText="Ctrl+O"
-                                  Command="{Binding MenuOpenCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Close}"
-                                  Command="{Binding MenuCloseCommand}"/>
-                        <MenuItem Header="{lex:Loc CloseAll}"
-                                  Command="{Binding MenuCloseAllCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Save}"
-                                  InputGestureText="Ctrl+S"
-                                  Command="{Binding MenuSaveCommand}"/>
-                        <MenuItem Header="{lex:Loc SaveAs}"
-                                  InputGestureText="Ctrl+Shift+S"
-                                  Command="{Binding MenuSaveAsCommand}"/>
-                        <MenuItem Header="{lex:Loc SaveAll}"
-                                  Command="{Binding MenuSaveAllCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Export}"
-                                  Command="{Binding MenuExportCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Exit}"
-                                  InputGestureText="Alt+F4"
-                                  Command="{Binding MenuExitCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="{lex:Loc Edit}">
-                        <MenuItem Header="{lex:Loc Undo}"
-                                  InputGestureText="Ctrl+Z"
-                                  Command="{Binding MenuUndoCommand}"/>
-                        <MenuItem Header="{lex:Loc Redo}"
-                                  InputGestureText="Ctrl+Y"
-                                  Command="{Binding MenuRedoCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="{lex:Loc View}">
-                        <MenuItem Header="{lex:Loc ZoomIn}"
-                                  InputGestureText="Ctrl++"
-                                  Command="{Binding MenuZoomInCommand}"/>
-                        <MenuItem Header="{lex:Loc ZoomOut}"
-                                  InputGestureText="Ctrl+-"
-                                  Command="{Binding MenuZoomOutCommand}"/>
-                        <MenuItem Header="{lex:Loc ResetZoom}"
-                                  InputGestureText="Ctrl+0"
-                                  Command="{Binding MenuZoomResetCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Grid}"
-                                  Command="{Binding MenuEnableGridCommand}"
-                                  IsChecked="{Binding HasGridFlag, Mode=OneWay}"/>
-                    </MenuItem>
-                    <MenuItem Header="{lex:Loc Canvas}">
-                        <MenuItem Header="{lex:Loc ChangeSize}"
-                                  Command="{Binding MenuChangeSizeCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="{lex:Loc Tools}">
-                        <MenuItem Header="{lex:Loc Simulator}"
-                                  Command="{Binding MenuSimulatorCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc Preferences}"
-                                  Command="{Binding MenuPreferencesCommand}"/>
-                    </MenuItem>
-                    <MenuItem Header="{lex:Loc Help}">
-                        <MenuItem Header="{lex:Loc ViewHelp}"
-                                  InputGestureText="Ctrl+F1"
-                                  Command="{Binding MenuHelpCommand}"/>
-                        <Separator/>
-                        <MenuItem Header="{lex:Loc AboutApp}"
-                                  Command="{Binding MenuAboutCommand}"/>
-                    </MenuItem>
-                </Menu>
+    <Grid Style="{StaticResource Window}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition x:Name="BottomPanel" 
+                           Height="0.30*"
+                           MinHeight="200"
+                           MaxHeight="400"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="LeftPanel"
+                              Width="0.15*"
+                              MinWidth="200"
+                              MaxWidth="400"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="RightPanel"
+                              Width="0.15*"
+                              MinWidth="200"
+                              MaxWidth="400"/>
+        </Grid.ColumnDefinitions>
 
-                <TextBlock Margin="10,0,10,0"
-                           Visibility="Collapsed"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Title}"
-                           TextTrimming="CharacterEllipsis"
-                           TextWrapping="NoWrap"/>
-            </DockPanel>
+        <components:ToolbarComponent x:Name="ToolbarComponentName"
+                                     Grid.Row="0"
+                                     Grid.ColumnSpan="3"
+                                     Style="{StaticResource Component}"
+                                     IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsNotBlocked}"/>
+        <components:FiguresComponent x:Name="FiguresComponentName"
+                                     Grid.Row="1"
+                                     Grid.RowSpan="2"
+                                     Grid.Column="0"
+                                     Style="{StaticResource Component}"
+                                     IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsNotBlocked}"/>
 
-            <Button Grid.Column="2"
-                    Click="OnMinimizeButtonClick"
-                    Style="{StaticResource TitleBarButtonStyle}"
-                    ToolTip="{lex:Loc Minimize}">
-                <Path Width="36"
-                      Height="32"
-                      Data="M 13,15 H 23"
-                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                      StrokeThickness="1"/>
-            </Button>
+        <!--Splits FiguresComponent from CanvasComponent-->
+        <GridSplitter Grid.Row="1" 
+                      Grid.RowSpan="2" 
+                      Grid.Column="0" 
+                      Style="{StaticResource Vertical}" 
+                      HorizontalAlignment="Right"/>
 
-            <Button x:Name="maximizeRestoreButton"
-                    Grid.Column="3"
-                    Click="OnMaximizeRestoreButtonClick"
-                    Style="{StaticResource TitleBarButtonStyle}"
-                    ToolTip="{lex:Loc Maximize}"
-                    ToolTipOpening="OnMaximizeRestoreButtonToolTipOpening">
-                <Path Width="36"
-                      Height="32"
-                      Data="{Binding ElementName=window, Path=WindowState, Converter={StaticResource WindowStateToPathConverter}}"
-                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                      StrokeThickness="1"/>
-            </Button>
-
-            <Button Grid.Column="4"
-                    Click="OnCloseButtonClick"
-                    Style="{StaticResource TitleBarCloseButtonStyle}"
-                    ToolTip="{lex:Loc Close}">
-                <Path Width="36"
-                      Height="32"
-                      Data="M 13,11 22,20 M 13,20 22,11"
-                      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                      StrokeThickness="1"/>
-            </Button>
-        </Grid>
-        
-        <!--#endregion-->
-        
-        <Grid Style="{StaticResource Window}">
+        <Grid Grid.Row="1" 
+              Grid.RowSpan="2" 
+              Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition x:Name="BottomPanel" 
-                               Height="0.30*"
-                               MinHeight="200"
-                               MaxHeight="400"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LeftPanel"
-                                  Width="0.15*"
-                                  MinWidth="200"
-                                  MaxWidth="400"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition x:Name="RightPanel"
-                                  Width="0.15*"
-                                  MinWidth="200"
-                                  MaxWidth="400"/>
-            </Grid.ColumnDefinitions>
 
-            <components:ToolbarComponent x:Name="ToolbarComponentName"
-                                         Grid.Row="0"
-                                         Grid.ColumnSpan="3"
-                                         Style="{StaticResource Component}"
-                                         IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
-            <components:FiguresComponent x:Name="FiguresComponentName"
-                                         Grid.Row="1"
-                                         Grid.RowSpan="2"
-                                         Grid.Column="0"
-                                         Style="{StaticResource Component}"
-                                         IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
-            
-            <!--Splits FiguresComponent from CanvasComponent-->
-            <GridSplitter Grid.Row="1" 
-                          Grid.RowSpan="2" 
-                          Grid.Column="0" 
-                          Style="{StaticResource Vertical}" 
-                          HorizontalAlignment="Right"/>
-
-            <Grid Grid.Row="1" 
-                  Grid.RowSpan="2" 
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <components:ActionComponent x:Name="ActionComponentName"
-                                            Grid.Row="0"
-                                            Style="{StaticResource Component}"
-                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsBlocked}"/>
-                <components:CanvasComponent x:Name="CanvasComponentName"
-                                            Grid.Row="1"
-                                            Style="{StaticResource Component}"/>
-                <components:TabsComponent x:Name="TabsComponentName"
-                                          Grid.Row="2"
-                                          Style="{StaticResource Component}"
-                                          IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
-            </Grid>
-
-            <!--Splits ObjectTreeComponent and PropertiesComponent from CanvasComponent-->
-            <GridSplitter Grid.Row="1" 
-                          Grid.RowSpan="2" 
-                          Grid.Column="2" 
-                          Style="{StaticResource Vertical}" 
-                          HorizontalAlignment="Left"/>
-
-            <components:ObjectTreeComponent x:Name="ObjectTreeComponentName"
-                                            Grid.Row="1"
-                                            Grid.Column="2"
-                                            Style="{StaticResource Component}"
-                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
-            
-            <!--Splits PropertiesComponent from ObjectTreeComponent-->
-            <GridSplitter Grid.Row="2" 
-                          Grid.Column="2" 
-                          Style="{StaticResource Horizontal}"
-                          VerticalAlignment="Top" />
-
-            <components:PropertiesComponent x:Name="PropertiesComponentName"
-                                            Grid.Row="2"
-                                            Grid.Column="2"
-                                            Style="{StaticResource Component}"
-                                            IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsNotBlocked}"/>
+            <components:CanvasComponent x:Name="CanvasComponentName"
+                                        Grid.Row="1"
+                                        Style="{StaticResource Component}"/>
+            <Popup x:Name="ActionPopup"
+                   PlacementTarget="{Binding ElementName=CanvasComponentName}"
+                   Placement="Custom"
+                   CustomPopupPlacementCallback="PlacePopup"
+                   StaysOpen="True"
+                   AllowsTransparency="True"
+                   IsOpen="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsBlocked}">
+                <components:ActionComponent Style="{StaticResource Component}" />
+            </Popup>
+            <components:TabsComponent x:Name="TabsComponentName"
+                                      Grid.Row="2"
+                                      Style="{StaticResource Component}"
+                                      IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsNotBlocked}"/>
         </Grid>
-    </DockPanel>
-</Window>
+
+        <!--Splits ObjectTreeComponent and PropertiesComponent from CanvasComponent-->
+        <GridSplitter Grid.Row="1" 
+                      Grid.RowSpan="2" 
+                      Grid.Column="2" 
+                      Style="{StaticResource Vertical}" 
+                      HorizontalAlignment="Left"/>
+
+        <components:ObjectTreeComponent x:Name="ObjectTreeComponentName"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Style="{StaticResource Component}"
+                                        IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsNotBlocked}"/>
+
+        <!--Splits PropertiesComponent from ObjectTreeComponent-->
+        <GridSplitter Grid.Row="2" 
+                      Grid.Column="2" 
+                      Style="{StaticResource Horizontal}"
+                      VerticalAlignment="Top" />
+
+        <components:PropertiesComponent x:Name="PropertiesComponentName"
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Style="{StaticResource Component}"
+                                        IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsNotBlocked}"/>
+    </Grid>
+</controls:TitleBarWindow>

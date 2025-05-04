@@ -14,14 +14,15 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas
         private string _fileName = SettingsConstants.DefaultFileName;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Width"]/*'/>
         [ObservableProperty]
-        private int _width = SettingsConstants.DefaultWidth;
+        private double _width = SettingsConstants.DefaultWidth;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Height"]/*'/>
         [ObservableProperty]
-        private int _height = SettingsConstants.DefaultHeight;
+        private double _height = SettingsConstants.DefaultHeight;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="Background"]/*'/>
         [ObservableProperty]
-        private Color _background = SettingsConstants.DefaultBackground;
+        private Color _background;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Sources/Member[@name="DiagramType"]/*'/>
-        public DiagramsModel Type { get; set; } = SettingsConstants.DefaultType;
+        [ObservableProperty]
+        private DiagramsModel _type = SettingsConstants.DefaultType;
     }
 }

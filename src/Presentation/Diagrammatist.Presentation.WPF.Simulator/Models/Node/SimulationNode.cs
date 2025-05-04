@@ -10,7 +10,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Models.Node
     /// This class used as decorator of <see cref="FigureModel"/> and adds 
     /// additional functionality for the simulation engine so it can work properly.
     /// </remarks>
-    public abstract partial class SimulationNode : ObservableObject
+    public abstract partial class SimulationNode : ObservableValidator
     {
         /// <summary>
         /// Decorated figure.

@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants
+﻿namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants
 {
     /// <summary>
     /// Diagram Settings constants.
@@ -14,15 +12,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Canvas.Constants
         /// <summary>
         /// Default value for diagram canvas width.
         /// </summary>
-        public const int DefaultWidth = 512;
+        public const double DefaultWidth = 512;
         /// <summary>
         /// Default value for diagram canvas height.
         /// </summary>
-        public const int DefaultHeight = 512;
-        /// <summary>
-        /// Default value for diagram canvas background.
-        /// </summary>
-        public static readonly Color DefaultBackground = Colors.DimGray;
+        public const double DefaultHeight = 512;
         /// <summary>
         /// Default value for diagram's type.
         /// </summary>

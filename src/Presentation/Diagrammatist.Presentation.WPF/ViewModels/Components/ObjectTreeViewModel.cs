@@ -114,6 +114,26 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             _figureManipulationService.SendBackward(figure);
         }
 
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="CopyStyle"]/*'/>
+        [RelayCommand]
+        private void CopyStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _figureManipulationService.CopyStyle(SelectedFigure);
+            }
+        }
+
+        /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="PasteStyle"]/*'/>
+        [RelayCommand]
+        private void PasteStyle()
+        {
+            if (SelectedFigure is not null)
+            {
+                _figureManipulationService.PasteStyle(SelectedFigure);
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnActivated()
         {
