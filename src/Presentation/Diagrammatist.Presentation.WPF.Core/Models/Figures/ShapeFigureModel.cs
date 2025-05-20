@@ -111,7 +111,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
                 shapeTarget.Width = Width;
                 shapeTarget.Height = Height;
                 shapeTarget.KeepAspectRatio = KeepAspectRatio;
-                shapeTarget.Data = new List<string>(Data);
             }
         }
 
