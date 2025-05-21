@@ -88,7 +88,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
             double angle = Math.Atan2(matrix.M21, matrix.M11) * (180 / Math.PI);
 
-            var reverseRotation = new RotateTransform(-angle, AdornedElement.RenderSize.Width / 2, AdornedElement.RenderSize.Height / 2);
+            var reverseRotation = new RotateTransform(angle, AdornedElement.RenderSize.Width / 2, AdornedElement.RenderSize.Height / 2);
             drawingContext.PushTransform(reverseRotation);
 
             double maxSide = Math.Max(AdornedElement.RenderSize.Width, AdornedElement.RenderSize.Height);
