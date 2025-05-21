@@ -136,6 +136,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
             {
                 MagneticPoints.Add(new() { Position = point, Owner = this });
             }
+
+            OnPropertyChanged(nameof(MagneticPoints));
         }
     }
 }
