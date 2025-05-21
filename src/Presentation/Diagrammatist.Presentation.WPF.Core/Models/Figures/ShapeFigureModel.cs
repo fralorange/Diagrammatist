@@ -111,7 +111,6 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
                 shapeTarget.Width = Width;
                 shapeTarget.Height = Height;
                 shapeTarget.KeepAspectRatio = KeepAspectRatio;
-                shapeTarget.Data = new List<string>(Data);
             }
         }
 
@@ -137,6 +136,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Models.Figures
             {
                 MagneticPoints.Add(new() { Position = point, Owner = this });
             }
+
+            OnPropertyChanged(nameof(MagneticPoints));
         }
     }
 }

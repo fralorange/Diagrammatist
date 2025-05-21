@@ -30,7 +30,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Factories.Figures.Line
                                           ICollection<ConnectionModel> connections)
         {
             if (start?.Owner is FlowchartFigureModel owner
-            && owner.Subtype == FlowchartSubtypeModel.Decision)
+            && (owner.Subtype == FlowchartSubtypeModel.Decision || owner.Subtype == FlowchartSubtypeModel.Preparation))
             {
                 var outgoingCount = _connectionService
                     .GetConnections(connections, owner)
