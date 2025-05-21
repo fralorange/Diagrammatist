@@ -225,13 +225,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
             Apply();
 
-            _userSettingsService.Set("Culture", SelectedLanguage.ToString());
-            _userSettingsService.Set("Theme", SelectedTheme);
-            _userSettingsService.Set("SnapToGrid", SelectedSnapToGrid);
-            _userSettingsService.Set("AltGridSnap", SelectedAltGridSnap);
-            _userSettingsService.Set("DoNotShowChangeDiagramTypeWarning", SelectedDoNotShowWarningForDiagramType);
-            _userSettingsService.Save();
-
             DialogResult = true;
         }
 
@@ -263,6 +256,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             _initialSnapToGrid = SelectedSnapToGrid;
             _initialAltGridSnap = SelectedAltGridSnap;
             _initialDoNotShowWarningForDiagramType = SelectedDoNotShowWarningForDiagramType;
+
+            _userSettingsService.Set("Culture", SelectedLanguage.ToString());
+            _userSettingsService.Set("Theme", SelectedTheme);
+            _userSettingsService.Set("SnapToGrid", SelectedSnapToGrid);
+            _userSettingsService.Set("AltGridSnap", SelectedAltGridSnap);
+            _userSettingsService.Set("DoNotShowChangeDiagramTypeWarning", SelectedDoNotShowWarningForDiagramType);
+            _userSettingsService.Save();
 
             HasChanges = false;
         }
