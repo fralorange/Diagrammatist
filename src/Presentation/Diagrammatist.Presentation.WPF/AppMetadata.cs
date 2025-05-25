@@ -8,6 +8,11 @@ namespace Diagrammatist.Presentation.WPF
     public class AppMetadata
     {
         /// <summary>
+        /// Gets the name of the app pipe used for inter-process communication.
+        /// </summary>
+        public const string AppPipe = "DiagrammatistPipe";
+
+        /// <summary>
         /// Gets app version.
         /// </summary>
         public static string Version => Assembly
