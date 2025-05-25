@@ -40,6 +40,23 @@ namespace Diagrammatist.Presentation.WPF.Views
         }
 
         /// <summary>
+        /// Brings main window to the foreground, if it is minimized or hidden.
+        /// </summary>
+        public void BringToForeground()
+        {
+            if (WindowState == WindowState.Minimized || Visibility == Visibility.Hidden)
+            {
+                Show();
+                WindowState = WindowState.Normal;
+            }
+    
+            Activate();
+            Topmost = true;
+            Topmost = false;
+            Focus();
+        }
+
+        /// <summary>
         /// Loads main window.
         /// </summary>
         /// <param name="progress"></param>
@@ -70,6 +87,19 @@ namespace Diagrammatist.Presentation.WPF.Views
             // Smooth finish.
             progress.Report((100, "Finish"));
             await Task.Delay(200);
+        }
+
+        /// <summary>
+        /// Loads file into the application from upper layer (e.g. from command line or file association).
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public async Task LoadFileAsync(string filePath)
+        {
+            await Dispatcher.InvokeAsync(() =>
+            {
+                TabsComponentName.OpenFile(filePath);
+            });
         }
 
         private async Task LoadComponentAsync(string componentName)
