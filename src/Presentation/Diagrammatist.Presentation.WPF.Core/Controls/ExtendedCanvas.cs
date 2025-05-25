@@ -1,13 +1,16 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Controls.Args;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls.Adorners;
+using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.Core.Controls
@@ -27,6 +30,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         private Point _initialElementPos;
         private Point _lastReportedPos;
         private Cursor? _previousCursor;
+
+        private AlignmentAdorner? _alignmentAdorner;
 
         /// <summary>
         /// Occurs when any element position changes.
@@ -243,12 +248,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
                 CenterSelectedElement(ref newX, ref newY);
 
-                TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY);
+                TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY, out var guides);
 
-                bool altPressed =
-                    Keyboard.IsKeyDown(Key.LeftAlt) ||
-                    Keyboard.IsKeyDown(Key.RightAlt);
-
+                bool altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
                 bool shouldSnap = SnapToGrid ^ (AltSnapToGrid && altPressed);
 
                 if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
@@ -262,6 +264,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 ValidateAndSetElementPosition(_selectedElement!, newX, newY);
 
                 _lastReportedPos = new(newX, newY);
+
+                _alignmentAdorner?.SetGuides(guides);
             }
         }
 
@@ -281,6 +285,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 Cursor = _previousCursor;
 
                 ReleaseMouseCapture();
+                _alignmentAdorner?.ClearGuides();
             }
         }
         #endregion
@@ -296,8 +301,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             SetTop(element, top);
         }
 
-        private void TrySnapWithDynamicSpacing(FrameworkElement movingElement, ref double newX, ref double newY)
+        private void TrySnapWithDynamicSpacing(FrameworkElement movingElement, ref double newX, ref double newY, out List<Line> guides)
         {
+            guides = [];
+
             const double snapThreshold = 10; 
 
             var elements = Children.OfType<FrameworkElement>().Where(e => e != movingElement).ToList();
@@ -319,26 +326,76 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 if (Math.Abs(movingCenterX - refCenterX) < snapThreshold)
                 {
                     newX = refLeft + (reference.ActualWidth - movingElement.ActualWidth) / 2;
+                    guides.Add(new Line
+                    {
+                        X1 = refCenterX,
+                        Y1 = 0,
+                        X2 = refCenterX,
+                        Y2 = ActualHeight,
+                    });
                 }
 
                 // Center by Y.
                 if (Math.Abs(movingCenterY - refCenterY) < snapThreshold)
                 {
                     newY = refTop + (reference.ActualHeight - movingElement.ActualHeight) / 2;
+                    guides.Add(new Line
+                    {
+                        X1 = 0,
+                        Y1 = refCenterY,
+                        X2 = ActualWidth,
+                        Y2 = refCenterY,
+                    });
                 }
 
                 // Edge snapping.
                 if (Math.Abs(newX - refLeft) < snapThreshold)
+                { 
                     newX = refLeft;
+                    guides.Add(new Line
+                    {
+                        X1 = refLeft,
+                        Y1 = 0,
+                        X2 = refLeft,
+                        Y2 = ActualHeight,
+                    });
+                }
 
                 if (Math.Abs((newX + movingElement.ActualWidth) - (refLeft + reference.ActualWidth)) < snapThreshold)
+                { 
                     newX = refLeft + reference.ActualWidth - movingElement.ActualWidth;
+                    guides.Add(new Line
+                    {
+                        X1 = refLeft + reference.ActualWidth,
+                        Y1 = 0,
+                        X2 = refLeft + reference.ActualWidth,
+                        Y2 = ActualHeight,
+                    });
+                }
 
                 if (Math.Abs(newY - refTop) < snapThreshold)
-                    newY = refTop;
+                { 
+                    newY = refTop; 
+                    guides.Add(new Line
+                    {
+                        X1 = 0,
+                        Y1 = refTop,
+                        X2 = ActualWidth,
+                        Y2 = refTop,
+                    });
+                }
 
                 if (Math.Abs((newY + movingElement.ActualHeight) - (refTop + reference.ActualHeight)) < snapThreshold)
+                { 
                     newY = refTop + reference.ActualHeight - movingElement.ActualHeight;
+                    guides.Add(new Line
+                    {
+                        X1 = 0,
+                        Y1 = refTop + reference.ActualHeight,
+                        X2 = ActualWidth,
+                        Y2 = refTop + reference.ActualHeight,
+                    });
+                }
 
                 // Dynamic distance by Y-axis.
                 foreach (var secondReference in elements)
@@ -352,6 +409,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                     if (expectedDistance > 0 && Math.Abs(newY - (refBottom + expectedDistance)) < snapThreshold)
                     {
                         newY = refBottom + expectedDistance;
+
+                        guides.Add(new Line
+                        {
+                            X1 = 0,
+                            Y1 = refBottom + expectedDistance,
+                            X2 = ActualWidth,
+                            Y2 = refBottom + expectedDistance,
+                        });
                     }
                 }
 
@@ -367,6 +432,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                     if (expectedDistance > 0 && Math.Abs(newX - (refRight + expectedDistance)) < snapThreshold)
                     {
                         newX = refRight + expectedDistance;
+
+                        guides.Add(new Line
+                        {
+                            X1 = refRight + expectedDistance,
+                            Y1 = 0,
+                            X2 = refRight + expectedDistance,
+                            Y2 = ActualHeight,
+                        });
                     }
                 }
             }
@@ -426,6 +499,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
         {
             base.OnVisualChildrenChanged(visualAdded, visualRemoved);
@@ -439,6 +513,23 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             }
         }
 
+        /// <inheritdoc/>
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            Loaded += (_, _) =>
+            {
+                var adornerLayer = AdornerLayer.GetAdornerLayer(this);
+                if (adornerLayer is not null)
+                {
+                    _alignmentAdorner = new AlignmentAdorner(this);
+                    adornerLayer.Add(_alignmentAdorner);
+                }
+            };
+        }
+
+        /// <inheritdoc/>
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);

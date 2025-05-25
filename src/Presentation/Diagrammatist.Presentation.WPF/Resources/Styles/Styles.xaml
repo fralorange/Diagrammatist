@@ -540,7 +540,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource FrameBackground}"/>
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource FrameBackground}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -562,11 +562,11 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Grid Background="Transparent">
                         <Border x:Name="SelectionVisual"
-                                BorderBrush="{StaticResource ItemSelectedBorderBrush}"
+                                BorderBrush="{DynamicResource ItemSelectedBorderBrush}"
                                 BorderThickness="2" 
                                 Margin="-2"
                                 Panel.ZIndex="1000000"
-                                Background="{StaticResource ItemSelectionBackground}"
+                                Background="{DynamicResource ItemSelectionBackground}"
                                 CornerRadius="2"
                                 Visibility="Collapsed"
                                 Effect="{DynamicResource PrimarySelectionBoxEffect}">
