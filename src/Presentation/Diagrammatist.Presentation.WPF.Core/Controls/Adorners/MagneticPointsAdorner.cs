@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 
 namespace Diagrammatist.Presentation.WPF.Core.Controls
 {
@@ -71,7 +70,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         public void UpdatePoints(IEnumerable<Point> newPoints)
         {
             _points = newPoints;
-            InvalidateVisual(); 
+            InvalidateVisual();
         }
 
         /// <inheritdoc/>
