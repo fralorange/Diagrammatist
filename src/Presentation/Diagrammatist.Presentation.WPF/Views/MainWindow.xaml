@@ -196,15 +196,15 @@
             <components:CanvasComponent x:Name="CanvasComponentName"
                                         Grid.Row="1"
                                         Style="{StaticResource Component}"/>
-            <Popup x:Name="ActionPopup"
-                   PlacementTarget="{Binding ElementName=CanvasComponentName}"
-                   Placement="Custom"
-                   CustomPopupPlacementCallback="PlacePopup"
-                   StaysOpen="True"
-                   AllowsTransparency="True"
-                   IsOpen="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsBlocked}">
+            <controls:NonTopmostPopup x:Name="ActionPopup"
+                                      PlacementTarget="{Binding ElementName=CanvasComponentName}"
+                                      Placement="Custom"
+                                      CustomPopupPlacementCallback="PlacePopup"
+                                      StaysOpen="True"
+                                      AllowsTransparency="True"
+                                      IsOpen="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsBlocked}">
                 <components:ActionComponent Style="{StaticResource Component}" />
-            </Popup>
+            </controls:NonTopmostPopup>
             <components:TabsComponent x:Name="TabsComponentName"
                                       Grid.Row="2"
                                       Style="{StaticResource Component}"
