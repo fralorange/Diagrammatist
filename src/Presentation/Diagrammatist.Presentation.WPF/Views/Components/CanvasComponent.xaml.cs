@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.Views.Components
@@ -24,6 +25,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
     public partial class CanvasComponent : UserControl
     {
         private LineDrawer _lineDrawer;
+        private ExtendedCanvas _extCanvas;
         private Canvas _drawingCanvas;
         private ListBox _itemsHolder;
 
@@ -46,6 +48,8 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             viewModel.RequestZoomOut += ZoomOut;
             viewModel.RequestZoomReset += ZoomReset;
             viewModel.RequestExport += Export;
+            viewModel.RequestVisibleArea += GetVisibleArea;
+            viewModel.RequestScrollToFigure += ScrollToFigure;
         }
 
         #region Event handlers
@@ -86,6 +90,8 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
         {
             if (sender is ExtendedCanvas canvas)
             {
+                _extCanvas = canvas;
+
                 var actionViewModel = App.Current.Services.GetRequiredService<ActionViewModel>();
 
                 Dispatcher.BeginInvoke(new Action(() =>
@@ -204,6 +210,8 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
 
         #endregion
 
+        #region Viewmodel event handlers
+
         private void CaptureMousePosition(ExtendedCanvas canvas, Action<Point> positionHandler)
         {
             if (canvas == null) return;
@@ -245,5 +253,44 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 canvas?.Export(filePath);
             }
         }
+
+        private void ScrollToFigure(FigureModel figure)
+        {
+            if (_itemsHolder.ItemContainerGenerator.ContainerFromItem(figure) is not FrameworkElement container)
+                return;
+
+            container.BringIntoView();
+        }
+
+        private Rect GetVisibleArea()
+        {
+            var zoom = extScrollViewer.Zoom;
+
+            var scroll = extScrollViewer.GetVisualDescendant<ScrollViewer>();
+            if (scroll is null)
+                return Rect.Empty;
+
+            var vpTopLeft = scroll.PointToScreen(new Point(0, 0));
+            var vpSize = new Size(scroll.ViewportWidth, scroll.ViewportHeight);
+            var vpRect = new Rect(vpTopLeft, vpSize);
+
+            var cvTopLeft = _extCanvas.PointToScreen(new Point(0, 0));
+            var cvSize = new Size(_extCanvas.ActualWidth * zoom, _extCanvas.ActualHeight * zoom);
+            var cvRect = new Rect(cvTopLeft, cvSize);
+
+            var intersect = Rect.Intersect(vpRect, cvRect);
+            if (intersect.IsEmpty)
+                return Rect.Empty;
+
+            var topLeftInCanvas = _extCanvas.PointFromScreen(intersect.TopLeft);
+            return new Rect(
+                topLeftInCanvas.X,
+                topLeftInCanvas.Y,
+                intersect.Width / zoom,
+                intersect.Height / zoom
+            );
+        }
+
+        #endregion
     }
 }

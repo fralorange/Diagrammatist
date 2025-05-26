@@ -8,6 +8,7 @@ using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Mappers.Figures;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
 using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
@@ -18,6 +19,7 @@ using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -120,6 +122,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             IsActive = true;
         }
 
+        #region Figure Properties Handlers
+
         private void LoadFigureColors(FigureModel figure)
         {
             var bgColor = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
@@ -215,80 +219,148 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             return clone;
         }
 
+        private void PlaceFigureInVisibleArea(FigureModel figure)
+        {
+            var visibleArea = Messenger.Send<VisibleAreaRequestMessage>(new());
+            
+            if (!visibleArea.Response.IsEmpty)
+            {
+                figure.PosX = visibleArea.Response.Left;
+                figure.PosY = visibleArea.Response.Top;
+            }
+            else
+            {
+                Messenger.Send<ScrollToFigureMessage>(new(figure));
+            }
+        }
+
+        #endregion
+
+        #region Figure Creation Handlers
+
+        /// <summary>
+        /// Checks if the template is ready to be added to the canvas.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        private bool IsReadyToAdd(FigureModel? template)
+        {
+            return template != null
+                && CanvasFigures != null
+                && CanvasConnections != null;
+        }
+
+        /// <summary>
+        /// Handles the creation of a line figure based on the provided template.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        private async Task<LineFigureModel?> HandleLineFigureAsync(LineFigureModel template)
+        {
+            var prevMode = CurrentMouseMode;
+            CurrentMouseMode = MouseMode.Line;
+
+            var input = await WaitForUserInputAsync();
+
+            CurrentMouseMode = prevMode;
+            if (input == null) return null;
+
+            var (points, start, end) = input.Value;
+            var figure = _lineFactory.CreateLine(
+                    template,
+                    start,
+                    end,
+                    CanvasConnections!
+                );
+
+            figure.Name = GetUniqueFigureName(GetTranslatedFigureName(figure.Name));
+            figure.Points = points.ToObservableCollection();
+
+            AddConnectionIfNeeded(start, end, figure);
+            return figure;
+        }
+
+        /// <summary>
+        /// Adds a connection between two magnetic points if they are not null.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="line"></param>
+        private void AddConnectionIfNeeded(
+            MagneticPointModel? start,
+            MagneticPointModel? end,
+            LineFigureModel line)
+        {
+            if (start == null || end == null)
+                return;
+
+            var connection = new ConnectionModel
+            {
+                SourceMagneticPoint = start,
+                DestinationMagneticPoint = end,
+                Line = line
+            };
+
+            _connectionService.AddConnection(CanvasConnections!, connection);
+        }
+
+        /// <summary>
+        /// Handles the creation of a shape figure based on the provided template.
+        /// </summary>
+        /// <param name="template"></param>
+        private ShapeFigureModel HandleShapeFigure(ShapeFigureModel template)
+        {
+            var shape = CloneAndRename(template);
+            shape!.UpdateMagneticPoints();
+            
+            return shape;
+        }
+
+        /// <summary>
+        /// Handles the creation of a text figure based on the provided template.
+        /// </summary>
+        /// <param name="template"></param>
+        private FigureModel HandleDefaultFigure(FigureModel template)
+        {
+            var figure = CloneAndRename(template);
+            
+            return figure;
+        }
+
+        #endregion
+
         /// <summary>
         /// Adds new figure to canvas component.
         /// </summary>
         [RelayCommand]
         private async Task AddFigureAsync()
         {
-            var figureTemplate = SelectedFigure;
+            var template = SelectedFigure;
             SelectedFigure = null;
 
-            if (CanvasFigures is null || CanvasConnections is null || figureTemplate is null)
-            {
+            if (!IsReadyToAdd(template))
                 return;
-            }
 
-            if (figureTemplate is LineFigureModel lineTemplate)
+            var figure = template switch
             {
-                var previousMouseMode = CurrentMouseMode;
+                LineFigureModel lineTemplate => await HandleLineFigureAsync(lineTemplate),
+                ShapeFigureModel shapeTemplate => HandleShapeFigure(shapeTemplate),
+                FigureModel defaultTemplate => HandleDefaultFigure(defaultTemplate),
+                _ => throw new NotSupportedException($"Unsupported figure type: {template!.GetType()}")
+            };
 
-                CurrentMouseMode = MouseMode.Line;
+            if (figure is null)
+                return;
 
-                var inputTask = WaitForUserInputAsync();
+            _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures!, CanvasConnections!);
 
-                var result = await inputTask;
-
-                CurrentMouseMode = previousMouseMode;
-
-                if (result is null)
-                {
-                    return;
-                }
-
-                var mStart = result.Value.start;
-                var mEnd = result.Value.end;
-
-                var figure = _lineFactory.CreateLine(
-                    lineTemplate,
-                    mStart,
-                    mEnd,
-                    CanvasConnections
-                );
-
-                figure.Name = GetUniqueFigureName(GetTranslatedFigureName(figure.Name));
-                figure.Points = result.Value.points.ToObservableCollection();
-
-                if (mStart is not null || mEnd is not null)
-                {
-                    var connection = new ConnectionModel()
-                    {
-                        SourceMagneticPoint = mStart,
-                        DestinationMagneticPoint = mEnd,
-                        Line = figure,
-                    };
-
-                    _connectionService.AddConnection(CanvasConnections, connection);
-                }
-
-                _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
-            }
-            else if (figureTemplate is ShapeFigureModel shapeTemplate)
-            {
-                var figure = CloneAndRename(shapeTemplate);
-
-                figure!.UpdateMagneticPoints();
-
-                _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
-            }
-            else
-            {
-                var figure = CloneAndRename(figureTemplate);
-
-                _figurePlacementService.AddFigureWithUndo(figure, CanvasFigures, CanvasConnections);
-            }
+            PlaceFigureInVisibleArea(figure);
         }
 
+        /// <summary>
+        /// Waits for user input to confirm or cancel line drawing.
+        /// </summary>
+        /// <returns></returns>
         private Task<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?> WaitForUserInputAsync()
         {
             var tcs = new TaskCompletionSource<(List<Point> points, MagneticPointModel? start, MagneticPointModel? end)?>();

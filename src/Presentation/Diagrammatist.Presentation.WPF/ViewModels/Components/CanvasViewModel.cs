@@ -60,6 +60,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when user initiates a export action from menu button.
         /// </remarks>
         public event Action? RequestExport;
+        /// <summary>
+        /// Occurs when a request is made to get visible area of the canvas.
+        /// </summary>
+        /// <remarks> 
+        /// This event is triggered when user initiates a visible area request by adding new figure.
+        /// </remarks>
+        public event Func<Rect>? RequestVisibleArea;
+        /// <summary>
+        /// Occurs when a request is made to scroll to the specified figure on the canvas.
+        /// </summary>
+        /// <remarks> 
+        /// This event is triggered when user adds a figure from canvas non-visible area.
+        /// </remarks>
+        public event Action<FigureModel>? RequestScrollToFigure;
 
         private CanvasModel? _currentCanvas;
 
@@ -520,10 +534,20 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 SelectedFigure = m.NewValue;
             });
-            // Answer request from canvas.
+            Messenger.Register<CanvasViewModel, ScrollToFigureMessage>(this, (r, m) =>
+            {
+                RequestScrollToFigure?.Invoke(m.Value);
+            });
+            // Answer to current canvas request.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
             {
                 m.Reply(r.CurrentCanvas);
+            });
+            // Answer to visible area request.
+            Messenger.Register<CanvasViewModel, VisibleAreaRequestMessage>(this, (r, m) =>
+            {
+                var visibleRect = RequestVisibleArea?.Invoke() ?? Rect.Empty;
+                m.Reply(visibleRect);
             });
             // Register action flags.
             Messenger.Register<CanvasViewModel, Tuple<string, bool>>(this, (r, m) =>
