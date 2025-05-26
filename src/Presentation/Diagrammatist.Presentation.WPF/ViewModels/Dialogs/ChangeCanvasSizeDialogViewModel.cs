@@ -168,9 +168,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             var instance = (ChangeCanvasSizeDialogViewModel)context.ObjectInstance;
             var widthPx = instance._widthPx;
 
-            if (widthPx < 300 || widthPx > 4000)
+            if (widthPx < 512 || widthPx > 4000)
             {
-                return new ValidationResult("Width must be between 300 and 4000.", [nameof(Width)]);
+                return new ValidationResult("Width must be between 512 and 4000.", [nameof(Width)]);
             }
 
             return ValidationResult.Success;
@@ -187,9 +187,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             var instance = (ChangeCanvasSizeDialogViewModel)context.ObjectInstance;
             var heightPx = instance._heightPx;
 
-            if (heightPx < 300 || heightPx > 4000)
+            if (heightPx < 512 || heightPx > 4000)
             {
-                return new ValidationResult("Height must be between 300 and 4000.", [nameof(Height)]);
+                return new ValidationResult("Height must be between 512 and 4000.", [nameof(Height)]);
             }
 
             return ValidationResult.Success;
