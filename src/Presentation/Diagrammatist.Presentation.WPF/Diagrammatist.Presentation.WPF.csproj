@@ -98,6 +98,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ExportDiagram\ExportDiagramResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExportDiagramResources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Localization\Dialogs\Settings\SettingsResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -201,6 +206,10 @@
     <EmbeddedResource Update="Resources\Localization\Dialogs\ChangeDiagramType\ChangeDiagramTypeResources.resx">
       <LastGenOutput>ChangeDiagramTypeResources.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ExportDiagram\ExportDiagramResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExportDiagramResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\Settings\SettingsResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

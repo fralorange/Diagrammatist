@@ -1,6 +1,6 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 
-namespace Diagrammatist.Presentation.WPF.Core.Shared.Entities
+namespace Diagrammatist.Presentation.WPF.Core.Shared.Records
 {
     /// <summary>
     /// A record that represents a confirmation response.

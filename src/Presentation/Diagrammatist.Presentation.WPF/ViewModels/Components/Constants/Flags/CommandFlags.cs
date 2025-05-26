@@ -38,10 +38,6 @@
         /// </summary>
         public const string ZoomReset = nameof(ZoomReset);  
         /// <summary>
-        /// Gets export flag.
-        /// </summary>
-        public const string Export = nameof(Export);
-        /// <summary>
         /// Gets open flag.
         /// </summary>
         public const string Open = nameof(Open);

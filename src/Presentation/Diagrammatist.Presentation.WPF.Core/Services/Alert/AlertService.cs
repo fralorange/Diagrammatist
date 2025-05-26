@@ -1,7 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Services.Sound;
 using Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels;
 using Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views;
-using Diagrammatist.Presentation.WPF.Core.Shared.Entities;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using System.Windows;
 using ApplicationEnt = System.Windows.Application;

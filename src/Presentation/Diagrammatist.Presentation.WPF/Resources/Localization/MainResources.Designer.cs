@@ -151,6 +151,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Export Diagram.
+        /// </summary>
+        internal static string ExportDiagram {
+            get {
+                return ResourceManager.GetString("ExportDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на File.
         /// </summary>
         internal static string File {
