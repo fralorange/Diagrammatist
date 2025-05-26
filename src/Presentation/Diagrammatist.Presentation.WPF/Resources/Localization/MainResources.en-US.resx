@@ -210,4 +210,7 @@
   <data name="ChangeBackground" xml:space="preserve">
     <value>Change Canvas Background</value>
   </data>
+  <data name="ExportDiagram" xml:space="preserve">
+    <value>Export Diagram</value>
+  </data>
 </root>

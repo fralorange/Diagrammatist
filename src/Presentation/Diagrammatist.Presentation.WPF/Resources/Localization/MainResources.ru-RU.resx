@@ -210,4 +210,7 @@
   <data name="ChangeBackground" xml:space="preserve">
     <value>Изменить фон холста</value>
   </data>
+  <data name="ExportDiagram" xml:space="preserve">
+    <value>Экспорт диаграммы</value>
+  </data>
 </root>

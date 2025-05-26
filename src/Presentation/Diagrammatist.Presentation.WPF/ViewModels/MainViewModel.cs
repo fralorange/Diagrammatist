@@ -92,7 +92,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBlocked))]
         [NotifyCanExecuteChangedFor(
-            nameof(MenuNewCommand), 
+            nameof(MenuNewCommand),
             nameof(MenuOpenCommand),
             nameof(MenuCloseCommand),
             nameof(MenuCloseAllCommand),
@@ -273,7 +273,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
         private void MenuExport()
         {
-            Messenger.Send(CommandFlags.Export);
+            var dialogViewModel = new ExportDiagramDialogViewModel();
+
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true)
+            {
+                Messenger.Send(CommandFlags.Export);
+            }
         }
 
         /// <summary>
@@ -447,11 +452,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
                 _trackableCommandManager.Execute(command);
             };
 
-            if (!terminated && _dialogService.ShowDialog(this, dialogViewModel) == true && 
+            if (!terminated && _dialogService.ShowDialog(this, dialogViewModel) == true &&
                 dialogViewModel.NewContext is { } context)
             {
                 var command = CommonUndoableHelper.CreateUndoableCommand(
-                    () => doc.SetPayload(key, context), 
+                    () => doc.SetPayload(key, context),
                     () => doc.SetPayload(key, payload));
 
                 _trackableCommandManager.Execute(command);
