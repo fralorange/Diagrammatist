@@ -64,7 +64,7 @@
                         Grid.Column="1"
                         Visibility="{Binding SelectedExportScenario, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Content'}">
                 <TextBox Width="80" 
-                         Text="{Binding ContentMargin}"
+                         Text="{Binding ContentMargin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                          Margin="10 10 0 10"
                          Height="{Binding ElementName=customPpiBox, Path=ActualHeight}"
                          HorizontalAlignment="Left"/>
@@ -98,7 +98,7 @@
                             Visibility="{Binding SelectedPpi, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='PPI_Custom'}">
                     <TextBox Width="80"
                              x:Name="customPpiBox"
-                             Text="{Binding CustomPpi}" 
+                             Text="{Binding CustomPpi, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" 
                              Margin="10 10 0 10"/>
                     <TextBlock Text="ppi" 
                                VerticalAlignment="Center" 

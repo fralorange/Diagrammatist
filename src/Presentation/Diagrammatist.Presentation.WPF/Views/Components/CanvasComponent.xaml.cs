@@ -5,6 +5,7 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures.Magnetic;
 using Diagrammatist.Presentation.WPF.Core.Renderers.Line;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.ViewModels.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
@@ -235,9 +236,9 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             extScrollViewer.ZoomReset();
         }
 
-        private void Export()
+        private void Export(ExportSettings settings)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            var saveFileDialog = new SaveFileDialog
             {
                 Filter = "PNG|*.png",
             };
@@ -248,9 +249,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             {
                 string filePath = saveFileDialog.FileName;
 
-                var canvas = _itemsHolder.GetVisualDescendant<ExtendedCanvas>();
-
-                canvas?.Export(filePath);
+                _extCanvas.Export(filePath, settings);
             }
         }
 

@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using MvvmDialogs;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Linq;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
@@ -19,21 +22,35 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// <summary>
         /// Gets or sets the selected export scenario.
         /// </summary>
-        [ObservableProperty]
         private ExportScenario selectedExportScenario = ExportScenario.Full;
+
+        public ExportScenario SelectedExportScenario
+        {
+            get => selectedExportScenario;
+            set
+            {
+                SetProperty(ref selectedExportScenario, value, true);
+                if (value is not ExportScenario.Content)
+                {
+                    ContentMargin = "0";
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the content margin.
         /// </summary>
         [ObservableProperty]
-        private int contentMargin = 10;
+        [Required]
+        [RegularExpression("([0-9]+)")]
+        private string contentMargin = "0";
 
         /// <summary>
         /// Gets the collection of export PPI (Pixels Per Inch) values available for selection.
         /// </summary>
         public ObservableCollection<ExportPPI> ExportPPIValues { get; }
 
-        private ExportPPI selectedPpi = ExportPPI.PPI_72;
+        private ExportPPI selectedPpi = ExportPPI.PPI_96;
 
         /// <summary>
         /// Gets or sets the selected PPI value for exporting diagrams.
@@ -43,10 +60,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             get => selectedPpi;
             set
             {
-                SetProperty(ref selectedPpi, value);
+                SetProperty(ref selectedPpi, value, true);
                 if (value is not ExportPPI.PPI_Custom)
                 {
-                    CustomPpi = (int)SelectedPpi;
+                    CustomPpi = ((int)SelectedPpi).ToString();
                 }
             }
         }
@@ -55,7 +72,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// Gets or sets the custom PPI value for exporting diagrams.
         /// </summary>
         [ObservableProperty]
-        private int customPpi = 72;
+        [Required]
+        [RegularExpression("([1-9][0-9]*)")]
+        private string customPpi = "96";
+
+        /// <summary>
+        /// Gets or sets the export settings for the diagram export dialog.
+        /// </summary>
+        [ObservableProperty]
+        private ExportSettings? _exportSettings;
 
         private bool? _dialogResult;
 
@@ -81,6 +106,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [RelayCommand]
         private void Ok()
         {
+            ValidateAllProperties();
+
+            if (HasErrors)
+            {
+                return;
+            }
+
+            ExportSettings = new ExportSettings(SelectedExportScenario,
+                                                int.TryParse(ContentMargin, out var margin) ? margin : 0,
+                                                int.TryParse(CustomPpi, out var ppi) ? ppi : (int)ExportPPI.PPI_72);
             DialogResult = true;
         }
     }

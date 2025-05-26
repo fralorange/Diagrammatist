@@ -14,6 +14,7 @@ using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Settings;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -59,7 +60,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user initiates a export action from menu button.
         /// </remarks>
-        public event Action? RequestExport;
+        public event Action<ExportSettings>? RequestExport;
         /// <summary>
         /// Occurs when a request is made to get visible area of the canvas.
         /// </summary>
@@ -364,11 +365,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <summary>
         /// Exports current canvas. 
         /// </summary>
-        private void Export()
+        private void Export(ExportSettings settings)
         {
             if (CurrentCanvas is not null && RequestExport is not null)
             {
-                RequestExport();
+                RequestExport(settings);
             }
         }
 
@@ -534,9 +535,15 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 SelectedFigure = m.NewValue;
             });
+            // Scroll to figure.
             Messenger.Register<CanvasViewModel, ScrollToFigureMessage>(this, (r, m) =>
             {
                 RequestScrollToFigure?.Invoke(m.Value);
+            });
+            // Export current canvas.
+            Messenger.Register<CanvasViewModel, ExportSettingsMessage>(this, (r, m) =>
+            {
+                Export(m.Value);
             });
             // Answer to current canvas request.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
@@ -570,7 +577,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     case CommandFlags.ZoomOut: ZoomOut(); break;
                     case CommandFlags.ZoomReset: ZoomReset(); break;
                     case CommandFlags.EnableGrid: EnableGrid(); break;
-                    case CommandFlags.Export: Export(); break;
                 }
             });
         }

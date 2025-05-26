@@ -1,4 +1,4 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Shared.Entities;
+﻿using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 
 namespace Diagrammatist.Presentation.WPF.Core.Services.Alert

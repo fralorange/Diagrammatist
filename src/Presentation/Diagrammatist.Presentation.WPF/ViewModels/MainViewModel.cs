@@ -275,9 +275,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         {
             var dialogViewModel = new ExportDiagramDialogViewModel();
 
-            if (_dialogService.ShowDialog(this, dialogViewModel) == true)
+            if (_dialogService.ShowDialog(this, dialogViewModel) == true && dialogViewModel.ExportSettings is { } settings)
             {
-                Messenger.Send(CommandFlags.Export);
+                Messenger.Send<ExportSettingsMessage>(new(settings));
             }
         }
 
