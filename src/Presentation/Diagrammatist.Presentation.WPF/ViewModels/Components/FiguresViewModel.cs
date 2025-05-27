@@ -185,37 +185,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
         }
 
-        private string GetUniqueFigureName(string baseName)
-        {
-            if (CanvasFigures is null)
-                return baseName;
-
-            var existingNames = CanvasFigures.Select(f => f.Name).ToHashSet();
-            if (!existingNames.Contains(baseName))
-                return baseName;
-
-            var index = 1;
-            var newName = string.Empty;
-            
-            do
-            {
-                newName = $"{baseName} {index}";
-                index++;
-            } while (existingNames.Contains(newName));
-
-            return newName;
-        }
-
-        private string GetTranslatedFigureName(string baseName)
-        {
-            return LocalizationHelper.GetLocalizedValue<string>("Figures.FiguresResources", baseName);
-        }
-
         private T CloneAndRename<T>(T template) where T : FigureModel
         {
             var clone = (T)template.Clone();
-            var translatedName = GetTranslatedFigureName(clone.Name);
-            clone.Name = GetUniqueFigureName(translatedName);
+            var translatedName = FigureNameHelper.GetTranslatedName(clone.Name);
+
+            var existingNames = CanvasFigures?.Select(f => f.Name);
+            clone.Name = FigureNameHelper.GetUniqueName(translatedName, existingNames?.ToList());
+
             return clone;
         }
 
@@ -273,7 +250,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     CanvasConnections!
                 );
 
-            figure.Name = GetUniqueFigureName(GetTranslatedFigureName(figure.Name));
+            var existingNames = CanvasFigures?.Select(f => f.Name);
+            figure.Name = FigureNameHelper.GetUniqueName(FigureNameHelper.GetTranslatedName(figure.Name), existingNames);
             figure.Points = points.ToObservableCollection();
 
             AddConnectionIfNeeded(start, end, figure);
