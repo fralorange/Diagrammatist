@@ -48,6 +48,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
         public void Duplicate(FigureModel figure, ICollection<FigureModel> figures)
         {
             var clone = figure.Clone();
+            GetUniqueName(clone, figures);
 
             var command = CommonUndoableHelper.CreateUndoableCommand(
                 () => figures.Add(clone),
@@ -62,6 +63,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
             if (_clipboardService.GetFromClipboard()?.Clone() is not { } pastedFigure)
                 return;
 
+            GetUniqueName(pastedFigure, figures);
+
             var command = CommonUndoableHelper.CreateUndoableCommand(
                 () => figures.Add(pastedFigure),
                 () => figures.Remove(pastedFigure));
@@ -74,6 +77,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
         {
             if (_clipboardService.GetFromClipboard()?.Clone() is not { } pastedFigure || pos is not Point point)
                 return;
+
+            GetUniqueName(pastedFigure, figures);
 
             var command = CommonUndoableHelper.CreateUndoableCommand(
                 () =>
@@ -167,6 +172,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation
                 });
 
             _commandManager.Execute(command);
+        }
+
+        private void GetUniqueName(FigureModel figure, ICollection<FigureModel> figures)
+        {
+            figure.Name = FigureNameHelper.GetUniqueName(figure.Name, figures.Select(f => f.Name));
         }
     }
 }

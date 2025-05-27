@@ -342,29 +342,33 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             if (IsElementPanEnabled && IsMouseCaptured)
             {
-                double newX = e.GetPosition(this).X;
-                double newY = e.GetPosition(this).Y;
+                if (!IsElementPanEnabled || !IsMouseCaptured || _selectedElement == null)
+                    return;
 
-                CenterSelectedElement(ref newX, ref newY);
+                double rawX = e.GetPosition(this).X;
+                double rawY = e.GetPosition(this).Y;
+                CenterSelectedElement(ref rawX, ref rawY);
 
-                TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY, out var guides);
-
+                TrySnapWithDynamicSpacing(_selectedElement, ref rawX, ref rawY, out var guides);
                 bool altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
                 bool shouldSnap = SnapToGrid ^ (AltSnapToGrid && altPressed);
+                if (shouldSnap)
+                    GridHelper.SnapCoordinatesToGrid(ref rawX, ref rawY, GridStep);
 
-                if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
+                var oldPos = _lastReportedPos;
 
-                OnItemPositionChanging(_selectedElement!,
-                                       _lastReportedPos.X,
-                                       _lastReportedPos.Y,
-                                       newX,
-                                       newY);
+                ValidateAndSetElementPosition(_selectedElement, rawX, rawY);
 
-                ValidateAndSetElementPosition(_selectedElement!, newX, newY);
+                double actualX = GetLeft(_selectedElement);
+                double actualY = GetTop(_selectedElement);
 
-                _lastReportedPos = new(newX, newY);
+                if (actualX != oldPos.X || actualY != oldPos.Y)
+                {
+                    OnItemPositionChanging(_selectedElement, oldPos.X, oldPos.Y, actualX, actualY);
+                    _lastReportedPos = new Point(actualX, actualY);
 
-                _alignmentAdorner?.SetGuides(guides);
+                    _alignmentAdorner?.SetGuides(guides);
+                }
             }
         }
 
@@ -406,7 +410,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
             const double snapThreshold = 10;
 
-            var elements = Children.OfType<FrameworkElement>().Where(e => e != movingElement).ToList();
+            var elements = Children
+                .OfType<FrameworkElement>()
+                .Where(e => e != movingElement
+                         && CanvasMoveableBehavior.GetIsMovable(e))
+                .ToList();
 
             foreach (var reference in elements)
             {

@@ -1095,16 +1095,18 @@
         <Setter Property="Padding" Value="4"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
-                    <Grid>
+                    <Grid FocusVisualStyle="{x:Null}">
                         <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4"
-                                Padding="4">
+                                Padding="4"
+                                FocusVisualStyle="{x:Null}">
                             <Grid>
                                 <ContentPresenter x:Name="ContentSite"
                                                   Content="{TemplateBinding SelectionBoxItem}"
@@ -1118,7 +1120,7 @@
                                       StrokeThickness="2"
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center"
-                                      Margin="8,0"/>
+                                      Margin="8 0"/>
                                 <ToggleButton x:Name="MainToggleButton"
                                               Background="Transparent"
                                               BorderThickness="0"

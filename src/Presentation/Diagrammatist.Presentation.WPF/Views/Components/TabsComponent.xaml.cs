@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
@@ -147,7 +148,6 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 }
             }
         }
-
         #endregion
     }
 }

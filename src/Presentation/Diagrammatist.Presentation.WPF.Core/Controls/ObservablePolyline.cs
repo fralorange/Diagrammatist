@@ -89,10 +89,22 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
 
         /// <summary>
-        /// Gets defining geometry.
+        /// Static constructor to override metadata for StrokeThickness property.
         /// </summary>
+        static ObservablePolyline()
+        {
+            StrokeThicknessProperty.OverrideMetadata(
+                typeof(ObservablePolyline),
+                new FrameworkPropertyMetadata(
+                    2.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    OnAppearanceChanged));
+        }
+
+        /// <inheritdoc/>
         protected override Geometry DefiningGeometry => _polylineGeometry;
 
+        /// <inheritdoc/>
         protected override Size MeasureOverride(Size constraint)
         {
             if (Points == null || Points.Count == 0)
@@ -103,51 +115,49 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
 
         /// <summary>
-        /// Updates polyline.
+        /// Updates the polyline geometry based on the current points.
         /// </summary>
         protected void UpdatePolyline()
         {
             if (Points == null || Points.Count < 2)
             {
-                _polylineGeometry = Geometry.Empty;
-                PosX = 0;
-                PosY = 0;
+                return;
             }
-            else
+
+            var minX = Points.Min(p => p.X);
+            var minY = Points.Min(p => p.Y);
+            PosX = minX;
+            PosY = minY;
+
+            var pts = Points.Select(p => new Point(p.X - minX, p.Y - minY)).ToList();
+
+            var geometry = new StreamGeometry { FillRule = FillRule };
+            using (var ctx = geometry.Open())
             {
-                double minX = Points.Min(p => p.X);
-                double minY = Points.Min(p => p.Y);
+                ctx.BeginFigure(pts[0], isFilled: false, isClosed: false);
+                ctx.PolyLineTo(pts.Skip(1).ToList(), isStroked: true, isSmoothJoin: true);
 
-                PosX = minX;
-                PosY = minY;
-
-                var relativePoints = Points
-                    .Select(p => new Point(p.X - minX, p.Y - minY))
-                    .ToList();
-
-                var geometry = new PathGeometry { FillRule = FillRule };
-                for (int i = 1; i < relativePoints.Count; i++)
+                if (HasArrow)
                 {
-                    var figure = new PathFigure
-                    {
-                        StartPoint = relativePoints[i - 1],
-                        IsClosed = false
-                    };
-                    figure.Segments.Add(new LineSegment(relativePoints[i], true));
-                    geometry.Figures.Add(figure);
+                    var from = pts[^2];
+                    var to = pts[^1];
+                    var dir = to - from; 
+                    dir.Normalize();
+                    var perp = new Vector(-dir.Y, dir.X);
+                    var size = StrokeThickness * 5;
+
+                    var tip = to;
+                    var b1 = to - dir * size + perp * (size / 2);
+                    var b2 = to - dir * size - perp * (size / 2);
+
+                    ctx.BeginFigure(tip, isFilled: true, isClosed: true);
+                    ctx.LineTo(b1, isStroked: true, isSmoothJoin: false);
+                    ctx.LineTo(b2, isStroked: true, isSmoothJoin: false);
                 }
-
-                if (HasArrow && relativePoints.Count >= 2)
-                {
-                    Point from = relativePoints[^2];
-                    Point to = relativePoints[^1];
-
-                    var arrowFigure = CreateArrowHead(from, to);
-                    geometry.Figures.Add(arrowFigure);
-                }
-
-                _polylineGeometry = geometry;
             }
+
+            geometry.Freeze();
+            _polylineGeometry = geometry;
 
             InvalidateVisual();
         }
@@ -157,10 +167,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             if (Points == null || Points.Count == 0)
                 return Rect.Empty;
 
-            double minX = Points.Min(p => p.X);
-            double minY = Points.Min(p => p.Y);
-            double maxX = Points.Max(p => p.X);
-            double maxY = Points.Max(p => p.Y);
+            var minX = Points.Min(p => p.X);
+            var minY = Points.Min(p => p.Y);
+            var maxX = Points.Max(p => p.X);
+            var maxY = Points.Max(p => p.Y);
 
             return new Rect(new Point(minX, minY), new Point(maxX, maxY));
         }
@@ -182,33 +192,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             InvalidateMeasure();
         }
 
-        private PathFigure CreateArrowHead(Point from, Point to, double size = 10)
-        {
-            var direction = to - from;
-            direction.Normalize();
-
-            var perpendicular = new Vector(-direction.Y, direction.X);
-
-            var arrowTip = to;
-            var base1 = to - direction * size + perpendicular * (size / 2);
-            var base2 = to - direction * size - perpendicular * (size / 2);
-
-            return new PathFigure
-            {
-                StartPoint = base1,
-                Segments =
-                [
-                    new LineSegment(base2, true),
-                    new LineSegment(arrowTip, true)
-                ],
-                IsClosed = true,
-                IsFilled = true
-            };
-        }
-
         private static void OnHasArrowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ObservablePolyline)d).UpdatePolyline();
+        }
+
+        private static void OnAppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var poly = (ObservablePolyline)d;
+            poly.UpdatePolyline();
+            poly.InvalidateMeasure();
         }
     }
 }

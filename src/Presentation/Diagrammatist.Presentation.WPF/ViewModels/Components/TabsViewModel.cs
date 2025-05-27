@@ -199,6 +199,22 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             RemoveDocument(doc);
         }
 
+        /// <summary>
+        /// Occurs when tab is changed.
+        /// </summary>
+        [RelayCommand]
+        private void TabChanged()
+        {
+            if (SelectedCanvas is null)
+                return;
+
+            Messenger.Send(new RestoreCanvasStateMessage((
+                Convert.ToSingle(SelectedCanvas.Zoom),
+                SelectedCanvas.Offset.X,
+                SelectedCanvas.Offset.Y
+            )));
+        }
+
         private void CloseDocuments()
         {
             foreach (var canvas in Canvases.ToList())

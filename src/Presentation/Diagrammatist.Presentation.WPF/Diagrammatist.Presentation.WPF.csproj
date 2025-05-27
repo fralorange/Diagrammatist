@@ -12,7 +12,13 @@
 
   <PropertyGroup>
 	<AssemblyTitle>Diagrammatist</AssemblyTitle>
-	<Version>1.0.0-rc3</Version>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<FileVersion>1.0.0.0</FileVersion>
+	<InformationalVersion>1.0.0-rc3</InformationalVersion>
+	<Company>Made by Alexei 'fral' Rodionov</Company>
+	<Authors>Alexei 'fral' Rodionov</Authors>
+	<Product>Diagrammatist</Product>
+	<Copyright>© 2025 Alexei "fral" Rodionov</Copyright>
   </PropertyGroup>
 	
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

@@ -38,6 +38,10 @@
         <Setter Property="Canvas.Left" Value="{Binding PosX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Setter Property="Canvas.Top" Value="{Binding PosY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+        <Setter Property="IsHitTestVisible" Value="{Binding Path=DataContext.CurrentMouseMode, 
+                                                            RelativeSource={RelativeSource AncestorType=ListBox},
+                                                            Converter={StaticResource EnumToBooleanConverter}, 
+                                                            ConverterParameter='Select'}" />
         <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
         <Setter Property="RenderTransform">
             <Setter.Value>
