@@ -239,6 +239,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             {
                 HorizontalOffset = hOffset;
                 VerticalOffset = vOffset;
+
+                _isRestoring = false;
             }, DispatcherPriority.Render);
         }
 

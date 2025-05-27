@@ -126,11 +126,26 @@
   <data name="ContentMargin" xml:space="preserve">
     <value>Отступ от границы:</value>
   </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Тёмная тема</value>
+  </data>
   <data name="ExportScenario" xml:space="preserve">
     <value>Сценарий экспорта:</value>
   </data>
+  <data name="ExportTheme" xml:space="preserve">
+    <value>Тема экспорта:</value>
+  </data>
   <data name="Full" xml:space="preserve">
     <value>Экспортировать весь холст</value>
+  </data>
+  <data name="Grayscale" xml:space="preserve">
+    <value>Чёрно-белая тема</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>Светлая тема</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Отсутствует</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>

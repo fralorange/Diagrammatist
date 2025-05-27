@@ -126,11 +126,26 @@
   <data name="ContentMargin" xml:space="preserve">
     <value>Margin from borders (px):</value>
   </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Dark theme</value>
+  </data>
   <data name="ExportScenario" xml:space="preserve">
     <value>Export scenario: </value>
   </data>
+  <data name="ExportTheme" xml:space="preserve">
+    <value>Export theme:</value>
+  </data>
   <data name="Full" xml:space="preserve">
     <value>Export entire canvas</value>
+  </data>
+  <data name="Grayscale" xml:space="preserve">
+    <value>Grayscale theme</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>Light theme</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>

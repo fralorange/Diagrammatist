@@ -240,7 +240,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             extScrollViewer.ZoomReset();
         }
 
-        private void Export(ExportSettings settings)
+        private void Export(ExportSettings settings, Action beforeExport, Action afterExport)
         {
             var saveFileDialog = new SaveFileDialog
             {
@@ -253,7 +253,9 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             {
                 string filePath = saveFileDialog.FileName;
 
+                beforeExport();
                 _extCanvas.Export(filePath, settings);
+                afterExport();
             }
         }
 

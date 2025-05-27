@@ -6,6 +6,7 @@ using MvvmDialogs;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json.Linq;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 {
@@ -76,6 +77,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [RegularExpression("([1-9][0-9]*)")]
         private string customPpi = "96";
 
+        public ObservableCollection<ExportTheme> ExportThemeValues { get; }
+
+        [ObservableProperty]
+        private ExportTheme selectedExportTheme;
+
         /// <summary>
         /// Gets or sets the export settings for the diagram export dialog.
         /// </summary>
@@ -98,6 +104,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         {
             ExportScenarios = new ObservableCollection<ExportScenario>(Enum.GetValues(typeof(ExportScenario)).Cast<ExportScenario>());
             ExportPPIValues = new ObservableCollection<ExportPPI>(Enum.GetValues(typeof(ExportPPI)).Cast<ExportPPI>());
+            ExportThemeValues = new ObservableCollection<ExportTheme>(Enum.GetValues(typeof(ExportTheme)).Cast<ExportTheme>());
+
+            SelectedExportTheme = ExportTheme.None;
         }
 
         /// <summary>
@@ -115,7 +124,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
             ExportSettings = new ExportSettings(SelectedExportScenario,
                                                 int.TryParse(ContentMargin, out var margin) ? margin : 0,
-                                                int.TryParse(CustomPpi, out var ppi) ? ppi : (int)ExportPPI.PPI_72);
+                                                int.TryParse(CustomPpi, out var ppi) ? ppi : (int)ExportPPI.PPI_72,
+                                                SelectedExportTheme);
             DialogResult = true;
         }
     }

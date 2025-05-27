@@ -139,15 +139,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
                 {
                     _suppressColorChange = true;
 
-                    switch (value)
-                    {
-                        case BackgroundType.WhiteBG:
-                            Background = Colors.White;
-                            break;
-                        case BackgroundType.BlackBG:
-                            Background = (Color)ColorConverter.ConvertFromString("#FF1C1C1C");
-                            break;
-                    }
+                    Background = ThemeColorHelper.GetBackgroundColor();
 
                     _suppressColorChange = false;
                 }
@@ -187,6 +179,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
 
             BackgroundOptions = new ObservableCollection<BackgroundType>(Enum.GetValues(typeof(BackgroundType)).Cast<BackgroundType>());
             SelectedBackgroundType = (App.Current.GetCurrentTheme() == "Light") ? BackgroundType.WhiteBG : BackgroundType.BlackBG;
+            Background = ThemeColorHelper.GetBackgroundColor();
         }
 
         /// <summary>

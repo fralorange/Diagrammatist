@@ -157,8 +157,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [NotifyCanExecuteChangedFor(nameof(ApplyCommand))]
         private bool _hasChanges;
 
-        private bool _suppressThemeConfirmation;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsDialogViewModel"/> class.
         /// </summary>
@@ -206,15 +204,10 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         {
             App.Current.ChangeTheme(theme);
 
-            if (WeakReferenceMessenger.Default.Send(new CurrentCanvasRequestMessage()).Response is null || _suppressThemeConfirmation)
-                return;
-
-            var localizedCaption = LocalizationHelper
-                .GetLocalizedValue<string>("Dialogs.Settings.SettingsResources", "ThemeDecisionCaption");
-            var localizedMessage = LocalizationHelper
-                .GetLocalizedValue<string>("Dialogs.Settings.SettingsResources", "ThemeDecisionMessage");
-
-            var result = _alertService.RequestYesNoDecision(localizedMessage, localizedCaption);
+            if (_initialTheme != theme)
+            {
+                AdaptTheme();
+            }
         }
 
         private void ApplySnapToGrid(bool snapToGrid)
@@ -225,6 +218,26 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private void ApplyAltGridSnap(bool altGridSnap)
         {
             WeakReferenceMessenger.Default.Send(new Tuple<string, bool>(ActionFlags.IsAltGridSnapEnabled, altGridSnap));
+        }
+
+        private void AdaptTheme()
+        {
+            if (WeakReferenceMessenger.Default.Send(new CurrentCanvasRequestMessage()).Response is not { } canvas)
+                return;
+
+            var localizedCaption = LocalizationHelper
+                .GetLocalizedValue<string>("Dialogs.Settings.SettingsResources", "ThemeDecisionCaption");
+            var localizedMessage = LocalizationHelper
+                .GetLocalizedValue<string>("Dialogs.Settings.SettingsResources", "ThemeDecisionMessage");
+
+            var result = _alertService.RequestYesNoDecision(localizedMessage, localizedCaption);
+
+            if (result is Core.Shared.Enums.ConfirmationResult.Yes)
+            {
+                FigureColorHelper.ApplyColors(canvas.Figures);
+
+                canvas.Settings.Background = ThemeColorHelper.GetBackgroundColor();
+            }
         }
 
         /// <summary>
@@ -240,9 +253,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
                 return;
             }
 
-            _suppressThemeConfirmation = true;
             Apply();
-            _suppressThemeConfirmation = false;
 
             DialogResult = true;
         }

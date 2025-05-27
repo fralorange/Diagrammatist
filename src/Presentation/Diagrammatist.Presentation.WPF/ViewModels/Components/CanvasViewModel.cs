@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
@@ -60,7 +61,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user initiates a export action from menu button.
         /// </remarks>
-        public event Action<ExportSettings>? RequestExport;
+        public event Action<ExportSettings, Action, Action>? RequestExport;
         /// <summary>
         /// Occurs when a request is made to get visible area of the canvas.
         /// </summary>
@@ -81,7 +82,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks> 
         /// This event is triggered when user initiates a restore action from menu button.
         /// </remarks>
-        public event Action<(float zoom, double hOffset, double vOffset)> RequestRestoreState;
+        public event Action<(float zoom, double hOffset, double vOffset)>? RequestRestoreState;
 
         private CanvasModel? _currentCanvas;
 
@@ -376,7 +377,33 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             if (CurrentCanvas is not null && RequestExport is not null)
             {
-                RequestExport(settings);
+                var (snapshots, background, theme) = (
+                    FigureColorHelper.Capture(Figures),
+                    CurrentCanvas.Settings.Background,
+                    App.Current.GetCurrentTheme()
+                );
+
+                void Before()
+                {
+                    if (settings.ExportTheme != ExportTheme.None)
+                    {
+                        App.Current.ChangeTheme(settings.ExportTheme.ToString());
+                        FigureColorHelper.ApplyColors(Figures);
+                        CurrentCanvas.Settings.Background = ThemeColorHelper.GetBackgroundColor();
+                    }
+                }
+
+                void After()
+                {
+                    if (settings.ExportTheme != ExportTheme.None)
+                    {
+                        App.Current.ChangeTheme(theme);
+                        FigureColorHelper.Restore(snapshots);
+                        CurrentCanvas.Settings.Background = background;
+                    }
+                }
+
+                RequestExport(settings, Before, After);
             }
         }
 

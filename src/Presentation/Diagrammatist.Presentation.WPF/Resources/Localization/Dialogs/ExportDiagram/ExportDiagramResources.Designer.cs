@@ -89,6 +89,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ExportDi
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Dark theme.
+        /// </summary>
+        internal static string Dark {
+            get {
+                return ResourceManager.GetString("Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Export scenario: .
         /// </summary>
         internal static string ExportScenario {
@@ -98,11 +107,47 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.ExportDi
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Export theme:.
+        /// </summary>
+        internal static string ExportTheme {
+            get {
+                return ResourceManager.GetString("ExportTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Export entire canvas.
         /// </summary>
         internal static string Full {
             get {
                 return ResourceManager.GetString("Full", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Grayscale theme.
+        /// </summary>
+        internal static string Grayscale {
+            get {
+                return ResourceManager.GetString("Grayscale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Light theme.
+        /// </summary>
+        internal static string Light {
+            get {
+                return ResourceManager.GetString("Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на None.
+        /// </summary>
+        internal static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
