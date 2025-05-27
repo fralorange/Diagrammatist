@@ -2,35 +2,35 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <DropShadowEffect x:Key="PrimaryGlowEffect" 
                       BlurRadius="30" 
-                      Color="{StaticResource PrimaryGlowColor}"
+                      Color="{DynamicResource PrimaryGlowColor}"
                       Opacity="0.5"
                       Direction="270"/>
 
     <DropShadowEffect x:Key="SecondaryGlowEffect" 
                       BlurRadius="12" 
-                      Color="{StaticResource SecondaryGlowColor}"
+                      Color="{DynamicResource SecondaryGlowColor}"
                       Opacity="0.4"
                       Direction="270"/>
 
     <DropShadowEffect x:Key="PrimarySelectionBoxEffect"
                       BlurRadius="8" 
-                      Color="{StaticResource SelectedBorderColor}"
+                      Color="{DynamicResource SelectedBorderColor}"
                       Opacity="0.6"/>
 
     <DropShadowEffect x:Key="HoverSelectionBoxEffect"
                       BlurRadius="6" 
-                      Color="{StaticResource ControlHover}"
+                      Color="{DynamicResource ControlHover}"
                       Opacity="0.4"/>
 
     <DropShadowEffect x:Key="MediaButtonMouseOverPrimaryEffect"
-                      Color="{StaticResource DialogSecondaryBackground}" 
+                      Color="{DynamicResource DialogSecondaryBackground}" 
                       BlurRadius="8" 
                       Direction="270" 
                       ShadowDepth="4" 
                       Opacity="0.5"/>
 
     <DropShadowEffect x:Key="MediaButtonPressedEffect" 
-                      Color="{StaticResource DialogStroke}" 
+                      Color="{DynamicResource DialogStroke}" 
                       BlurRadius="10" 
                       Direction="270" 
                       ShadowDepth="5" 

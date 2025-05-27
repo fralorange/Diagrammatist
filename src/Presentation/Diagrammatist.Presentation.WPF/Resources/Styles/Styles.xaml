@@ -569,7 +569,7 @@
                                 Background="{DynamicResource ItemSelectionBackground}"
                                 CornerRadius="2"
                                 Visibility="Collapsed"
-                                Effect="{DynamicResource PrimarySelectionBoxEffect}">
+                                Effect="{StaticResource PrimarySelectionBoxEffect}">
                         </Border>
 
                         <ContentPresenter HorizontalAlignment="Stretch"
@@ -592,9 +592,9 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="SelectionVisual" Property="Visibility" Value="Visible" />
                             <Setter TargetName="SelectionVisual" Property="BorderBrush" 
-                                    Value="{DynamicResource ItemHoverBorderBrush}" />
+                                    Value="{StaticResource ItemHoverBorderBrush}" />
                             <Setter TargetName="SelectionVisual" Property="Effect" 
-                                    Value="{DynamicResource HoverSelectionBoxEffect}"/>
+                                    Value="{StaticResource HoverSelectionBoxEffect}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -617,7 +617,7 @@
                                     CornerRadius="2"
                                     Background="{StaticResource ItemSelectionBackground}"
                                     Visibility="Collapsed"
-                                    Effect="{DynamicResource PrimarySelectionBoxEffect}"/>
+                                    Effect="{StaticResource PrimarySelectionBoxEffect}"/>
                         <ContentPresenter Margin="8,4"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -636,7 +636,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="SelectionVisual" Property="Visibility" Value="Visible" />
                             <Setter TargetName="SelectionVisual" Property="BorderBrush" Value="{StaticResource ItemHoverBorderBrush}" />
-                            <Setter TargetName="SelectionVisual" Property="Effect" Value="{DynamicResource HoverSelectionBoxEffect}"/>
+                            <Setter TargetName="SelectionVisual" Property="Effect" Value="{StaticResource HoverSelectionBoxEffect}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -1327,13 +1327,13 @@
         <Setter Property="Focusable" Value="False" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Effect" Value="{DynamicResource MediaButtonMouseOverPrimaryEffect}"/>
+                <Setter Property="Effect" Value="{StaticResource MediaButtonMouseOverPrimaryEffect}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
                 <Setter Property="Effect" Value="{x:Null}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Effect" Value="{DynamicResource MediaButtonPressedEffect}"/>
+                <Setter Property="Effect" Value="{StaticResource MediaButtonPressedEffect}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -1712,7 +1712,7 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="TextAlignment" Value="Center" />
         <Setter Property="Padding" Value="0,0,0,8" />
-        <Setter Property="Effect" Value="{DynamicResource SecondaryGlowEffect}"/>
+        <Setter Property="Effect" Value="{StaticResource SecondaryGlowEffect}"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="VersionText">
@@ -1740,7 +1740,7 @@
 
     <Style TargetType="Border" x:Key="SecondarySplashBackground" BasedOn="{StaticResource BaseSplashBackground}">
         <Setter Property="Margin" Value="15" />
-        <Setter Property="Effect" Value="{DynamicResource PrimaryGlowEffect}" />
+        <Setter Property="Effect" Value="{StaticResource PrimaryGlowEffect}" />
     </Style>
 
     <Style x:Key="SliderFilledRepeatButton" TargetType="RepeatButton">
