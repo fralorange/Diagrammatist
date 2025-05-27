@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
@@ -138,16 +139,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
                 {
                     _suppressColorChange = true;
 
-                    switch (value)
+                    Background = value switch
                     {
-                        case BackgroundType.WhiteBG:
-                            Background = Colors.White;
-                            break;
-                        case BackgroundType.BlackBG:
-                            Background = Colors.Black;
-                            break;
-                    }
-
+                        BackgroundType.WhiteBG => (Color)ColorConverter.ConvertFromString("#FFF5F5F5"),
+                        BackgroundType.BlackBG => (Color)ColorConverter.ConvertFromString("#FF1C1C1C"),
+                        _ => Background,
+                    };
                     _suppressColorChange = false;
                 }
             }
@@ -185,9 +182,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
             SelectedUnit = MeasurementUnit.Pixels;
 
             BackgroundOptions = new ObservableCollection<BackgroundType>(Enum.GetValues(typeof(BackgroundType)).Cast<BackgroundType>());
-            SelectedBackgroundType = BackgroundType.CustomBG;
-
-            Background = (Color)ColorConverter.ConvertFromString("#FF343434");
+            SelectedBackgroundType = (App.Current.GetCurrentTheme() == "Light") ? BackgroundType.WhiteBG : BackgroundType.BlackBG;
+            Background = ThemeColorHelper.GetBackgroundColor();
         }
 
         /// <summary>

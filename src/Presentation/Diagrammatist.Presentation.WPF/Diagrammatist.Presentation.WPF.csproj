@@ -298,4 +298,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Resources\Styles\Colors\Grayscale.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

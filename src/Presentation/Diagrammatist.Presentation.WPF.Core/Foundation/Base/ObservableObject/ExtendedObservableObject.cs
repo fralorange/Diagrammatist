@@ -12,6 +12,11 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject
     public class ExtendedObservableObject : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
     {
         /// <summary>
+        /// Suppresses notifications for property changes when set to <see langword="true"/>.
+        /// </summary>
+        public bool SuppressNotifications { get; set; }
+
+        /// <summary>
         /// Raised when a property changes, with old and new values.
         /// </summary>
         public event ExtendedPropertyChangedEventHandler? ExtendedPropertyChanged;
@@ -25,7 +30,9 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Base.ObservableObject
         protected void OnPropertyChanged(object? oldValue, object? newValue, [CallerMemberName] string? propertyName = null)
         {
             // Invoke the extended event
-            ExtendedPropertyChanged?.Invoke(this, new ExtendedPropertyChangedEventArgs(propertyName, oldValue, newValue));
+            if (!SuppressNotifications){
+                ExtendedPropertyChanged?.Invoke(this, new ExtendedPropertyChangedEventArgs(propertyName, oldValue, newValue));
+            }
 
             // Invoke the standard PropertyChanged event for WPF binding
             OnPropertyChanged(propertyName);

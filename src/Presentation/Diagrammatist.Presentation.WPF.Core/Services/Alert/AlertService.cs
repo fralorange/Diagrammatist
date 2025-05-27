@@ -63,6 +63,32 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Alert
         }
 
         /// <inheritdoc/>
+        public ConfirmationResult RequestYesNoDecision(string message, string caption)
+        {
+            var owner = GetActiveWindow();
+            var dialog = new YesNoDialog { Owner = owner };
+
+            var result = ConfirmationResult.None;
+
+            var vm = new YesNoDialogViewModel(message, caption, r =>
+            {
+                result = r switch
+                {
+                    true => ConfirmationResult.Yes,
+                    false => ConfirmationResult.No,
+                    _ => ConfirmationResult.No
+                };
+                dialog.Close();
+            });
+
+            _soundService.PlayWarningSound();
+            dialog.DataContext = vm;
+            dialog.ShowDialog();
+
+            return result;
+        }
+
+        /// <inheritdoc/>
         public ConfirmationResponse ShowWarning(string message, string caption)
         {
             var owner = GetActiveWindow();

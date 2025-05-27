@@ -2,6 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Managers.Command;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Core.Services.Settings;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using MvvmDialogs;
@@ -16,6 +20,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
     public partial class SettingsDialogViewModel : ObservableValidator, IModalDialogViewModel
     {
         private readonly IUserSettingsService _userSettingsService;
+        private readonly IAlertService _alertService;
+        private readonly ITrackableCommandManager _commandManager;
 
         private CultureInfo _initialLanguage;
         private string _initialTheme;
@@ -158,10 +164,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         /// </summary>
         /// <param name="userSettingsService"></param>
 #pragma warning disable CS8618
-        public SettingsDialogViewModel(IUserSettingsService userSettingsService)
+        public SettingsDialogViewModel(IUserSettingsService userSettingsService, IAlertService alertService, ITrackableCommandManager commandManager)
 #pragma warning restore CS8618 
         {
             _userSettingsService = userSettingsService;
+            _alertService = alertService;
+            _commandManager = commandManager;
 
             AvailableLanguages = [.. _supportedCultures];
             AvailableThemes = [.. _supportedThemes];
@@ -198,6 +206,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private void ApplyTheme(string theme)
         {
             App.Current.ChangeTheme(theme);
+
+            if (_initialTheme != theme)
+            {
+                AdaptTheme();
+            }
         }
 
         private void ApplySnapToGrid(bool snapToGrid)
@@ -208,6 +221,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private void ApplyAltGridSnap(bool altGridSnap)
         {
             WeakReferenceMessenger.Default.Send(new Tuple<string, bool>(ActionFlags.IsAltGridSnapEnabled, altGridSnap));
+        }
+
+        private void AdaptTheme()
+        {
+            if (WeakReferenceMessenger.Default.Send(new CurrentCanvasRequestMessage()).Response is not { } canvas)
+                return;
+
+            ThemeAdaptHelper.AdaptTheme(canvas, _alertService, _commandManager);
         }
 
         /// <summary>

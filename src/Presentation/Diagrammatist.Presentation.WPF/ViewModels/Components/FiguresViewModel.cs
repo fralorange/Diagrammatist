@@ -16,10 +16,8 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
-using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -124,31 +122,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 
         #region Figure Properties Handlers
 
-        private void LoadFigureColors(FigureModel figure)
-        {
-            var bgColor = (System.Windows.Media.Color)App.Current.Resources["AppBackground"];
-            var textColor = (System.Windows.Media.Color)App.Current.Resources["AppTextColor"];
-            var themeColor = (System.Windows.Media.Color)App.Current.Resources["AppThemeColor"];
-
-            switch (figure)
-            {
-                case LineFigureModel line:
-                    line.BackgroundColor = themeColor;
-                    break;
-                case ContainerFigureModel containerFigure:
-                    containerFigure.TextColor = textColor;
-                    containerFigure.BackgroundColor = bgColor;
-                    break;
-                case TextFigureModel textFigure:
-                    textFigure.TextColor = textColor;
-                    textFigure.BackgroundColor = bgColor;
-                    break;
-                default:
-                    figure.BackgroundColor = bgColor;
-                    break;
-            }
-        }
-
         /// <summary>
         /// Loads figures in <see cref="Figures"/> externally and asynchronously.
         /// </summary>
@@ -162,27 +135,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                 {
                     var model = figure.ToModel();
 
-                    LoadFigureColors(model);
+                    FigureColorHelper.ApplyColors(model);
 
                     return model;
                 }).ToList()
             );
 
             Figures = figureModels;
-        }
-
-        private void UpdateFigureColors()
-        {
-            if (Figures is null)
-                return;
-
-            foreach (var category in Figures.Values)
-            {
-                foreach (var figure in category)
-                {
-                    LoadFigureColors(figure);
-                }
-            }
         }
 
         private T CloneAndRename<T>(T template) where T : FigureModel
@@ -199,7 +158,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private void PlaceFigureInVisibleArea(FigureModel figure)
         {
             var visibleArea = Messenger.Send<VisibleAreaRequestMessage>(new());
-            
+
             if (!visibleArea.Response.IsEmpty)
             {
                 figure.PosX = visibleArea.Response.Left;
@@ -290,7 +249,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             var shape = CloneAndRename(template);
             shape!.UpdateMagneticPoints();
-            
+
             return shape;
         }
 
@@ -301,7 +260,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private FigureModel HandleDefaultFigure(FigureModel template)
         {
             var figure = CloneAndRename(template);
-            
+
             return figure;
         }
 
@@ -374,7 +333,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             base.OnActivated();
 
-            Messenger.Register<FiguresViewModel, ThemeChangedMessage>(this, (r, m) => UpdateFigureColors());
+            Messenger.Register<FiguresViewModel, ThemeChangedMessage>(this, (r, m) => FigureColorHelper.ApplyColors(Figures?.SelectMany(kvp => kvp.Value)));
 
             Messenger.Register<FiguresViewModel, LineDrawResultMessage>(this, (r, m) =>
             {

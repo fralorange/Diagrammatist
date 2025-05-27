@@ -1,0 +1,47 @@
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views.YesNoDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels" 
+                         d:DataContext="{d:DesignInstance Type=viewmodels:YesNoDialogViewModel}"
+                         mc:Ignorable="d"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF.Core"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Shared.Dialogs.Resources.Localization.Alert.AlertResources"
+                         Title="{Binding Caption}"
+                         WindowStartupLocation="CenterOwner"
+                         SizeToContent="WidthAndHeight"
+                         ResizeMode="NoResize"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False"
+                         IsDialog="True"
+                         ShowCenteredTitle="True">
+    <Border Style="{StaticResource DialogBorder}">
+        <StackPanel Background="{DynamicResource WindowBackground}">
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <Image Source="{DynamicResource warningImage}"
+                       Width="48" 
+                       Height="48"
+                       Margin="0 0 10 0"/>
+                <TextBlock Text="{Binding Message}" 
+                           Style="{StaticResource MessageBlock}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="10">
+                <Button Content="{lex:Loc Yes}" 
+                        Width="80" 
+                        Margin="0 0 10 0"
+                        Command="{Binding YesCommand}" 
+                        IsDefault="True"/>
+                <Button Content="{lex:Loc No}"
+                        Width="80" 
+                        Margin="0 0 10 0"
+                        Command="{Binding NoCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</controls:TitleBarWindow>

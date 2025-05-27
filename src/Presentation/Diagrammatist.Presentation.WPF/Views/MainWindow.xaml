@@ -125,6 +125,9 @@
                           Command="{Binding MenuChangeBackgroundCommand}"/>
                 <MenuItem Header="{lex:Loc ChangeType}"
                           Command="{Binding MenuChangeTypeCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc AdaptToTheme}"
+                          Command="{Binding MenuAdaptToThemeCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc Tools}">
                 <MenuItem Header="{lex:Loc Simulator}"

@@ -159,4 +159,10 @@
   <data name="Theme" xml:space="preserve">
     <value>Theme:</value>
   </data>
+  <data name="ThemeDecisionCaption" xml:space="preserve">
+    <value>Adapt the diagram?</value>
+  </data>
+  <data name="ThemeDecisionMessage" xml:space="preserve">
+    <value>Do you want to adapt the diagram to current theme?</value>
+  </data>
 </root>

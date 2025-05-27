@@ -28,6 +28,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -106,7 +107,26 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Grid.Row="4"
+            <TextBlock Text="{lex:Loc ExportTheme}" 
+                       Grid.Row="4" 
+                       Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       Margin="10"/>
+            <ComboBox Grid.Row="4" 
+                      Grid.Column="1" 
+                      ItemsSource="{Binding ExportThemeValues}"
+                      SelectedItem="{Binding SelectedExportTheme}"
+                      Margin="10"
+                      Width="175"
+                      HorizontalAlignment="Left">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{lex:Loc {Binding}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <StackPanel Grid.Row="5"
                         Grid.Column="1"
                         Orientation="Horizontal" 
                         HorizontalAlignment="Right" 
