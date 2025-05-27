@@ -16,10 +16,8 @@ using Diagrammatist.Presentation.WPF.Core.Models.Figures.Special.Container;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
-using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels.Components
 {
@@ -199,7 +197,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private void PlaceFigureInVisibleArea(FigureModel figure)
         {
             var visibleArea = Messenger.Send<VisibleAreaRequestMessage>(new());
-            
+
             if (!visibleArea.Response.IsEmpty)
             {
                 figure.PosX = visibleArea.Response.Left;
@@ -290,7 +288,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         {
             var shape = CloneAndRename(template);
             shape!.UpdateMagneticPoints();
-            
+
             return shape;
         }
 
@@ -301,7 +299,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         private FigureModel HandleDefaultFigure(FigureModel template)
         {
             var figure = CloneAndRename(template);
-            
+
             return figure;
         }
 

@@ -2,6 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+using Diagrammatist.Presentation.WPF.Core.Helpers;
+using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Core.Services.Alert;
 using Diagrammatist.Presentation.WPF.Core.Services.Settings;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using MvvmDialogs;
@@ -16,6 +19,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
     public partial class SettingsDialogViewModel : ObservableValidator, IModalDialogViewModel
     {
         private readonly IUserSettingsService _userSettingsService;
+        private readonly IAlertService _alertService;
 
         private CultureInfo _initialLanguage;
         private string _initialTheme;
@@ -153,15 +157,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         [NotifyCanExecuteChangedFor(nameof(ApplyCommand))]
         private bool _hasChanges;
 
+        private bool _suppressThemeConfirmation;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsDialogViewModel"/> class.
         /// </summary>
         /// <param name="userSettingsService"></param>
 #pragma warning disable CS8618
-        public SettingsDialogViewModel(IUserSettingsService userSettingsService)
+        public SettingsDialogViewModel(IUserSettingsService userSettingsService, IAlertService alertService)
 #pragma warning restore CS8618 
         {
             _userSettingsService = userSettingsService;
+            _alertService = alertService;
 
             AvailableLanguages = [.. _supportedCultures];
             AvailableThemes = [.. _supportedThemes];
@@ -198,6 +205,16 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
         private void ApplyTheme(string theme)
         {
             App.Current.ChangeTheme(theme);
+
+            if (WeakReferenceMessenger.Default.Send(new CurrentCanvasRequestMessage()).Response is null || _suppressThemeConfirmation)
+                return;
+
+            var localizedCaption = LocalizationHelper
+                .GetLocalizedValue<string>("Dialogs.Settings.SettingsResources", "ThemeDecisionCaption");
+            var localizedMessage = LocalizationHelper
+                .GetLocalizedValue<string>("Dialogs.Settings.SettingsResources", "ThemeDecisionMessage");
+
+            var result = _alertService.RequestYesNoDecision(localizedMessage, localizedCaption);
         }
 
         private void ApplySnapToGrid(bool snapToGrid)
@@ -223,7 +240,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
                 return;
             }
 
+            _suppressThemeConfirmation = true;
             Apply();
+            _suppressThemeConfirmation = false;
 
             DialogResult = true;
         }

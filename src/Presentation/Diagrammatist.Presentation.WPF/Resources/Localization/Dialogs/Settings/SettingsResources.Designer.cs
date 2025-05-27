@@ -186,5 +186,23 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
                 return ResourceManager.GetString("Theme", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Adapt the diagram?.
+        /// </summary>
+        internal static string ThemeDecisionCaption {
+            get {
+                return ResourceManager.GetString("ThemeDecisionCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Do you want to adapt the diagram to a new theme?.
+        /// </summary>
+        internal static string ThemeDecisionMessage {
+            get {
+                return ResourceManager.GetString("ThemeDecisionMessage", resourceCulture);
+            }
+        }
     }
 }

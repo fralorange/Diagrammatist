@@ -470,7 +470,9 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         private void MenuPreferences()
         {
             var userSettingsService = _serviceProvider.GetRequiredService<IUserSettingsService>();
-            var dialogViewModel = new SettingsDialogViewModel(userSettingsService);
+            var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+
+            var dialogViewModel = new SettingsDialogViewModel(userSettingsService, alertService);
 
             _dialogService.ShowDialog(this, dialogViewModel);
         }
