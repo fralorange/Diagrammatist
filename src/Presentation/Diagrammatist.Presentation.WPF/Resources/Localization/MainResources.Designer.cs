@@ -70,6 +70,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Adapt To Theme.
+        /// </summary>
+        internal static string AdaptToTheme {
+            get {
+                return ResourceManager.GetString("AdaptToTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Change Canvas Background.
         /// </summary>
         internal static string ChangeBackground {

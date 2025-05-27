@@ -197,7 +197,7 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Dialogs.Settings
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Do you want to adapt the diagram to a new theme?.
+        ///   Ищет локализованную строку, похожую на Do you want to adapt the diagram to current theme?.
         /// </summary>
         internal static string ThemeDecisionMessage {
             get {

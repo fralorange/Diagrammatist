@@ -213,4 +213,7 @@
   <data name="ExportDiagram" xml:space="preserve">
     <value>Export Diagram</value>
   </data>
+  <data name="AdaptToTheme" xml:space="preserve">
+    <value>Adapt To Theme</value>
+  </data>
 </root>

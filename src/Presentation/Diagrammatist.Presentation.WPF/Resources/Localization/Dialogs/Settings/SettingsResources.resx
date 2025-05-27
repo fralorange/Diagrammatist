@@ -163,6 +163,6 @@
     <value>Adapt the diagram?</value>
   </data>
   <data name="ThemeDecisionMessage" xml:space="preserve">
-    <value>Do you want to adapt the diagram to a new theme?</value>
+    <value>Do you want to adapt the diagram to current theme?</value>
   </data>
 </root>

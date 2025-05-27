@@ -163,6 +163,6 @@
     <value>Адаптировать диаграмму?</value>
   </data>
   <data name="ThemeDecisionMessage" xml:space="preserve">
-    <value>Хотите ли вы адаптировать диаграмму к новой теме?</value>
+    <value>Хотите ли вы адаптировать диаграмму к текущей теме?</value>
   </data>
 </root>

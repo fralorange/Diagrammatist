@@ -139,8 +139,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Dialogs
                 {
                     _suppressColorChange = true;
 
-                    Background = ThemeColorHelper.GetBackgroundColor();
-
+                    Background = value switch
+                    {
+                        BackgroundType.WhiteBG => (Color)ColorConverter.ConvertFromString("#FFF5F5F5"),
+                        BackgroundType.BlackBG => (Color)ColorConverter.ConvertFromString("#FF1C1C1C"),
+                        _ => Background,
+                    };
                     _suppressColorChange = false;
                 }
             }

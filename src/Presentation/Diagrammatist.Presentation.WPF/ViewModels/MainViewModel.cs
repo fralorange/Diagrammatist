@@ -69,7 +69,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuSimulatorCommand),
             nameof(MenuChangeSizeCommand),
             nameof(MenuChangeBackgroundCommand),
-            nameof(MenuChangeTypeCommand))]
+            nameof(MenuChangeTypeCommand),
+            nameof(MenuAdaptToThemeCommand))]
         private bool _hasCanvasFlag;
         /// <summary>
         /// Gets or sets 'has custom canvas' flag.
@@ -109,7 +110,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuSimulatorCommand),
             nameof(MenuChangeSizeCommand),
             nameof(MenuChangeBackgroundCommand),
-            nameof(MenuChangeTypeCommand))]
+            nameof(MenuChangeTypeCommand),
+            nameof(MenuAdaptToThemeCommand))]
         private bool _isBlocked;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
         public bool IsNotBlocked => !IsBlocked;
@@ -416,6 +418,19 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Adapts current canvas to current theme from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuAdaptToTheme()
+        {
+            if (Messenger.Send<CurrentCanvasRequestMessage>().Response is not { } canvas)
+                return;
+
+            var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+            ThemeAdaptHelper.AdaptTheme(canvas, alertService, _trackableCommandManager);
+        }
+
         #endregion
         #region Tools
         /// <summary>
@@ -472,7 +487,7 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             var userSettingsService = _serviceProvider.GetRequiredService<IUserSettingsService>();
             var alertService = _serviceProvider.GetRequiredService<IAlertService>();
 
-            var dialogViewModel = new SettingsDialogViewModel(userSettingsService, alertService);
+            var dialogViewModel = new SettingsDialogViewModel(userSettingsService, alertService, _trackableCommandManager);
 
             _dialogService.ShowDialog(this, dialogViewModel);
         }

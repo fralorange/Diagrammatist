@@ -213,4 +213,7 @@
   <data name="ExportDiagram" xml:space="preserve">
     <value>Экспорт диаграммы</value>
   </data>
+  <data name="AdaptToTheme" xml:space="preserve">
+    <value>Адаптировать к теме</value>
+  </data>
 </root>
