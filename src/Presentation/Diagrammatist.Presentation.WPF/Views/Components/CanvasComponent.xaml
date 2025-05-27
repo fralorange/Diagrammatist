@@ -52,7 +52,8 @@
                      SelectedItem="{Binding SelectedFigure}"
                      Template="{StaticResource UnscrollableListBox}"
                      PreviewMouseLeftButtonDown="OnListBoxPreviewMouseLeftButtonDown"
-                     Loaded="OnListBoxLoaded">
+                     Loaded="OnListBoxLoaded"
+                     IsTabStop="False">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:ExtendedCanvas Width="{Binding DataContext.CurrentCanvas.Settings.Width, RelativeSource={RelativeSource AncestorType=ListBox}, FallbackValue=0}"
