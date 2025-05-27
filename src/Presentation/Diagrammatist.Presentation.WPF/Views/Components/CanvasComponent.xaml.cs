@@ -12,7 +12,6 @@ using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.Views.Components
@@ -51,6 +50,11 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             viewModel.RequestExport += Export;
             viewModel.RequestVisibleArea += GetVisibleArea;
             viewModel.RequestScrollToFigure += ScrollToFigure;
+            
+            viewModel.RequestRestoreState += (args) =>
+            {
+                extScrollViewer.RestoreState(args.zoom, args.hOffset, args.vOffset);
+            };
         }
 
         #region Event handlers

@@ -75,6 +75,13 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// This event is triggered when user adds a figure from canvas non-visible area.
         /// </remarks>
         public event Action<FigureModel>? RequestScrollToFigure;
+        /// <summary>
+        /// Occurs when a request is made to restore canvas state (zoom and offsets).
+        /// </summary>
+        /// <remarks> 
+        /// This event is triggered when user initiates a restore action from menu button.
+        /// </remarks>
+        public event Action<(float zoom, double hOffset, double vOffset)> RequestRestoreState;
 
         private CanvasModel? _currentCanvas;
 
@@ -544,6 +551,14 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             Messenger.Register<CanvasViewModel, ExportSettingsMessage>(this, (r, m) =>
             {
                 Export(m.Value);
+            });
+            // Restore canvas state.
+            Messenger.Register<CanvasViewModel, RestoreCanvasStateMessage>(this, (r, m) =>
+            {
+                if (m.Value is { } value)
+                {
+                    RequestRestoreState?.Invoke(value);
+                }
             });
             // Answer to current canvas request.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>

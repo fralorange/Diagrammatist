@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="Diagrammatist.Presentation.WPF.Views.Components.TabsComponent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Components" 
              xmlns:viewmodels="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Components"
@@ -53,5 +54,11 @@
                 <StackPanel Orientation="Horizontal"/>
             </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="SelectionChanged">
+                <i:InvokeCommandAction Command="{Binding DataContext.TabChangedCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                       PassEventArgsToCommand="False"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
     </ListBox>
 </UserControl>

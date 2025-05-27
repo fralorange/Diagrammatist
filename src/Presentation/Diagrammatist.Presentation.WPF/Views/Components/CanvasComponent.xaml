@@ -37,8 +37,8 @@
                     CommandParameter="{Binding SelectedFigure}"/>
     </UserControl.InputBindings>
 
-    <controls:ExtendedScrollViewer VerticalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
-                                   HorizontalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"
+    <controls:ExtendedScrollViewer VerticalOffset="{Binding CurrentCanvas.Offset.Y, Mode=TwoWay, FallbackValue=0}"
+                                   HorizontalOffset="{Binding CurrentCanvas.Offset.X, Mode=TwoWay, FallbackValue=0}"
                                    Focusable="False"
                                    IsPanEnabled="{Binding CurrentMouseMode, Converter={StaticResource MouseModeIsControlConverter}, ConverterParameter='Pan'}"
                                    Cursor="{Binding CurrentMouseMode, Converter={StaticResource MouseModeToCursorConverter}}"
