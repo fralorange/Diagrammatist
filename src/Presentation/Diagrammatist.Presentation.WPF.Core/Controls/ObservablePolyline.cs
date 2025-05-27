@@ -96,7 +96,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             StrokeThicknessProperty.OverrideMetadata(
                 typeof(ObservablePolyline),
                 new FrameworkPropertyMetadata(
-                    1.0,
+                    2.0,
                     FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure,
                     OnAppearanceChanged));
         }
@@ -144,7 +144,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                     var dir = to - from; 
                     dir.Normalize();
                     var perp = new Vector(-dir.Y, dir.X);
-                    var size = StrokeThickness * 2;
+                    var size = StrokeThickness * 5;
 
                     var tip = to;
                     var b1 = to - dir * size + perp * (size / 2);
