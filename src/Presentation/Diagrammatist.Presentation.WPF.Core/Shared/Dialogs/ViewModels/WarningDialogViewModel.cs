@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Diagrammatist.Presentation.WPF.Core.Shared.Entities;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 
 namespace Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels

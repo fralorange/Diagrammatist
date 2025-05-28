@@ -70,6 +70,15 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Adapt To Theme.
+        /// </summary>
+        internal static string AdaptToTheme {
+            get {
+                return ResourceManager.GetString("AdaptToTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Change Canvas Background.
         /// </summary>
         internal static string ChangeBackground {
@@ -151,11 +160,56 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Export Diagram.
+        /// </summary>
+        internal static string ExportDiagram {
+            get {
+                return ResourceManager.GetString("ExportDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на File.
         /// </summary>
         internal static string File {
             get {
                 return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Format Diagram.
+        /// </summary>
+        internal static string FormatCaption {
+            get {
+                return ResourceManager.GetString("FormatCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Formatting will remove all data flows, do you want to continue?.
+        /// </summary>
+        internal static string FormatMessage {
+            get {
+                return ResourceManager.GetString("FormatMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Formatter.
+        /// </summary>
+        internal static string Formatter {
+            get {
+                return ResourceManager.GetString("Formatter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Gost 19.701-90.
+        /// </summary>
+        internal static string Gost {
+            get {
+                return ResourceManager.GetString("Gost", resourceCulture);
             }
         }
         

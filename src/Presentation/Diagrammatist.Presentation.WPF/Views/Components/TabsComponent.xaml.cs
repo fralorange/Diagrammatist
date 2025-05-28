@@ -1,4 +1,5 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Models.Canvas;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
@@ -31,7 +32,7 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             var viewModel = App.Current.Services.GetRequiredService<TabsViewModel>();
             _alertService = App.Current.Services.GetRequiredService<IAlertService>();
 
-            viewModel.RequestOpen += OpenCanvas;
+            viewModel.RequestOpen += OpenFile;
             viewModel.RequestSaveAs += SaveAs;
             viewModel.OpenFailed += OpenFail;
             viewModel.CloseFailed += CloseFail;
@@ -53,9 +54,9 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 LocalizationHelper.GetLocalizedValue<string>("Alert.AlertResources", "CanvasAlreadyOpenCaption"));
         }
 
-        private string OpenCanvas()
+        private string OpenFile()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            OpenFileDialog openFileDialog = new()
             {
                 Filter = $"{App.Current.Resources["Filter"]}|*.{App.Current.Resources["Extension"]}",
             };
@@ -66,6 +67,18 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
             }
 
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Opens a file with the specified path.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public void OpenFile(string filePath)
+        {
+            if (DataContext is not TabsViewModel viewModel) return;
+
+            viewModel.OpenDocument(filePath);
         }
 
         private string SaveAs(string fileName)
@@ -135,7 +148,6 @@ namespace Diagrammatist.Presentation.WPF.Views.Components
                 }
             }
         }
-
         #endregion
     }
 }

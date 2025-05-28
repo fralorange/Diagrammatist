@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using Diagrammatist.Application.AppServices.Document.Services;
 using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Facades.Canvas;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
@@ -14,6 +15,7 @@ using Diagrammatist.Presentation.WPF.Core.Models.Connection;
 using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Settings;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -59,7 +61,28 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <remarks>
         /// This event is triggered when user initiates a export action from menu button.
         /// </remarks>
-        public event Action? RequestExport;
+        public event Action<ExportSettings, Action, Action>? RequestExport;
+        /// <summary>
+        /// Occurs when a request is made to get visible area of the canvas.
+        /// </summary>
+        /// <remarks> 
+        /// This event is triggered when user initiates a visible area request by adding new figure.
+        /// </remarks>
+        public event Func<Rect>? RequestVisibleArea;
+        /// <summary>
+        /// Occurs when a request is made to scroll to the specified figure on the canvas.
+        /// </summary>
+        /// <remarks> 
+        /// This event is triggered when user adds a figure from canvas non-visible area.
+        /// </remarks>
+        public event Action<FigureModel>? RequestScrollToFigure;
+        /// <summary>
+        /// Occurs when a request is made to restore canvas state (zoom and offsets).
+        /// </summary>
+        /// <remarks> 
+        /// This event is triggered when user initiates a restore action from menu button.
+        /// </remarks>
+        public event Action<(float zoom, double hOffset, double vOffset)>? RequestRestoreState;
 
         private CanvasModel? _currentCanvas;
 
@@ -350,11 +373,37 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         /// <summary>
         /// Exports current canvas. 
         /// </summary>
-        private void Export()
+        private void Export(ExportSettings settings)
         {
             if (CurrentCanvas is not null && RequestExport is not null)
             {
-                RequestExport();
+                var (snapshots, background, theme) = (
+                    FigureColorHelper.Capture(Figures),
+                    CurrentCanvas.Settings.Background,
+                    App.Current.GetCurrentTheme()
+                );
+
+                void Before()
+                {
+                    if (settings.ExportTheme != ExportTheme.None)
+                    {
+                        App.Current.ChangeTheme(settings.ExportTheme.ToString());
+                        FigureColorHelper.ApplyColors(Figures);
+                        CurrentCanvas.Settings.Background = ThemeColorHelper.GetBackgroundColor();
+                    }
+                }
+
+                void After()
+                {
+                    if (settings.ExportTheme != ExportTheme.None)
+                    {
+                        App.Current.ChangeTheme(theme);
+                        FigureColorHelper.Restore(snapshots);
+                        CurrentCanvas.Settings.Background = background;
+                    }
+                }
+
+                RequestExport(settings, Before, After);
             }
         }
 
@@ -520,10 +569,34 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 SelectedFigure = m.NewValue;
             });
-            // Answer request from canvas.
+            // Scroll to figure.
+            Messenger.Register<CanvasViewModel, ScrollToFigureMessage>(this, (r, m) =>
+            {
+                RequestScrollToFigure?.Invoke(m.Value);
+            });
+            // Export current canvas.
+            Messenger.Register<CanvasViewModel, ExportSettingsMessage>(this, (r, m) =>
+            {
+                Export(m.Value);
+            });
+            // Restore canvas state.
+            Messenger.Register<CanvasViewModel, RestoreCanvasStateMessage>(this, (r, m) =>
+            {
+                if (m.Value is { } value)
+                {
+                    RequestRestoreState?.Invoke(value);
+                }
+            });
+            // Answer to current canvas request.
             Messenger.Register<CanvasViewModel, CurrentCanvasRequestMessage>(this, (r, m) =>
             {
                 m.Reply(r.CurrentCanvas);
+            });
+            // Answer to visible area request.
+            Messenger.Register<CanvasViewModel, VisibleAreaRequestMessage>(this, (r, m) =>
+            {
+                var visibleRect = RequestVisibleArea?.Invoke() ?? Rect.Empty;
+                m.Reply(visibleRect);
             });
             // Register action flags.
             Messenger.Register<CanvasViewModel, Tuple<string, bool>>(this, (r, m) =>
@@ -546,7 +619,6 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
                     case CommandFlags.ZoomOut: ZoomOut(); break;
                     case CommandFlags.ZoomReset: ZoomReset(); break;
                     case CommandFlags.EnableGrid: EnableGrid(); break;
-                    case CommandFlags.Export: Export(); break;
                 }
             });
         }

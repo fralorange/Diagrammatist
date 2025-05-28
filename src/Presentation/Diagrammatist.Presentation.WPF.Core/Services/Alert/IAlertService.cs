@@ -1,4 +1,4 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Shared.Entities;
+﻿using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 
 namespace Diagrammatist.Presentation.WPF.Core.Services.Alert
@@ -22,10 +22,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Alert
         /// <returns><see cref="ConfirmationResult"/> as a result of user choice.</returns>
         ConfirmationResult RequestConfirmation(string message, string caption);
         /// <summary>
+        /// Requests user decision with Yes/No options.
+        /// </summary>
+        /// <param name="message">Confirmation message.</param>
+        /// <param name="caption">Confirmation caption.</param>
+        /// <returns></returns>
+        ConfirmationResult RequestYesNoDecision(string message, string caption);
+        /// <summary>
         /// Shows warning message to user.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="caption"></param>
+        /// <param name="message">Warning message.</param>
+        /// <param name="caption">Warning caption.</param>
         /// <returns></returns>
         ConfirmationResponse ShowWarning(string message, string caption);
     }

@@ -44,9 +44,6 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Validators.Flowchart
                 case FlowchartSubtypeModel.Decision:
                     if (!DecisionRegex().IsMatch(script))
                         return Fail("The 'Decision' block must contain a return statement.", out errorMessage);
-
-                    if (!TryCompileAndRunDecision(script, out errorMessage))
-                        return false;
                     break;
 
                 case FlowchartSubtypeModel.Connector:

@@ -17,7 +17,7 @@
         </Style.Resources>
     </Style>
 
-    <Style TargetType="MenuItem">
+    <Style TargetType="MenuItem" x:Key="BaseMenuItem">
         <Setter Property="Background" Value="{DynamicResource MenuBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Foreground" Value="{DynamicResource MenuTextBrush}"/>
@@ -38,6 +38,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
@@ -79,10 +80,21 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
+
+                                <Path x:Name="SubmenuArrow"
+                                      Grid.Column="3"
+                                      Width="6" 
+                                      Height="10"
+                                      Margin="6 3 0 0"
+                                      Stretch="Uniform"
+                                      Visibility="Collapsed"
+                                      SnapsToDevicePixels="True"
+                                      Stroke="{TemplateBinding Foreground}"
+                                      StrokeThickness="2"
+                                      Data="M0,0 L6,6 L0,12" />
                             </Grid>
 
                             <Popup x:Name="PART_Popup"
-                                   Placement="Bottom"
                                    HorizontalOffset="-1"
                                    AllowsTransparency="True"
                                    Focusable="False"
@@ -121,8 +133,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" 
-                                    Value="{DynamicResource MenuItemHoverBackgroundBrush}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MenuItemHoverBackgroundBrush}" />
                         </Trigger>
                         
                         <Trigger Property="IsSubmenuOpen" Value="True">
@@ -132,31 +143,38 @@
                             <Setter TargetName="ConnectorLine"  Property="Visibility" Value="Visible" />
                         </Trigger>
 
-                        <Trigger Property="IsEnabled" 
-                                 Value="False">
-                            <Setter Property="Foreground" 
-                                    Value="{DynamicResource MenuDisabledTextBrush}"/>
-                            <Setter Property="Background"
-                                    Value="{DynamicResource MenuDisabledBackgroundBrush}"/>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource MenuDisabledTextBrush}"/>
+                            <Setter Property="Background" Value="{DynamicResource MenuDisabledBackgroundBrush}"/>
                         </Trigger>
 
-                        <Trigger Property="IsChecked"
-                                 Value="True">
-                            <Setter TargetName="CheckMark"
-                                    Property="Visibility"
-                                    Value="Visible"/>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+
+                        <Trigger Property="Role" Value="TopLevelHeader">
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Bottom"/>
+                        </Trigger>
+
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Right"/>
+                            <Setter TargetName="PART_Popup" Property="HorizontalOffset" Value="0"/>
+                            <Setter TargetName="PART_Popup" Property="VerticalOffset" Value="-1"/>
+                            <Setter TargetName="SubmenuArrow" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="ConnectorLine" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                      Value="{x:Null}">
-                            <Setter Property="Background" 
-                                    Value="Transparent"/>
+                            <Setter Property="Background" Value="Transparent"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="MenuItem" BasedOn="{StaticResource BaseMenuItem}"/>
 
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -540,7 +558,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource FrameBackground}"/>
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource FrameBackground}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -562,14 +580,14 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Grid Background="Transparent">
                         <Border x:Name="SelectionVisual"
-                                BorderBrush="{StaticResource ItemSelectedBorderBrush}"
+                                BorderBrush="{DynamicResource ItemSelectedBorderBrush}"
                                 BorderThickness="2" 
                                 Margin="-2"
                                 Panel.ZIndex="1000000"
-                                Background="{StaticResource ItemSelectionBackground}"
+                                Background="{DynamicResource ItemSelectionBackground}"
                                 CornerRadius="2"
                                 Visibility="Collapsed"
-                                Effect="{DynamicResource PrimarySelectionBoxEffect}">
+                                Effect="{StaticResource PrimarySelectionBoxEffect}">
                         </Border>
 
                         <ContentPresenter HorizontalAlignment="Stretch"
@@ -592,9 +610,9 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="SelectionVisual" Property="Visibility" Value="Visible" />
                             <Setter TargetName="SelectionVisual" Property="BorderBrush" 
-                                    Value="{DynamicResource ItemHoverBorderBrush}" />
+                                    Value="{StaticResource ItemHoverBorderBrush}" />
                             <Setter TargetName="SelectionVisual" Property="Effect" 
-                                    Value="{DynamicResource HoverSelectionBoxEffect}"/>
+                                    Value="{StaticResource HoverSelectionBoxEffect}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -617,7 +635,7 @@
                                     CornerRadius="2"
                                     Background="{StaticResource ItemSelectionBackground}"
                                     Visibility="Collapsed"
-                                    Effect="{DynamicResource PrimarySelectionBoxEffect}"/>
+                                    Effect="{StaticResource PrimarySelectionBoxEffect}"/>
                         <ContentPresenter Margin="8,4"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -636,7 +654,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="SelectionVisual" Property="Visibility" Value="Visible" />
                             <Setter TargetName="SelectionVisual" Property="BorderBrush" Value="{StaticResource ItemHoverBorderBrush}" />
-                            <Setter TargetName="SelectionVisual" Property="Effect" Value="{DynamicResource HoverSelectionBoxEffect}"/>
+                            <Setter TargetName="SelectionVisual" Property="Effect" Value="{StaticResource HoverSelectionBoxEffect}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -1095,16 +1113,18 @@
         <Setter Property="Padding" Value="4"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
-                    <Grid>
+                    <Grid FocusVisualStyle="{x:Null}">
                         <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4"
-                                Padding="4">
+                                Padding="4"
+                                FocusVisualStyle="{x:Null}">
                             <Grid>
                                 <ContentPresenter x:Name="ContentSite"
                                                   Content="{TemplateBinding SelectionBoxItem}"
@@ -1118,7 +1138,7 @@
                                       StrokeThickness="2"
                                       HorizontalAlignment="Right"
                                       VerticalAlignment="Center"
-                                      Margin="8,0"/>
+                                      Margin="8 0"/>
                                 <ToggleButton x:Name="MainToggleButton"
                                               Background="Transparent"
                                               BorderThickness="0"
@@ -1325,13 +1345,13 @@
         <Setter Property="Focusable" Value="False" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Effect" Value="{DynamicResource MediaButtonMouseOverPrimaryEffect}"/>
+                <Setter Property="Effect" Value="{StaticResource MediaButtonMouseOverPrimaryEffect}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
                 <Setter Property="Effect" Value="{x:Null}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Effect" Value="{DynamicResource MediaButtonPressedEffect}"/>
+                <Setter Property="Effect" Value="{StaticResource MediaButtonPressedEffect}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -1710,7 +1730,7 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="TextAlignment" Value="Center" />
         <Setter Property="Padding" Value="0,0,0,8" />
-        <Setter Property="Effect" Value="{DynamicResource SecondaryGlowEffect}"/>
+        <Setter Property="Effect" Value="{StaticResource SecondaryGlowEffect}"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="VersionText">
@@ -1738,7 +1758,7 @@
 
     <Style TargetType="Border" x:Key="SecondarySplashBackground" BasedOn="{StaticResource BaseSplashBackground}">
         <Setter Property="Margin" Value="15" />
-        <Setter Property="Effect" Value="{DynamicResource PrimaryGlowEffect}" />
+        <Setter Property="Effect" Value="{StaticResource PrimaryGlowEffect}" />
     </Style>
 
     <Style x:Key="SliderFilledRepeatButton" TargetType="RepeatButton">

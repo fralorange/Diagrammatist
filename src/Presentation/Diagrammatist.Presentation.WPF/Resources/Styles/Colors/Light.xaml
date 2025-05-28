@@ -4,8 +4,8 @@
     <Color x:Key="AppBackground">#FFFFFFFF</Color>
     <Color x:Key="AppSecondaryBackground">#FFE8E8E8</Color>
     <Color x:Key="AppTextColor">#FF242424</Color>
-
     <Color x:Key="AppTabBackground">#FFFFFFFF</Color>
+    <Color x:Key="AppEditorColor">#FFF5F5F5</Color>
     
     <Color x:Key="ButtonHoverBG">#AA512BD4</Color>
     <Color x:Key="ButtonPressedBG">#CC512BD4</Color>

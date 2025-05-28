@@ -79,6 +79,24 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization.Alert {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на IPC listening error.
+        /// </summary>
+        internal static string PipeServerError {
+            get {
+                return ResourceManager.GetString("PipeServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на IPC write error.
+        /// </summary>
+        internal static string SingleInstanceError {
+            get {
+                return ResourceManager.GetString("SingleInstanceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm Your Actions.
         /// </summary>
         internal static string UnsavedAppCaption {

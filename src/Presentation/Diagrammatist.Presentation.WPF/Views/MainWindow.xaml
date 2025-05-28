@@ -125,10 +125,27 @@
                           Command="{Binding MenuChangeBackgroundCommand}"/>
                 <MenuItem Header="{lex:Loc ChangeType}"
                           Command="{Binding MenuChangeTypeCommand}"/>
+                <Separator/>
+                <MenuItem Header="{lex:Loc AdaptToTheme}"
+                          Command="{Binding MenuAdaptToThemeCommand}"/>
             </MenuItem>
             <MenuItem Header="{lex:Loc Tools}">
                 <MenuItem Header="{lex:Loc Simulator}"
                           Command="{Binding MenuSimulatorCommand}"/>
+                <MenuItem Header="{lex:Loc Formatter}"
+                          ItemsSource="{Binding FormatterNames}"
+                          Command="{Binding MenuFormatCommand}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem" BasedOn="{StaticResource BaseMenuItem}">
+                            <Setter Property="lex:ResxLocalizationProvider.DefaultAssembly" Value="Diagrammatist.Presentation.WPF" />
+                            <Setter Property="lex:ResxLocalizationProvider.DefaultDictionary" Value="Resources.Localization.MainResources" />
+                            <Setter Property="Header" Value="{Binding Path='.', Converter={lex:TranslateConverter}}" />
+                            <Setter Property="Command" Value="{Binding DataContext.MenuFormatCommand, 
+                                RelativeSource={RelativeSource AncestorType=Menu}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Preferences}"
                           Command="{Binding MenuPreferencesCommand}"/>
@@ -196,15 +213,15 @@
             <components:CanvasComponent x:Name="CanvasComponentName"
                                         Grid.Row="1"
                                         Style="{StaticResource Component}"/>
-            <Popup x:Name="ActionPopup"
-                   PlacementTarget="{Binding ElementName=CanvasComponentName}"
-                   Placement="Custom"
-                   CustomPopupPlacementCallback="PlacePopup"
-                   StaysOpen="True"
-                   AllowsTransparency="True"
-                   IsOpen="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsBlocked}">
+            <controls:NonTopmostPopup x:Name="ActionPopup"
+                                      PlacementTarget="{Binding ElementName=CanvasComponentName}"
+                                      Placement="Custom"
+                                      CustomPopupPlacementCallback="PlacePopup"
+                                      StaysOpen="True"
+                                      AllowsTransparency="True"
+                                      IsOpen="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.IsBlocked}">
                 <components:ActionComponent Style="{StaticResource Component}" />
-            </Popup>
+            </controls:NonTopmostPopup>
             <components:TabsComponent x:Name="TabsComponentName"
                                       Grid.Row="2"
                                       Style="{StaticResource Component}"

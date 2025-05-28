@@ -70,7 +70,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         public void UpdatePoints(IEnumerable<Point> newPoints)
         {
             _points = newPoints;
-            InvalidateVisual(); 
+            InvalidateVisual();
         }
 
         /// <inheritdoc/>
@@ -79,7 +79,16 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             base.OnRender(drawingContext);
 
             if (!IsVisible || _points is null)
-                return; 
+                return;
+
+            // THIS IS BAD BUT I JUST CAN'T DO IT OTHER WAY AND I HATE IT
+            var matrixTransform = RenderTransform as MatrixTransform;
+            var matrix = matrixTransform?.Matrix ?? Matrix.Identity;
+
+            double angle = Math.Atan2(matrix.M21, matrix.M11) * (180 / Math.PI);
+
+            var reverseRotation = new RotateTransform(angle, AdornedElement.RenderSize.Width / 2, AdornedElement.RenderSize.Height / 2);
+            drawingContext.PushTransform(reverseRotation);
 
             double maxSide = Math.Max(AdornedElement.RenderSize.Width, AdornedElement.RenderSize.Height);
             double radius = maxSide / 25.0;

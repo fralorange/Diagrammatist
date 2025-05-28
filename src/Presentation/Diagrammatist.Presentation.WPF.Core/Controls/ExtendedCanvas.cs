@@ -1,13 +1,18 @@
-﻿using Diagrammatist.Presentation.WPF.Core.Controls.Args;
+﻿using Diagrammatist.Presentation.WPF.Core.Controls.Adorners;
+using Diagrammatist.Presentation.WPF.Core.Controls.Args;
 using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Interactions.Behaviors;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.Core.Controls
@@ -27,6 +32,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         private Point _initialElementPos;
         private Point _lastReportedPos;
         private Cursor? _previousCursor;
+
+        private AlignmentAdorner? _alignmentAdorner;
 
         /// <summary>
         /// Occurs when any element position changes.
@@ -49,10 +56,10 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         public static readonly DependencyProperty IsElementPanEnabledProperty =
             DependencyProperty.Register(nameof(IsElementPanEnabled), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
-        
+
         public static readonly DependencyProperty IsBorderVisibleProperty =
             DependencyProperty.Register(nameof(IsBorderVisible), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true, OnBorderChange));
-        
+
         public static readonly DependencyProperty SnapToGridProperty =
             DependencyProperty.RegisterAttached(nameof(SnapToGrid), typeof(bool), typeof(ExtendedCanvas), new PropertyMetadata(true));
 
@@ -134,57 +141,154 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         }
 
         /// <summary>
-        /// Exports current canvas without grid visible to file path.
+        /// Exports the current canvas content to a file with the specified settings.
         /// </summary>
-        /// <param name="filePath">Resultng file path.</param>
-        public void Export(string filePath)
+        /// <param name="filePath"></param>
+        /// <param name="settings"></param>
+        public void Export(string filePath, ExportSettings settings)
         {
-            var wasGridVisible = IsGridVisible;
-            var wasBorderVisible = IsBorderVisible;
-
-            // Hide grid and border
-            SetCurrentValue(IsGridVisibleProperty, false);
-            SetCurrentValue(IsBorderVisibleProperty, false);
-
-            // Update layout
-            UpdateLayout();
-
+            var originalStates = CaptureOriginalStates();
             try
             {
-                // Move to render point
-                VisualOffset = new(0, 0);
+                HideOverlay();
+                UpdateLayout();
 
-                // Create bitmap
-                RenderTargetBitmap renderBitmap = new((int)ActualWidth, (int)ActualHeight, 96, 96, PixelFormats.Pbgra32);
+                var dpiScale = GetDpiScale(settings.Ppi);
+                var exportBounds = CalculateExportBounds(settings);
+                var bitmap = RenderBitmap(exportBounds, dpiScale);
 
-                // Create drawing context
-                DrawingVisual dv = new();
-                using (DrawingContext ctx = dv.RenderOpen())
-                {
-                    VisualBrush vb = new(this);
-                    ctx.DrawRectangle(vb, null, new Rect(new(ActualWidth, ActualHeight)));
-                }
-
-                // Render
-                renderBitmap.Render(dv);
-
-                // Encode
-                PngBitmapEncoder encoder = new();
-                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-
-                // Save
-                using (FileStream fileStream = new(filePath, FileMode.Create))
-                {
-                    encoder.Save(fileStream);
-                }
+                SaveBitmap(bitmap, filePath);
             }
             finally
             {
-                // Return previous grid and border values
-                SetCurrentValue(IsGridVisibleProperty, wasGridVisible);
-                SetCurrentValue(IsBorderVisibleProperty, wasBorderVisible);
+                RestoreOriginalStates(originalStates);
             }
         }
+
+        #region Export handlers
+
+        private (bool GridVisible, bool BorderVisible) CaptureOriginalStates()
+        {
+            return (IsGridVisible, IsBorderVisible);
+        }
+
+        private void HideOverlay()
+        {
+            SetCurrentValue(IsGridVisibleProperty, false);
+            SetCurrentValue(IsBorderVisibleProperty, false);
+        }
+
+        private void RestoreOriginalStates((bool GridVisible, bool BorderVisible) originalStates)
+        {
+            SetCurrentValue(IsGridVisibleProperty, originalStates.GridVisible);
+            SetCurrentValue(IsBorderVisibleProperty, originalStates.BorderVisible);
+        }
+
+        /// <summary>
+        /// Calculates the dpi scale based on standard WPF DPI (96).
+        /// </summary>
+        /// <param name="ppi"></param>
+        /// <returns></returns>
+        private double GetDpiScale(int ppi)
+        {
+            return ppi / 96.0;
+        }
+
+        private Rect CalculateExportBounds(ExportSettings settings)
+        {
+            if (settings.ExportScenario == ExportScenario.Content)
+            {
+                Rect contentBounds = Rect.Empty;
+
+                foreach (UIElement child in Children)
+                {
+                    double left = GetLeft(child);
+                    double top = GetTop(child);
+
+                    double width = child.RenderSize.Width;
+                    double height = child.RenderSize.Height;
+
+                    var bounds = new Rect(left, top, width, height);
+
+                    if (child.RenderTransform is Transform transform)
+                    {
+                        var transformedBounds = transform.TransformBounds(bounds);
+                        bounds = new Rect(
+                            transformedBounds.Left,
+                            transformedBounds.Top,
+                            transformedBounds.Width,
+                            transformedBounds.Height
+                        );
+                    }
+
+                    if (contentBounds == Rect.Empty)
+                    {
+                        contentBounds = bounds;
+                    }
+                    else
+                    {
+                        contentBounds.Union(bounds);
+                    }
+                }
+
+                contentBounds.Inflate(settings.ContentMargin, settings.ContentMargin);
+                return contentBounds;
+            }
+
+            return new Rect(0, 0, ActualWidth, ActualHeight);
+        }
+
+        private RenderTargetBitmap RenderBitmap(Rect bounds, double scale)
+        {
+            VisualOffset = new(0, 0);
+
+            int pixelWidth = (int)Math.Round(bounds.Width * scale);
+            int pixelHeight = (int)Math.Round(bounds.Height * scale);
+            double dpi = 96 * scale;
+
+            var bmp = new RenderTargetBitmap(
+                pixelWidth,
+                pixelHeight,
+                dpi,
+                dpi,
+                PixelFormats.Pbgra32);
+
+            var dv = new DrawingVisual();
+            using (var ctx = dv.RenderOpen())
+            {
+                if (Background != null)
+                {
+                    ctx.DrawRectangle(
+                        Background.Clone(),
+                        null,
+                        new Rect(bounds.Size));
+                }
+
+                var vb = new VisualBrush(this)
+                {
+                    Viewbox = bounds,
+                    ViewboxUnits = BrushMappingMode.Absolute,
+                    Stretch = Stretch.None,
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top
+                };
+
+                ctx.DrawRectangle(vb, null, new Rect(bounds.Size));
+            }
+
+            bmp.Render(dv);
+            return bmp;
+        }
+
+        private void SaveBitmap(RenderTargetBitmap bmp, string path)
+        {
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+            using var stream = new FileStream(path, FileMode.Create);
+            encoder.Save(stream);
+        }
+        #endregion
         #region Event invokers
         /// <summary>
         /// Triggers <see cref="ItemPositionChanged"/> event when and object position changes.
@@ -238,30 +342,33 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         {
             if (IsElementPanEnabled && IsMouseCaptured)
             {
-                double newX = e.GetPosition(this).X;
-                double newY = e.GetPosition(this).Y;
+                if (!IsElementPanEnabled || !IsMouseCaptured || _selectedElement == null)
+                    return;
 
-                CenterSelectedElement(ref newX, ref newY);
+                double rawX = e.GetPosition(this).X;
+                double rawY = e.GetPosition(this).Y;
+                CenterSelectedElement(ref rawX, ref rawY);
 
-                TrySnapWithDynamicSpacing(_selectedElement!, ref newX, ref newY);
-
-                bool altPressed =
-                    Keyboard.IsKeyDown(Key.LeftAlt) ||
-                    Keyboard.IsKeyDown(Key.RightAlt);
-
+                TrySnapWithDynamicSpacing(_selectedElement, ref rawX, ref rawY, out var guides);
+                bool altPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
                 bool shouldSnap = SnapToGrid ^ (AltSnapToGrid && altPressed);
+                if (shouldSnap)
+                    GridHelper.SnapCoordinatesToGrid(ref rawX, ref rawY, GridStep);
 
-                if (shouldSnap) GridHelper.SnapCoordinatesToGrid(ref newX, ref newY, GridStep);
+                var oldPos = _lastReportedPos;
 
-                OnItemPositionChanging(_selectedElement!,
-                                       _lastReportedPos.X,
-                                       _lastReportedPos.Y,
-                                       newX,
-                                       newY);
+                ValidateAndSetElementPosition(_selectedElement, rawX, rawY);
 
-                ValidateAndSetElementPosition(_selectedElement!, newX, newY);
+                double actualX = GetLeft(_selectedElement);
+                double actualY = GetTop(_selectedElement);
 
-                _lastReportedPos = new(newX, newY);
+                if (actualX != oldPos.X || actualY != oldPos.Y)
+                {
+                    OnItemPositionChanging(_selectedElement, oldPos.X, oldPos.Y, actualX, actualY);
+                    _lastReportedPos = new Point(actualX, actualY);
+
+                    _alignmentAdorner?.SetGuides(guides);
+                }
             }
         }
 
@@ -281,6 +388,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 Cursor = _previousCursor;
 
                 ReleaseMouseCapture();
+                _alignmentAdorner?.ClearGuides();
             }
         }
         #endregion
@@ -296,11 +404,17 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             SetTop(element, top);
         }
 
-        private void TrySnapWithDynamicSpacing(FrameworkElement movingElement, ref double newX, ref double newY)
+        private void TrySnapWithDynamicSpacing(FrameworkElement movingElement, ref double newX, ref double newY, out List<Line> guides)
         {
-            const double snapThreshold = 10; 
+            guides = [];
 
-            var elements = Children.OfType<FrameworkElement>().Where(e => e != movingElement).ToList();
+            const double snapThreshold = 10;
+
+            var elements = Children
+                .OfType<FrameworkElement>()
+                .Where(e => e != movingElement
+                         && CanvasMoveableBehavior.GetIsMovable(e))
+                .ToList();
 
             foreach (var reference in elements)
             {
@@ -319,26 +433,76 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                 if (Math.Abs(movingCenterX - refCenterX) < snapThreshold)
                 {
                     newX = refLeft + (reference.ActualWidth - movingElement.ActualWidth) / 2;
+                    guides.Add(new Line
+                    {
+                        X1 = refCenterX,
+                        Y1 = 0,
+                        X2 = refCenterX,
+                        Y2 = ActualHeight,
+                    });
                 }
 
                 // Center by Y.
                 if (Math.Abs(movingCenterY - refCenterY) < snapThreshold)
                 {
                     newY = refTop + (reference.ActualHeight - movingElement.ActualHeight) / 2;
+                    guides.Add(new Line
+                    {
+                        X1 = 0,
+                        Y1 = refCenterY,
+                        X2 = ActualWidth,
+                        Y2 = refCenterY,
+                    });
                 }
 
                 // Edge snapping.
                 if (Math.Abs(newX - refLeft) < snapThreshold)
+                {
                     newX = refLeft;
+                    guides.Add(new Line
+                    {
+                        X1 = refLeft,
+                        Y1 = 0,
+                        X2 = refLeft,
+                        Y2 = ActualHeight,
+                    });
+                }
 
                 if (Math.Abs((newX + movingElement.ActualWidth) - (refLeft + reference.ActualWidth)) < snapThreshold)
+                {
                     newX = refLeft + reference.ActualWidth - movingElement.ActualWidth;
+                    guides.Add(new Line
+                    {
+                        X1 = refLeft + reference.ActualWidth,
+                        Y1 = 0,
+                        X2 = refLeft + reference.ActualWidth,
+                        Y2 = ActualHeight,
+                    });
+                }
 
                 if (Math.Abs(newY - refTop) < snapThreshold)
+                {
                     newY = refTop;
+                    guides.Add(new Line
+                    {
+                        X1 = 0,
+                        Y1 = refTop,
+                        X2 = ActualWidth,
+                        Y2 = refTop,
+                    });
+                }
 
                 if (Math.Abs((newY + movingElement.ActualHeight) - (refTop + reference.ActualHeight)) < snapThreshold)
+                {
                     newY = refTop + reference.ActualHeight - movingElement.ActualHeight;
+                    guides.Add(new Line
+                    {
+                        X1 = 0,
+                        Y1 = refTop + reference.ActualHeight,
+                        X2 = ActualWidth,
+                        Y2 = refTop + reference.ActualHeight,
+                    });
+                }
 
                 // Dynamic distance by Y-axis.
                 foreach (var secondReference in elements)
@@ -352,6 +516,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                     if (expectedDistance > 0 && Math.Abs(newY - (refBottom + expectedDistance)) < snapThreshold)
                     {
                         newY = refBottom + expectedDistance;
+
+                        guides.Add(new Line
+                        {
+                            X1 = 0,
+                            Y1 = refBottom + expectedDistance,
+                            X2 = ActualWidth,
+                            Y2 = refBottom + expectedDistance,
+                        });
                     }
                 }
 
@@ -367,6 +539,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
                     if (expectedDistance > 0 && Math.Abs(newX - (refRight + expectedDistance)) < snapThreshold)
                     {
                         newX = refRight + expectedDistance;
+
+                        guides.Add(new Line
+                        {
+                            X1 = refRight + expectedDistance,
+                            Y1 = 0,
+                            X2 = refRight + expectedDistance,
+                            Y2 = ActualHeight,
+                        });
                     }
                 }
             }
@@ -419,13 +599,14 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             }
         }
         private static void OnBorderChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        { 
+        {
             if (d is ExtendedCanvas canvas)
             {
                 canvas.InvalidateVisual();
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
         {
             base.OnVisualChildrenChanged(visualAdded, visualRemoved);
@@ -439,6 +620,23 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
             }
         }
 
+        /// <inheritdoc/>
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            Loaded += (_, _) =>
+            {
+                var adornerLayer = AdornerLayer.GetAdornerLayer(this);
+                if (adornerLayer is not null)
+                {
+                    _alignmentAdorner = new AlignmentAdorner(this);
+                    adornerLayer.Add(_alignmentAdorner);
+                }
+            };
+        }
+
+        /// <inheritdoc/>
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);

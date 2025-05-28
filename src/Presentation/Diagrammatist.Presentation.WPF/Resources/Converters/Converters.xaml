@@ -18,4 +18,5 @@
     <local:FigureModelExtractorMultiConverter x:Key="FigureModelExtractorMultiConverter"/>
     <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     <local:ObjectComparisonMultiConverter x:Key="ObjectComparisonMultiConverter"/>
+    <local:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
 </ResourceDictionary>

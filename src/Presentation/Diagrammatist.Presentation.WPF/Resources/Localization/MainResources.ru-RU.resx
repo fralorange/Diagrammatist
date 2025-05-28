@@ -210,4 +210,22 @@
   <data name="ChangeBackground" xml:space="preserve">
     <value>Изменить фон холста</value>
   </data>
+  <data name="ExportDiagram" xml:space="preserve">
+    <value>Экспорт диаграммы</value>
+  </data>
+  <data name="AdaptToTheme" xml:space="preserve">
+    <value>Адаптировать к теме</value>
+  </data>
+  <data name="Formatter" xml:space="preserve">
+    <value>Форматировщик</value>
+  </data>
+  <data name="Gost" xml:space="preserve">
+    <value>ГОСТ 19.701-90</value>
+  </data>
+  <data name="FormatCaption" xml:space="preserve">
+    <value>Форматирование диаграммы</value>
+  </data>
+  <data name="FormatMessage" xml:space="preserve">
+    <value>Форматирование удалит все потоки данных, хотите продолжить?</value>
+  </data>
 </root>

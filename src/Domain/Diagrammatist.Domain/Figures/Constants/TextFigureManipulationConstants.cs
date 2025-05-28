@@ -8,6 +8,6 @@
         /// <summary>
         /// Text default font size.
         /// </summary>
-        public const double DefaultFontSize = 14;
+        public const double DefaultFontSize = 11;
     }
 }

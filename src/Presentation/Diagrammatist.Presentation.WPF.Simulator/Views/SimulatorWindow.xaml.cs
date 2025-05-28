@@ -33,7 +33,7 @@ namespace Diagrammatist.Presentation.WPF.Simulator.Views
         {
             if (e.Source is ListBox listBox)
             {
-                FocusHelper.ClearFocusAndSelection(listBox);
+                FocusHelper.ClearFocusAndSelection(listBox, extScrollViewer);
             }
         }
 

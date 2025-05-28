@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Diagrammatist.Presentation.WPF.Core.Controls
 {
@@ -190,6 +191,7 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         // Flags to avoid feedback loops
         private bool _settingOffsetFromDP;
         private bool _settingDPFromScroll;
+        private bool _isRestoring;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedScrollViewer"/> class.
@@ -218,7 +220,28 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
         public void ZoomReset()
         {
             Zoom = 1f;
-            Dispatcher.BeginInvoke(CenterContent, System.Windows.Threading.DispatcherPriority.Render);
+            Dispatcher.BeginInvoke(CenterContent, DispatcherPriority.Render);
+        }
+
+        /// <summary>
+        /// Restores the state of the scroll viewer with the specified zoom level and offsets.
+        /// </summary>
+        /// <param name="zoom"></param>
+        /// <param name="hOffset"></param>
+        /// <param name="vOffset"></param>
+        public void RestoreState(float zoom, double hOffset, double vOffset)
+        {
+            _isRestoring = true;
+
+            Zoom = zoom;
+
+            Dispatcher.BeginInvoke(() =>
+            {
+                HorizontalOffset = hOffset;
+                VerticalOffset = vOffset;
+
+                _isRestoring = false;
+            }, DispatcherPriority.Render);
         }
 
         private void OnScrollViewerLoaded(object sender, RoutedEventArgs e)
@@ -321,6 +344,8 @@ namespace Diagrammatist.Presentation.WPF.Core.Controls
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
+            if (_isRestoring) return;
+
             if (e.ExtentWidthChange == 0 && e.ExtentHeightChange == 0) return;
 
             Point? before = null, now = null;

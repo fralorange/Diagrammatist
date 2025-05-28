@@ -210,4 +210,22 @@
   <data name="ChangeBackground" xml:space="preserve">
     <value>Change Canvas Background</value>
   </data>
+  <data name="ExportDiagram" xml:space="preserve">
+    <value>Export Diagram</value>
+  </data>
+  <data name="AdaptToTheme" xml:space="preserve">
+    <value>Adapt To Theme</value>
+  </data>
+  <data name="Formatter" xml:space="preserve">
+    <value>Formatter</value>
+  </data>
+  <data name="Gost" xml:space="preserve">
+    <value>Gost 19.701-90</value>
+  </data>
+  <data name="FormatCaption" xml:space="preserve">
+    <value>Format Diagram</value>
+  </data>
+  <data name="FormatMessage" xml:space="preserve">
+    <value>Formatting will remove all data flows, do you want to continue?</value>
+  </data>
 </root>

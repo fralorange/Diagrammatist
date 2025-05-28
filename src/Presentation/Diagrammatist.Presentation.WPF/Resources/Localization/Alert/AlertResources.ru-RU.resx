@@ -135,4 +135,10 @@
   <data name="UnsavedAppMessage" xml:space="preserve">
     <value>У вас есть несохраненные изменения. Хотите ли вы сохранить все изменения и выйти?</value>
   </data>
+  <data name="SingleInstanceError" xml:space="preserve">
+    <value>IPC write error</value>
+  </data>
+  <data name="PipeServerError" xml:space="preserve">
+    <value>IPC listening error</value>
+  </data>
 </root>

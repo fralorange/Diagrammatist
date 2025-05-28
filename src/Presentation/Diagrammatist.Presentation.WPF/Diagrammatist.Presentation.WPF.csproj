@@ -12,7 +12,13 @@
 
   <PropertyGroup>
 	<AssemblyTitle>Diagrammatist</AssemblyTitle>
-	<Version>1.0.0-rc3</Version>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<FileVersion>1.0.0.0</FileVersion>
+	<InformationalVersion>1.0.0</InformationalVersion>
+	<Company>Made by Alexei 'fral' Rodionov</Company>
+	<Authors>Alexei 'fral' Rodionov</Authors>
+	<Product>Diagrammatist</Product>
+	<Copyright>© 2025 Alexei "fral" Rodionov</Copyright>
   </PropertyGroup>
 	
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -97,6 +103,11 @@
       <DependentUpon>ChangeDiagramTypeResources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Localization\Dialogs\ExportDiagram\ExportDiagramResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExportDiagramResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Localization\Dialogs\Settings\SettingsResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -202,6 +213,10 @@
       <LastGenOutput>ChangeDiagramTypeResources.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Localization\Dialogs\ExportDiagram\ExportDiagramResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExportDiagramResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Localization\Dialogs\Settings\SettingsResources.en-US.resx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -281,6 +296,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\Styles\Colors\Grayscale.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

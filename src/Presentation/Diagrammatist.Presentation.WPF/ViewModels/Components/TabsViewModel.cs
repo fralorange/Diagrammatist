@@ -134,14 +134,11 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
         }
 
         /// <summary>
-        /// Opens an existing canvas.
+        /// Opens existing document by file path and adds it to <see cref="Canvases"/> collection.
         /// </summary>
-        private void OpenDocument()
+        /// <param name="filePath"></param>
+        public void OpenDocument(string filePath)
         {
-            if (RequestOpen is null) return;
-
-            var filePath = RequestOpen();
-
             if (string.IsNullOrEmpty(filePath)) return;
 
             if (_tabsManager.ContainsFilePath(filePath) && OpenFailed is not null)
@@ -154,6 +151,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             {
                 AddDocument(loadedDocument, filePath);
             }
+        }
+
+        /// <summary>
+        /// Opens an existing canvas.
+        /// </summary>
+        private void OpenDocument()
+        {
+            if (RequestOpen is null) return;
+
+            var filePath = RequestOpen();
+
+            OpenDocument(filePath);
         }
 
         /// <summary>
@@ -188,6 +197,22 @@ namespace Diagrammatist.Presentation.WPF.ViewModels.Components
             }
 
             RemoveDocument(doc);
+        }
+
+        /// <summary>
+        /// Occurs when tab is changed.
+        /// </summary>
+        [RelayCommand]
+        private void TabChanged()
+        {
+            if (SelectedCanvas is null)
+                return;
+
+            Messenger.Send(new RestoreCanvasStateMessage((
+                Convert.ToSingle(SelectedCanvas.Zoom),
+                SelectedCanvas.Offset.X,
+                SelectedCanvas.Offset.Y
+            )));
         }
 
         private void CloseDocuments()

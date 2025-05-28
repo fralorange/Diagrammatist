@@ -24,10 +24,10 @@
         /// <summary>
         /// Default figure width.
         /// </summary>
-        public const double DefaultWidth = 50;
+        public const double DefaultWidth = 80;
         /// <summary>
         /// Default figure height.
         /// </summary>
-        public const double DefaultHeight = 50;
+        public const double DefaultHeight = 80;
     }
 }

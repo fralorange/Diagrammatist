@@ -1,7 +1,7 @@
 ﻿using Diagrammatist.Presentation.WPF.Core.Services.Sound;
 using Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.ViewModels;
 using Diagrammatist.Presentation.WPF.Core.Shared.Dialogs.Views;
-using Diagrammatist.Presentation.WPF.Core.Shared.Entities;
+using Diagrammatist.Presentation.WPF.Core.Shared.Records;
 using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using System.Windows;
 using ApplicationEnt = System.Windows.Application;
@@ -51,6 +51,32 @@ namespace Diagrammatist.Presentation.WPF.Core.Services.Alert
                     true => ConfirmationResult.Yes,
                     false => ConfirmationResult.No,
                     _ => ConfirmationResult.Cancel
+                };
+                dialog.Close();
+            });
+
+            _soundService.PlayWarningSound();
+            dialog.DataContext = vm;
+            dialog.ShowDialog();
+
+            return result;
+        }
+
+        /// <inheritdoc/>
+        public ConfirmationResult RequestYesNoDecision(string message, string caption)
+        {
+            var owner = GetActiveWindow();
+            var dialog = new YesNoDialog { Owner = owner };
+
+            var result = ConfirmationResult.None;
+
+            var vm = new YesNoDialogViewModel(message, caption, r =>
+            {
+                result = r switch
+                {
+                    true => ConfirmationResult.Yes,
+                    false => ConfirmationResult.No,
+                    _ => ConfirmationResult.No
                 };
                 dialog.Close();
             });

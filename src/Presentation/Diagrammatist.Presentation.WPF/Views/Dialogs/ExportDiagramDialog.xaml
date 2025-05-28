@@ -1,0 +1,145 @@
+﻿<controls:TitleBarWindow x:Class="Diagrammatist.Presentation.WPF.Views.Dialogs.ExportDiagramDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                         xmlns:local="clr-namespace:Diagrammatist.Presentation.WPF.Views.Dialogs"
+                         xmlns:controls="clr-namespace:Diagrammatist.Presentation.WPF.Core.Controls;assembly=Diagrammatist.Presentation.WPF.Core" 
+                         xmlns:dialogs="clr-namespace:Diagrammatist.Presentation.WPF.ViewModels.Dialogs" 
+                         d:DataContext="{d:DesignInstance Type=dialogs:ExportDiagramDialogViewModel}"
+                         lex:ResxLocalizationProvider.DefaultAssembly="Diagrammatist.Presentation.WPF"
+                         lex:ResxLocalizationProvider.DefaultDictionary="Resources.Localization.Dialogs.ExportDiagram.ExportDiagramResources"
+                         mc:Ignorable="d"
+                         WindowStartupLocation="CenterOwner"
+                         ResizeMode="NoResize"
+                         SizeToContent="WidthAndHeight"
+                         Title="{lex:Loc Diagrammatist.Presentation.WPF:Resources.Localization.MainResources:ExportDiagram}"
+                         ShowMinimizeButton="False"
+                         ShowMaximizeButton="False"
+                         ShowCenteredTitle="True"
+                         IsDialog="True">
+    <Border Style="{StaticResource DialogBorder}">
+        <Grid Style="{StaticResource Window}"
+              Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{lex:Loc ExportScenario}" 
+                       Grid.Row="0" 
+                       Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       Margin="10"/>
+            <ComboBox Grid.Row="0" 
+                      Grid.Column="1" 
+                      ItemsSource="{Binding ExportScenarios}"
+                      SelectedItem="{Binding SelectedExportScenario}"
+                      Margin="10"
+                      Width="275"
+                      HorizontalAlignment="Left">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{lex:Loc {Binding}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Text="{lex:Loc ContentMargin}" 
+                       VerticalAlignment="Center" 
+                       Margin="10"
+                       Grid.Row="1" 
+                       Grid.Column="0"
+                       Visibility="{Binding SelectedExportScenario, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Content'}"/>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Visibility="{Binding SelectedExportScenario, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Content'}">
+                <TextBox Width="80" 
+                         Text="{Binding ContentMargin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                         Margin="10 10 0 10"
+                         Height="{Binding ElementName=customPpiBox, Path=ActualHeight}"
+                         HorizontalAlignment="Left"/>
+                <TextBlock Text="px"
+                           Margin="5 10 10 10"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <TextBlock Text="{lex:Loc Resolution}" 
+                       Grid.Row="2" 
+                       Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       Margin="10"/>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="2" 
+                        Grid.Column="1">
+                <ComboBox ItemsSource="{Binding ExportPPIValues}"
+                          SelectedItem="{Binding SelectedPpi}" 
+                          Width="175"
+                          Margin="10"
+                          HorizontalAlignment="Left">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{lex:Loc {Binding}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Visibility="{Binding SelectedPpi, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='PPI_Custom'}">
+                    <TextBox Width="80"
+                             x:Name="customPpiBox"
+                             Text="{Binding CustomPpi, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" 
+                             Margin="10 10 0 10"/>
+                    <TextBlock Text="ppi" 
+                               VerticalAlignment="Center" 
+                               Margin="5 10 10 10"/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Text="{lex:Loc ExportTheme}" 
+                       Grid.Row="4" 
+                       Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       Margin="10"/>
+            <ComboBox Grid.Row="4" 
+                      Grid.Column="1" 
+                      ItemsSource="{Binding ExportThemeValues}"
+                      SelectedItem="{Binding SelectedExportTheme}"
+                      Margin="10"
+                      Width="175"
+                      HorizontalAlignment="Left">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{lex:Loc {Binding}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <StackPanel Grid.Row="5"
+                        Grid.Column="1"
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="20">
+                <Button Content="{lex:Loc OK}" 
+                        Command="{Binding OkCommand}" 
+                        IsDefault="True" 
+                        Style="{StaticResource BaseButton}"/>
+                <Button Content="{lex:Loc Cancel}" 
+                        IsCancel="True" 
+                        Style="{StaticResource BaseButton}" 
+                        Margin="10 0 0 0"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</controls:TitleBarWindow>

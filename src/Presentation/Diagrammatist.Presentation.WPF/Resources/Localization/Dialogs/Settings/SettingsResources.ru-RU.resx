@@ -159,4 +159,10 @@
   <data name="Theme" xml:space="preserve">
     <value>Тема:</value>
   </data>
+  <data name="ThemeDecisionCaption" xml:space="preserve">
+    <value>Адаптировать диаграмму?</value>
+  </data>
+  <data name="ThemeDecisionMessage" xml:space="preserve">
+    <value>Хотите ли вы адаптировать диаграмму к текущей теме?</value>
+  </data>
 </root>
