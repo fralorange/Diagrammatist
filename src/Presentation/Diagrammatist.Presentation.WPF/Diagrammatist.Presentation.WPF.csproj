@@ -14,7 +14,7 @@
 	<AssemblyTitle>Diagrammatist</AssemblyTitle>
 	<AssemblyVersion>1.0.0.0</AssemblyVersion>
 	<FileVersion>1.0.0.0</FileVersion>
-	<InformationalVersion>1.0.0-rc3</InformationalVersion>
+	<InformationalVersion>1.0.0</InformationalVersion>
 	<Company>Made by Alexei 'fral' Rodionov</Company>
 	<Authors>Alexei 'fral' Rodionov</Authors>
 	<Product>Diagrammatist</Product>
