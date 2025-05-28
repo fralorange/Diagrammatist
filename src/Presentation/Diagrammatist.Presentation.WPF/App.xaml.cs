@@ -58,6 +58,7 @@ namespace Diagrammatist.Presentation.WPF
                 .AddManagers()
                 .AddCulture()
                 .AddMappers()
+                .AddFormatters()
                 .BuildServiceProvider();
         }
 

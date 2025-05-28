@@ -132,6 +132,20 @@
             <MenuItem Header="{lex:Loc Tools}">
                 <MenuItem Header="{lex:Loc Simulator}"
                           Command="{Binding MenuSimulatorCommand}"/>
+                <MenuItem Header="{lex:Loc Formatter}"
+                          ItemsSource="{Binding FormatterNames}"
+                          Command="{Binding MenuFormatCommand}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem" BasedOn="{StaticResource BaseMenuItem}">
+                            <Setter Property="lex:ResxLocalizationProvider.DefaultAssembly" Value="Diagrammatist.Presentation.WPF" />
+                            <Setter Property="lex:ResxLocalizationProvider.DefaultDictionary" Value="Resources.Localization.MainResources" />
+                            <Setter Property="Header" Value="{Binding Path='.', Converter={lex:TranslateConverter}}" />
+                            <Setter Property="Command" Value="{Binding DataContext.MenuFormatCommand, 
+                                RelativeSource={RelativeSource AncestorType=Menu}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Header="{lex:Loc Preferences}"
                           Command="{Binding MenuPreferencesCommand}"/>

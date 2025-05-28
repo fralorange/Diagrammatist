@@ -20,6 +20,8 @@ using Diagrammatist.Presentation.WPF.Core.Services.Clipboard.Figure;
 using Diagrammatist.Presentation.WPF.Core.Services.Connection;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Manipulation;
 using Diagrammatist.Presentation.WPF.Core.Services.Figure.Placement;
+using Diagrammatist.Presentation.WPF.Core.Services.Formatting;
+using Diagrammatist.Presentation.WPF.Core.Services.Formatting.Gost;
 using Diagrammatist.Presentation.WPF.Core.Services.Settings;
 using Diagrammatist.Presentation.WPF.Core.Services.Sound;
 using Diagrammatist.Presentation.WPF.Properties;
@@ -230,6 +232,18 @@ namespace Diagrammatist.Presentation.WPF
             #region Simulator
             DocumentMapperExtension.RegisterPayloadMapper(new SimulationDocumentMapper());
             #endregion
+
+            return services;
+        }
+
+        /// <summary>
+        /// Adds formatters.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddFormatters(this IServiceCollection services)
+        {
+            services.AddSingleton<IFormatter, GostFormatter>();
 
             return services;
         }
