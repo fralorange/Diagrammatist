@@ -178,6 +178,42 @@ namespace Diagrammatist.Presentation.WPF.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Format Diagram.
+        /// </summary>
+        internal static string FormatCaption {
+            get {
+                return ResourceManager.GetString("FormatCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Formatting will remove all data flows, do you want to continue?.
+        /// </summary>
+        internal static string FormatMessage {
+            get {
+                return ResourceManager.GetString("FormatMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Formatter.
+        /// </summary>
+        internal static string Formatter {
+            get {
+                return ResourceManager.GetString("Formatter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Gost 19.701-90.
+        /// </summary>
+        internal static string Gost {
+            get {
+                return ResourceManager.GetString("Gost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Grid.
         /// </summary>
         internal static string Grid {

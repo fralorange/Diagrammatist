@@ -17,7 +17,7 @@
         </Style.Resources>
     </Style>
 
-    <Style TargetType="MenuItem">
+    <Style TargetType="MenuItem" x:Key="BaseMenuItem">
         <Setter Property="Background" Value="{DynamicResource MenuBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Foreground" Value="{DynamicResource MenuTextBrush}"/>
@@ -38,6 +38,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
@@ -79,10 +80,21 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
+
+                                <Path x:Name="SubmenuArrow"
+                                      Grid.Column="3"
+                                      Width="6" 
+                                      Height="10"
+                                      Margin="6 3 0 0"
+                                      Stretch="Uniform"
+                                      Visibility="Collapsed"
+                                      SnapsToDevicePixels="True"
+                                      Stroke="{TemplateBinding Foreground}"
+                                      StrokeThickness="2"
+                                      Data="M0,0 L6,6 L0,12" />
                             </Grid>
 
                             <Popup x:Name="PART_Popup"
-                                   Placement="Bottom"
                                    HorizontalOffset="-1"
                                    AllowsTransparency="True"
                                    Focusable="False"
@@ -121,8 +133,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" 
-                                    Value="{DynamicResource MenuItemHoverBackgroundBrush}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MenuItemHoverBackgroundBrush}" />
                         </Trigger>
                         
                         <Trigger Property="IsSubmenuOpen" Value="True">
@@ -132,31 +143,38 @@
                             <Setter TargetName="ConnectorLine"  Property="Visibility" Value="Visible" />
                         </Trigger>
 
-                        <Trigger Property="IsEnabled" 
-                                 Value="False">
-                            <Setter Property="Foreground" 
-                                    Value="{DynamicResource MenuDisabledTextBrush}"/>
-                            <Setter Property="Background"
-                                    Value="{DynamicResource MenuDisabledBackgroundBrush}"/>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource MenuDisabledTextBrush}"/>
+                            <Setter Property="Background" Value="{DynamicResource MenuDisabledBackgroundBrush}"/>
                         </Trigger>
 
-                        <Trigger Property="IsChecked"
-                                 Value="True">
-                            <Setter TargetName="CheckMark"
-                                    Property="Visibility"
-                                    Value="Visible"/>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+
+                        <Trigger Property="Role" Value="TopLevelHeader">
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Bottom"/>
+                        </Trigger>
+
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Right"/>
+                            <Setter TargetName="PART_Popup" Property="HorizontalOffset" Value="0"/>
+                            <Setter TargetName="PART_Popup" Property="VerticalOffset" Value="-1"/>
+                            <Setter TargetName="SubmenuArrow" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="ConnectorLine" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                      Value="{x:Null}">
-                            <Setter Property="Background" 
-                                    Value="Transparent"/>
+                            <Setter Property="Background" Value="Transparent"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="MenuItem" BasedOn="{StaticResource BaseMenuItem}"/>
 
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
