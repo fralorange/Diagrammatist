@@ -28,5 +28,39 @@ namespace Diagrammatist.Presentation.WPF.Core.Foundation.Extensions
         {
             return new ObservableCollection<T>(enumerable);
         }
+
+        /// <summary>
+        /// Replaces the contents of an <see cref="ObservableCollection{T}"/> with a new set of items.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="newItems"></param>
+        public static void ReplaceWith<T>(this ObservableCollection<T> collection, IEnumerable<T> newItems)
+        {
+            ArgumentNullException.ThrowIfNull(collection);
+            ArgumentNullException.ThrowIfNull(newItems);
+            collection.Clear();
+            foreach (var item in newItems)
+            {
+                collection.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Removes all items from an <see cref="ObservableCollection{T}"/> that match a specified predicate.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="predicate"></param>
+        public static void RemoveAll<T>(this ObservableCollection<T> collection, Func<T, bool> predicate)
+        {
+            ArgumentNullException.ThrowIfNull(collection);
+            ArgumentNullException.ThrowIfNull(predicate);
+            var itemsToRemove = collection.Where(predicate).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                collection.Remove(item);
+            }
+        }
     }
 }

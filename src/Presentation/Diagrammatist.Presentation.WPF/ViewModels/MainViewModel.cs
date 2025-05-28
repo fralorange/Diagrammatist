@@ -2,18 +2,26 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Diagrammatist.Application.AppServices.Document.Services;
+using Diagrammatist.Domain.Figures;
+using Diagrammatist.Presentation.WPF.Core.Foundation.Extensions;
 using Diagrammatist.Presentation.WPF.Core.Helpers;
 using Diagrammatist.Presentation.WPF.Core.Managers.Command;
 using Diagrammatist.Presentation.WPF.Core.Messaging.Messages;
 using Diagrammatist.Presentation.WPF.Core.Messaging.RequestMessages;
+using Diagrammatist.Presentation.WPF.Core.Models.Connection;
+using Diagrammatist.Presentation.WPF.Core.Models.Figures;
 using Diagrammatist.Presentation.WPF.Core.Services.Alert;
+using Diagrammatist.Presentation.WPF.Core.Services.Connection;
+using Diagrammatist.Presentation.WPF.Core.Services.Formatting;
 using Diagrammatist.Presentation.WPF.Core.Services.Settings;
+using Diagrammatist.Presentation.WPF.Core.Shared.Enums;
 using Diagrammatist.Presentation.WPF.Simulator.Models.Context;
 using Diagrammatist.Presentation.WPF.Simulator.ViewModels;
 using Diagrammatist.Presentation.WPF.ViewModels.Components.Constants.Flags;
 using Diagrammatist.Presentation.WPF.ViewModels.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;
+using System.Collections.ObjectModel;
 using System.Configuration;
 
 namespace Diagrammatist.Presentation.WPF.ViewModels
@@ -70,7 +78,8 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuChangeSizeCommand),
             nameof(MenuChangeBackgroundCommand),
             nameof(MenuChangeTypeCommand),
-            nameof(MenuAdaptToThemeCommand))]
+            nameof(MenuAdaptToThemeCommand),
+            nameof(MenuFormatCommand))]
         private bool _hasCanvasFlag;
         /// <summary>
         /// Gets or sets 'has custom canvas' flag.
@@ -111,11 +120,22 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             nameof(MenuChangeSizeCommand),
             nameof(MenuChangeBackgroundCommand),
             nameof(MenuChangeTypeCommand),
-            nameof(MenuAdaptToThemeCommand))]
+            nameof(MenuAdaptToThemeCommand),
+            nameof(MenuFormatCommand))]
         private bool _isBlocked;
         /// <include file='../../../docs/common/CommonXmlDocComments.xml' path='CommonXmlDocComments/Behaviors/Member[@name="IsNotBlocked"]/*'/>
         public bool IsNotBlocked => !IsBlocked;
         #endregion
+
+        /// <summary>
+        /// Gets formatters collection.
+        /// </summary>
+        public ObservableCollection<IFormatter>? Formatters { get; private set; }
+
+        /// <summary>
+        /// Gets formatter names collection.
+        /// </summary>
+        public ObservableCollection<string>? FormatterNames { get; private set; }
 
         /// <summary>
         /// Initializes main view model.
@@ -126,15 +146,18 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
         /// <param name="alertService"></param>
         /// <param name="dialogService"></param>
         /// <param name="trackableCommandManager"></param>
-        public MainViewModel(IDialogService dialogService, ITrackableCommandManager trackableCommandManager, IServiceProvider serviceProvider)
+        public MainViewModel(IDialogService dialogService,
+                             ITrackableCommandManager trackableCommandManager,
+                             IServiceProvider serviceProvider)
         {
             _dialogService = dialogService;
             _trackableCommandManager = trackableCommandManager;
+            _serviceProvider = serviceProvider;
 
             ConfigureEvents();
+            ConfigureFormatters();
 
             IsActive = true;
-            _serviceProvider = serviceProvider;
         }
 
         private void ConfigureEvents()
@@ -143,6 +166,12 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
             _trackableCommandManager.OperationPerformed += OnOperationPerformed;
 
             Properties.Settings.Default.SettingChanging += OnSettingsChanged;
+        }
+
+        private void ConfigureFormatters()
+        {
+            Formatters = new ObservableCollection<IFormatter>(_serviceProvider.GetServices<IFormatter>());
+            FormatterNames = new ObservableCollection<string>(Formatters.Select(f => f.Name));
         }
 
         #region Menu
@@ -473,6 +502,118 @@ namespace Diagrammatist.Presentation.WPF.ViewModels
                 var command = CommonUndoableHelper.CreateUndoableCommand(
                     () => doc.SetPayload(key, context),
                     () => doc.SetPayload(key, payload));
+
+                _trackableCommandManager.Execute(command);
+            }
+        }
+
+        /// <summary>
+        /// Formats current canvas using selected formatter from menu button.
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(MenuWithCanvasCanExecute))]
+        private void MenuFormat(object param)
+        {
+            if (param is string formatterName &&
+                Formatters?.FirstOrDefault(f => f.Name == formatterName) is IFormatter formatter &&
+                Messenger.Send<CurrentCanvasRequestMessage>().Response is { } canvas)
+            {
+                var context = new FormattingContext();
+                // Temporary solution.
+                // TODO: Upgrade ExtendedCanvas so it can properly update position and size of children and notify about it.
+                // TODO: Add support for automatic line bending.
+                var alertService = _serviceProvider.GetRequiredService<IAlertService>();
+                var connectionService = _serviceProvider.GetRequiredService<IConnectionService>();
+
+                var localizedCaption = LocalizationHelper
+                    .GetLocalizedValue<string>("MainResources", "FormatCaption"); 
+
+                var localizedMessage = LocalizationHelper
+                    .GetLocalizedValue<string>("MainResources", "FormatMessage");
+
+                var result = alertService.RequestYesNoDecision(localizedMessage, localizedCaption);
+
+                if (result is ConfirmationResult.No)
+                {
+                    return;
+                }
+
+                // This is Horrible! I'll re-do it later during development 1.1.0 version.
+                Dictionary<Guid, (double PosX, double PosY, double? Width, double? Height, double? FontSize)>? snapshot = null;
+                List<LineFigureModel>? deletedLines = null;
+                List<ConnectionModel>? deletedConnections = null; 
+
+                var command = CommonUndoableHelper.CreateUndoableCommand(
+                    () =>
+                    {
+                        snapshot = canvas.Figures.ToDictionary(
+                            f => f.Id,
+                            f =>
+                            {
+                                var shape = f as ShapeFigureModel;
+                                var text = f as TextFigureModel;
+                                return (f.PosX, f.PosY, shape?.Width, shape?.Height, text?.FontSize);
+                            }
+                        );
+
+                        deletedLines = canvas.Figures.OfType<LineFigureModel>().ToList();
+
+                        deletedConnections = new List<ConnectionModel>();
+                        var connections = canvas.Connections;
+                        foreach (var line in deletedLines)
+                        {
+                            var connection = connectionService.GetConnection(connections, line);
+                            if (connection != null)
+                            {
+                                deletedConnections.Add(connection);
+                                connectionService.RemoveConnection(connections, connection); 
+                            }
+                        }
+
+                        canvas.Figures.RemoveAll(f => f is LineFigureModel);
+
+                        formatter.Format(canvas.Figures, context);
+                    },
+                    () =>
+                    {
+                        foreach (var kvp in snapshot!)
+                        {
+                            var figure = canvas.Figures.FirstOrDefault(f => f.Id == kvp.Key);
+                            if (figure != null)
+                            {
+                                figure.PosX = kvp.Value.PosX;
+                                figure.PosY = kvp.Value.PosY;
+
+                                if (figure is ShapeFigureModel shape)
+                                {
+                                    shape.Width = kvp.Value.Width ?? shape.Width;
+                                    shape.Height = kvp.Value.Height ?? shape.Height;
+                                }
+
+                                if (figure is TextFigureModel text)
+                                {
+                                    text.FontSize = kvp.Value.FontSize ?? text.FontSize;
+                                }
+                            }
+                        }
+
+                        foreach (var line in deletedLines!)
+                        {
+                            if (!canvas.Figures.Any(f => f.Id == line.Id))
+                            {
+                                canvas.Figures.Add(line);
+                            }
+                        }
+
+                        var connections = canvas.Connections;
+                        foreach (var connection in deletedConnections!)
+                        {
+                            if (!connections.Any(c => c.Line.Id == connection.Line.Id))
+                            {
+                                connectionService.AddConnection(connections, connection);
+                            }
+                        }
+                    }
+                );
 
                 _trackableCommandManager.Execute(command);
             }
